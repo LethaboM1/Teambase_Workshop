@@ -2,3 +2,7 @@
 .main_logo{
 	margin-bottom: -80px;
 }
+
+.pointer {
+	cursor: pointer;
+}

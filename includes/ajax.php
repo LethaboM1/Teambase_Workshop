@@ -1,0 +1,285 @@
+<?php
+require_once "./check.php";
+
+switch ($_POST['cmd']) {
+    case "search":
+        switch ($_POST['type']) {
+            case "users":
+                $get_users = dbq("select * from users_tbl where (name like '%{$_POST['search']}%' || last_name like '%{$_POST['search']}%' || email like '%{$_POST['search']}%') and role!='system'");
+                if ($get_users) {
+                    if (dbr($get_users) > 0) {
+                        while ($row = dbf($get_users)) {
+                            require "pages/users/list_users.php";
+                        }
+                    } else {
+                        echo "<tr><td colspan='5'>Could not find '{$_POST['search']}'</td></tr>";
+                    }
+                }
+                break;
+
+            case "plants":
+                $get_plants = dbq("select * from plants_tbl where (
+                                    vehicle_type like '%{$_POST['search']}%' 
+                                    || reg_number like '%{$_POST['search']}%' 
+                                    || vin_number like '%{$_POST['search']}%'
+                                    || make like '%{$_POST['search']}%'
+                                    || model like '%{$_POST['search']}%'
+                                    )");
+                if ($get_plants) {
+                    if (dbr($get_plants) > 0) {
+                        while ($row = dbf($get_plants)) {
+                            require "pages/plants/list_plants.php";
+                        }
+                    } else {
+                        echo "<tr><td colspan='5'>Could not find '{$_POST['search']}'</td></tr>";
+                    }
+                }
+                break;
+        }
+        break;
+
+    case "get_plant_details":
+        $get_plant = dbq("select * from plants_tbl where plant_id='{$_POST['plant_id']}'");
+        if ($get_plant) {
+            if (dbr($get_plant) > 0) {
+                $plant_ = dbf($get_plant);
+                $json_['status'] = 'ok';
+                $json_['result'] = $plant_;
+            } else {
+                $json_['status'] = 'error';
+                $json_['status'] = 'No plants found';
+            }
+        } else {
+            $json_['status'] = 'error';
+            $json_['status'] = 'SQL error: ' . dbe();
+        }
+
+        echo json_encode($json_);
+        break;
+
+    case "remove_user_plant":
+        echo inp('user_id', '', 'hidden', $_POST['user_id'])
+            . inp('plant_id', '', 'hidden', $_POST['plant_id'])
+            . "<div class='modal-text'>
+                <p>Are you sure that you want to remove this user from the plant?</p>
+            </div>";
+
+        break;
+
+    case "get_users_plant":
+        $get_users = dbq("select * from users_tbl where role='user' and user_id not in (select user_id from plant_user_tbl where plant_id='{$_POST['plant_id']}')");
+        if ($get_users) {
+            echo "<table class='table table-responsive-md mb-0'>
+                    <thead>
+                        <tr>                            
+                            <th width='47'>Action</th>
+                            <th >Name</th>
+                            <th >Surname</th>
+                            <th >Email</th>
+                            <th >Contact Number</th>
+                        </tr>
+                    </thead>";
+            if (dbr($get_users) > 0) {
+                while ($user = dbf($get_users)) {
+                    echo "<tr>                            
+                            <th width='47'><input name='user_id[]' type='checkbox' value='{$user['user_id']}' /></th>
+                            <th >{$user['name']}</th>
+                            <th >{$user['last_name']}</th>
+                            <th >{$user['email']}</th>
+                            <th >{$user['contact_number']}</th>
+                        </tr>";
+                }
+            } else {
+                echo "<tr><td colspan='6'>No users available to allocate.</td></tr>";
+            }
+            echo "</table>";
+        } else {
+            echo "SQL Error: " . dbe();
+        }
+        break;
+
+    case "get_del_plant";
+        $get_plant = dbq("select * from plants_tbl where plant_id='{$_POST['plant_id']}'");
+        if ($get_plant) {
+            if (dbr($get_plant) > 0) {
+                $plant_ = dbf($get_plant);
+                echo inp('plant_id', '', 'hidden', $plant_['plant_id'])
+                    . "<div class='modal-wrapper'>
+                            <div class='modal-icon'>
+                                <i class='fas fa-times-circle'></i>
+                            </div>
+                            <div class='modal-text'>
+                                <h4>Danger</h4>
+                                <p>Are you sure that you want to delete this plant {$plant_['vehicle_type']}, reg no. {$plant_['reg_number']}?</p>
+                            </div>
+                        </div>";
+            }
+        }
+        break;
+    case "get_edit_plant":
+        if (isset($_POST['plant_id'])) {
+            $get_plant = dbq("select * from plants_tbl where plant_id='{$_POST['plant_id']}'");
+            if ($get_plant) {
+                if (dbr($get_plant) > 0) {
+                    $plant_ = dbf($get_plant);
+
+                    echo inp('plant_id', '', 'hidden', $plant_['plant_id'])
+                        . "<div class='row'>
+						<div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
+							<label class='col-form-label' for='formGroupExampleInput'>Vehicle Type</label>
+							<input type='text' name='vehicle_type' placeholder='Truck, TLB ...' class='form-control' value='{$plant_['vehicle_type']}'>
+						</div>
+						<div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
+							<label class='col-form-label' for='formGroupExampleInput'>Make</label>
+							<input type='text' name='make' placeholder='Make' class='form-control' value='{$plant_['make']}'>
+						</div>
+						<div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
+							<label class='col-form-label' for='formGroupExampleInput'>Model</label>
+							<input type='text' name='model' placeholder='Model' class='form-control' value='{$plant_['model']}'>
+						</div>
+					</div>
+					<div class='row'>
+						<div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
+							<label class='col-form-label' for='formGroupExampleInput'>Registration Number</label>
+							<input type='text' name='reg_number' placeholder='AAA-456-L' class='form-control' value='{$plant_['reg_number']}'>
+						</div>
+						<div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
+							<label class='col-form-label' for='formGroupExampleInput'>VIN Number</label>
+							<input type='text' name='vin_number' placeholder='VIN Number' class='form-control' value='{$plant_['vin_number']}'>
+						</div>
+						<div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
+							<label class='col-form-label' for='formGroupExampleInput'>KM Reading</label>
+							<input type='text' name='km_reading' placeholder='KM Reading' class='form-control' value='{$plant_['km_reading']}'>
+						</div>
+					</div>
+					<div class='row'>
+						<div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
+							<label class='col-form-label' for='formGroupExampleInput'>Last Service Date</label>
+							<input type='date' name='last_service' placeholder='Last Service Date' class='form-control' value='{$plant_['last_service']}'>
+						</div>
+						<div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
+							<label class='col-form-label' for='formGroupExampleInput'>Next Service Date</label>
+							<input type='date' name='next_service' placeholder='Next Service Date' class='form-control' value='{$plant_['next_service']}'>
+						</div>
+					</div>";
+                }
+            }
+        }
+        break;
+
+
+
+    case "get_del_user";
+        $get_user = dbq("select * from users_tbl where user_id='{$_POST['user_id']}'");
+        if ($get_user) {
+            if (dbr($get_user) > 0) {
+                $user_ = dbf($get_user);
+                echo inp('user_id', '', 'hidden', $user_['user_id'])
+                    . "<div class='modal-wrapper'>
+                        <div class='modal-icon'>
+                            <i class='fas fa-times-circle'></i>
+                        </div>
+                        <div class='modal-text'>
+                            <h4>Danger</h4>
+                            <p>Are you sure that you want to delete this user {$user_['name']} {$user_['last_name']}?</p>
+                        </div>
+                    </div>";
+            }
+        }
+        break;
+
+    case "get_view_user";
+        $get_user = dbq("select * from users_tbl where user_id='{$_POST['user_id']}'");
+        if ($get_user) {
+            if (dbr($get_user) > 0) {
+                $user_ = dbf($get_user);
+                echo "{$user_['name']} {$user_['last_name']}";
+            }
+        }
+        break;
+
+    case "get_edit_user":
+        if (isset($_POST['user_id'])) {
+            $get_user = dbq("select * from users_tbl where user_id='{$_POST['user_id']}'");
+            if ($get_user) {
+                if (dbr($get_user) > 0) {
+                    $user_ = dbf($get_user);
+
+                    echo inp('user_id', '', 'hidden', $user_['user_id'])
+                        . "<div class='row'>
+                            <div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
+                                <label class='col-form-label' for='formGroupExampleInput'>First Name</label>
+                                <input type='text' name='firstName' placeholder='First Name' class='form-control' value='{$user_['name']}'>
+                            </div>
+                            <div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
+                                <label class='col-form-label' for='formGroupExampleInput'>Last Name</label>
+                                <input type='text' name='lastName' placeholder='Last Name' class='form-control' value='{$user_['last_name']}'>
+                            </div>
+                            <div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
+                                <label class='col-form-label' for='formGroupExampleInput'>ID Number</label>
+                                <input id='fc_inputmask_1' data-plugin-masked-input data-input-mask='999999-9999-999' placeholder='______-____-___' class='form-control' value='{$user_['id_numebr']}'>
+                            </div>
+                        </div>
+                        <div class='row'>
+                            <div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
+                                <label class='col-form-label' for='formGroupExampleInput'>Contact Number</label>
+                                <input id='fc_inputmask_2' data-plugin-masked-input data-input-mask='999-999-9999' placeholder='___-___-____' class='form-control' value='{$user_['contact_number']}'>
+                            </div>
+                            <div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
+                                <label class='col-form-label' for='formGroupExampleInput'>Employee Number</label>
+                                <input type='text' name='employeeNumber' placeholder='Employee Number' class='form-control' value='{$user_['employee_number']}'>
+                            </div>
+                            <div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
+                                <label class='col-form-label' for='formGroupExampleInput'>Email Address</label>
+                                <input type='email' name='email' placeholder='Email Address' class='form-control' value='{$user_['email']}'>
+                            </div>
+                        </div>
+                        <div class='row'>
+                            <div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
+                                <label class='col-form-label' for='formGroupExampleInput'>Password (Leave blank if you dont want to change password)</label>
+                                <input type='password' name='password' placeholder='Password' class='form-control'>
+                            </div>
+                            <div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
+                                <label class='col-form-label' for='formGroupExampleInput'>Confirm Password</label>
+                                <input type='password' name='confirmpassword' placeholder='Confirm Password' class='form-control'>
+                            </div>
+                            <div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
+                                <label class='col-form-label' for='formGroupExampleInput'>User Roll</label>
+                                <select name='role' class='form-control mb-3' id='roll'>";
+
+                    foreach ($dash_roles as $role) {
+                        if ($user_['role'] == $role) {
+                            echo "<option selected='selected' value='{$role}'>" . ucfirst($role) . "</option>";
+                        } else {
+                            echo "<option value='{$role}'>" . ucfirst($role) . "</option>";
+                        }
+                    }
+
+
+                    echo "          </select>
+                            </div>
+                        </div>
+                        <div class='row'>
+                            <div class='col-sm-12 col-md-12 pb-sm-3 pb-md-0'>
+                                <label class='col-form-label' for='formGroupExampleInput'>Upload Photo</label>
+                                <div class='fileupload fileupload-new' data-provides='fileupload'>
+                                    <div class='input-append'>
+                                        <div class='uneditable-input'>
+                                            <i class='fas fa-file fileupload-exists'></i>
+                                            <span class='fileupload-preview'></span>
+                                        </div>
+                                        <span class='btn btn-default btn-file'>
+                                            <span class='fileupload-exists'>Change</span>
+                                            <span class='fileupload-new'>Select file</span>
+                                            <input type='file' />
+                                        </span>
+                                        <a href='#' class='btn btn-default fileupload-exists' data-dismiss='fileupload'>Remove</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>";
+                }
+            }
+        }
+        break;
+}
