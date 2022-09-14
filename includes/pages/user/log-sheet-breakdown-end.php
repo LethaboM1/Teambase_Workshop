@@ -57,6 +57,11 @@ if (folders_('operator_log', $plant_['plant_id'])) {
 				<textarea class="form-control" rows="3" id="Comment"></textarea>
 				<br>
 			</div>
+			<footer class="text-end">
+				<button name="end_breakdown" type="submit" class="btn btn-primary">End Breakdown</button>
+				<button type="reset" class="btn btn-default">Reset</button>
+				<div id="image_list" class='mt-2 mb-2'></div>
+			</footer>
 		</div>
 		<!--<div class="row">
 	<div class="col-lg-6 mb-3">

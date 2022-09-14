@@ -75,55 +75,23 @@ if (folders_('operator_log', $plant_['plant_id'])) {
 			<hr>
 			<h2 class="card-title">Extras</h2><br>
 			<div class="row">
-				<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-					<div class="checkbox-custom checkbox-default">
-						<input type="checkbox" id="sparewheele">
-						<label for="sparewheel">Spare Wheel</label>
-					</div>
-				</div>
-				<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-					<div class="checkbox-custom checkbox-default">
-
-						<input type="checkbox" id="wheelespanner">
-						<label for="wheelespanner">Wheele Spanner</label>
-					</div>
-				</div>
-				<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-					<div class="checkbox-custom checkbox-default">
-						<input type="checkbox" id="jack">
-						<label for="jack">Jack</label>
-					</div>
-				</div>
-				<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-					<div class="checkbox-custom checkbox-default">
-						<input type="checkbox" id="triangle">
-						<label for="triangle">Triangle</label>
-					</div>
-				</div>
-				<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-					<div class="checkbox-custom checkbox-default">
-						<input type="checkbox" id="extinguisher">
-						<label for="extinguisher">Fire Extinguisher</label>
-					</div>
-				</div>
-				<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-					<div class="checkbox-custom checkbox-default">
-						<input type="checkbox" id="belt">
-						<label for="belt">Safety Belt</label>
-					</div>
-				</div>
-				<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-					<div class="checkbox-custom checkbox-default">
-						<input type="checkbox" id="beacon">
-						<label for="beacon">Rotating Beacon</label>
-					</div>
-				</div>
-				<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-					<div class="checkbox-custom checkbox-default">
-						<input type="checkbox" id="blocks">
-						<label for="blocks">Stop Blocks</label>
-					</div>
-				</div>
+				<?php
+				$get_safety_equipment = dbq("select * from safety_equipment");
+				if ($get_safety_equipment) {
+					if (dbr($get_safety_equipment) > 0) {
+						while ($equipment = dbf($get_safety_equipment)) {
+				?>
+							<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+								<div class="checkbox-custom checkbox-default">
+									<input type="checkbox" id="<?= $equipment['code'] ?>" name="<?= $equipment['code'] ?>">
+									<label for="<?= $equipment['code'] ?>"><?= $equipment['name'] ?></label>
+								</div>
+							</div>
+				<?php
+						}
+					}
+				}
+				?>
 			</div>
 			<hr>
 			<div class="col-sm-12 col-md-12">

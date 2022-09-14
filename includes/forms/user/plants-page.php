@@ -155,48 +155,77 @@ if (isset($_POST['submit_checklist'])) {
 }
 
 if (isset($_POST['start_breakdown'])) {
-    if (date_create($_POST['fromtime'])) {
-        /* Log Job card */
-        switch ($_POST['reading_type']) {
-            case "hr":
-                $reading = "hr_reading='{$_POST['reading']}',";
-                break;
+    if (date($_POST['fromtime'])) {
+        if (is_numeric($_POST['reading']) && $_POST['reading'] > 0) {
+            /* Log Job card */
+            switch ($_POST['reading_type']) {
+                case "hr":
+                    $reading = "hr_reading='{$_POST['reading']}',";
+                    break;
 
-            case "km":
-                $reading = "km_reading='{$_POST['reading']}',";
-                break;
-        }
-        $add_jobcard = dbq("insert into jobcards set
-                                plant_id={$_POST['submit_checklist']},
-                                job_date='" . date('Y-m-d') . "',
-                                logged_by='{$_SESSION['user']['user_id']}',
-                                log_id={$_POST['log_id']},
-                                {$reading}
-                                priority=1
-                                ");
-        if ($add_jobcard) {
-            $job_id = mysqli_insert_id($db);
-            $update_log = dbq("update operator_log set
-                                    breakdown_start='{$_POST['fromtime']}',
-                                    breakdown_start_comment='" . htmlentities($_POST['comment'], ENT_QUOTES) . "'
-                                    where log_id={$_POST['log_id']}");
-            if ($update_log) {
-                $update_plant = dbq("update plants_tbl set
+                case "km":
+                    $reading = "km_reading='{$_POST['reading']}',";
+                    break;
+            }
+
+            $get_safety_equipment = dbq("select * from safety_equipment");
+            if ($get_safety_equipment) {
+                if (dbr($get_safety_equipment) > 0) {
+                    while ($equipment = dbf($get_safety_equipment)) {
+                        if ($_POST[$equipment['code']] == 'on') {
+                            $answer = 'Yes';
+                        } else {
+                            $answer = 'No';
+                        }
+
+                        $safety_stuff[] = [
+                            'name' => $equipment['name'],
+                            'answer' => $answer
+                        ];
+                    }
+                }
+            }
+
+            if (isset($safety_stuff)) {
+                $safety_stuff = json_encode($safety_stuff);
+            } else {
+                $safety_stuff = '';
+            }
+
+            $add_jobcard = dbq("insert into jobcards set
+                                    plant_id={$_POST['plant_id']},
+                                    job_date='" . date('Y-m-d') . "',
+                                    logged_by='{$_SESSION['user']['user_id']}',
+                                    log_id={$_POST['log_id']},
+                                    safety_audit='{$safety_stuff}',
+                                    {$reading}
+                                    priority=1
+                                    ");
+            if ($add_jobcard) {
+                $job_id = mysqli_insert_id($db);
+                $update_log = dbq("update operator_log set
+                                        breakdown_start='{$_POST['fromtime']}',
+                                        breakdown_start_comment='" . htmlentities($_POST['comment'], ENT_QUOTES) . "'
+                                        where log_id={$_POST['log_id']}");
+                if ($update_log) {
+                    $update_plant = dbq("update plants_tbl set
                                             {$_POST['reading_type']}_reading={$_POST['reading']},
-                                            operator_id=0,
                                             status='breakdown'
                                             where plant_id={$_POST['plant_id']}
                                             ");
-                if ($update_plant) {
-                    msg("Breakdown started, Job ref: {$job_id}.");
+                    if ($update_plant) {
+                        msg("Breakdown started, Job ref: {$job_id}.");
+                    } else {
+                        sqlError();
+                    }
                 } else {
                     sqlError();
                 }
             } else {
-                sqlError();
+                sqlError('Error adding job card', 'Error adding job card.');
             }
         } else {
-            sqlError('Error adding job card', 'Error adding job card.');
+            error("Must fill in the reading.");
         }
     } else {
         error("Invalid date/time.");

@@ -38,7 +38,7 @@ switch ($plant_['reading_type']) {
 				<?php
 				if ($row['operator_id'] == $_SESSION['user']['user_id'] && ($row['status'] == 'busy' || $row['status'] == 'check' || $row['status'] == 'breakdown')) {
 				?>
-					&nbsp;&nbsp;&nbsp;<a class="mb-1 mt-1 mr-1 modal-sizes" href="#modalBreakdownPlant"><i class="fa-solid fa-wrench fa-2x text-danger"></i></a>
+					&nbsp;&nbsp;&nbsp;<a class="mb-1 mt-1 mr-1 modal-sizes" href="#modalBreakdownPlant"><i title="Breakdown" class="fa-solid fa-wrench fa-2x text-danger"></i></a>
 					<div id="modalBreakdownPlant" class="modal-block modal-block-lg mfp-hide">
 						<section class="card">
 							<header class="card-header">
@@ -65,33 +65,80 @@ switch ($plant_['reading_type']) {
 									</div>
 								</div>
 							</div>
+							<footer class="card-footer">
+								<div class="row">
+									<div class="col-md-12 text-right">
+										<form method="post">
+											<button class="btn btn-default modal-dismiss">Cancel</button>
+										</form>
+									</div>
+								</div>
+							</footer>
 						</section>
 					</div>
 				<?php
 				}
 
-				if ($row['status'] != 'breakdown') {
+				//if ($row['status'] != 'breakdown') {
 
 				?>
-					&nbsp;&nbsp;&nbsp;<a class="mb-1 mt-1 mr-1 modal-sizes" href="#modalviewPlant">
-						<?php
-						switch ($row['status']) {
-							case "busy":
-								echo '<i class="fa-regular fa-hand fa-2x"></i>';
-								break;
-							default:
-								echo '<i class="fa-regular fa-thumbs-up fa-2x"></i>';
-								break;
-						}
-						?>
+				&nbsp;&nbsp;&nbsp;<a class="mb-1 mt-1 mr-1 modal-sizes" href="#modalviewPlant">
+					<?php
+					switch ($row['status']) {
+						case "busy":
+							echo '<i title="Stop work" class="fa-regular fa-hand fa-2x"></i>';
+							break;
 
-						<div id="modalviewPlant" class="modal-block modal-block-lg mfp-hide">
-							<section class="card">
+						case "breakdown":
+							echo '<i title="Stop work" class="fa-regular fa-hand fa-2x"></i>';
+							break;
+						default:
+							echo '<i title="Start work"class="fa-regular fa-thumbs-up fa-2x"></i>';
+							break;
+					}
+					?>
+
+					<div id="modalviewPlant" class="modal-block modal-block-lg mfp-hide">
+						<section class="card">
+							<?php
+							if ($row['operator_id'] == $_SESSION['user']['user_id']) {
+							?>
+								<header class="card-header">
+									<h2 class="card-title">Driver / Operator Log Sheet</h2>
+								</header>
+								<div class="card-body">
+									<div class="modal-wrapper">
+										<div class="modal-text">
+											<div class="row">
+												<form method="post">
+													<?php
+													switch ($plant_['status']) {
+														case "check":
+															require "./includes/pages/user/log-sheet-start.php";
+															break;
+
+														case "busy":
+															require "./includes/pages/user/log-sheet-end.php";
+															break;
+
+														case "breakdown":
+															require "./includes/pages/user/log-sheet-end.php";
+															break;
+													}
+													?>
+
+												</form>
+											</div>
+										</div>
+									</div>
+								</div>
 								<?php
-								if ($row['operator_id'] == $_SESSION['user']['user_id']) {
+							} else {
+								if ($plant_['status'] == 'ready') {
 								?>
+
 									<header class="card-header">
-										<h2 class="card-title">Driver / Operator Log Sheet</h2>
+										<h2 class="card-title">Allocate Plant</h2>
 									</header>
 									<div class="card-body">
 										<div class="modal-wrapper">
@@ -99,61 +146,31 @@ switch ($plant_['reading_type']) {
 												<div class="row">
 													<form method="post">
 														<?php
-														switch ($plant_['status']) {
-															case "check":
-																require "./includes/pages/user/log-sheet-start.php";
-																break;
-
-															case "busy":
-																require "./includes/pages/user/log-sheet-end.php";
-																break;
-														}
+														$plant_id = $row['plant_id'];
+														require "./includes/pages/user/checklist.php";
 														?>
-
 													</form>
 												</div>
 											</div>
 										</div>
 									</div>
-									<?php
-								} else {
-									if ($plant_['status'] == 'ready') {
-									?>
-
-										<header class="card-header">
-											<h2 class="card-title">Allocate Plant</h2>
-										</header>
-										<div class="card-body">
-											<div class="modal-wrapper">
-												<div class="modal-text">
-													<div class="row">
-														<form method="post">
-															<?php
-															$plant_id = $row['plant_id'];
-															require "./includes/pages/user/checklist.php";
-															?>
-														</form>
-													</div>
-												</div>
-											</div>
-										</div>
-								<?php
-									}
+							<?php
 								}
-								?>
-								<footer class="card-footer">
-									<div class="row">
-										<div class="col-md-12 text-right">
-											<form method="post">
-												<button class="btn btn-default modal-dismiss">Cancel</button>
-											</form>
-										</div>
+							}
+							?>
+							<footer class="card-footer">
+								<div class="row">
+									<div class="col-md-12 text-right">
+										<form method="post">
+											<button class="btn btn-default modal-dismiss">Cancel</button>
+										</form>
 									</div>
-								</footer>
-							</section>
-						</div>
+								</div>
+							</footer>
+						</section>
+					</div>
 					<?php
-				}
+					//}
 					?>
 					<!-- Modal view End -->
 					<!-- Plant Card End -->

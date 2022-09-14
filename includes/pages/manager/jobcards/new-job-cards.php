@@ -1,16 +1,9 @@
-<!-- Possitive Alert User Added -->
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-	<strong>Well done!</strong> New Job Card Assigned to Mechanic!
-	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-hidden="true" aria-label="Close"></button>
-</div>
-<!-- Negative Alert Delete User-->
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
-	<strong>Oh snap!</strong> Not Assigned!
-	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-hidden="true" aria-label="Close"></button>
-</div>
-<!-- Negative Alert End -->
+
 <div class="row">
 	<div class="col-xl-12">
+		<?php
+		
+		?>
 		<!-- Job Card Good -->
 		<div class="col-md-12">
 			<section class="card card-featured-left card-featured-success mb-4">

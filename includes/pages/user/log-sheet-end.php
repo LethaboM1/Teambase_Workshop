@@ -12,7 +12,6 @@ if (folders_('operator_log', $plant_['plant_id'])) {
 			<?= inp('log_id', '', 'hidden', $log_['log_id']) ?>
 			<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 				<label class="col-form-label" for="formGroupExampleInput">Drivers Name</label>
-
 				<input type="text" value="<?= $operator_['name'] . ' ' . $operator_['last_name'] ?>" name="driversname" placeholder="Drivers Name" class="form-control" disabled>
 			</div>
 			<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
