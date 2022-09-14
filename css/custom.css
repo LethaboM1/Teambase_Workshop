@@ -6,3 +6,8 @@
 .pointer {
 	cursor: pointer;
 }
+
+.removeX:hover {
+	color: red;
+	cursor: pointer;	
+}

@@ -6,13 +6,21 @@ switch ($_SESSION['user']['role']) {
 		$dashboard = 'admin';
 		break;
 
-	case "":
+	case "manager":
+		$dashboard = 'admin';
+		break;
+
+	case "user":
+		$dashboard = 'user';
 		break;
 }
 
 switch ($dashboard) {
 	case "admin":
 		include "includes/dashboard/admin.php";
+		break;
+	case "user":
+		include "includes/dashboard/user.php";
 		break;
 }
 

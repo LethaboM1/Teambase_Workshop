@@ -182,7 +182,12 @@
           <div id="userbox" class="userbox">
             <a href="#" data-bs-toggle="dropdown">
               <figure class="profile-picture">
-                <img src="img/staff/Jack.jpg" alt="Joseph Doe" class="rounded-circle" data-lock-picture="img/staff/Jack.jpg" />
+
+                <?php
+                if (file_exists("images/users/{$_SESSION['user']['user_id']}.jpg")) {
+                  echo "<img src='images/users/{$_SESSION['user']['user_id']}.jpg' alt='{$_SESSION['user']['name']} {$_SESSION['user']['last_name']}' class='rounded-circle' data-lock-picture='images/users/{$_SESSION['user']['user_id']}.jpg' />";
+                }
+                ?>
               </figure>
               <div class="profile-info" data-lock-name="John Doe" data-lock-email="johndoe@okler.com">
                 <span class="name"><?= $_SESSION['user']['name'] . " " . $_SESSION['user']['last_name'] ?></span>

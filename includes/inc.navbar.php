@@ -11,7 +11,18 @@
       </div>
     </div>
     <!-- Navigation Start -->
-    <? include('navigation/manager_nav.php'); ?>
+    <?
+    switch ($dashboard) {
+      case "admin":
+        include('includes/navigation/manager_nav.php');
+        break;
+
+      case "user":
+        include('includes/navigation/user_nav.php');
+        break;
+    }
+
+    ?>
 
     <!-- Navigation end -->
   </aside>

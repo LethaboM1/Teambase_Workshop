@@ -3,7 +3,7 @@ if ($_SESSION['user']['role'] != 'system' && $_SESSION['user']['role'] != 'manag
 	exit();
 }
 ?>
-<!doctype html>
+
 <div class="row">
 	<div class="col-lg-6 mb-3">
 		<section class="card">

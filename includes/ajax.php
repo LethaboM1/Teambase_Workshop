@@ -2,14 +2,113 @@
 require_once "./check.php";
 
 switch ($_POST['cmd']) {
+    case "remove_image";
+        unset($_SESSION['upload_images'][$_POST['key']]);
+
+        if (isset($_SESSION['upload_images'])) {
+            if (count($_SESSION['upload_images']) > 0) {
+                echo    "<div class='row'>";
+                foreach ($_SESSION['upload_images'] as $key => $image) {
+
+                    echo "<div class='col-md-3'>
+                            <i onclick='remImage(`{$key}`)' class='fa fa-times fa-2x removeX'></i>
+                            <img width='200px' src='{$image['image']}' />
+                        </div>";
+                }
+                echo    "</div>";
+            }
+        }
+        break;
+
+    case "upload_img":
+        /*
+
+            Upload Image
+
+        */
+
+        if (isset($_SESSION['upload_images'])) {
+            $amount = count($_SESSION['upload_images']);
+        } else {
+            $amount = 0;
+        }
+
+        if ($amount >= $_POST['limit']) {
+            echo "<small>{$_POST['limit']} photos max</small>
+            <div class='row'>";
+            foreach ($_SESSION['upload_images'] as $key => $image) {
+
+                echo "<div class='col-md-3'>
+                            <i onclick='remImage(`{$key}`)' class='fa fa-times fa-2x removeX'></i>
+                            <img width='200px' src='{$image['image']}' /></div>";
+            }
+            echo    "</div>";
+            exit();
+        }
+
+        if ($_POST['image'] > 100) {
+            $_SESSION['upload_images'][] = [
+                'image' => $_POST['image'],
+                'type' => $_POST['type']
+            ];
+        }
+
+        if (isset($_SESSION['upload_images'])) {
+            if (count($_SESSION['upload_images']) > 0) {
+                echo    "<div class='row'>";
+                foreach ($_SESSION['upload_images'] as $key => $image) {
+
+                    echo "<div class='col-md-3'>
+                            <i onclick='remImage(`{$key}`)' class='fa fa-times fa-2x removeX'></i>
+                            <img width='200px' src='{$image['image']}' />
+                        </div>";
+                }
+                echo    "</div>";
+            }
+        }
+
+
+        break;
+
     case "search":
         switch ($_POST['type']) {
+            case "open-jobs":
+                $get_users = dbq("select * from jobcards where (jobcard_number like '%{$_POST['search']}%' || fleet_number like '%{$_POST['search']}%')");
+                if ($get_users) {
+                    if (dbr($get_users) > 0) {
+                        while ($row = dbf($get_users)) {
+                            $items_list[] = $row;
+                        }
+                    }
+                }
+
+                $get_users = dbq("select * from jobcards where status='open' and logged_by in (select user_id as logged_by from users_tbl where (name like '#" . esc($_POST['search']) . "#' || name like '#" . esc($_POST['search']) . "#')");
+                if ($get_users) {
+                    if (dbr($get_users) > 0) {
+                        while ($row = dbf($get_users)) {
+                            $items_list[] = $row;
+                        }
+                    }
+                }
+
+                if (isset($items_list)) {
+                    if (count($items_list) > 0) {
+                        foreach ($items_list as $row) {
+                            require "pages/manager/jobcards/list_open_jobcards.php";
+                        }
+                    } else {
+                        echo "<tr><td colspan='5'>Could not find '{$_POST['search']}'</td></tr>";
+                    }
+                }
+
+                break;
+
             case "users":
                 $get_users = dbq("select * from users_tbl where (name like '%{$_POST['search']}%' || last_name like '%{$_POST['search']}%' || email like '%{$_POST['search']}%') and role!='system'");
                 if ($get_users) {
                     if (dbr($get_users) > 0) {
                         while ($row = dbf($get_users)) {
-                            require "pages/users/list_users.php";
+                            require "pages/manager/users/list_users.php";
                         }
                     } else {
                         echo "<tr><td colspan='5'>Could not find '{$_POST['search']}'</td></tr>";
@@ -28,7 +127,26 @@ switch ($_POST['cmd']) {
                 if ($get_plants) {
                     if (dbr($get_plants) > 0) {
                         while ($row = dbf($get_plants)) {
-                            require "pages/plants/list_plants.php";
+                            require "pages/manager/plants/list_plants.php";
+                        }
+                    } else {
+                        echo "<tr><td colspan='5'>Could not find '{$_POST['search']}'</td></tr>";
+                    }
+                }
+                break;
+
+            case "user-plants":
+                $get_plants = dbq("select * from plants_tbl where  (
+                                        vehicle_type like '%{$_POST['search']}%' 
+                                        || reg_number like '%{$_POST['search']}%' 
+                                        || vin_number like '%{$_POST['search']}%'
+                                        || make like '%{$_POST['search']}%'
+                                        || model like '%{$_POST['search']}%'
+                                        ) and plant_id in (select plant_id from plat_user_tbl where user_id={$_POST['user_id']})");
+                if ($get_plants) {
+                    if (dbr($get_plants) > 0) {
+                        while ($row = dbf($get_plants)) {
+                            require "pages/user/plants/list_plants.php";
                         }
                     } else {
                         echo "<tr><td colspan='5'>Could not find '{$_POST['search']}'</td></tr>";
@@ -123,6 +241,16 @@ switch ($_POST['cmd']) {
                 if (dbr($get_plant) > 0) {
                     $plant_ = dbf($get_plant);
 
+                    switch ($plant_['reading_type']) {
+                        case "km":
+                            $reading = $plant_['km_reading'];
+                            break;
+
+                        case "hr":
+                            $reading = $plant_['hr_reading'];
+                            break;
+                    }
+
                     echo inp('plant_id', '', 'hidden', $plant_['plant_id'])
                         . "<div class='row'>
 						<div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
@@ -146,13 +274,20 @@ switch ($_POST['cmd']) {
 						<div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
 							<label class='col-form-label' for='formGroupExampleInput'>VIN Number</label>
 							<input type='text' name='vin_number' placeholder='VIN Number' class='form-control' value='{$plant_['vin_number']}'>
-						</div>
-						<div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
-							<label class='col-form-label' for='formGroupExampleInput'>KM Reading</label>
-							<input type='text' name='km_reading' placeholder='KM Reading' class='form-control' value='{$plant_['km_reading']}'>
-						</div>
-					</div>
+						</div>";
+
+                    $reading_types_select_ = [
+                        ['name' => 'KM - Kilometers', 'value' => 'km'],
+                        ['name' => 'HR - Hours', 'value' => 'hr'],
+                    ];
+
+                    echo inp('reading_type', 'Type of reading', 'select', $plant_['reading_type'], '', 0, $reading_types_select_)
+                        .   "</div>
 					<div class='row'>
+						<div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
+							<label class='col-form-label' for='formGroupExampleInput'>Reading</label>
+							<input type='text' name='km_reading' placeholder='KM Reading' class='form-control' value='{$reading}'>
+						</div>
 						<div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
 							<label class='col-form-label' for='formGroupExampleInput'>Last Service Date</label>
 							<input type='date' name='last_service' placeholder='Last Service Date' class='form-control' value='{$plant_['last_service']}'>
@@ -209,32 +344,33 @@ switch ($_POST['cmd']) {
                         . "<div class='row'>
                             <div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
                                 <label class='col-form-label' for='formGroupExampleInput'>First Name</label>
-                                <input type='text' name='firstName' placeholder='First Name' class='form-control' value='{$user_['name']}'>
+                                <input type='text' name='name' placeholder='First Name' class='form-control' value='{$user_['name']}'>
                             </div>
                             <div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
                                 <label class='col-form-label' for='formGroupExampleInput'>Last Name</label>
-                                <input type='text' name='lastName' placeholder='Last Name' class='form-control' value='{$user_['last_name']}'>
+                                <input type='text' name='last_name' placeholder='Last Name' class='form-control' value='{$user_['last_name']}'>
                             </div>
                             <div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
                                 <label class='col-form-label' for='formGroupExampleInput'>ID Number</label>
-                                <input id='fc_inputmask_1' data-plugin-masked-input data-input-mask='999999-9999-999' placeholder='______-____-___' class='form-control' value='{$user_['id_numebr']}'>
+                                <input name='id_number' data-plugin-masked-input data-input-mask='999999-9999-999' placeholder='______-____-___' class='form-control' value='{$user_['id_number']}'>
                             </div>
                         </div>
                         <div class='row'>
                             <div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
                                 <label class='col-form-label' for='formGroupExampleInput'>Contact Number</label>
-                                <input id='fc_inputmask_2' data-plugin-masked-input data-input-mask='999-999-9999' placeholder='___-___-____' class='form-control' value='{$user_['contact_number']}'>
+                                <input name='contact_number' data-plugin-masked-input data-input-mask='999-999-9999' placeholder='___-___-____' class='form-control' value='{$user_['contact_number']}'>
                             </div>
                             <div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
                                 <label class='col-form-label' for='formGroupExampleInput'>Employee Number</label>
-                                <input type='text' name='employeeNumber' placeholder='Employee Number' class='form-control' value='{$user_['employee_number']}'>
+                                <input id='employee_number' type='text' name='employee_number' placeholder='Employee Number' class='form-control' value='{$user_['employee_number']}'>
                             </div>
                             <div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
                                 <label class='col-form-label' for='formGroupExampleInput'>Email Address</label>
-                                <input type='email' name='email' placeholder='Email Address' class='form-control' value='{$user_['email']}'>
+                                <input id='email' type='email' name='email' placeholder='Email Address' class='form-control' value='{$user_['email']}'>
                             </div>
-                        </div>
-                        <div class='row'>
+                        </div>"
+                        . inp('fake-creds', '', 'fake-creds')
+                        . "<div class='row'>
                             <div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
                                 <label class='col-form-label' for='formGroupExampleInput'>Password (Leave blank if you dont want to change password)</label>
                                 <input type='password' name='password' placeholder='Password' class='form-control'>
@@ -271,12 +407,21 @@ switch ($_POST['cmd']) {
                                         <span class='btn btn-default btn-file'>
                                             <span class='fileupload-exists'>Change</span>
                                             <span class='fileupload-new'>Select file</span>
-                                            <input type='file' />
+                                            <input name='photo' type='file' />
                                         </span>
                                         <a href='#' class='btn btn-default fileupload-exists' data-dismiss='fileupload'>Remove</a>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class='row'>
+                            <div class='col-sm-12 col-md-12 pb-sm-3 pb-md-0'>";
+
+                    if (file_exists("images/users/{$user_['user_id']}.jpg")) {
+                        echo "<img src='images/users/{$user_['user_id']}.jpg' />";
+                    }
+
+                    echo " </div>
                         </div>";
                 }
             }

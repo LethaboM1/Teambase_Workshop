@@ -308,7 +308,7 @@ function inp($name, $label, $type = 'text', $value = '', $class = '', $required 
 							<input type="text" name="plantNumber" placeholder="HP5885" class="form-control">
 			*/
 			$form .= "<label class='col-form-label'>Plant Number</label>
-					<input list='datalist_{$name}' autoComplete='on' class='form-control ";
+					<input list='datalist_{$name}' autoComplete='off' class='form-control ";
 			if ($required) {
 				$form .=  "required";
 				$extra .= ' required';
@@ -375,17 +375,20 @@ function inp($name, $label, $type = 'text', $value = '', $class = '', $required 
 
 		case "select":
 
+
+
+			$form = "<div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>";
+
 			if (strlen($label) > 0) {
-				$form = "<div class='form-group'>
-		 					<label>" . $label . "</label>";
+				$form .= "<label class='col-form-label'>" . $label . "</label>";
 			}
 
 
-			$form .= "<select {$extra} class='custom-select $class ";
+			$form .= "<select {$extra} class='form-control mb-3 $class ";
 			if ($required) {
 				$form .=  "required";
 			}
-			$form .=  "' name='" . $name . "' id ='" . $name . "'>";
+			$form .=  "' name='" . $name . "' id ='" . $name . "' autocomplete='off'>";
 			if (isset($select_list) && is_array($select_list)) {
 				foreach ($select_list as $select) {
 					if ($select['style'] == 'bold') {
@@ -406,9 +409,8 @@ function inp($name, $label, $type = 'text', $value = '', $class = '', $required 
 
 			$form .= "</select>";
 
-			if (strlen($label) > 0) {
-				$form .= "</div>";
-			}
+
+			$form .= "</div>";
 
 
 			return $form;
@@ -964,6 +966,231 @@ function prettyJson($json)
 	}
 
 	return $result;
+}
+
+
+function folders_($type, $plant_id)
+{
+	if (!file_exists("./files")) {
+		if (!mkdir("./files")) {
+			error("Could not create folder: Files.");
+			return false;
+		}
+	}
+
+	switch ($type) {
+		case "operator_log":
+			if (!file_exists("./files/operator_logs")) {
+				if (!mkdir("./files/operator_logs")) {
+					error("Could not create folder for logs.");
+					return false;
+				}
+			}
+
+			if (!file_exists("./files/operator_logs/{$plant_id}")) {
+				if (!mkdir("./files/operator_logs/{$plant_id}")) {
+					error("Could not create folder for plant {$plant_id}.");
+					return false;
+				}
+			}
+
+			if (!is_error()) {
+				return "./files/operator_logs/{$plant_id}/";
+			}
+			break;
+		default:
+			error("Wrong option.");
+			return false;
+	}
+}
+
+function get_hours($from_datetime, $to_datetime)
+{
+	$date1 = $from_datetime;
+	$date2 = $to_datetime;
+	$timestamp1 = strtotime($date1);
+	$timestamp2 = strtotime($date2);
+	return abs($timestamp2 - $timestamp1) / (60 * 60);
+}
+
+function get_operator_log($plant_id, $user_id)
+{
+	$get_operator_log = dbq("select * from operator_log where plant_id={$plant_id} and operator_id={$user_id} and status='S'");
+	if ($get_operator_log) {
+		if (dbr($get_operator_log) > 0) {
+			$operator_log = dbf($get_operator_log);
+			return $operator_log;
+		} else {
+			return false;
+		}
+	} else {
+		return false;
+	}
+}
+
+function upload_images($type, $id, $id_2, $photos, $key)
+{
+	switch ($type) {
+		case "operator_log_start":
+			$chk_operator = dbq("select user_id from users_tbl where user_id={$id}");
+			if ($chk_operator) {
+				if (dbr($chk_operator) > 0) {
+					$chk_plant = dbq("select plant_id from plants_tbl where plant_id={$id_2}");
+					if ($chk_plant) {
+						if (dbr($chk_plant) > 0) {
+							if (is_array($photos)) {
+								if (count($photos) > 0) {
+									if ($folder = folders_('operator_log', $id_2)) {
+										$count = 1;
+										foreach ($photos as $photo) {
+											$img_type = explode('/', $photo['type']);
+											$extension = $img_type[1];
+											//error_log('type = ' . $photo['type'] . ' ,Extension=' . $extension);
+											$base64data = str_replace('data:image/jpeg;base64,', '', $photo['image']);
+											//error_log("image = " . $folder . $key . '.' . $count . '.' . $extension);
+											if (file_put_contents($folder . $key . '-end-' . $count . '.' . $extension, base64_decode($base64data))) {
+											}
+											$count++;
+										}
+										return true;
+									} else {
+										error("Error with folders.");
+										return false;
+									}
+								} else {
+									error("You have not submitted a photo.");
+									return false;
+								}
+							} else {
+								error('invalid photo data.');
+								return false;
+							}
+						} else {
+							error("No plant.");
+							return false;
+						}
+					} else {
+						sqlError('', 'Upload images: plant');
+						return false;
+					}
+				} else {
+					error("No operator.");
+					return false;
+				}
+			} else {
+				sqlError('', 'upload images: operator');
+				return false;
+			}
+			break;
+
+		case "operator_log_end":
+			$chk_operator = dbq("select user_id from users_tbl where user_id={$id}");
+			if ($chk_operator) {
+				if (dbr($chk_operator) > 0) {
+					$chk_plant = dbq("select plant_id from plants_tbl where plant_id={$id_2}");
+					if ($chk_plant) {
+						if (dbr($chk_plant) > 0) {
+							if (is_array($photos)) {
+								if (count($photos) > 0) {
+									if ($folder = folders_('operator_log', $id_2)) {
+										$count = 1;
+										foreach ($photos as $photo) {
+											$img_type = explode('/', $photo['type']);
+											$extension = $img_type[1];
+											//error_log('type = ' . $photo['type'] . ' ,Extension=' . $extension);
+											$base64data = str_replace('data:image/jpeg;base64,', '', $photo['image']);
+											//error_log("image = " . $folder . $key . '.' . $count . '.' . $extension);
+											if (file_put_contents($folder . $key . '-end-' . $count . '.' . $extension, base64_decode($base64data))) {
+											}
+											$count++;
+										}
+										return true;
+									} else {
+										error("Error with folders.");
+										return false;
+									}
+								} else {
+									error("You have not submitted a photo.");
+									return false;
+								}
+							} else {
+								error('invalid photo data.');
+								return false;
+							}
+						} else {
+							error("No plant.");
+							return false;
+						}
+					} else {
+						sqlError('', 'Upload images: plants');
+						return false;
+					}
+				} else {
+					error("No operator.");
+					return false;
+				}
+			} else {
+				sqlError('', 'Upload images: operator');
+				return false;
+			}
+			break;
+
+		default:
+			error('No such type.');
+			return false;
+	}
+}
+
+function check_reading($plant_id, $reading, $thresh_hold = 3)
+{
+	$get_plant = dbq("select * from plants_tbl where plant_id={$plant_id}");
+	if ($get_plant) {
+		$plant_ = dbf($get_plant);
+		switch ($plant_['reading_type']) {
+			case "km":
+				if ($plant_['km_reading'] > $reading) {
+					error("Your km reading is lower than last reading for this plant.");
+					return false;
+				} else {
+					$diff =  $reading - $plant_['km_reading'];
+					if ($diff > $thresh_hold) {
+						error("The difference in reading is larger than threshhold.");
+						return false;
+					}
+				}
+				return true;
+				break;
+
+			case "hr":
+				if ($plant_['hr_reading'] > $reading) {
+					error("Your km reading is lower than last reading for this plant.");
+					return false;
+				} else {
+					$diff =  $reading - $plant_['hr_reading'];
+					if ($diff > $thresh_hold) {
+						error("The difference in reading is larger than threshhold.");
+						return false;
+					}
+				}
+				break;
+
+			default:
+				error("No type km or hr.");
+				return false;
+		}
+	} else {
+		sqlError();
+		return false;
+	}
+}
+
+function is_error()
+{
+	if (isset($_SESSION['error'])) {
+		return true;
+	} else {
+		return false;
+	}
 }
 
 function is_json($string, $return_data = false)

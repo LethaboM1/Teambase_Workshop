@@ -9927,7 +9927,8 @@ html.dark .dropzone:hover .dz-default span {
 		padding: 20px;
 	}
 }
-/* File Upload */
+
+/* File Upload 
 .fileupload .uneditable-input .fa, .fileupload .uneditable-input .fab, .fileupload .uneditable-input .fal, .fileupload .uneditable-input .far, .fileupload .uneditable-input .fas {
 	position: absolute;
 	top: 12px;
@@ -9945,7 +9946,7 @@ html.dark .dropzone:hover .dz-default span {
 
 .fileupload .btn {
 	border-radius: 0;
-}
+}*/
 
 @media only screen and (max-width: 479px) {
 	.fileupload .uneditable-input {
@@ -12019,10 +12020,10 @@ label.error {
 	top: -6px;
 }
 
-/* File Upload */
+/* File Upload 
 .fileupload .uneditable-input {
 	height: 37px;
-}
+}*/
 
 /* Input Group */
 .input-group .btn, .input-group .btn.active, .input-group .btn:active {
