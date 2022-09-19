@@ -53,6 +53,7 @@ if (isset($_POST['save_user'])) {
                                     last_name='{$_POST['last_name']}',
                                     employee_number='{$_POST['employee_number']}',
                                     id_number='{$_POST['id_number']}',
+                                    company_number='{$_POST['company_number']}',
                                     contact_number='{$_POST['contact_number']}',
                                     email='{$_POST['email']}',
                                     role='{$_POST['role']}'
@@ -91,6 +92,7 @@ if (isset($_POST['add_user'])) {
                                             last_name='{$_POST['last_name']}',
                                             employee_number='{$_POST['employee_number']}',
                                             id_number='{$_POST['id_number']}',
+                                            company_number='{$_POST['company_number']}',
                                             contact_number='{$_POST['contact_number']}',
                                             email='{$_POST['email']}',
                                             password='" . password_hash($_POST['password'], PASSWORD_DEFAULT) . "'

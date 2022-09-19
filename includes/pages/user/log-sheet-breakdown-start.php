@@ -52,11 +52,11 @@ if (folders_('operator_log', $plant_['plant_id'])) {
 					<option value="">Select Fault Area</option>
 					<option value="Engine">Engine</option>
 					<option value="Clutch">Clutch</option>
-					<option value="Gearbox">Gearbox/Drive Train</option>
-					<option value="Axlerear">Axel + Suspension Rear</option>
-					<option value="Axlefront">Axel + Suspension Front</option>
+					<option value="Gearbox/Drive Train">Gearbox/Drive Train</option>
+					<option value="Axel + Suspension Rear">Axel + Suspension Rear</option>
+					<option value="Axel + Suspension Front">Axel + Suspension Front</option>
 					<option value="Brakes">Brakes</option>
-					<option value="Cab">Cab + Accessories</option>
+					<option value="Cab + Accessories">Cab + Accessories</option>
 					<option value="Electrical">Electrical</option>
 					<option value="Hydrolics">Hydrolics</option>
 					<option value="Structure">Structure</option>

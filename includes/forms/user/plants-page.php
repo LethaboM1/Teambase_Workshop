@@ -195,6 +195,7 @@ if (isset($_POST['start_breakdown'])) {
             $add_jobcard = dbq("insert into jobcards set
                                     plant_id={$_POST['plant_id']},
                                     job_date='" . date('Y-m-d') . "',
+                                    fault_description='" . $_POST['fault_area'] . " - " . htmlentities($_POST['comment'], ENT_QUOTES) . "',
                                     logged_by='{$_SESSION['user']['user_id']}',
                                     log_id={$_POST['log_id']},
                                     safety_audit='{$safety_stuff}',

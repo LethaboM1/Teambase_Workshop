@@ -37,9 +37,9 @@
 							<div class="card-body">
 								<div class="card-actions">
 									<!-- Job Card Good -->
-									<a class="mb-1 mt-1 mr-1 modal-sizes" href="#modalviewjob"><i class="fa-solid fa-eye fa-2x"></i></a>
+									<a class="mb-1 mt-1 mr-1 modal-sizes" href="#modalviewjob_<?= $jobcard['job_id'] ?>"><i class="fa-solid fa-eye fa-2x"></i></a>
 									<!-- Modal view -->
-									<div id="modalviewjob" class="modal-block modal-block-lg mfp-hide">
+									<div id="modalviewjob_<?= $jobcard['job_id'] ?>" class="modal-block modal-block-lg mfp-hide">
 										<section class="card">
 											<header class="card-header">
 												<h2 class="card-title">View Job Card</h2>
@@ -47,8 +47,17 @@
 											<div class="card-body">
 												<div class="modal-wrapper">
 													<div class="modal-text">
-														<p>Job Card info here...</p>
-
+														<b>Logged by:</b>&nbsp;<?= $logged_by_['name'] ?><br>
+														<b>Fault:</b><br><?= $logged_by_['fault_description'] ?><br>
+														<b>Extras</b><br>
+														<?php
+														$items = json_decode($jobcard['safety_audit'], true);
+														echo "<ul>";
+														foreach ($items as $item) {
+															echo "<li>{$item['name']} - [{$item['answer']}]</li>";
+														}
+														echo "</ul>";
+														?>
 													</div>
 												</div>
 											</div>
@@ -65,8 +74,8 @@
 									<!-- Job Card End -->
 									<!-- Assign Job Card -->
 									<!-- Modal Assign -->
-									<a class="mb-1 mt-1 mr-1 modal-sizes" href="#modalassign"><i class="fa-solid fa-handshake-angle fa-2x"></i></a>
-									<div id="modalassign" class="modal-block modal-block-lg mfp-hide">
+									<a class="mb-1 mt-1 mr-1 modal-sizes" href="#modalassign_<?= $jobcard['job_id'] ?>"><i class="fa-solid fa-handshake-angle fa-2x"></i></a>
+									<div id="modalassign_<?= $jobcard['job_id'] ?>" class="modal-block modal-block-lg mfp-hide">
 										<section class="card">
 											<header class="card-header">
 												<h2 class="card-title">Assign Job Card</h2>
@@ -76,7 +85,7 @@
 													<div class="row">
 														<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 															<label class="col-form-label" for="formGroupExampleInput">Job Number</label>
-															<input type="text" name="jobnumber" value="<?= $jobcard['job_id'] ?>" class="form-control" disabled>
+															<input type="text" name="jobnumber" value="" placeholder="Job card Number" class="form-control" disabled>
 														</div>
 														<?= inp('job_id', '', 'hidden', $jobcard['job_id']) ?>
 														<?= inp('mechanic', 'Select Mechanic', 'select', '', '', 0, $mechanic_select_) ?>

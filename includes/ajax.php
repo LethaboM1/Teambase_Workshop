@@ -357,6 +357,10 @@ switch ($_POST['cmd']) {
                         </div>
                         <div class='row'>
                             <div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
+                                <label class='col-form-label' for='formGroupExampleInput'>Company Number</label>
+                                <input name='company_number' class='form-control' value='{$user_['company_number']}'>
+                            </div>
+                            <div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
                                 <label class='col-form-label' for='formGroupExampleInput'>Contact Number</label>
                                 <input name='contact_number' data-plugin-masked-input data-input-mask='999-999-9999' placeholder='___-___-____' class='form-control' value='{$user_['contact_number']}'>
                             </div>
@@ -364,13 +368,13 @@ switch ($_POST['cmd']) {
                                 <label class='col-form-label' for='formGroupExampleInput'>Employee Number</label>
                                 <input id='employee_number' type='text' name='employee_number' placeholder='Employee Number' class='form-control' value='{$user_['employee_number']}'>
                             </div>
+                        </div>"
+                        . inp('fake-creds', '', 'fake-creds')
+                        . "<div class='row'>
                             <div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
                                 <label class='col-form-label' for='formGroupExampleInput'>Email Address</label>
                                 <input id='email' type='email' name='email' placeholder='Email Address' class='form-control' value='{$user_['email']}'>
                             </div>
-                        </div>"
-                        . inp('fake-creds', '', 'fake-creds')
-                        . "<div class='row'>
                             <div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
                                 <label class='col-form-label' for='formGroupExampleInput'>Password (Leave blank if you dont want to change password)</label>
                                 <input type='password' name='password' placeholder='Password' class='form-control'>
@@ -379,6 +383,8 @@ switch ($_POST['cmd']) {
                                 <label class='col-form-label' for='formGroupExampleInput'>Confirm Password</label>
                                 <input type='password' name='confirmpassword' placeholder='Confirm Password' class='form-control'>
                             </div>
+                        </div>
+                        <div class='row'>
                             <div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
                                 <label class='col-form-label' for='formGroupExampleInput'>User Roll</label>
                                 <select name='role' class='form-control mb-3' id='roll'>";
@@ -394,8 +400,6 @@ switch ($_POST['cmd']) {
 
                     echo "          </select>
                             </div>
-                        </div>
-                        <div class='row'>
                             <div class='col-sm-12 col-md-12 pb-sm-3 pb-md-0'>
                                 <label class='col-form-label' for='formGroupExampleInput'>Upload Photo</label>
                                 <div class='fileupload fileupload-new' data-provides='fileupload'>

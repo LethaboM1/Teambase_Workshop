@@ -46,9 +46,9 @@ if ($row['allocated_hours'] > 0) {
         <div class="card-body">
             <div class="card-actions">
                 <!-- Job Card Good -->
-                <a class="mb-1 mt-1 mr-1 modal-sizes" href="#modalviewjob"><i class="fa-solid fa-eye"></i></a>
+                <a class="mb-1 mt-1 mr-1 modal-sizes" href="#modalviewjob_<?= $row['job_id'] ?>"><i class="fa-solid fa-eye"></i></a>
                 <!-- Modal view -->
-                <div id="modalviewjob" class="modal-block modal-block-lg mfp-hide">
+                <div id="modalviewjob_<?= $row['job_id'] ?>" class="modal-block modal-block-lg mfp-hide">
                     <section class="card">
                         <header class="card-header">
                             <h2 class="card-title">View Job Card</h2>
