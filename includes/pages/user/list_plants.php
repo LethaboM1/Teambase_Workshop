@@ -36,7 +36,7 @@ switch ($plant_['reading_type']) {
 		<div class="card-body">
 			<div class="card-actions">
 				<?php
-				if ($row['operator_id'] == $_SESSION['user']['user_id'] && ($row['status'] == 'busy' || $row['status'] == 'check' || $row['status'] == 'breakdown')) {
+				if ($row['operator_id'] == $_SESSION['user']['user_id'] && ($row['status'] == 'busy'  || $row['status'] == 'breakdown')) {
 				?>
 					&nbsp;&nbsp;&nbsp;<a class="mb-1 mt-1 mr-1 modal-sizes" href="#modalBreakdownPlant"><i title="Breakdown" class="fa-solid fa-wrench fa-2x text-danger"></i></a>
 					<div id="modalBreakdownPlant" class="modal-block modal-block-lg mfp-hide">

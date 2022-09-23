@@ -1015,7 +1015,7 @@ function get_hours($from_datetime, $to_datetime)
 
 function get_operator_log($plant_id, $user_id)
 {
-	$get_operator_log = dbq("select * from operator_log where plant_id={$plant_id} and operator_id={$user_id} and status='S'");
+	$get_operator_log = dbq("select * from operator_log where plant_id={$plant_id} and operator_id={$user_id} and status!='E'");
 	if ($get_operator_log) {
 		if (dbr($get_operator_log) > 0) {
 			$operator_log = dbf($get_operator_log);
@@ -1031,6 +1031,111 @@ function get_operator_log($plant_id, $user_id)
 function upload_images($type, $id, $id_2, $photos, $key)
 {
 	switch ($type) {
+
+		case "breakdown_end":
+			$chk_operator = dbq("select user_id from users_tbl where user_id={$id}");
+			if ($chk_operator) {
+				if (dbr($chk_operator) > 0) {
+					$chk_plant = dbq("select plant_id from plants_tbl where plant_id={$id_2}");
+					if ($chk_plant) {
+						if (dbr($chk_plant) > 0) {
+							if (is_array($photos)) {
+								if (count($photos) > 0) {
+									if ($folder = folders_('operator_log', $id_2)) {
+										$count = 1;
+										foreach ($photos as $photo) {
+											$img_type = explode('/', $photo['type']);
+											$extension = $img_type[1];
+											//error_log('type = ' . $photo['type'] . ' ,Extension=' . $extension);
+											$base64data = str_replace('data:image/jpeg;base64,', '', $photo['image']);
+											//error_log("image = " . $folder . $key . '.' . $count . '.' . $extension);
+											if (file_put_contents($folder . $key . '-breakdown-end-' . $count . '.' . $extension, base64_decode($base64data))) {
+											}
+											$count++;
+										}
+										return true;
+									} else {
+										error("Error with folders.");
+										return false;
+									}
+								} else {
+									error("You have not submitted a photo.");
+									return false;
+								}
+							} else {
+								error('invalid photo data.');
+								return false;
+							}
+						} else {
+							error("No plant.");
+							return false;
+						}
+					} else {
+						sqlError('', 'Upload images: plant');
+						return false;
+					}
+				} else {
+					error("No operator.");
+					return false;
+				}
+			} else {
+				sqlError('', 'upload images: operator');
+				return false;
+			}
+			break;
+
+		case "breakdown_start":
+			$chk_operator = dbq("select user_id from users_tbl where user_id={$id}");
+			if ($chk_operator) {
+				if (dbr($chk_operator) > 0) {
+					$chk_plant = dbq("select plant_id from plants_tbl where plant_id={$id_2}");
+					if ($chk_plant) {
+						if (dbr($chk_plant) > 0) {
+							if (is_array($photos)) {
+								if (count($photos) > 0) {
+									if ($folder = folders_('operator_log', $id_2)) {
+										$count = 1;
+										foreach ($photos as $photo) {
+											$img_type = explode('/', $photo['type']);
+											$extension = $img_type[1];
+											//error_log('type = ' . $photo['type'] . ' ,Extension=' . $extension);
+											$base64data = str_replace('data:image/jpeg;base64,', '', $photo['image']);
+											//error_log("image = " . $folder . $key . '.' . $count . '.' . $extension);
+											if (file_put_contents($folder . $key . '-breakdown_start-' . $count . '.' . $extension, base64_decode($base64data))) {
+											}
+											$count++;
+										}
+										return true;
+									} else {
+										error("Error with folders.");
+										return false;
+									}
+								} else {
+									error("You have not submitted a photo.");
+									return false;
+								}
+							} else {
+								error('invalid photo data.');
+								return false;
+							}
+						} else {
+							error("No plant.");
+							return false;
+						}
+					} else {
+						sqlError('', 'Upload images: plants');
+						return false;
+					}
+				} else {
+					error("No operator.");
+					return false;
+				}
+			} else {
+				sqlError('', 'Upload images: operator');
+				return false;
+			}
+			break;
+
 		case "operator_log_start":
 			$chk_operator = dbq("select user_id from users_tbl where user_id={$id}");
 			if ($chk_operator) {
@@ -1048,7 +1153,7 @@ function upload_images($type, $id, $id_2, $photos, $key)
 											//error_log('type = ' . $photo['type'] . ' ,Extension=' . $extension);
 											$base64data = str_replace('data:image/jpeg;base64,', '', $photo['image']);
 											//error_log("image = " . $folder . $key . '.' . $count . '.' . $extension);
-											if (file_put_contents($folder . $key . '-end-' . $count . '.' . $extension, base64_decode($base64data))) {
+											if (file_put_contents($folder . $key . '-start-' . $count . '.' . $extension, base64_decode($base64data))) {
 											}
 											$count++;
 										}

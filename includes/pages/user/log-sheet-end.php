@@ -16,7 +16,7 @@ if (folders_('operator_log', $plant_['plant_id'])) {
 			</div>
 			<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 				<label class="col-form-label" for="formGroupExampleInput">Company No.</label>
-				<input type="text" name="company" placeholder="Company #" class="form-control" value="<?= $log_['company_number'] ?>" disabled>
+				<input type="text" name="company" placeholder="Company #" class="form-control" value="<?= $operator_['company_number'] ?>" disabled>
 			</div>
 			<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 				<label class="col-form-label" for="formGroupExampleInput">Reg No.</label>
@@ -31,15 +31,17 @@ if (folders_('operator_log', $plant_['plant_id'])) {
 			</div>
 			<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 				<label class="col-form-label" for="formGroupExampleInput">End Date</label>
-				<input type="date" name="enddate" placeholder="" class="form-control">
+				<input type="date" name="enddate" placeholder="" class="form-control" value="<?= date('Y-m-d') ?>" disabled>
 			</div>
 			<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 				<label class="col-form-label" for="formGroupExampleInput">End Time</label>
-				<input type="time" name="endtime" placeholder="" class="form-control">
+				<?= inp('end_datetime', '', 'hidden', date('Y-m-d H:i:s')) ?>
+				<input type="time" name="endtime" placeholder="" class="form-control" value="<?= date('H:i') ?>" disabled>
 			</div>
 			<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-				<label class="col-form-label" for="formGroupExampleInput">End KM Reading</label>
-				<input type="text" name="reading" placeholder="End KM/HR Reading" class="form-control">
+				<?= inp('reading_type', '', 'hidden', $plant_['reading_type']) ?>
+				<label class="col-form-label" for="formGroupExampleInput">Reading</label>
+				<input type="text" name="reading" placeholder="Reading" class="form-control">
 			</div>
 			<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 				<label class="col-form-label" for="formGroupExampleInput">Photos</label>

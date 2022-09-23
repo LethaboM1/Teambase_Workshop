@@ -65,7 +65,8 @@ if (folders_('operator_log', $plant_['plant_id'])) {
 			</div>
 			<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 				<label class="col-form-label" for="formGroupExampleInput">Breakdown Time From</label>
-				<input type="datetime-local" name="fromtime" placeholder="" class="form-control" value="<?= date('Y-m-d\TH:i') ?>">
+				<?= inp('start_datetime', '', 'hidden', date('Y-m-d H:i:s')) ?>
+				<input type="datetime-local" name="fromtime" placeholder="" class="form-control" value="<?= date('Y-m-d\TH:i') ?>" disabled>
 			</div>
 			<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0 mb-2">
 				<label class="col-form-label" for="formGroupExampleInput"><?= strtoupper($row['reading_type']) ?></label>
@@ -95,7 +96,7 @@ if (folders_('operator_log', $plant_['plant_id'])) {
 			</div>
 			<hr>
 			<div class="col-sm-12 col-md-12">
-				<label class="col-form-label" for="formGroupExampleInput">Reason For Breakdown / Other Remarks</label>
+				<label class="col-form-label" for="formGroupExampleInput">Comments</label>
 				<textarea class="form-control" rows="3" id="comment" name="comment"></textarea>
 				<br>
 			</div>

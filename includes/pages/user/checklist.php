@@ -21,8 +21,7 @@
 					</div>
 					<div class="col-sm-6 col-md-6 col-lg-6">
 						<label class="col-form-label" for="formGroupExampleInput"><?= strtoupper($row['reading_type']) ?></label>
-						<?= inp('reading_type', '', 'hidden', $row['reading_type']) ?>
-						<input type="text" name="reading" placeholder="Reading" class="form-control">
+						<input type="text" name="reading" placeholder="Reading" class="form-control" value="<?= $row[$row['reading_type'] . '_reading'] ?>" disabled>
 					</div>
 				</div>
 				<hr>

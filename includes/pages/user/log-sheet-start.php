@@ -14,7 +14,7 @@ if (folders_('operator_log', $plant_['plant_id'])) {
 		</div>
 		<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 			<label class="col-form-label" for="formGroupExampleInput">Company No.</label>
-			<input type="text" value="" name="company" placeholder="Company #" class="form-control">
+			<input type="text" value="<?= $operator_['company_number'] ?>" name="company" placeholder="Company #" class="form-control" disabled>
 		</div>
 		<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 			<label class="col-form-label" for="formGroupExampleInput">Reg No.</label>
@@ -24,16 +24,17 @@ if (folders_('operator_log', $plant_['plant_id'])) {
 	<hr>
 	<div class="row">
 		<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-			<label class="col-form-label" for="formGroupExampleInput">Site Number</label>
-			<input type="text" name="sitenumber" placeholder="Site Number" class="form-control">
-		</div>
-		<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 			<label class="col-form-label" for="formGroupExampleInput">Date</label>
-			<input type="date" name="date" placeholder="" class="form-control" value="<?= date('Y-m-d') ?>">
+			<?= inp('start_datetime', '', 'hidden', date('Y-m-d H:i:s')) ?>
+			<input type="date" name="date" placeholder="" class="form-control" value="<?= date('Y-m-d') ?>" disabled>
 		</div>
 		<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 			<label class="col-form-label" for="formGroupExampleInput">Start Time</label>
-			<input type="time" name="starttime" placeholder="" class="form-control" value="<?= date('H:i') ?>">
+			<input type="time" name="starttime" placeholder="" class="form-control" value="<?= date('H:i') ?>" disabled>
+		</div>
+		<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+			<label class="col-form-label" for="formGroupExampleInput">Site Number</label>
+			<input type="text" name="sitenumber" placeholder="Site Number" class="form-control">
 		</div>
 		<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 			<?= inp('reading_type', '', 'hidden', $row['reading_type']) ?>
@@ -73,10 +74,6 @@ if (folders_('operator_log', $plant_['plant_id'])) {
 						";
 				?>
 			</div>
-		</div>
-		<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-			<label class="col-form-label" for="formGroupExampleInput">Fuel Liters Issued</label>
-			<input type="text" name="fuel" placeholder="Liters" class="form-control" required>
 		</div>
 		<footer class="text-end">
 			<button name="add_log" type="submit" class="btn btn-primary">Start</button>

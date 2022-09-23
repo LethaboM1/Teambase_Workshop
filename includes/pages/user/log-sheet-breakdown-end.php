@@ -10,7 +10,7 @@ if (folders_('operator_log', $plant_['plant_id'])) {
 ?>
 		<div class="row">
 			<?= inp('plant_id', '', 'hidden', $plant_['plant_id']) ?>
-
+			<?= inp('log_id', '', 'hidden', $log_['log_id']) ?>
 			<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 				<label class="col-form-label" for="formGroupExampleInput">Photos</label>
 				<div class="col-sm-12 col-md-4 mt-2">
@@ -56,7 +56,7 @@ if (folders_('operator_log', $plant_['plant_id'])) {
 			</div>
 			<div class=" col-sm-12 col-md-12">
 				<label class="col-form-label" for="formGroupExampleInput">Comments</label>
-				<textarea class="form-control" rows="3" id="Comment"></textarea>
+				<textarea class="form-control" rows="3" id="comment" name="comment"></textarea>
 				<br>
 			</div>
 			<footer class="text-end">
@@ -85,5 +85,9 @@ if (folders_('operator_log', $plant_['plant_id'])) {
 	 Events 
 </div>-->
 <?php
+	} else {
+		echo "<h4>Could not get log.</h4>";
 	}
+} else {
+	echo "<h4>Failed to create folders</h4>";
 }
