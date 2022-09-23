@@ -364,6 +364,10 @@ switch ($_POST['cmd']) {
                                 <label class='col-form-label' for='formGroupExampleInput'>Employee Number</label>
                                 <input id='employee_number' type='text' name='employee_number' placeholder='Employee Number' class='form-control' value='{$user_['employee_number']}'>
                             </div>
+                            <div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
+                                <label class='col-form-label' for='company_number'>Company Number</label>
+                                <input type='text' name='company_number' id='company_number' placeholder='Company Number' value='{$user_['company_number']}' class='form-control'>
+                            </div>
                         </div>"
                         . inp('fake-creds', '', 'fake-creds')
                         . "<div class='row'>

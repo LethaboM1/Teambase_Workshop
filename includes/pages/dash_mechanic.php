@@ -1,3 +1,8 @@
+<?php
+if ($_SESSION['user']['role'] != 'mechanic') {
+	exit();
+}
+?>
 <div class="row">
 	<div class="col-xl-6">
 		<section class="card">

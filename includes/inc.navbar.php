@@ -20,6 +20,10 @@
       case "user":
         include('includes/navigation/user_nav.php');
         break;
+
+      case "mechanic":
+        include('includes/navigation/mech_nav.php');
+        break;
     }
 
     ?>
