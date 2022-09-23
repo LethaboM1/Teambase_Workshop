@@ -67,6 +67,10 @@
 					</div>
 					<div class="row">
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+							<label class="col-form-label" for="formGroupExampleInput">Company Number</label>
+							<input name="company_number" id="company_number" class="form-control" placeholder="Company number">
+						</div>
+						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<label class="col-form-label" for="formGroupExampleInput">Contact Number</label>
 							<input name="contact_number" id="fc_inputmask_2" data-plugin-masked-input data-input-mask="999-999-9999" placeholder="___-___-____" class="form-control">
 						</div>
@@ -74,13 +78,13 @@
 							<label class="col-form-label" for="formGroupExampleInput">Employee Number</label>
 							<input type="text" name="emplyee_number" placeholder="Employee Number" class="form-control">
 						</div>
+					</div>
+					<?= inp('fake-creds', '', 'fake-creds') ?>
+					<div class="row">
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<label class="col-form-label" for="formGroupExampleInput">Email Address</label>
 							<input type="email" name="email" placeholder="Email Address" class="form-control">
 						</div>
-					</div>
-					<?= inp('fake-creds', '', 'fake-creds') ?>
-					<div class="row">
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<label class="col-form-label" for="formGroupExampleInput">Password</label>
 							<input type="password" name="password" placeholder="Password" class="form-control">
@@ -89,6 +93,8 @@
 							<label class="col-form-label" for="formGroupExampleInput">Confirm Password</label>
 							<input type="password" name="confirmpassword" placeholder="Confirm Password" class="form-control">
 						</div>
+					</div>
+					<div class="row">
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<label class="col-form-label" for="formGroupExampleInput">User Roll</label>
 							<select name="role" class="form-control mb-3" id="roll">
@@ -99,24 +105,28 @@
 								<option value="user">Driver / Opperator</option>
 							</select>
 						</div>
-					</div>
-					<div class="row">
-						<div class="col-sm-12 col-md-12 pb-sm-12 pb-md-0">
-							<label class="col-form-label" for="formGroupExampleInput">Upload Photo</label>
-							<div class="fileupload fileupload-new" data-provides="fileupload">
-								<div class="input-append">
-									<div class="uneditable-input">
-										<i class="fas fa-file fileupload-exists"></i>
-										<span class="fileupload-preview"></span>
-									</div>
-									<span class="btn btn-default btn-file">
-										<span class="fileupload-exists">Change</span>
-										<span class="fileupload-new">Select file</span>
-										<input name="photo" type="file" />
-									</span>
-									<a href="#" class="btn btn-default fileupload-exists" data-dismiss="fileupload">Remove</a>
-								</div>
+						<div class="col-sm-12 col-md-4 pb-sm-12 pb-md-0">
+							<label class="col-form-label" for="photo">Photo</label>
+							<div class="input-group mb-3">
+								<input name="photo" id="photo" type="file" style="display:none">
+								<input id="photo-box" type='text' class="form-control">
+								<button id="photo-btn" type='button' class="input-group-text" id="basic-addon2"><i class="fa fa-image"></i></button>
 							</div>
+							<?php
+							$jscript .= "
+								$('#photo-btn').click(function (){ 
+									$('#photo').click();
+
+								});
+								
+								$('#photo-box').click(function (){ 
+									$('#photo').click();
+
+								});
+								
+								"
+
+							?>
 						</div>
 					</div>
 				</div>

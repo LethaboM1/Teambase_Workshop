@@ -357,10 +357,6 @@ switch ($_POST['cmd']) {
                         </div>
                         <div class='row'>
                             <div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
-                                <label class='col-form-label' for='formGroupExampleInput'>Company Number</label>
-                                <input name='company_number' class='form-control' value='{$user_['company_number']}'>
-                            </div>
-                            <div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
                                 <label class='col-form-label' for='formGroupExampleInput'>Contact Number</label>
                                 <input name='contact_number' data-plugin-masked-input data-input-mask='999-999-9999' placeholder='___-___-____' class='form-control' value='{$user_['contact_number']}'>
                             </div>
@@ -376,15 +372,13 @@ switch ($_POST['cmd']) {
                                 <input id='email' type='email' name='email' placeholder='Email Address' class='form-control' value='{$user_['email']}'>
                             </div>
                             <div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
-                                <label class='col-form-label' for='formGroupExampleInput'>Password (Leave blank if you dont want to change password)</label>
-                                <input type='password' name='password' placeholder='Password' class='form-control'>
+                                <label title='Leave blank to keep password unchanged.' class='col-form-label' for='formGroupExampleInput'>Password</label>
+                                <input title='Leave blank to keep password unchanged.' type='password' name='password' placeholder='Password' class='form-control'>
                             </div>
                             <div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
                                 <label class='col-form-label' for='formGroupExampleInput'>Confirm Password</label>
                                 <input type='password' name='confirmpassword' placeholder='Confirm Password' class='form-control'>
                             </div>
-                        </div>
-                        <div class='row'>
                             <div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
                                 <label class='col-form-label' for='formGroupExampleInput'>User Roll</label>
                                 <select name='role' class='form-control mb-3' id='roll'>";
@@ -400,33 +394,38 @@ switch ($_POST['cmd']) {
 
                     echo "          </select>
                             </div>
-                            <div class='col-sm-12 col-md-12 pb-sm-3 pb-md-0'>
-                                <label class='col-form-label' for='formGroupExampleInput'>Upload Photo</label>
-                                <div class='fileupload fileupload-new' data-provides='fileupload'>
-                                    <div class='input-append'>
-                                        <div class='uneditable-input'>
-                                            <i class='fas fa-file fileupload-exists'></i>
-                                            <span class='fileupload-preview'></span>
-                                        </div>
-                                        <span class='btn btn-default btn-file'>
-                                            <span class='fileupload-exists'>Change</span>
-                                            <span class='fileupload-new'>Select file</span>
-                                            <input name='photo' type='file' />
-                                        </span>
-                                        <a href='#' class='btn btn-default fileupload-exists' data-dismiss='fileupload'>Remove</a>
-                                    </div>
+                            <div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
+                                    <label class='col-form-label' for='photo-edt'>Photo</label>
+                                <div class='input-group mb-3'>
+                                    <input name='photo' id='photo-edt' type='file' style='display:none'>
+                                        <input id='photo-box-edt' type='text' class='form-control'>
+                                        <button id='photo-btn-edt' type='button' class='input-group-text'><i class='fa fa-image'></i></button>
                                 </div>
                             </div>
                         </div>
                         <div class='row'>
                             <div class='col-sm-12 col-md-12 pb-sm-3 pb-md-0'>";
 
-                    if (file_exists("images/users/{$user_['user_id']}.jpg")) {
-                        echo "<img src='images/users/{$user_['user_id']}.jpg' />";
+                    if (file_exists("../images/users/{$user_['user_id']}.jpg")) {
+                        echo "<img style='width:150px;' src='images/users/{$user_['user_id']}.jpg' />";
                     }
 
                     echo " </div>
                         </div>";
+
+
+
+                    echo "<script>
+								$('#photo-btn-edt').click(function (){ 
+									$('#photo-edt').click();
+
+								});
+								
+								$('#photo-box-edt').click(function (){ 
+									$('#photo-edt').click();
+								});
+						</script>
+						";
                 }
             }
         }

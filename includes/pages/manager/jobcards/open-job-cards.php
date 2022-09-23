@@ -51,7 +51,7 @@
 					require "./includes/pages/manager/jobcards/list_open_jobcards.php";
 				}
 			} else {
-				echo "<h2>No open jobs to list...</h2>";
+				echo "<h4>No open job cards.</h4>";
 			}
 		}
 		?>

@@ -154,68 +154,25 @@ if (isset($_POST['submit_checklist'])) {
     }
 }
 
-if (isset($_POST['start_breakdown'])) {
-    if (date($_POST['fromtime'])) {
-        if (is_numeric($_POST['reading']) && $_POST['reading'] > 0) {
-            /* Log Job card */
-            switch ($_POST['reading_type']) {
-                case "hr":
-                    $reading = "hr_reading='{$_POST['reading']}',";
-                    break;
-
-                case "km":
-                    $reading = "km_reading='{$_POST['reading']}',";
-                    break;
-            }
-
-            $get_safety_equipment = dbq("select * from safety_equipment");
-            if ($get_safety_equipment) {
-                if (dbr($get_safety_equipment) > 0) {
-                    while ($equipment = dbf($get_safety_equipment)) {
-                        if ($_POST[$equipment['code']] == 'on') {
-                            $answer = 'Yes';
-                        } else {
-                            $answer = 'No';
-                        }
-
-                        $safety_stuff[] = [
-                            'name' => $equipment['name'],
-                            'answer' => $answer
-                        ];
-                    }
+if (isset($_POST['end_breakdown'])) {
+    if (date($_POST['totime'])) {
+        if ($_POST['reading'] > 0) {
+            if (isset($_SESSION['upload_images']) && count($_SESSION['upload_images']) > 0) {
+                if (!upload_images('breakdown_end', $_SESSION['user']['user_id'], $_POST['plant_id'], $_SESSION['upload_images'], $_POST['log_id'])) {
+                    error("There was an error uploading the photos.");
                 }
-            }
-
-            if (isset($safety_stuff)) {
-                $safety_stuff = json_encode($safety_stuff);
-            } else {
-                $safety_stuff = '';
-            }
-
-            $add_jobcard = dbq("insert into jobcards set
-                                    plant_id={$_POST['plant_id']},
-                                    job_date='" . date('Y-m-d') . "',
-                                    fault_description='" . $_POST['fault_area'] . " - " . htmlentities($_POST['comment'], ENT_QUOTES) . "',
-                                    logged_by='{$_SESSION['user']['user_id']}',
-                                    log_id={$_POST['log_id']},
-                                    safety_audit='{$safety_stuff}',
-                                    {$reading}
-                                    priority=1
-                                    ");
-            if ($add_jobcard) {
-                $job_id = mysqli_insert_id($db);
                 $update_log = dbq("update operator_log set
-                                        breakdown_start='{$_POST['fromtime']}',
-                                        breakdown_start_comment='" . htmlentities($_POST['comment'], ENT_QUOTES) . "'
-                                        where log_id={$_POST['log_id']}");
+                                breakdown_end='{$_POST['fromtime']}',
+                                breakdown_end_comment='" . htmlentities($_POST['comment'], ENT_QUOTES) . "'
+                                where log_id={$_POST['log_id']}");
                 if ($update_log) {
                     $update_plant = dbq("update plants_tbl set
-                                            {$_POST['reading_type']}_reading={$_POST['reading']},
-                                            status='breakdown'
-                                            where plant_id={$_POST['plant_id']}
-                                            ");
+                                        {$_POST['reading_type']}_reading={$_POST['reading']},
+                                        status='busy'
+                                        where plant_id={$_POST['plant_id']}
+                                        ");
                     if ($update_plant) {
-                        msg("Breakdown started, Job ref: {$job_id}.");
+                        msg("Breakdown ended.");
                     } else {
                         sqlError();
                     }
@@ -223,10 +180,96 @@ if (isset($_POST['start_breakdown'])) {
                     sqlError();
                 }
             } else {
-                sqlError('Error adding job card', 'Error adding job card.');
+                error("Please submit photos.");
             }
         } else {
-            error("Must fill in the reading.");
+            error("fill in the reading.");
+        }
+    } else {
+        error("Invalid date / time.");
+    }
+}
+
+if (isset($_POST['start_breakdown'])) {
+    if (date($_POST['fromtime'])) {
+        if (isset($_SESSION['upload_images']) && count($_SESSION['upload_images']) > 0) {
+            if (is_numeric($_POST['reading']) && $_POST['reading'] > 0) {
+                /* Log Job card */
+                switch ($_POST['reading_type']) {
+                    case "hr":
+                        $reading = "hr_reading='{$_POST['reading']}',";
+                        break;
+
+                    case "km":
+                        $reading = "km_reading='{$_POST['reading']}',";
+                        break;
+                }
+
+                $get_safety_equipment = dbq("select * from safety_equipment");
+                if ($get_safety_equipment) {
+                    if (dbr($get_safety_equipment) > 0) {
+                        while ($equipment = dbf($get_safety_equipment)) {
+                            if ($_POST[$equipment['code']] == 'on') {
+                                $answer = 'Yes';
+                            } else {
+                                $answer = 'No';
+                            }
+
+                            $safety_stuff[] = [
+                                'name' => $equipment['name'],
+                                'answer' => $answer
+                            ];
+                        }
+                    }
+                }
+
+                if (isset($safety_stuff)) {
+                    $safety_stuff = json_encode($safety_stuff);
+                } else {
+                    $safety_stuff = '';
+                }
+
+                $add_jobcard = dbq("insert into jobcards set
+                                        plant_id={$_POST['plant_id']},
+                                        job_date='" . date('Y-m-d') . "',
+                                        fault_description='" . $_POST['fault_area'] . " - " . htmlentities($_POST['comment'], ENT_QUOTES) . "',
+                                        logged_by='{$_SESSION['user']['user_id']}',
+                                        log_id={$_POST['log_id']},
+                                        safety_audit='{$safety_stuff}',
+                                        {$reading}
+                                        priority=1
+                                        ");
+                if ($add_jobcard) {
+                    $job_id = mysqli_insert_id($db);
+                    if (!upload_images('breakdown_start', $_SESSION['user']['user_id'], $_POST['plant_id'], $_SESSION['upload_images'], $job_id)) {
+                        error("There was an error uploading the photos.");
+                    }
+                    $update_log = dbq("update operator_log set
+                                            breakdown_start='{$_POST['fromtime']}',
+                                            breakdown_start_comment='" . htmlentities($_POST['comment'], ENT_QUOTES) . "'
+                                            where log_id={$_POST['log_id']}");
+                    if ($update_log) {
+                        $update_plant = dbq("update plants_tbl set
+                                                {$_POST['reading_type']}_reading={$_POST['reading']},
+                                                status='breakdown'
+                                                where plant_id={$_POST['plant_id']}
+                                                ");
+                        if ($update_plant) {
+                            msg("Breakdown started, Job ref: {$job_id}.");
+                        } else {
+                            sqlError();
+                        }
+                    } else {
+                        sqlError();
+                    }
+                } else {
+                    sqlError('Error adding job card', 'Error adding job card.');
+                }
+            } else {
+                error("Must fill in the reading.");
+            }
+        } else {
+            error("please submit photos.");
         }
     } else {
         error("Invalid date/time.");
@@ -254,7 +297,7 @@ if (isset($_POST['end_log'])) {
                                                     where log_id={$log_['log_id']}
                                                     ");
                                 if (mysqli_affected_rows($db) != -1) {
-                                    if (upload_images('operator_log_end', $log_['operator_id'], $log_['plant_id'], $_SESSION['upload_images'], $log_key)) {
+                                    if (upload_images('operator_log_end', $log_['operator_id'], $log_['plant_id'], $_SESSION['upload_images'], $log_['log_id'])) {
                                         $last_log = mysqli_insert_id($db);
                                         $query = "update plants_tbl set
                                                         hr_reading=hr_reading+{$hr_reading},

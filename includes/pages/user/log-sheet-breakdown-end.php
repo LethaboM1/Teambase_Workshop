@@ -46,7 +46,9 @@ if (folders_('operator_log', $plant_['plant_id'])) {
 				</div>
 			</div>
 			<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-				&nbsp;
+				<label class="col-form-label" for="formGroupExampleInput">Reading (<?= strtoupper($plant_['reading_type']) ?>)</label>
+				<?= inp('reading_type', '', 'hidden', $row['reading_type']) ?>
+				<input type="text" name="reading" id="reading" placeholder="" class="form-control">
 			</div>
 			<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 				<label class="col-form-label" for="formGroupExampleInput">Breakdown Time To</label>
