@@ -36,47 +36,122 @@ switch ($plant_['reading_type']) {
 		<div class="card-body">
 			<div class="card-actions">
 				<?php
-				if ($row['operator_id'] == $_SESSION['user']['user_id'] && ($row['status'] == 'busy'  || $row['status'] == 'breakdown')) {
+				if ($row['status']) {
 				?>
-					&nbsp;&nbsp;&nbsp;<a class="mb-1 mt-1 mr-1 modal-sizes" href="#modalBreakdownPlant"><i title="Breakdown" class="fa-solid fa-wrench fa-2x text-danger"></i></a>
-					<div id="modalBreakdownPlant" class="modal-block modal-block-lg mfp-hide">
-						<section class="card">
-							<header class="card-header">
-								<h2 class="card-title">Driver / Operator Log Sheet</h2>
-							</header>
-							<div class="card-body">
-								<div class="modal-wrapper">
-									<div class="modal-text">
-										<div class="row">
-											<form method="post">
-												<?php
-												switch ($row['status']) {
-													case "breakdown":
-														require "./includes/pages/user/log-sheet-breakdown-end.php";
-														break;
 
-													default:
-														require "./includes/pages/user/log-sheet-breakdown-start.php";
-														break;
-												}
-												?>
-											</form>
+					<?php
+				}
+
+				if ($row['operator_id'] == $_SESSION['user']['user_id']) {
+					if ($row['status'] == 'busy'  || $row['status'] == 'breakdown') {
+					?>
+						&nbsp;&nbsp;&nbsp;<a class="mb-1 mt-1 mr-1 modal-sizes" href="#modalBreakdownPlant"><i title="Breakdown" class="fa-solid fa-wrench fa-2x text-danger"></i></a>
+						<div id="modalBreakdownPlant" class="modal-block modal-block-lg mfp-hide">
+							<section class="card">
+								<header class="card-header">
+									<h2 class="card-title">Driver / Operator Log Sheet</h2>
+								</header>
+								<div class="card-body">
+									<div class="modal-wrapper">
+										<div class="modal-text">
+											<div class="row">
+												<form method="post">
+													<?php
+													switch ($row['status']) {
+														case "breakdown":
+															require "./includes/pages/user/log-sheet-breakdown-end.php";
+															break;
+
+														default:
+															require "./includes/pages/user/log-sheet-breakdown-start.php";
+															break;
+													}
+													?>
+												</form>
+											</div>
 										</div>
 									</div>
 								</div>
-							</div>
-							<footer class="card-footer">
-								<div class="row">
-									<div class="col-md-12 text-right">
-										<form method="post">
-											<button class="btn btn-default modal-dismiss">Cancel</button>
-										</form>
+								<footer class="card-footer">
+									<div class="row">
+										<div class="col-md-12 text-right">
+											<form method="post">
+												<button class="btn btn-default modal-dismiss">Cancel</button>
+											</form>
+										</div>
+									</div>
+								</footer>
+							</section>
+						</div>
+					<?php
+					}
+
+					if ($row['status'] == 'busy') {
+					?>
+						&nbsp;&nbsp;&nbsp;<a class="mb-1 mt-1 mr-1 modal-sizes" href="#modalRefuelPlant"><i title='Lunch break' class="fa-solid fa-gas-pump fa-2x text-warning"></i></a>
+						<div id="modalRefuelPlant" class="modal-block modal-block-lg mfp-hide">
+							<section class="card">
+								<header class="card-header">
+									<h2 class="card-title">Refuel</h2>
+								</header>
+								<div class="card-body">
+									<div class="modal-wrapper">
+										<div class="modal-text">
+											<div class="row">
+												<form method="post">
+													<?php
+
+													?>
+												</form>
+											</div>
+										</div>
 									</div>
 								</div>
-							</footer>
-						</section>
-					</div>
+								<footer class="card-footer">
+									<div class="row">
+										<div class="col-md-12 text-right">
+											<form method="post">
+												<button class="btn btn-default modal-dismiss">Cancel</button>
+											</form>
+										</div>
+									</div>
+								</footer>
+							</section>
+						</div>
+
+						&nbsp;&nbsp;&nbsp;<a class="mb-1 mt-1 mr-1 modal-sizes" href="#modalLunchPlant"><i title='Lunch break' class="fa-solid fa-utensils fa-2x text-info"></i></a>
+						<div id="modalLunchPlant" class="modal-block modal-block-lg mfp-hide">
+							<section class="card">
+								<header class="card-header">
+									<h2 class="card-title">Lunch Break</h2>
+								</header>
+								<div class="card-body">
+									<div class="modal-wrapper">
+										<div class="modal-text">
+											<div class="row">
+												<form method="post">
+													<?php
+
+
+													?>
+												</form>
+											</div>
+										</div>
+									</div>
+								</div>
+								<footer class="card-footer">
+									<div class="row">
+										<div class="col-md-12 text-right">
+											<form method="post">
+												<button class="btn btn-default modal-dismiss">Cancel</button>
+											</form>
+										</div>
+									</div>
+								</footer>
+							</section>
+						</div>
 				<?php
+					}
 				}
 
 				//if ($row['status'] != 'breakdown') {
@@ -93,7 +168,7 @@ switch ($plant_['reading_type']) {
 							echo '<i title="Stop work" class="fa-regular fa-hand fa-2x"></i>';
 							break;
 						default:
-							echo '<i title="Start work"class="fa-regular fa-thumbs-up fa-2x"></i>';
+							echo '<i title="Start work"class="fa-regular fa-play fa-2x"></i>';
 							break;
 					}
 					?>

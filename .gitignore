@@ -2,3 +2,4 @@
 *.cmd
 creds.php
 backups/
+files/
