@@ -33,7 +33,7 @@ switch ($_POST['cmd']) {
             $amount = 0;
         }
 
-        if ($amount >= $_POST['limit']) {
+        if ($amount <= $_POST['limit']) {
             echo "<small>{$_POST['limit']} photos max</small>
             <div class='row'>";
             foreach ($_SESSION['upload_images'] as $key => $image) {
