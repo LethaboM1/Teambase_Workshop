@@ -64,7 +64,7 @@ switch ($_POST['cmd']) {
                 }
                 echo    "</div>";
             } else {
-                error("Images count is Zero.");
+                echo "Images Zero";
             }
         }
 
