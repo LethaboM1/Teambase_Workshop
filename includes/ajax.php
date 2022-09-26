@@ -46,7 +46,7 @@ switch ($_POST['cmd']) {
             exit();
         }
 
-        if ($_POST['image'] > 100) {
+        if (strlen($_POST['image']) > 20) {
             $_SESSION['upload_images'][] = [
                 'image' => $_POST['image'],
                 'type' => $_POST['type']
