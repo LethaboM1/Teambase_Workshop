@@ -64,8 +64,10 @@ switch ($_POST['cmd']) {
                 }
                 echo    "</div>";
             } else {
-                echo "Images Zero";
+                echo "<p>Images Zero</p>";
             }
+        } else {
+            echo "<p>Images not set</p>";
         }
 
 
