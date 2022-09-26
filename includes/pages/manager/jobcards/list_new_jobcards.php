@@ -51,7 +51,11 @@
                                 <div class="row">
                                     <div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
                                         <label class="col-form-label" for="formGroupExampleInput">Job Number</label>
-                                        <input type="text" name="jobnumber" value="" placeholder="Job card Number" class="form-control" disabled>
+                                        <input type="text" name="jobnumber" value="" placeholder="Job card Number" class="form-control">
+                                    </div>
+                                    <div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+                                        <label class="col-form-label" for="formGroupExampleInput">Allocated Hours</label>
+                                        <input type="number" name="allocated_hours" class="form-control">
                                     </div>
                                     <?= inp('job_id', '', 'hidden', $jobcard['job_id']) ?>
                                     <?= inp('mechanic', 'Select Mechanic', 'select', '', '', 0, $mechanic_select_) ?>

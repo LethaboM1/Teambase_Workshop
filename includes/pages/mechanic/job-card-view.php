@@ -1,51 +1,70 @@
-<!-- Alerts -->
-<!-- Possitive Alert User Added -->
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-	<strong>Well done!</strong> New Job Card added successfully!
-	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-hidden="true" aria-label="Close"></button>
-</div>
-<!-- Negative Alert Delete User-->
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
-	<strong>Oh snap!</strong> Event deleted successfull!
-	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-hidden="true" aria-label="Close"></button>
-</div>
-<!-- Negative Alert End -->
-
+<?php
+if (isset($_GET['id'])) {
+	$get_jobcard = dbq("select * from jobcards where job_id={$_GET['id']} and mechanic_id={$_SESSION['user']['user_id']}");
+	if ($get_jobcard) {
+		if (dbr($get_jobcard) > 0) {
+			$jobcard_ = dbf($get_jobcard);
+			$get_plant = dbq("select * from plants_tbl where plant_id={$jobcard_['plant_id']}");
+			if ($get_plant) {
+				if (dbr($get_plant)) {
+					$plant_ = dbf($get_plant);
+				} else {
+					error("invalid plant.");
+					go('dashboard.php?page=open-job');
+				}
+			} else {
+				sqlError();
+				go('dashboard.php?page=open-job');
+			}
+		} else {
+			error("invalid job card.");
+			go('dashboard.php?page=open-job');
+		}
+	} else {
+		sqlError();
+		go('dashboard.php?page=open-job');
+	}
+} else {
+	go('dashboard.php?page=open-job');
+}
+?>
 <div class="row">
 	<div class="col-lg-6 mb-3">
 		<form action="" id="addplant">
 			<section class="card">
 				<header class="card-header">
-					<h2 class="card-title">Add New Job Card</h2>
-					<p class="card-subtitle">Add new job card.</p>
+					<h2 class="card-title">Vew Jobcard</h2>
+					<p class="card-subtitle">View Job Card</p>
 				</header>
 				<div class="card-body">
 					<div class="row">
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<label class="col-form-label" for="formGroupExampleInput">Job Number</label>
-							<input type="text" name="jobnumber" placeholder="HG5452" class="form-control">
+							<input type="text" name="jobnumber" class="form-control" value="<?= $jobcard_['jobcard_number'] ?>" disabled>
 						</div>
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<label class="col-form-label" for="formGroupExampleInput">Plant Number</label>
-							<input type="text" name="plantNumber" placeholder="HP5885" class="form-control">
+							<input type="text" name="plantNumber" class="form-control" value="<?= $plant_['fleet_number'] ?>" disabled>
 						</div>
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<label class="col-form-label" for="formGroupExampleInput">Date</label>
-							<input type="date" name="date" placeholder="" class="form-control">
+							<label class="col-form-label" for="formGroupExampleInput">Date/Time</label>
+							<input type="datetime-local" name="date" placeholder="" class="form-control" value="<?= $jobcard_['job_date'] ?>" disabled>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<label class="col-form-label" for="formGroupExampleInput">HR Reading</label>
-							<input type="text" name="hrreading" placeholder="HR Reading" class="form-control">
-						</div>
-						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<label class="col-form-label" for="formGroupExampleInput">KM Reading</label>
-							<input type="text" name="kmreading" placeholder="KM Reading" class="form-control">
+							<label class="col-form-label" for="formGroupExampleInput">(<?= strtoupper($plant_['reading_type']) ?>) Reading</label>
+							<input type="text" class="form-control" value="<?= $plant_[$plant_['reading_type'] . '_reading'] ?>" disabled>
 						</div>
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<label class="col-form-label" for="formGroupExampleInput">Allocated Hours</label>
-							<input type="text" name="hours" placeholder="Allocated Hours" class="form-control">
+							<input type="text" name="hours" class="form-control" value="<?= $jobcard_['allocated_hours'] ?>" disabled>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+							<label class="col-form-label" for="formGroupExampleInput">Site</label>
+							<input type="text" name="site" class="form-control" value="<?= $jobcard_['site'] ?>" disabled>
 						</div>
 					</div>
 					<div class="row">
@@ -53,16 +72,6 @@
 							<label class="col-form-label" for="formGroupExampleInput">Date Completed</label>
 							<input type="date" name="compDate" placeholder="Last Service Date" class="form-control">
 						</div>
-						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<label class="col-form-label" for="formGroupExampleInput">Vehicle Used to Site</label>
-							<input type="text" name="vehicleUsed" placeholder="Vehicle Used to Site" class="form-control">
-						</div>
-						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<label class="col-form-label" for="formGroupExampleInput">Open KM</label>
-							<input type="text" name="openKM" placeholder="Open KM" class="form-control">
-						</div>
-					</div>
-					<div class="row">
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<label class="col-form-label" for="formGroupExampleInput">Closing KM</label>
 							<input type="text" name="closingKM" placeholder="Closing KM" class="form-control">

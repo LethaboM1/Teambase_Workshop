@@ -1,9 +1,241 @@
 <?php
 
+if (isset($_POST['request_jobcard'])) {
+    $plant_ = dbf(dbq("select * from plants_tbl where plant_id={$_POST['plant_id']}"));
+
+    if ($plant_['status'] == 'ready') {
+        /* Log Job card */
+        switch ($_POST['reading_type']) {
+            case "hr":
+                $reading = "hr_reading='{$_POST['reading']}',";
+                break;
+
+            case "km":
+                $reading = "km_reading='{$_POST['reading']}',";
+                break;
+        }
+
+        $get_safety_equipment = dbq("select * from safety_equipment");
+        if ($get_safety_equipment) {
+            if (dbr($get_safety_equipment) > 0) {
+                while ($equipment = dbf($get_safety_equipment)) {
+                    if ($_POST[$equipment['code']] == 'on') {
+                        $answer = 'Yes';
+                    } else {
+                        $answer = 'No';
+                    }
+
+                    $safety_stuff[] = [
+                        'name' => $equipment['name'],
+                        'answer' => $answer
+                    ];
+                }
+            }
+        }
+
+        if (isset($safety_stuff)) {
+            $safety_stuff = json_encode($safety_stuff);
+        } else {
+            $safety_stuff = '';
+        }
+
+        $add_jobcard = dbq("insert into jobcards set
+                                plant_id={$_POST['plant_id']},
+                                job_date='" . date('Y-m-d') . "',
+                                fault_description='" . $_POST['fault_area'] . " - " . htmlentities($_POST['comment'], ENT_QUOTES) . "',
+                                logged_by='{$_SESSION['user']['user_id']}',
+                                log_id={$_POST['log_id']},
+                                safety_audit='{$safety_stuff}',
+                                {$reading}
+                                priority=1
+                                ");
+        if ($add_jobcard) {
+            $job_id = mysqli_insert_id($db);
+            $update_plant = dbq("update plants_tbl set
+                                {$reading},
+                                status='breakdown'
+                                where plant_id={$_POST['plant_id']}
+        ");
+            if ($update_plant) {
+                msg("Breakdown started, Job ref: {$job_id}.");
+            } else {
+                sqlError();
+            }
+        } else {
+            sqlError('Adding job card.', 'Adding job card.');
+        }
+    } else {
+        switch ($plant_['status']) {
+            case "breakdown":
+                error("This plant is already on breakdown and job card has been logged.");
+                break;
+
+            default:
+                error("This is plant is active. The operator must log a breakdown.");
+                break;
+        }
+    }
+}
+
+if (isset($_POST['start_break'])) {
+    if (date_create($_POST['start_datetime'])) {
+        $add_event = dbq("insert into operator_events set
+                                operator_log={$_POST['log_id']},
+                                start_datetime='{$_POST['start_datetime']}',
+                                type='break',
+                                start_comment='" . htmlentities($_POST['comment'], ENT_QUOTES) . "'
+                                ");
+        if ($add_event) {
+            $event_id = mysqli_insert_id($db);
+
+            $update_log = dbq("update operator_log set
+                                    status='break',
+                                    status_id={$event_id}
+                                    where log_id={$_POST['log_id']}");
+            if ($update_log) {
+
+                $update_plant = dbq("update plants_tbl set
+                                        status='break'
+                                        where plant_id={$_POST['plant_id']}
+                                        ");
+                if ($update_plant) {
+                    msg("Break started!");
+                } else {
+                    sqlError();
+                }
+            } else {
+                sqlError('');
+            }
+        } else {
+            sqlError('Adding event', 'Adding event');
+        }
+    } else {
+        error("Invalid date/time");
+    }
+}
+
+if (isset($_POST['end_break'])) {
+    if (date_create($_POST['end_datetime'])) {
+        $operator_log = dbf(dbq("select * from operator_log where log_id={$_POST['log_id']}"));
+
+        $update_log = dbq("update operator_events set
+                            end_datetime='{$_POST['end_datetime']}',
+                            end_comment='" . htmlentities($_POST['comment'], ENT_QUOTES) . "'
+                            where event_id={$operator_log['status_id']}
+                            ");
+        if ($update_log) {
+            $update_log = dbq("update operator_log set
+                                status='S',
+                                status_id=0
+                                where log_id={$_POST['log_id']}");
+
+            if ($update_log) {
+                $update_plant = dbq("update plants_tbl set
+                                    status='busy'
+                                    where plant_id={$_POST['plant_id']}
+                                    ");
+                if ($update_plant) {
+                    msg("Break ended.");
+                } else {
+                    sqlError('update plants_tbl', 'update plants_tbl');
+                }
+            } else {
+                sqlError('event update', 'event update');
+            }
+        } else {
+            sqlError('update operator_log', 'update operator_log');
+        }
+    } else {
+        error("Invalid date/time");
+    }
+}
+
+if (isset($_POST['start_refuel'])) {
+    if (date_create($_POST['start_datetime'])) {
+
+        $add_refuel = dbq("insert into operator_refuel set
+                                operator_log={$_POST['log_id']},
+                                start_datetime='{$_POST['start_datetime']}'
+                                ");
+        if ($add_refuel) {
+            $refuel_id = mysqli_insert_id($db);
+            if (upload_images('start_refuel', $_SESSION['user']['user_id'], $_POST['plant_id'], $_SESSION['upload_images'], $refuel_id)) {
+                $update_log = dbq("update operator_log set
+                                        status='refuel',
+                                        status_id={$refuel_id}
+                                        where log_id={$_POST['log_id']}");
+
+                if ($update_log) {
+                    $update_plant = dbq("update plants_tbl set
+                                        status='refuel'
+                                        where plant_id={$_POST['plant_id']}");
+                    if ($update_plant) {
+                        msg('Refuel started!');
+                    } else {
+                        sqlError('update plant', 'update plant');
+                    }
+                } else {
+                    sqlError('update log', 'update log');
+                }
+            } else {
+                error("Error uploading images.");
+            }
+        } else {
+            sqlError('refuel event', 'refuel event');
+        }
+    } else {
+        error('Invalid date/time.');
+    }
+}
+
+if (isset($_POST['end_refuel'])) {
+    if (date_create($_POST['end_datetime'])) {
+        $operator_log = dbf(dbq("select * from operator_log where log_id={$_POST['log_id']}"));
+
+        if (!upload_images('end_refuel', $_SESSION['user']['user_id'], $_POST['plant_id'], $_SESSION['upload_images'], $operator_log['status_id'])) {
+            error("There was an error uploading the photos.");
+        }
+
+        $update_refuel = dbq("update operator_refuel set
+                                    end_datetime='{$_POST['end_datetime']}',
+                                    liters={$_POST['liters']},
+                                    comments='" . htmlentities($_POST['comment'], ENT_QUOTES) . "'
+                                    where refuel_id={$operator_log['status_id']}
+                                    ");
+        if ($update_refuel) {
+            if (upload_images('end_refuel', $_SESSION['user']['user_id'], $_POST['plant_id'], $_SESSION['upload_images'], $operator_log['status_id'])) {
+                $update_log = dbq("update operator_log set
+                                        status='S',
+                                        status_id=0
+                                        where log_id={$_POST['log_id']}");
+
+                if ($update_log) {
+                    $update_plant = dbq("update plants_tbl set
+                                        status='busy'
+                                        where plant_id={$_POST['plant_id']}");
+                    if ($update_plant) {
+                        msg('Refuel ended!');
+                    } else {
+                        sqlError('update plant', 'update plant');
+                    }
+                } else {
+                    sqlError('update log', 'update log');
+                }
+            } else {
+                error("Error uploading images.");
+            }
+        } else {
+            sqlError('refuel event', 'refuel event');
+        }
+    } else {
+        error('Invalid date/time.');
+    }
+}
+
 if (isset($_POST['submit_checklist'])) {
     /* Preset Status to 'G' = Good */
     $status = 'G';
-
+    $faulty = false;
     if ($_POST['submit_checklist'] > 0) {
         $plant_ = dbf(dbq("select * from plants_tbl where plant_id={$_POST['submit_checklist']}"));
 
@@ -66,7 +298,7 @@ if (isset($_POST['submit_checklist'])) {
 
             $results = json_encode($json_checklist);
 
-            if ($fault) {
+            if ($faulty) {
                 switch ($status) {
                     case "L":
                         $priority = 3;
@@ -109,7 +341,7 @@ if (isset($_POST['submit_checklist'])) {
                 if ($status == 'H') {
                     $update_plant = dbq("update plants_tbl set
                                                 operator_id=0,
-                                                status='faulty'
+                                                status='breakdown'
                                                 where plant_id={$_POST['submit_checklist']}
                                                 ");
                     if ($update_plant) {

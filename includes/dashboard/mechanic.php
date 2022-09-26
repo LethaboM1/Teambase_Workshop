@@ -37,6 +37,12 @@ switch ($_GET['page']) {
         $page_name = 'mechanic/plant-schedule';
         break;
 
+    case 'job-card-view':
+        $page_title = 'View Job Card';
+        $page_name = 'mechanic/job-card-view';
+        include "./includes/forms/mechanic/jobcards/job-card-view.php";
+        break;
+
     default:
         $page_title = 'Dashboard Overview';
         $page_name = 'dash_mechanic';

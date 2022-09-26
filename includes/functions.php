@@ -1031,6 +1031,109 @@ function get_operator_log($plant_id, $user_id)
 function upload_images($type, $id, $id_2, $photos, $key)
 {
 	switch ($type) {
+		case "start_refuel":
+			$chk_operator = dbq("select user_id from users_tbl where user_id={$id}");
+			if ($chk_operator) {
+				if (dbr($chk_operator) > 0) {
+					$chk_plant = dbq("select plant_id from plants_tbl where plant_id={$id_2}");
+					if ($chk_plant) {
+						if (dbr($chk_plant) > 0) {
+							if (is_array($photos)) {
+								if (count($photos) > 0) {
+									if ($folder = folders_('operator_log', $id_2)) {
+										$count = 1;
+										foreach ($photos as $photo) {
+											$img_type = explode('/', $photo['type']);
+											$extension = $img_type[1];
+											//error_log('type = ' . $photo['type'] . ' ,Extension=' . $extension);
+											$base64data = str_replace('data:image/jpeg;base64,', '', $photo['image']);
+											//error_log("image = " . $folder . $key . '.' . $count . '.' . $extension);
+											if (file_put_contents($folder . $key . '-refuel-start-' . $count . '.' . $extension, base64_decode($base64data))) {
+											}
+											$count++;
+										}
+										return true;
+									} else {
+										error("Error with folders.");
+										return false;
+									}
+								} else {
+									error("You have not submitted a photo.");
+									return false;
+								}
+							} else {
+								error('invalid photo data.');
+								return false;
+							}
+						} else {
+							error("No plant.");
+							return false;
+						}
+					} else {
+						sqlError('', 'Upload images: plant');
+						return false;
+					}
+				} else {
+					error("No operator.");
+					return false;
+				}
+			} else {
+				sqlError('', 'upload images: operator');
+				return false;
+			}
+			break;
+
+		case "end_refuel":
+			$chk_operator = dbq("select user_id from users_tbl where user_id={$id}");
+			if ($chk_operator) {
+				if (dbr($chk_operator) > 0) {
+					$chk_plant = dbq("select plant_id from plants_tbl where plant_id={$id_2}");
+					if ($chk_plant) {
+						if (dbr($chk_plant) > 0) {
+							if (is_array($photos)) {
+								if (count($photos) > 0) {
+									if ($folder = folders_('operator_log', $id_2)) {
+										$count = 1;
+										foreach ($photos as $photo) {
+											$img_type = explode('/', $photo['type']);
+											$extension = $img_type[1];
+											//error_log('type = ' . $photo['type'] . ' ,Extension=' . $extension);
+											$base64data = str_replace('data:image/jpeg;base64,', '', $photo['image']);
+											//error_log("image = " . $folder . $key . '.' . $count . '.' . $extension);
+											if (file_put_contents($folder . $key . '-refuel-end-' . $count . '.' . $extension, base64_decode($base64data))) {
+											}
+											$count++;
+										}
+										return true;
+									} else {
+										error("Error with folders.");
+										return false;
+									}
+								} else {
+									error("You have not submitted a photo.");
+									return false;
+								}
+							} else {
+								error('invalid photo data.');
+								return false;
+							}
+						} else {
+							error("No plant.");
+							return false;
+						}
+					} else {
+						sqlError('', 'Upload images: plant');
+						return false;
+					}
+				} else {
+					error("No operator.");
+					return false;
+				}
+			} else {
+				sqlError('', 'upload images: operator');
+				return false;
+			}
+			break;
 
 		case "breakdown_end":
 			$chk_operator = dbq("select user_id from users_tbl where user_id={$id}");

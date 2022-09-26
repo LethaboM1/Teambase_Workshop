@@ -4,6 +4,7 @@ if (isset($_POST['allocate_mechanic'])) {
     if (
         $_POST['mechanic'] != '0'
         && strlen($_POST['jobnumber']) > 0
+        && $_POST['allocated_hours'] > 0
     ) {
         $get_jobcard = dbq("select job_id, status from jobcards where job_id={$_POST['job_id']}");
         if ($get_jobcard) {
@@ -16,8 +17,11 @@ if (isset($_POST['allocate_mechanic'])) {
                             $mechanic_ = dbf($get_mechanic);
                             if ($mechanic_['role'] == 'mechanic') {
                                 $update_jobcard = dbq("update jobcards set 
+                                                            authorized_by={$_SESSION['user']['user_id']},
                                                             jobcard_number='{$_POST['jobnumber']}',
+                                                            site='{$_POST['site']}',
                                                             mechanic_id={$_POST['mechanic']},
+                                                            allocated_hours={$_POST['allocated_hours']},
                                                             status='open'
                                                             where job_id={$_POST['job_id']}
                                                             ");
@@ -46,6 +50,6 @@ if (isset($_POST['allocate_mechanic'])) {
             sqlError();
         }
     } else {
-        error("You did not choose a mechanic.");
+        error("Type in the job card number and choose a mechanic.");
     }
 }

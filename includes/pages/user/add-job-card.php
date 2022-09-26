@@ -1,6 +1,6 @@
 <div class="row">
 	<div class="col-lg-12 mb-12">
-		<form action="" id="addplant">
+		<form method="post">
 			<section class="card">
 				<header class="card-header">
 					<h2 class="card-title">Add New Job Card</h2>
@@ -87,6 +87,11 @@
 								<option value="Other">Other / Comment</option>
 							</select>
 						</div>
+						<div class="col-sm-12 col-md-12">
+							<label class="col-form-label" for="formGroupExampleInput">Comments</label>
+							<textarea class="form-control" rows="3" id="comment" name="comment"></textarea>
+							<br>
+						</div>
 					</div>
 					<hr>
 					<h2 class="card-title">Extras</h2><br>
@@ -109,9 +114,10 @@
 						}
 						?>
 					</div>
+
 				</div>
 				<footer class="card-footer text-end">
-					<button class="btn btn-primary">Request Job Card </button>
+					<button name="request_jobcard" class="btn btn-primary">Request Job Card </button>
 					<button type="reset" class="btn btn-default">Reset</button>
 				</footer>
 			</section>
