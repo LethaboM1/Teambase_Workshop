@@ -44,6 +44,8 @@ switch ($_POST['cmd']) {
             }
             echo    "</div>";
             exit();
+        } else {
+            error("Limited uploads");
         }
 
         if ($_POST['image'] > 100) {
