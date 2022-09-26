@@ -793,6 +793,7 @@ function printPDF($pdf_html, $pdf_filename = 'temp', $pdf_save = false, $pdf_ope
 	}
 }
 
+/*
 if (file_exists('../includes/za.json')) {
 	$json_holidays = file_get_contents('../includes/za.json');
 } else {
@@ -807,7 +808,7 @@ foreach ($data_holidays['holidays'] as $holiday) {
 }
 
 
-
+*/
 function getWorkingDays($startDate, $endDate, $holidays)
 {
 	$skipped_days = 0;
