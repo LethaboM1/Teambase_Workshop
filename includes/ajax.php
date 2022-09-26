@@ -45,7 +45,7 @@ switch ($_POST['cmd']) {
             echo    "</div>";
             exit();
         } else {
-            error("Limited uploads , {$amount}");
+            error("Limited uploads , amount = {$amount}, limit = {$_POST['limit']}");
         }
 
         if ($_POST['image'] > 100) {
