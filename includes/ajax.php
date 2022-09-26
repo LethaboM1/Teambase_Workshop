@@ -57,13 +57,14 @@ switch ($_POST['cmd']) {
             if (count($_SESSION['upload_images']) > 0) {
                 echo    "<div class='row'>";
                 foreach ($_SESSION['upload_images'] as $key => $image) {
-
                     echo "<div class='col-md-3'>
                             <i onclick='remImage(`{$key}`)' class='fa fa-times fa-2x removeX'></i>
                             <img width='200px' src='{$image['image']}' />
                         </div>";
                 }
                 echo    "</div>";
+            } else {
+                error("Images count is Zero.");
             }
         }
 
