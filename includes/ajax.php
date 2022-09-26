@@ -33,7 +33,7 @@ switch ($_POST['cmd']) {
             $amount = 0;
         }
 
-        if ($amount <= $_POST['limit']) {
+        if ($amount >= $_POST['limit']) {
             echo "<small>{$_POST['limit']} photos max</small>
             <div class='row'>";
             foreach ($_SESSION['upload_images'] as $key => $image) {
@@ -44,8 +44,6 @@ switch ($_POST['cmd']) {
             }
             echo    "</div>";
             exit();
-        } else {
-            error("Limited uploads , amount = {$amount}, limit = {$_POST['limit']}");
         }
 
         if ($_POST['image'] > 100) {
