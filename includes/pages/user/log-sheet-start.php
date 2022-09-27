@@ -38,7 +38,7 @@ if (folders_('operator_log', $plant_['plant_id'])) {
 		</div>
 		<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 			<?= inp('reading_type', '', 'hidden', $row['reading_type']) ?>
-			<label class="col-form-label" for="formGroupExampleInput">Start Reading (<?= strtoupper($row['reading_type']) ?>)</label>
+			<label class="col-form-label" for="formGroupExampleInput">Start Reading (<?= strtoupper($row['reading_type']) ?>) - Current (<?= $row[$row['reading_type'] . '_reading'] ?>)</label>
 			<input type="text" name="reading" placeholder="Start Reading" class="form-control" required>
 		</div>
 		<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
