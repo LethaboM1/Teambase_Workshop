@@ -59,16 +59,19 @@
 							<label class="col-form-label" for="formGroupExampleInput">Date</label>
 							<input type="date" name="date" placeholder="" class="form-control" value="<?= date('Y-m-d') ?>">
 						</div>
+						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+							<?= inp('priority', 'Priority', 'select', '', '', 0, [['name' => 'High', 'value' => 1], ['name' => 'Medium', 'value' => 2], ['name' => 'Low', 'value' => 3]]) ?>
+						</div>
 					</div>
 					<div class="row">
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<label class="col-form-label" for="formGroupExampleInput">Reading <span id="reading_lbl"></span></label>
 							<?= inp('reading_type', '', 'hidden') ?>
-							<input id="reading" type="text" name="reading" placeholder="Reading" class="form-control" disabled>
+							<input id="reading" type="text" name="reading" placeholder="Reading" class="form-control">
 						</div>
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<label class="col-form-label" for="formGroupExampleInput">Site</label>
-							<input type="text" name="Site" placeholder="Site" class="form-control">
+							<input type="text" name="site" placeholder="site" class="form-control">
 						</div>
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<label class="col-form-label" for="formGroupExampleInput">Select Fault Area</label>

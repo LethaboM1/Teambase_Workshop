@@ -33,8 +33,15 @@ if (isset($_GET['id'])) {
 		<form action="" id="addplant">
 			<section class="card">
 				<header class="card-header">
-					<h2 class="card-title">Vew Jobcard</h2>
-					<p class="card-subtitle">View Job Card</p>
+					<div class="row">
+						<div class="col-md-10">
+							<h2 class="card-title">Vew Jobcard</h2>
+							<p class="card-subtitle">View Job Card</p>
+						</div>
+						<div class="col-md-2">
+							<a class="mb-1 mt-1 mr-1 modal-basic" href="#modalCloseJob"><button type="button" class='btn btn-danger float-right'>Close</button></a>
+						</div>
+					</div>
 				</header>
 				<div class="card-body">
 					<div class="row">
@@ -67,25 +74,7 @@ if (isset($_GET['id'])) {
 							<input type="text" name="site" class="form-control" value="<?= $jobcard_['site'] ?>" disabled>
 						</div>
 					</div>
-					<div class="row">
-						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<label class="col-form-label" for="formGroupExampleInput">Date Completed</label>
-							<input type="date" name="compDate" placeholder="Last Service Date" class="form-control">
-						</div>
-						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<label class="col-form-label" for="formGroupExampleInput">Closing KM</label>
-							<input type="text" name="closingKM" placeholder="Closing KM" class="form-control">
-						</div>
-						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<label class="col-form-label" for="formGroupExampleInput">Total KM</label>
-							<input type="text" name="totalKM" placeholder="Total KM" class="form-control">
-						</div>
-						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<label class="col-form-label" for="formGroupExampleInput">Time Out</label>
-							<input type="text" name="timeOut" placeholder="Time Out" class="form-control">
-						</div>
-					</div>
-					<div class="row">
+					<!-- <div class="row">
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<label class="col-form-label" for="formGroupExampleInput">Time In</label>
 							<input type="text" name="timeIn" placeholder="Time In" class="form-control">
@@ -94,119 +83,139 @@ if (isset($_GET['id'])) {
 							<label class="col-form-label" for="formGroupExampleInput">Travel Time</label>
 							<input type="text" name="travelTime" placeholder="Travel Time" class="form-control">
 						</div>
-						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<label class="col-form-label" for="formGroupExampleInput">Select Mechanic</label>
-							<select class="form-control mb-3" id="roll">
-								<option value="">Select a Mechanic</option>
-								<option value="Mechanic1">Mechanic1</option>
-								<option value="Mechanic2">Mechanic2</option>
-								<option value="Mechanic3">Mechanic3</option>
-								<option value="Mechanic4">Mechanic4</option>
-							</select>
-						</div>
-					</div>
+					</div>-->
 					<hr>
 					<h2 class="card-title">Extras</h2><br>
 					<div class="row">
-						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<div class="checkbox-custom checkbox-default">
-								<input type="checkbox" id="sparewheele">
-								<label for="checkboxExample1">Spare Wheele</label>
-							</div>
-						</div>
-						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<div class="checkbox-custom checkbox-default">
-								<input type="checkbox" id="wheelespanner">
-								<label for="checkboxExample1">Wheele Spanner</label>
-							</div>
-						</div>
-						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<div class="checkbox-custom checkbox-default">
-								<input type="checkbox" id="jack">
-								<label for="checkboxExample1">Jack</label>
-							</div>
-						</div>
-						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<div class="checkbox-custom checkbox-default">
-								<input type="checkbox" id="wheelespanner">
-								<label for="checkboxExample1">Triangle</label>
-							</div>
-						</div>
-						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<div class="checkbox-custom checkbox-default">
-								<input type="checkbox" id="extinguisher">
-								<label for="checkboxExample1">Fire Extinguisher</label>
-							</div>
-						</div>
-						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<div class="checkbox-custom checkbox-default">
-								<input type="checkbox" id="belt">
-								<label for="checkboxExample1">Safety Belt</label>
-							</div>
-						</div>
-						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<div class="checkbox-custom checkbox-default">
-								<input type="checkbox" id="beacon">
-								<label for="checkboxExample1">Rotating Beacon</label>
-							</div>
-						</div>
-						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<div class="checkbox-custom checkbox-default">
-								<input type="checkbox" id="blocks">
-								<label for="checkboxExample1">Stop Blocks</label>
-							</div>
-						</div>
-					</div>
-					<hr>
-					<h2 class="card-title">Events</h2><br>
-					<div class="row">
-						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<label class="col-form-label" for="formGroupExampleInput">Date</label>
-							<input type="date" name="Date" placeholder="Date" class="form-control">
-						</div>
-						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<label class="col-form-label" for="formGroupExampleInput">Select Event</label>
-							<select class="form-control mb-3" id="roll">
-								<option value="">Select a Event</option>
-								<option value="Engine">Engine</option>
-								<option value="Clutch">Clutch</option>
-								<option value="Gearbox">Gearbox/Drive Train</option>
-								<option value="Axlerear">Axel + Suspension Rear</option>
-								<option value="Axlefront">Axel + Suspension Front</option>
-								<option value="Brakes">Brakes</option>
-								<option value="Cab">Cab + Accessories</option>
-								<option value="Electrical">Electrical</option>
-								<option value="Hydrolics">Hydrolics</option>
-								<option value="Structure">Structure</option>
-							</select>
-						</div>
-						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<label class="col-form-label" for="formGroupExampleInput">Time Worked</label>
-							<input type="time" name="timeWorked" placeholder="Time Worked" class="form-control">
-						</div>
-						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<label class="col-form-label" for="formGroupExampleInput">Quality Check</label>
-							<input type="text" name="qualityCheck" placeholder="Quality Check" class="form-control">
-						</div>
-						<div class="col-sm-12 col-md-8 pb-sm-9 pb-md-0">
-							<label class="col-lg-3 control-label" for="Comment">Comment</label>
-							<div class="col-lg-12">
-								<textarea class="form-control" rows="3" id="Comment"></textarea>
-							</div>
-						</div>
-						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<button class="btn btn-primary">Add Event</button>
-						</div>
+						<?php
+						if (strlen($jobcard_['safety_audit']) > 0) {
+							$safety_audit = json_decode($jobcard_['safety_audit'], true);
+						} else {
+							$safety_audit = [];
+						}
+
+						if (count($safety_audit) > 0) {
+							foreach ($safety_audit as $line) {
+						?>
+								<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+									<div class="checkbox-custom checkbox-default">
+										<input type="checkbox" <?php if ($line['answer'] == 'Yes') {
+																	echo "checked='checked'";
+																} ?> disabled>
+										<label for="checkboxExample1"><?= $line['name'] ?></label>
+									</div>
+								</div>
+						<?php
+							}
+						}
+
+
+						?>
 					</div>
 				</div>
 				<footer class="card-footer text-end">
-					<button class="btn btn-primary">Create Job Card </button>
-					<button type="reset" class="btn btn-default">Reset</button>
+
 				</footer>
 			</section>
 		</form>
 	</div>
 	<!-- Events -->
+
+	<!-- Modal add event -->
+	<div id="modalAddEvent" class="modal-block modal-block-lg mfp-hide">
+		<section class="card">
+			<header class="card-header">
+				<h2 class="card-title">Add Event</h2>
+			</header>
+			<div class="card-body">
+				<h2 class="card-title">Events</h2><br>
+				<div class="row">
+					<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+						<label class="col-form-label" for="formGroupExampleInput">Date</label>
+						<input type="date" name="Date" placeholder="Date" class="form-control">
+					</div>
+					<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+						<label class="col-form-label" for="formGroupExampleInput">Select Event</label>
+						<select class="form-control mb-3" id="roll">
+							<option value="">Select a Event</option>
+							<option value="Engine">Engine</option>
+							<option value="Clutch">Clutch</option>
+							<option value="Gearbox">Gearbox/Drive Train</option>
+							<option value="Axlerear">Axel + Suspension Rear</option>
+							<option value="Axlefront">Axel + Suspension Front</option>
+							<option value="Brakes">Brakes</option>
+							<option value="Cab">Cab + Accessories</option>
+							<option value="Electrical">Electrical</option>
+							<option value="Hydrolics">Hydrolics</option>
+							<option value="Structure">Structure</option>
+						</select>
+					</div>
+					<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+						<label class="col-form-label" for="formGroupExampleInput">Time Worked</label>
+						<input type="time" name="timeWorked" placeholder="Time Worked" class="form-control">
+					</div>
+					<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+						<label class="col-form-label" for="formGroupExampleInput">Quality Check</label>
+						<input type="text" name="qualityCheck" placeholder="Quality Check" class="form-control">
+					</div>
+					<div class="col-sm-12 col-md-8 pb-sm-9 pb-md-0">
+						<label class="col-lg-3 control-label" for="Comment">Comment</label>
+						<div class="col-lg-12">
+							<textarea class="form-control" rows="3" id="Comment"></textarea>
+						</div>
+					</div>
+					<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+						<button class="btn btn-primary">Add Event</button>
+					</div>
+				</div>
+			</div>
+			<footer class="card-footer">
+				<div class="row">
+					<div class="col-md-12 text-right">
+						<button class="btn btn-default modal-dismiss">Cancel</button>
+					</div>
+				</div>
+			</footer>
+		</section>
+	</div>
+	<!-- Modal view End -->
+
+	<!-- Modal Close Jobcard -->
+	<div id="modalCloseJob" class="modal-block modal-block-lg mfp-hide">
+		<section class="card">
+			<header class="card-header">
+				<h2 class="card-title">Close Job Card</h2>
+			</header>
+			<div class="card-body">
+				<div class="modal-wrapper">
+					<div class="modal-text">
+						<div class="row">
+							<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+								<label class="col-form-label" for="formGroupExampleInput">Date Completed</label>
+								<input type="datetime-local" name="compDate" placeholder="Last Service Date" class="form-control" value="<?= date("Y-m-d\TH:i:s") ?>">
+							</div>
+							<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+								<label class="col-form-label" for="formGroupExampleInput">Closing KM</label>
+								<input type="text" name="closingKM" placeholder="Closing KM" class="form-control">
+							</div>
+							<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+								<label class="col-form-label" for="formGroupExampleInput">(<?= strtoupper($plant_['reading_type']) ?>) Reading</label>
+								<input type="text" name="reading" placeholder="Reading" class="form-control">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<footer class="card-footer">
+				<div class="row">
+					<div class="col-md-12 text-right">
+						<button class="btn btn-default modal-dismiss">Cancel</button>
+					</div>
+				</div>
+			</footer>
+		</section>
+	</div>
+	<!-- Modal view End -->
 	<!-- Modal view -->
 	<div id="modalviewevent" class="modal-block modal-block-lg mfp-hide">
 		<section class="card">
@@ -392,15 +401,19 @@ if (isset($_GET['id'])) {
 			<header class="card-header">
 				<h2 class="card-title">Events</h2>
 			</header>
+
 			<div class="card-body">
 				<div class="header-right">
-					<form action="#" class="search nav-form">
-						<div class="input-group">
-							<input type="text" class="form-control" name="q" id="q" placeholder="Search Event...">
-							<button class="btn btn-default" type="submit"><i class="bx bx-search"></i></button>
-						</div>
-					</form>
+					<a class="mb-1 mt-1 mr-1 modal-basic" href="#modalAddEvent"><button class="btn btn-primary">Add Event</button></a>
 				</div>
+
+				<form action="#" class="search nav-form">
+					<div class="input-group">
+						<input type="text" class="form-control" name="q" id="q" placeholder="Search Event...">
+						<button class="btn btn-default" type="submit"><i class="bx bx-search"></i></button>
+					</div>
+				</form>
+
 				<table width="1047" class="table table-responsive-md mb-0">
 					<thead>
 						<tr>

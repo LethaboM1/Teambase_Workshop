@@ -112,13 +112,27 @@ if ($row['allocated_hours'] > 0) {
                 <!-- Modal view End -->
                 <!-- Job Card End -->
             </div>
-            <a href="dashboard.php?page=job-card-view&id=<?= $row['job_id'] ?>">
-                <h2 class="card-title">Job# <?= $row['jobcard_number'] ?>,&nbsp;Plant: <?= $plant_['reg_number'] ?></h2>
-            </a>
-            <p class="card-subtitle">Opened by: <?= $logged_by['name'] ?></p>
-            <div class="progress progress-xl progress-half-rounded m-2">
-                <div class="progress-bar progress-bar-<?= $color ?>" role="progressbar" aria-valuenow="<?= $progess ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $progess ?>%;"><?= $progess ?>%</div>
-            </div>
+            <?php
+            switch ($row['status']) {
+                case "open":
+            ?>
+                    <a href="dashboard.php?page=daily-pre-task-mini&id=<?= $row['job_id'] ?>">
+                    <?php
+                    break;
+
+                case "busy":
+                    ?>
+                        <a href="dashboard.php?page=job-card-view&id=<?= $row['job_id'] ?>">
+                    <?php
+                    break;
+            }
+                    ?>
+                    <h2 class="card-title">Job# <?= $row['jobcard_number'] ?>,&nbsp;Plant: <?= $plant_['reg_number'] ?></h2>
+                        </a>
+                        <p class="card-subtitle">Opened by: <?= $logged_by['name'] ?></p>
+                        <div class="progress progress-xl progress-half-rounded m-2">
+                            <div class="progress-bar progress-bar-<?= $color ?>" role="progressbar" aria-valuenow="<?= $progess ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $progess ?>%;"><?= $progess ?>%</div>
+                        </div>
         </div>
     </section>
 </div>

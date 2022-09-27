@@ -10,6 +10,7 @@ switch ($_GET['page']) {
     case 'add-job':
         $page_title = 'Request New Job Card';
         $page_name = 'mechanic/add-job-card';
+        include "./includes/forms/mechanic/jobcards/add-job-card.php";
         break;
 
     case 'open-job':
@@ -20,6 +21,7 @@ switch ($_GET['page']) {
     case 'daily-pre-task-mini':
         $page_title = 'Daily Pre-Task Mini Risk Assessment';
         $page_name = 'mechanic/daily-pre-task-mini';
+        include "./includes/forms/mechanic/jobcards/daily-pre-task-mini.php";
         break;
 
     case 'plant-inspection':
