@@ -9,18 +9,18 @@ switch ($_GET['page']) {
     case 'add-user':
         $page_title = 'Add/Manage Users';
         $page_name = 'manager/users/add-manage-users';
-        include "includes/forms/manager/users/manage-users-form.php";
+        require "includes/forms/manager/users/manage-users-form.php";
         break;
 
     case 'add-plant':
         $page_title = 'Add/Manage Plant';
         $page_name = 'manager/plants/add-manage-plant';
-        include "includes/forms/manage-plants-form.php";
+        require "includes/forms/manager/plants/manage-plants-form.php";
         break;
 
     case 'view-plant':
         $back_page = "dashboard.php?page=add-plant";
-        $page_title = 'Plant: HG564365';
+        $page_title = 'Plant';
         $page_name = 'manager/plants/plant-view';
 
         if (!isset($_GET['id'])) {
@@ -38,20 +38,20 @@ switch ($_GET['page']) {
             go($back_page);
         }
 
-        include "includes/forms/manager/plants/view-plant-form.php";
+        require "includes/forms/manager/plants/view-plant-form.php";
 
         break;
 
     case 'add-job':
         $page_title = 'Add New Job Card';
         $page_name = 'manager/jobcards/add-job-card-manager';
-        include "./includes/forms/manager/jobcards/add-jobcard-manager.php";
+        require "./includes/forms/manager/jobcards/add-jobcard-manager.php";
         break;
 
     case 'new-job':
         $page_title = 'New Job Cards';
         $page_name = 'manager/jobcards/new-job-cards';
-        include "./includes/forms/manager/jobcards/new-job-cards.php";
+        require "./includes/forms/manager/jobcards/new-job-cards.php";
         break;
 
     case 'open-job':

@@ -257,6 +257,10 @@ switch ($_POST['cmd']) {
                     echo inp('plant_id', '', 'hidden', $plant_['plant_id'])
                         . "<div class='row'>
 						<div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
+							<label class='col-form-label' for='formGroupExampleInput'>Plant No.</label>
+							<input type='text' name='plant_number' class='form-control' value='{$plant_['plant_number']}'>
+						</div>
+						<div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
 							<label class='col-form-label' for='formGroupExampleInput'>Vehicle Type</label>
 							<input type='text' name='vehicle_type' placeholder='Truck, TLB ...' class='form-control' value='{$plant_['vehicle_type']}'>
 						</div>
@@ -264,12 +268,12 @@ switch ($_POST['cmd']) {
 							<label class='col-form-label' for='formGroupExampleInput'>Make</label>
 							<input type='text' name='make' placeholder='Make' class='form-control' value='{$plant_['make']}'>
 						</div>
-						<div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
-							<label class='col-form-label' for='formGroupExampleInput'>Model</label>
-							<input type='text' name='model' placeholder='Model' class='form-control' value='{$plant_['model']}'>
-						</div>
 					</div>
 					<div class='row'>
+                        <div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
+                            <label class='col-form-label' for='formGroupExampleInput'>Model</label>
+                            <input type='text' name='model' placeholder='Model' class='form-control' value='{$plant_['model']}'>
+                        </div>
 						<div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
 							<label class='col-form-label' for='formGroupExampleInput'>Registration Number</label>
 							<input type='text' name='reg_number' placeholder='AAA-456-L' class='form-control' value='{$plant_['reg_number']}'>
@@ -277,7 +281,9 @@ switch ($_POST['cmd']) {
 						<div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
 							<label class='col-form-label' for='formGroupExampleInput'>VIN Number</label>
 							<input type='text' name='vin_number' placeholder='VIN Number' class='form-control' value='{$plant_['vin_number']}'>
-						</div>";
+						</div>
+                    </div>
+					<div class='row'>";
 
                     $reading_types_select_ = [
                         ['name' => 'KM - Kilometers', 'value' => 'km'],
@@ -285,21 +291,22 @@ switch ($_POST['cmd']) {
                     ];
 
                     echo inp('reading_type', 'Type of reading', 'select', $plant_['reading_type'], '', 0, $reading_types_select_)
-                        .   "</div>
-					<div class='row'>
+                        .   "
 						<div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
 							<label class='col-form-label' for='formGroupExampleInput'>Reading</label>
-							<input type='text' name='km_reading' placeholder='KM Reading' class='form-control' value='{$reading}'>
+							<input type='text' name='reading' placeholder='KM Reading' class='form-control' value='{$reading}'>
 						</div>
 						<div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
 							<label class='col-form-label' for='formGroupExampleInput'>Last Service Date</label>
 							<input type='date' name='last_service' placeholder='Last Service Date' class='form-control' value='{$plant_['last_service']}'>
 						</div>
-						<div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
-							<label class='col-form-label' for='formGroupExampleInput'>Next Service Date</label>
-							<input type='date' name='next_service' placeholder='Next Service Date' class='form-control' value='{$plant_['next_service']}'>
-						</div>
-					</div>";
+					</div>
+                    <div class='row'>
+                        <div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
+                            <label class='col-form-label' for='formGroupExampleInput'>Next Service Date</label>
+                            <input type='date' name='next_service' placeholder='Next Service Date' class='form-control' value='{$plant_['next_service']}'>
+                        </div>
+                    </div>";
                 }
             }
         }

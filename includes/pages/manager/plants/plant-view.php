@@ -15,6 +15,10 @@ if ($_SESSION['user']['role'] != 'manager' && $_SESSION['user']['role'] != 'syst
 				<div class="card-body">
 					<div class="row">
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+							<label class="col-form-label" for="formGroupExampleInput">Plant No</label>
+							<input type="text" name="plant_number" class="form-control" value="<?= $plant_['plant_number'] ?>" disabled>
+						</div>
+						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<label class="col-form-label" for="formGroupExampleInput">Vehicle Type</label>
 							<input type="text" name="vehicletype" placeholder="Truck, TLB ..." class="form-control" value="<?= $plant_['vehicle_type'] ?>" disabled>
 						</div>
@@ -22,12 +26,12 @@ if ($_SESSION['user']['role'] != 'manager' && $_SESSION['user']['role'] != 'syst
 							<label class="col-form-label" for="formGroupExampleInput">Make</label>
 							<input type="text" name="make" placeholder="Make" class="form-control" value="<?= $plant_['make'] ?>" disabled>
 						</div>
+					</div>
+					<div class="row">
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<label class="col-form-label" for="formGroupExampleInput">Model</label>
 							<input type="text" name="model" placeholder="Model" class="form-control" value="<?= $plant_['model'] ?>" disabled>
 						</div>
-					</div>
-					<div class="row">
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<label class="col-form-label" for="formGroupExampleInput">Registration Number</label>
 							<input type="text" name="reg_number" placeholder="AAA-456-L" class="form-control" value="<?= $plant_['reg_number'] ?>" disabled>
@@ -36,12 +40,12 @@ if ($_SESSION['user']['role'] != 'manager' && $_SESSION['user']['role'] != 'syst
 							<label class="col-form-label" for="formGroupExampleInput">VIN Number</label>
 							<input type="text" name="vin_number" placeholder="VIN Number" class="form-control" value="<?= $plant_['vin_number'] ?>" disabled>
 						</div>
+					</div>
+					<div class="row">
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<label class="col-form-label" for="formGroupExampleInput">KM Reading</label>
 							<input type="text" name="km_reading" placeholder="KM Reading" class="form-control" value="<?= $plant_['km_reading'] ?>" disabled>
 						</div>
-					</div>
-					<div class="row">
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<label class="col-form-label" for="formGroupExampleInput">Last Service Date</label>
 							<input type="date" name="last_service" placeholder="Last Service Date" class="form-control" value="<?= $plant_['last_service'] ?>" disabled>

@@ -809,6 +809,20 @@ foreach ($data_holidays['holidays'] as $holiday) {
 
 
 */
+
+function calc_hours($from, $to)
+{
+	$date1 = new DateTime($from);
+	$date2 = new DateTime($to);
+
+	$diff = $date2->diff($date1);
+
+	$hours = $diff->h;
+	$hours = $hours + ($diff->days * 24);
+
+	return $hours;
+}
+
 function getWorkingDays($startDate, $endDate, $holidays)
 {
 	$skipped_days = 0;

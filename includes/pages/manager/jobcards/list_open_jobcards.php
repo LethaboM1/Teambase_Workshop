@@ -60,6 +60,7 @@ if ($row['allocated_hours'] > 0) {
                                         <div class="col-md-6">
                                             <b>Job No.</b>&nbsp;<?= $row['jobcard_number'] ?><br>
                                             <b>Date logged.</b>&nbsp;<?= $row['job_date'] ?><br>
+                                            <b>Plant No.</b>&nbsp;<?= $plant_['plant_number'] ?><br>
                                             <b>Type.</b>&nbsp;<?= $plant_['vehicle_type'] ?><br>
                                             <b>Model.</b>&nbsp;<?= $plant_['model'] ?><br>
                                             <b>Mechanic.</b>&nbsp;<?= $mechanic_['name'] ?><br>

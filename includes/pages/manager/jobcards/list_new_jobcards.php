@@ -74,7 +74,7 @@
                 </div>
                 <!-- Assign Job Card End -->
             </div>
-            <h2 class="card-title">Plant: <?= $plant_['reg_number'] ?></h2>
+            <h2 class="card-title">Plant: <?= $plant_['plant_number'] ?></h2>
             <p class="card-subtitle">Opened by: <?= $logged_by_['name'] ?></p>
         </div>
     </section>

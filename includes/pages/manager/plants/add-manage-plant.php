@@ -55,6 +55,10 @@
 				<div class="card-body">
 					<div class="row">
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+							<label class="col-form-label" for="formGroupExampleInput">Plant No.</label>
+							<input type="text" name="plant_number" class="form-control">
+						</div>
+						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<label class="col-form-label" for="formGroupExampleInput">Vehicle Type</label>
 							<input type="text" name="vehicle_type" placeholder="Truck, TLB ..." class="form-control">
 						</div>
@@ -117,7 +121,7 @@
 				<table width="1047" class="table table-responsive-md mb-0">
 					<thead>
 						<tr>
-							<th width="200">Vehicle Type</th>
+							<th width="200">Plant No.</th>
 							<th width="200">Make</th>
 							<th width="200">Registration Number</th>
 							<th width="120">Reading</th>

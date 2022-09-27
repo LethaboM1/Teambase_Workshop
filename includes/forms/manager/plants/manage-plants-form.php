@@ -14,9 +14,9 @@ if (isset($_POST['save_plant'])) {
 
     ) {
         $plant_ = dbf(dbq("select * from plants_tbl where plant_id='{$_POST['plant_id']}'"));
-        $chk_duplicate_reg = dbq("select * from plants_tbl where reg_number='{$_POST['reg_number']}' and reg_number!='{$plant_['reg_number']}'");
+        $chk_duplicate_reg = dbq("select * from plants_tbl where reg_number='{$_POST['reg_number']}' and plant_id!='{$_POST['plant_id']}'");
         if (dbr($chk_duplicate_reg) == 0) {
-            $chk_duplicate_reg = dbq("select * from plants_tbl where vin_number='{$_POST['vin_number']}' and vin_number!='{$plant_['vin_number']}'");
+            $chk_duplicate_reg = dbq("select * from plants_tbl where vin_number='{$_POST['vin_number']}' and plant_id!='{$_POST['plant_id']}'");
             if (dbr($chk_duplicate_reg) == 0) {
                 switch ($_POST['reading_type']) {
                     case "km":
@@ -34,6 +34,7 @@ if (isset($_POST['save_plant'])) {
                         break;
                 }
                 $update_plant = dbq("update plants_tbl set 
+                                        plant_number='{$_POST['plant_number']}',   
                                         vehicle_type='{$_POST['vehicle_type']}',
                                         make='{$_POST['make']}',
                                         model='{$_POST['model']}',
@@ -90,7 +91,8 @@ if (isset($_POST['add_plant'])) {
                                         ";
                         break;
                 }
-                $insert_plant = dbq("insert into plants_tbl set                                            
+                $insert_plant = dbq("insert into plants_tbl set            
+                                                plant_number='{$_POST['plant_number']}',                                
                                                 vehicle_type='{$_POST['vehicle_type']}',
                                                 make='{$_POST['make']}',
                                                 model='{$_POST['model']}',

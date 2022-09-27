@@ -29,17 +29,17 @@ if (isset($_GET['id'])) {
 }
 ?>
 <div class="row">
-	<div class="col-lg-6 mb-3">
-		<form action="" id="addplant">
+	<div class="col-lg-12 mb-3">
+		<form method="post" id="addplant">
 			<section class="card">
 				<header class="card-header">
 					<div class="row">
-						<div class="col-md-10">
+						<div class="col-md-9">
 							<h2 class="card-title">Vew Jobcard</h2>
 							<p class="card-subtitle">View Job Card</p>
 						</div>
-						<div class="col-md-2">
-							<a class="mb-1 mt-1 mr-1 modal-basic" href="#modalCloseJob"><button type="button" class='btn btn-danger float-right'>Close</button></a>
+						<div class="col-md-3">
+							<a class="mb-1 mt-1 mr-1 modal-basic" href="#modalCloseJob"><button type="button" class='btn btn-danger float-right'>Completed</button></a>
 						</div>
 					</div>
 				</header>
@@ -51,7 +51,7 @@ if (isset($_GET['id'])) {
 						</div>
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<label class="col-form-label" for="formGroupExampleInput">Plant Number</label>
-							<input type="text" name="plantNumber" class="form-control" value="<?= $plant_['fleet_number'] ?>" disabled>
+							<input type="text" name="plantNumber" class="form-control" value="<?= $plant_['plant_number'] ?>" disabled>
 						</div>
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<label class="col-form-label" for="formGroupExampleInput">Date/Time</label>
@@ -105,8 +105,14 @@ if (isset($_GET['id'])) {
 										<label for="checkboxExample1"><?= $line['name'] ?></label>
 									</div>
 								</div>
-						<?php
+							<?php
 							}
+						} else {
+							?>
+							<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+								Non to list
+							</div>
+						<?php
 						}
 
 
@@ -123,151 +129,97 @@ if (isset($_GET['id'])) {
 
 	<!-- Modal add event -->
 	<div id="modalAddEvent" class="modal-block modal-block-lg mfp-hide">
-		<section class="card">
-			<header class="card-header">
-				<h2 class="card-title">Add Event</h2>
-			</header>
-			<div class="card-body">
-				<h2 class="card-title">Events</h2><br>
-				<div class="row">
-					<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-						<label class="col-form-label" for="formGroupExampleInput">Date</label>
-						<input type="date" name="Date" placeholder="Date" class="form-control">
-					</div>
-					<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-						<label class="col-form-label" for="formGroupExampleInput">Select Event</label>
-						<select class="form-control mb-3" id="roll">
-							<option value="">Select a Event</option>
-							<option value="Engine">Engine</option>
-							<option value="Clutch">Clutch</option>
-							<option value="Gearbox">Gearbox/Drive Train</option>
-							<option value="Axlerear">Axel + Suspension Rear</option>
-							<option value="Axlefront">Axel + Suspension Front</option>
-							<option value="Brakes">Brakes</option>
-							<option value="Cab">Cab + Accessories</option>
-							<option value="Electrical">Electrical</option>
-							<option value="Hydrolics">Hydrolics</option>
-							<option value="Structure">Structure</option>
-						</select>
-					</div>
-					<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-						<label class="col-form-label" for="formGroupExampleInput">Time Worked</label>
-						<input type="time" name="timeWorked" placeholder="Time Worked" class="form-control">
-					</div>
-					<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-						<label class="col-form-label" for="formGroupExampleInput">Quality Check</label>
-						<input type="text" name="qualityCheck" placeholder="Quality Check" class="form-control">
-					</div>
-					<div class="col-sm-12 col-md-8 pb-sm-9 pb-md-0">
-						<label class="col-lg-3 control-label" for="Comment">Comment</label>
-						<div class="col-lg-12">
-							<textarea class="form-control" rows="3" id="Comment"></textarea>
+		<form method="post">
+			<section class="card">
+				<header class="card-header">
+					<h2 class="card-title">Add Event</h2>
+				</header>
+				<div class="card-body">
+					<h2 class="card-title">Events</h2><br>
+					<div class="row">
+						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+							<label class="col-form-label" for="formGroupExampleInput">Start Date/Time</label>
+							<input type="datetime-local" name="start_date" class="form-control" value="<?= date("Y-m-d\TH:i:s") ?>">
+						</div>
+						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+							<label class="col-form-label" for="formGroupExampleInput">End Date/Time</label>
+							<input type="datetime-local" name="end_date" class="form-control" value="<?= date("Y-m-d\TH:i:s") ?>">
+						</div>
+						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+							<label class="col-form-label" for="formGroupExampleInput">Select Event</label>
+							<select class="form-control mb-3" name="event" id="event">
+								<option value="0">Select a Event</option>
+								<option value="Engine">Engine</option>
+								<option value="Clutch">Clutch</option>
+								<option value="Gearbox">Gearbox/Drive Train</option>
+								<option value="Axlerear">Axel + Suspension Rear</option>
+								<option value="Axlefront">Axel + Suspension Front</option>
+								<option value="Brakes">Brakes</option>
+								<option value="Cab">Cab + Accessories</option>
+								<option value="Electrical">Electrical</option>
+								<option value="Hydrolics">Hydrolics</option>
+								<option value="Structure">Structure</option>
+							</select>
+						</div>
+						<div class="col-sm-12 col-md-8 pb-sm-9 pb-md-0">
+							<label class="col-lg-3 control-label" for="Comment">Comment</label>
+							<div class="col-lg-12">
+								<textarea name="comment" class="form-control" rows="3" id="Comment"></textarea>
+							</div>
+						</div>
+						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+
 						</div>
 					</div>
-					<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-						<button class="btn btn-primary">Add Event</button>
-					</div>
 				</div>
-			</div>
-			<footer class="card-footer">
-				<div class="row">
-					<div class="col-md-12 text-right">
-						<button class="btn btn-default modal-dismiss">Cancel</button>
+				<footer class="card-footer">
+					<div class="row">
+						<div class="col-md-12 text-right">
+							<button type="submit" name="add_event" class="btn btn-primary">Add Event</button>&nbsp;<button class="btn btn-default modal-dismiss">Cancel</button>
+						</div>
 					</div>
-				</div>
-			</footer>
-		</section>
+				</footer>
+			</section>
+		</form>
 	</div>
 	<!-- Modal view End -->
 
 	<!-- Modal Close Jobcard -->
 	<div id="modalCloseJob" class="modal-block modal-block-lg mfp-hide">
-		<section class="card">
-			<header class="card-header">
-				<h2 class="card-title">Close Job Card</h2>
-			</header>
-			<div class="card-body">
-				<div class="modal-wrapper">
-					<div class="modal-text">
-						<div class="row">
-							<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-								<label class="col-form-label" for="formGroupExampleInput">Date Completed</label>
-								<input type="datetime-local" name="compDate" placeholder="Last Service Date" class="form-control" value="<?= date("Y-m-d\TH:i:s") ?>">
-							</div>
-							<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-								<label class="col-form-label" for="formGroupExampleInput">Closing KM</label>
-								<input type="text" name="closingKM" placeholder="Closing KM" class="form-control">
-							</div>
-							<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-								<label class="col-form-label" for="formGroupExampleInput">(<?= strtoupper($plant_['reading_type']) ?>) Reading</label>
-								<input type="text" name="reading" placeholder="Reading" class="form-control">
+		<form method="post">
+			<section class="card">
+				<header class="card-header">
+					<h2 class="card-title">Complete Job Card</h2>
+				</header>
+				<div class="card-body">
+					<div class="modal-wrapper">
+						<div class="modal-text">
+							<div class="row">
+								<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+									<label class="col-form-label" for="formGroupExampleInput">Date Completed</label>
+									<input type="datetime-local" name="compDate" placeholder="Last Service Date" class="form-control" value="<?= date("Y-m-d\TH:i:s") ?>">
+								</div>
+								<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+									<label class="col-form-label" for="formGroupExampleInput">(<?= strtoupper($plant_['reading_type']) ?>) Reading</label>
+									<input type="text" name="reading" placeholder="Reading" class="form-control">
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-			<footer class="card-footer">
-				<div class="row">
-					<div class="col-md-12 text-right">
-						<button class="btn btn-default modal-dismiss">Cancel</button>
+				<footer class="card-footer">
+					<div class="row">
+						<div class="col-md-12 text-right">
+							<button type="submit" name="complete_jobcard" class="btn btn-primary">Completed</button>&nbsp;<button class="btn btn-default modal-dismiss">Cancel</button>
+						</div>
 					</div>
-				</div>
-			</footer>
-		</section>
+				</footer>
+			</section>
+		</form>
 	</div>
 	<!-- Modal view End -->
-	<!-- Modal view -->
-	<div id="modalviewevent" class="modal-block modal-block-lg mfp-hide">
-		<section class="card">
-			<header class="card-header">
-				<h2 class="card-title">View Event</h2>
-			</header>
-			<div class="card-body">
-				<div class="modal-wrapper">
-					<div class="modal-text">
-						<p>Event info here...</p>
 
-					</div>
-				</div>
-			</div>
-			<footer class="card-footer">
-				<div class="row">
-					<div class="col-md-12 text-right">
-						<button class="btn btn-default modal-dismiss">Cancel</button>
-					</div>
-				</div>
-			</footer>
-		</section>
-	</div>
-	<!-- Modal view End -->
-	<!-- Modal Delete -->
-	<div id="modalHeaderColorDanger" class="modal-block modal-header-color modal-block-danger mfp-hide">
-		<section class="card">
-			<header class="card-header">
-				<h2 class="card-title">Are you sure?</h2>
-			</header>
-			<div class="card-body">
-				<div class="modal-wrapper">
-					<div class="modal-icon">
-						<i class="fas fa-times-circle"></i>
-					</div>
-					<div class="modal-text">
-						<h4>Danger</h4>
-						<p>Are you sure that you want to delete this event?</p>
-					</div>
-				</div>
-			</div>
-			<footer class="card-footer">
-				<div class="row">
-					<div class="col-md-12 text-right">
-						<button type="button" class="btn btn-danger">Confirm</button>
-						<button type="button" class="btn btn-danger modal-dismiss" data-bs-dismiss="modal">Cancel</button>
-					</div>
-				</div>
-			</footer>
-		</section>
-	</div>
-	<!-- Modal Delete End -->
+
 	<!-- Modal view -->
 	<div id="modaleditspare" class="modal-block modal-block-lg mfp-hide">
 		<section class="card">
@@ -318,85 +270,87 @@ if (isset($_GET['id'])) {
 	<!-- Modal view End -->
 	<!-- Modal view -->
 	<div id="modalrequestspare" class="modal-block modal-block-lg mfp-hide">
-		<section class="card">
-			<header class="card-header">
-				<h2 class="card-title">Spares Requisition BO</h2>
-			</header>
-			<div class="card-body">
-				<div class="modal-wrapper">
-					<div class="modal-text">
-						<div class="row">
-							<div class="col-sm-12 col-md-4">
-								<label class="col-form-label">Plant #</label>
-								<input type="text" name="plantnumber" placeholder="plantnumber" class="form-control">
+		<form method="post">
+			<section class="card">
+				<header class="card-header">
+					<h2 class="card-title">Spares Requisition BO</h2>
+				</header>
+				<div class="card-body">
+					<div class="modal-wrapper">
+						<div class="modal-text">
+							<div class="row">
+								<div class="col-sm-12 col-md-4">
+									<label class="col-form-label">Plant #</label>
+									<input type="text" name="plant_number" placeholder="plant_number" class="form-control">
+								</div>
+								<div class="col-sm-12 col-md-4">
+									<label class="col-form-label">Date</label>
+									<input type="date" name="date" class="form-control">
+								</div>
+								<div class="col-sm-12 col-md-4">
+									<label class="col-form-label">Site</label>
+									<input type="text" name="site" placeholder="site" class="form-control">
+								</div>
+								<div class="col-sm-12 col-md-4">
+									<label class="col-form-label">HRS</label>
+									<input type="text" name="HRS" placeholder="HRS" class="form-control">
+								</div>
+								<div class="col-sm-12 col-md-4">
+									<label class="col-form-label">KM</label>
+									<input type="text" name="KM" placeholder="KM" class="form-control">
+								</div>
+								<!-- Pull From Job Card -->
+								<div class="col-sm-12 col-md-4">
+									<label class="col-form-label">Job Number</label>
+									<input type="text" name="jobnumber" placeholder="jobnumber" class="form-control">
+								</div>
 							</div>
-							<div class="col-sm-12 col-md-4">
-								<label class="col-form-label">Date</label>
-								<input type="date" name="date" class="form-control">
+							<hr>
+							<div class="row">
+								<div class="col-sm-3 col-md-3">
+									<label class="col-form-label">QTY</label>
+									<input type="number" name="qty" placeholder="qty" class="form-control">
+								</div>
+								<div class="col-sm-3 col-md-3">
+									<label class="col-form-label">Part Number</label>
+									<input type="text" name="partnumber" placeholder="Part Number" class="form-control">
+								</div>
+								<div class="col-sm-6 col-md-6">
+									<label class="col-form-label">Description</label>
+									<input type="text" name="description" placeholder="Description" class="form-control">
+								</div>
 							</div>
-							<div class="col-sm-12 col-md-4">
-								<label class="col-form-label">Site</label>
-								<input type="text" name="site" placeholder="site" class="form-control">
+							<div class="row">
+								<div class="col-sm-12 col-md-12">
+									<label class="col-form-label">Comment</label>
+									<textarea class="form-control" rows="3" id="textareaDefault"></textarea>
+								</div>
+								<div class="col-sm-4 col-md-4"><br>
+									<button type="button" class="btn btn-primary">Add Part</button>
+								</div>
 							</div>
-							<div class="col-sm-12 col-md-4">
-								<label class="col-form-label">HRS</label>
-								<input type="text" name="HRS" placeholder="HRS" class="form-control">
+							<hr>
+							<div class="row">
+								<p>Requested by: </p><br>
+								<p>Approved by: </p><br>
+								<p>BS REQ #: </p>
 							</div>
-							<div class="col-sm-12 col-md-4">
-								<label class="col-form-label">KM</label>
-								<input type="text" name="KM" placeholder="KM" class="form-control">
-							</div>
-							<!-- Pull From Job Card -->
-							<div class="col-sm-12 col-md-4">
-								<label class="col-form-label">Job Number</label>
-								<input type="text" name="jobnumber" placeholder="jobnumber" class="form-control">
-							</div>
-						</div>
-						<hr>
-						<div class="row">
-							<div class="col-sm-3 col-md-3">
-								<label class="col-form-label">QTY</label>
-								<input type="number" name="qty" placeholder="qty" class="form-control">
-							</div>
-							<div class="col-sm-3 col-md-3">
-								<label class="col-form-label">Part Number</label>
-								<input type="text" name="partnumber" placeholder="Part Number" class="form-control">
-							</div>
-							<div class="col-sm-6 col-md-6">
-								<label class="col-form-label">Description</label>
-								<input type="text" name="description" placeholder="Description" class="form-control">
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-sm-12 col-md-12">
-								<label class="col-form-label">Comment</label>
-								<textarea class="form-control" rows="3" id="textareaDefault"></textarea>
-							</div>
-							<div class="col-sm-4 col-md-4"><br>
-								<button type="button" class="btn btn-primary">Add Part</button>
-							</div>
-						</div>
-						<hr>
-						<div class="row">
-							<p>Requested by: </p><br>
-							<p>Approved by: </p><br>
-							<p>BS REQ #: </p>
 						</div>
 					</div>
 				</div>
-			</div>
-			<footer class="card-footer">
-				<div class="row">
-					<div class="col-md-12 text-right">
-						<button class="btn btn-default">Submit BO</button>
-						<button class="btn btn-default modal-dismiss">Cancel</button>
+				<footer class="card-footer">
+					<div class="row">
+						<div class="col-md-12 text-right">
+							<button type="submit" name="submit_bo" class="btn btn-default">Submit BO</button>
+							<button class="btn btn-default modal-dismiss">Cancel</button>
+						</div>
 					</div>
-				</div>
-			</footer>
-		</section>
+				</footer>
+			</section>
+		</form>
 	</div>
 	<!-- Modal view End -->
-	<div class="col-lg-6 mb-3">
+	<div class="col-lg-12 mb-3">
 		<section class="card">
 			<header class="card-header">
 				<h2 class="card-title">Events</h2>
@@ -406,7 +360,6 @@ if (isset($_GET['id'])) {
 				<div class="header-right">
 					<a class="mb-1 mt-1 mr-1 modal-basic" href="#modalAddEvent"><button class="btn btn-primary">Add Event</button></a>
 				</div>
-
 				<form action="#" class="search nav-form">
 					<div class="input-group">
 						<input type="text" class="form-control" name="q" id="q" placeholder="Search Event...">
@@ -420,27 +373,103 @@ if (isset($_GET['id'])) {
 							<th width="100">Date</th>
 							<th width="100">Type</th>
 							<th width="120">Time Worked</th>
-							<th width="120">Quality Check</th>
 							<th width="459">Comments</th>
 							<th width="120">Action</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
+						<?php
+						$get_job_events = dbq("select * from jobcard_events where job_id={$_GET['id']}");
+						if ($get_job_events) {
+							if (dbr($get_job_events) > 0) {
+								while ($event = dbf($get_job_events)) {
+						?>
+									<tr>
+										<td><?= $event['start_datetime'] ?></td>
+										<td><?= $event['event'] ?></td>
+										<td><?= $event['total_hours'] ?></td>
+										<td><?= $event['comment'] ?></td>
+										<td class="actions">
+											<a class="mb-1 mt-1 mr-1 modal-basic" href="#modalViewEvent_<?= $event['event_id'] ?>"><i class="fas fa-pencil-alt"></i></a>
+											<!-- Modal Edit Event End -->
+											<!-- Modal Delete -->
+											<a class="mb-1 mt-1 mr-1 modal-basic" href="#modalDeleteEvent_<?= $event['event_id'] ?>"><i class="far fa-trash-alt"></i></a>
+											<!-- Modal Delete End -->
+										</td>
+									</tr>
+						<?php
+									$modal .= '<div id="modalDeleteEvent_' . $event['event_id'] . '" class="modal-block modal-header-color modal-block-danger mfp-hide">
+												<form method="post">
+													<section class="card">
+														<header class="card-header">
+															<h2 class="card-title">Are you sure?</h2>
+														</header>
+														<div class="card-body">
+															<div class="modal-wrapper">
+																<div class="modal-icon">
+																	<i class="fas fa-times-circle"></i>
+																</div>
+																<div class="modal-text">
+																	<h4>Danger</h4>
+																	' . inp('event_id', '', 'hidden', $event['event_id']) . '
+																	<p>Are you sure that you want to delete this event?</p>
+																</div>
+															</div>
+														</div>
+														<footer class="card-footer">
+															<div class="row">
+																<div class="col-md-12 text-right">
+																	<button name="delete_event" type="submit" class="btn btn-danger">Confirm</button>
+																	<button type="button" class="btn btn-danger modal-dismiss" data-bs-dismiss="modal">Cancel</button>
+																</div>
+															</div>
+														</footer>
+													</section>
+												</form>
+											</div>
+											
+											<div id="modalViewEvent_' . $event['event_id'] . '" class="modal-block modal-block-lg mfp-hide">
+												<section class="card">
+													<header class="card-header">
+														<h2 class="card-title">View Event</h2>
+													</header>
+													<div class="card-body">
+														<div class="modal-wrapper">
+															<div class="modal-text">
+																<p>Event info here...</p>
+
+															</div>
+														</div>
+													</div>
+													<footer class="card-footer">
+														<div class="row">
+															<div class="col-md-12 text-right">
+																<button class="btn btn-default modal-dismiss">Cancel</button>
+															</div>
+														</div>
+													</footer>
+												</section>
+											</div>
+											';
+								}
+							}
+						}
+						?>
+						<!--<tr>
 							<td></td>
 							<td></td>
 							<td></td>
 							<td></td>
 							<td></td>
 							<td class="actions">
-								<!-- Modal Edit Event -->
-								<a class="mb-1 mt-1 mr-1 modal-basic" href="#modalviewevent"><i class="fas fa-pencil-alt"></i></a>
-								<!-- Modal Edit Event End -->
-								<!-- Modal Delete -->
-								<a class="mb-1 mt-1 mr-1 modal-basic" href="#modalHeaderColorDanger"><i class="far fa-trash-alt"></i></a>
-								<!-- Modal Delete End -->
+								 Modal Edit Event 
+								<a class="mb-1 mt-1 mr-1 modal-basic" href="#modalviewevent"><i class="fas fa-pencil-alt"></i></a>-->
+						<!-- Modal Edit Event End -->
+						<!-- Modal Delete 
+								<a class="mb-1 mt-1 mr-1 modal-basic" href="#modalHeaderColorDanger"><i class="far fa-trash-alt"></i></a>-->
+						<!-- Modal Delete End 
 							</td>
-						</tr>
+						</tr>-->
 					</tbody>
 				</table>
 			</div>
@@ -460,7 +489,7 @@ if (isset($_GET['id'])) {
 							<th width="100">Date</th>
 							<th width="100">Type</th>
 							<th width="120">Time Worked</th>
-							<th width="120">Quality Check</th>
+							<th width="120">QC</th>
 							<th width="459">Comments</th>
 							<th width="120">Action</th>
 						</tr>
@@ -485,7 +514,7 @@ if (isset($_GET['id'])) {
 				</table>
 			</div>
 		</section>
-
-
 	</div>
 </div>
+<?php
+echo $modal;

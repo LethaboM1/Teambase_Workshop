@@ -9,8 +9,8 @@ switch ($row['reading_type']) {
 }
 
 echo "<tr>
-        <td>{$row['vehicle_type']}</td>
-        <td>{$row['make']}</td>
+        <td>{$row['plant_number']}</td>
+        <td>{$row['vehicle_type']} {$row['make']}</td>
         <td>{$row['model']}</td>
         <td>{$reading} (" . strtoupper($row['reading_type']) . ")</td>
         <td>{$row['last_service']}</td>
