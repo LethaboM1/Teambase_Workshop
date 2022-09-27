@@ -26,6 +26,7 @@
 					<ul class="nav nav-children">
 						<li><a class="nav-link" href="dashboard.php?page=add-job">Create a New Job Card</a></li>
 						<li><a class="nav-link" href="dashboard.php?page=new-job">New Job Cards</a></li>
+						<li><a class="nav-link" href="dashboard.php?page=job-requisitions">Job Requisition</a></li>
 						<li><a class="nav-link" href="dashboard.php?page=open-job">Open Job Cards</a></li>
 						<li><a class="nav-link" href="dashboard.php?page=arch-job">Archive Job Cards</a></li>
 					</ul>

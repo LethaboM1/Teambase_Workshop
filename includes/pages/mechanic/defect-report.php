@@ -30,7 +30,7 @@
 						</div>
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<label class="col-form-label">Fleet No.</label>
-							<input type="text" name="fleet" placeholder="Fleet No." class="form-control">
+							<input type="text" name="fleet" placeholder="Plant No." class="form-control">
 						</div>
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<label class="col-form-label">Registration No.</label>

@@ -48,6 +48,7 @@ if (isset($_POST['save_plant'])) {
                                         ");
                 if ($update_plant) {
                     msg("plant saved {$_POST['firstName']}!");
+                    go('dashboard.php?page=add-plant');
                 } else {
                     sqlError();
                 }
@@ -105,8 +106,9 @@ if (isset($_POST['add_plant'])) {
                                                 status='ready'
                                             ");
                 if ($insert_plant) {
+                    $plant_id = mysqli_insert_id($db);
                     msg("plant {$_POST['vehicle_type']} was added!");
-                    go("dashboard.php?page=open-plant");
+                    go("dashboard.php?page=view-plant&id={$plant_id}");
                 } else {
                     sqlError();
                 }

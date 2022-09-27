@@ -117,22 +117,31 @@ if ($row['allocated_hours'] > 0) {
                 case "open":
             ?>
                     <a href="dashboard.php?page=daily-pre-task-mini&id=<?= $row['job_id'] ?>">
-                    <?php
-                    break;
+                        <?php
+                        break;
 
-                case "busy":
-                    ?>
-                        <a href="dashboard.php?page=job-card-view&id=<?= $row['job_id'] ?>">
-                    <?php
-                    break;
-            }
-                    ?>
-                    <h2 class="card-title">Job# <?= $row['jobcard_number'] ?>,&nbsp;Plant: <?= $plant_['reg_number'] ?></h2>
-                        </a>
-                        <p class="card-subtitle">Opened by: <?= $logged_by['name'] ?></p>
-                        <div class="progress progress-xl progress-half-rounded m-2">
-                            <div class="progress-bar progress-bar-<?= $color ?>" role="progressbar" aria-valuenow="<?= $progess ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $progess ?>%;"><?= $progess ?>%</div>
-                        </div>
+                    case "busy":
+                        switch ($row['jobcard_type']) {
+                            case 'breakdown':
+                        ?>
+                                <a href="dashboard.php?page=job-card-view&id=<?= $row['job_id'] ?>">
+                                <?php
+                                break;
+
+                            case 'service':
+                                ?>
+                                    <a href="dashboard.php?page=plant-schedule&id=<?= $row['job_id'] ?>">
+                        <?php
+                                break;
+                        }
+                }
+                        ?>
+                        <h2 class="card-title">Job# <?= $row['jobcard_number'] ?>,&nbsp;Plant: <?= $plant_['plant_number'] ?>, Type: <?= ucfirst($row['jobcard_type']) ?>, Status: <?= ucfirst($row['status']) ?></h2>
+                                    </a>
+                                    <p class="card-subtitle">Opened by: <?= $logged_by['name'] ?></p>
+                                    <div class="progress progress-xl progress-half-rounded m-2">
+                                        <div class="progress-bar progress-bar-<?= $color ?>" role="progressbar" aria-valuenow="<?= $progess ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $progess ?>%;"><?= $progess ?>%</div>
+                                    </div>
         </div>
     </section>
 </div>

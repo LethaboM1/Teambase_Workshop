@@ -3,6 +3,7 @@ if (isset($_POST['remove_user'])) {
     $remove_user = dbq("delete from plant_user_tbl where user_id='{$_POST['user_id']}' and plant_id='{$_POST['plant_id']}'");
     if ($remove_user) {
         msg('User removed!');
+        go("dashboard.php?page=view-plant&id={$_GET['id']}");
     } else {
         sqlError();
     }
@@ -28,7 +29,7 @@ if (isset($_POST['add_users'])) {
                     } else {
                         msg('User added!');
                     }
-                    go("page=view-plant&id={$_GET['id']}");
+                    go("dashboard.php?page=view-plant&id={$_GET['id']}");
                 }
             }
         }

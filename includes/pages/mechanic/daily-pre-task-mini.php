@@ -1,34 +1,3 @@
-<?php
-
-if (isset($_GET['id'])) {
-	$get_jobcard = dbq("select * from jobcards where job_id={$_GET['id']} and mechanic_id={$_SESSION['user']['user_id']}");
-	if ($get_jobcard) {
-		if (dbr($get_jobcard) > 0) {
-			$jobcard_ = dbf($get_jobcard);
-			$get_plant = dbq("select * from plants_tbl where plant_id={$jobcard_['plant_id']}");
-			if ($get_plant) {
-				if (dbr($get_plant)) {
-					$plant_ = dbf($get_plant);
-				} else {
-					error("invalid plant.");
-					go('dashboard.php?page=open-job');
-				}
-			} else {
-				sqlError();
-				go('dashboard.php?page=open-job');
-			}
-		} else {
-			error("invalid job card.");
-			go('dashboard.php?page=open-job');
-		}
-	} else {
-		sqlError();
-		go('dashboard.php?page=open-job');
-	}
-} else {
-	go('dashboard.php?page=open-job');
-}
-?>
 <div class="row">
 	<div class="col-xl-12">
 		<form method="post">
@@ -49,7 +18,7 @@ if (isset($_GET['id'])) {
 						</div>
 						<div class="col-sm-6 col-md-4 col-lg-4">
 							<label class="col-form-label" for="formGroupExampleInput">Plant No.</label>
-							<input type="text" name="plantnumber" placeholder="Plant No." class="form-control" value="<?= $plant_['fleet_number'] . ' ' . $plant_['reg_number'] . ' ' . $plant_['make'] . ' ' . $plant_['model'] ?>" disabled>
+							<input type="text" name="plantnumber" placeholder="Plant No." class="form-control" value="<?= $plant_['plant_number'] . ' ' . $plant_['reg_number'] . ' ' . $plant_['make'] . ' ' . $plant_['model'] ?>" disabled>
 						</div>
 					</div>
 					<hr>

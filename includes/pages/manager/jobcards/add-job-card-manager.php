@@ -7,24 +7,25 @@
 					<p class="card-subtitle">Add new job card.</p>
 				</header>
 				<div class="card-body">
+					<div class="row">
 
-					<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-						<label class="col-form-label" for="formGroupExampleInput">Job Number</label>
-						<input type="text" name="job_number" placeholder="HG5452" class="form-control">
-					</div>
-					<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+							<label class="col-form-label" for="formGroupExampleInput">Job Number</label>
+							<input type="text" name="jobcard_number" placeholder="HG5452" class="form-control">
+						</div>
+						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 
-						<?php
-						$get_plants = dbq("select concat(plant_number,' - ',vehicle_type,' ',make,' ',model) as name, plant_id as value from plants_tbl where active=1");
-						if ($get_plants) {
-							if (dbr($get_plants) > 0) {
-								while ($plant = dbf($get_plants)) {
-									$plant_select_[] = $plant;
+							<?php
+							$get_plants = dbq("select concat(plant_number,' - ',vehicle_type,' ',make,' ',model) as name, plant_id as value from plants_tbl where active=1");
+							if ($get_plants) {
+								if (dbr($get_plants) > 0) {
+									while ($plant = dbf($get_plants)) {
+										$plant_select_[] = $plant;
+									}
 								}
 							}
-						}
-						echo inp('plant_id', 'Plant Number', 'datalist', '', '', 0, $plant_select_);
-						$jscript .= "
+							echo inp('plant_id', 'Plant Number', 'datalist', '', '', 0, $plant_select_);
+							$jscript .= "
 										$('#plant_id').change(function () {
 											console.log('Changed!');
 											$.ajax({
@@ -37,29 +38,21 @@
 												success: function (result) {
 													let data = JSON.parse(result);
 													if (data.status == 'ok') {
-														
-														if (data.result.reading_type == 'km') {
-															console.log('Changed km!');
-															$('#km_details').show();
-															$('#hr_details').hide();
+														switch (data.result.reading_type) {
+															case 'km':
+															$('#reading_inp').val(data.result.km_reading);
+															$('#reading').val(data.result.km_reading);
+															$('#reading_lbl').html('(KM)');
+															$('#reading_type').val('km');
+															break;
 
-															if (data.result.km_reading == null) {
-																data.result.km_reading = 0;
-															}
-
-															$('#lastkmreading').val(data.result.km_reading);
-														} else {console.log('Changed hr!');
-															$('#hr_details').show();
-															$('#km_details').hide();
-
-															if (data.result.hr_reading == null) {
-																data.result.hr_reading = 0;
-															}
-															
-															$('#lasthrreading').val(data.result.hr_reading);
+															case 'hr':
+																$('#reading_inp').val(data.result.hr_reading);
+																$('#reading').val(data.result.hr_reading);
+																$('#reading_lbl').html('(HR)');
+																$('#reading_type').val('hr');
+															break;
 														}
-
-														
 
 													} else {
 														console.log(data.message);
@@ -68,58 +61,48 @@
 											});
 										});
 										";
-						?>
-					</div>
-					<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-						<label class="col-form-label" for="formGroupExampleInput">Site</label>
-						<input type="datetime-local" name="site" placeholder="" class="form-control" value="">
-					</div>
-					<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-						<label class="col-form-label" for="formGroupExampleInput">Date</label>
-						<input type="datetime-local" name="job_date" placeholder="" class="form-control" value="<?= date('Y-m-d H:i:s') ?>">
-					</div>
+							?>
+						</div>
 
-					<div style='display:none;' id="hr_details">
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<label class="col-form-label" for="formGroupExampleInput">Last HR Reading</label>
-							<input id="lasthrreading" type="text" name="lasthrreading" placeholder="Last HR Reading" class="form-control" disabled>
+							<label class="col-form-label" for="formGroupExampleInput">Reading <span id="reading_lbl"></span></label>
+							<?= inp('reading_type', '', 'hidden') ?>
+							<?= inp('reading', '', 'hidden') ?>
+							<input id="reading_inp" type="text" name="reading" placeholder="Reading" class="form-control" disabled>
 						</div>
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<label class="col-form-label" for="formGroupExampleInput">HR Reading</label>
-							<input id="hr_reading" type="text" name="hr_reading" placeholder="HR Reading" class="form-control">
-						</div>
-					</div>
-					<div style='display:none;' id="km_details">
-						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<label class="col-form-label" for="formGroupExampleInput">Last KM Reading</label>
-							<input id="lastkmreading" type="text" name="lastkmreading" placeholder="Last KM Reading" class="form-control" disabled>
+							<label class="col-form-label" for="formGroupExampleInput">Site</label>
+							<input type="text" name="site" placeholder="Site" class="form-control" value="">
 						</div>
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<label class="col-form-label" for="formGroupExampleInput">KM Reading</label>
-							<input id="km_reading" type="text" name="km_reading" placeholder="KM Reading" class="form-control">
+							<label class="col-form-label" for="formGroupExampleInput">Date</label>
+							<input type="datetime-local" name="job_date" placeholder="" class="form-control" value="<?= date('Y-m-d H:i:s') ?>">
 						</div>
-					</div>
-					<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-						<label class="col-form-label" for="formGroupExampleInput">Allocated Hours</label>
-						<input type="text" name="hours" placeholder="Allocated Hours" class="form-control">
-					</div>
+						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+							<label class="col-form-label" for="formGroupExampleInput">Allocated Hours</label>
+							<input type="number" name="allocated_hours" placeholder="Allocated Hours" class="form-control" value="1">
+						</div>
+						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+							<?php
 
-					<?php
-
-					$mechanic_select_list[] = ['name' => 'Select Mechanic', 'value' => '0'];
-					$get_mechanics = dbq("select concat(name,' ',last_name) as name, user_id as value from users_tbl where role='mechanic' and active=1");
-					if ($get_mechanics) {
-						if (dbr($get_mechanics) > 0) {
-							while ($mechanic = dbf($get_mechanics)) {
-								$mechanic_select_list[] = $mechanic;
+							$mechanic_select_list[] = ['name' => 'Select Mechanic', 'value' => '0'];
+							$get_mechanics = dbq("select concat(name,' ',last_name) as name, user_id as value from users_tbl where role='mechanic' and active=1");
+							if ($get_mechanics) {
+								if (dbr($get_mechanics) > 0) {
+									while ($mechanic = dbf($get_mechanics)) {
+										$mechanic_select_list[] = $mechanic;
+									}
+								}
 							}
-						}
-					}
-					echo inp('mechanic_id', 'Select Mechanic', 'select', '', '', 0, $mechanic_select_list);
-					?>
-					<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-						<label class="col-form-label" for="formGroupExampleInput">Vehicle Used to Site</label>
-						<input type="text" name="vehicleUsed" placeholder="Vehicle Used to Site" class="form-control">
+							echo inp('mechanic_id', 'Select Mechanic', 'select', '', '', 0, $mechanic_select_list);
+							?>
+						</div>
+						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+							<?= inp('jobcard_type', 'Jobcard Type', 'select', '', '', 0, [['name' => 'Breakdown', 'value' => 'breakdown'], ['name' => 'Service', 'value' => 'service']]) ?>
+						</div>
+						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+							<?= inp('priority', 'Priority', 'select', '', '', 0, [['name' => 'High', 'value' => 1], ['name' => 'Medium', 'value' => 2], ['name' => 'Low', 'value' => 3]]) ?>
+						</div>
 					</div>
 				</div>
 				<footer class="card-footer text-end">

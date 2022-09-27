@@ -276,23 +276,63 @@ switch ($plant_['reading_type']) {
 				&nbsp;&nbsp;&nbsp;<a class="mb-1 mt-1 mr-1 modal-sizes" href="#modalviewPlant">
 					<?php
 					switch ($row['status']) {
+
+						case "ready":
+							echo "<i title='Start work' class='fa-solid fa-circle-check fa-2x'></i>";
+							break;
+
 						case "busy":
 							echo '<i title="Stop work" class="fa-regular fa-hand fa-2x"></i>';
 							break;
 
 						case "check":
-							echo '<i title="Start work" class="fa-regular fa-hand fa-2x"></i>';
+							echo '<i title="Start work" class="fa-solid fa-play fa-2x"></i>';
 							break;
 					}
 					?>
+				</a>
 
-					<div id="modalviewPlant" class="modal-block modal-block-lg mfp-hide">
-						<section class="card">
+				<div id="modalviewPlant" class="modal-block modal-block-lg mfp-hide">
+					<section class="card">
+						<?php
+						if ($row['operator_id'] == $_SESSION['user']['user_id']) {
+						?>
+							<header class="card-header">
+								<h2 class="card-title">Driver / Operator Log Sheet</h2>
+							</header>
+							<div class="card-body">
+								<div class="modal-wrapper">
+									<div class="modal-text">
+										<div class="row">
+											<form method="post">
+												<?php
+												switch ($plant_['status']) {
+													case "check":
+														require "./includes/pages/user/log-sheet-start.php";
+														break;
+
+													case "busy":
+														require "./includes/pages/user/log-sheet-end.php";
+														break;
+
+													case "breakdown":
+														require "./includes/pages/user/log-sheet-end.php";
+														break;
+												}
+												?>
+
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
 							<?php
-							if ($row['operator_id'] == $_SESSION['user']['user_id']) {
+						} else {
+							if ($plant_['status'] == 'ready') {
 							?>
+
 								<header class="card-header">
-									<h2 class="card-title">Driver / Operator Log Sheet</h2>
+									<h2 class="card-title">Allocate Plant</h2>
 								</header>
 								<div class="card-body">
 									<div class="modal-wrapper">
@@ -300,70 +340,36 @@ switch ($plant_['reading_type']) {
 											<div class="row">
 												<form method="post">
 													<?php
-													switch ($plant_['status']) {
-														case "check":
-															require "./includes/pages/user/log-sheet-start.php";
-															break;
-
-														case "busy":
-															require "./includes/pages/user/log-sheet-end.php";
-															break;
-
-														case "breakdown":
-															require "./includes/pages/user/log-sheet-end.php";
-															break;
-													}
+													$plant_id = $row['plant_id'];
+													require "./includes/pages/user/checklist.php";
 													?>
-
 												</form>
 											</div>
 										</div>
 									</div>
 								</div>
-								<?php
-							} else {
-								if ($plant_['status'] == 'ready') {
-								?>
-
-									<header class="card-header">
-										<h2 class="card-title">Allocate Plant</h2>
-									</header>
-									<div class="card-body">
-										<div class="modal-wrapper">
-											<div class="modal-text">
-												<div class="row">
-													<form method="post">
-														<?php
-														$plant_id = $row['plant_id'];
-														require "./includes/pages/user/checklist.php";
-														?>
-													</form>
-												</div>
-											</div>
-										</div>
-									</div>
-							<?php
-								}
+						<?php
 							}
-							?>
-							<footer class="card-footer">
-								<div class="row">
-									<div class="col-md-12 text-right">
-										<form method="post">
-											<button class="btn btn-default modal-dismiss">Cancel</button>
-										</form>
-									</div>
+						}
+						?>
+						<footer class="card-footer">
+							<div class="row">
+								<div class="col-md-12 text-right">
+									<form method="post">
+										<button class="btn btn-default modal-dismiss">Cancel</button>
+									</form>
 								</div>
-							</footer>
-						</section>
-					</div>
-					<?php
-					//}
-					?>
-					<!-- Modal view End -->
-					<!-- Plant Card End -->
+							</div>
+						</footer>
+					</section>
+				</div>
+				<?php
+				//}
+				?>
+				<!-- Modal view End -->
+				<!-- Plant Card End -->
 			</div>
-			<h2 class="card-title">Plant# <?= $row['reg_number'] ?></h2>
+			<h2 class="card-title">Plant# <?= $row['reg_number'] ?>, Status: <?= ucfirst($plant_['status']) ?></h2>
 			<p class="card-subtitle">Status: <?= ucfirst($row['status']) ?></p>
 
 		</div>

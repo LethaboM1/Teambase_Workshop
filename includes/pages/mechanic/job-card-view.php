@@ -1,33 +1,3 @@
-<?php
-if (isset($_GET['id'])) {
-	$get_jobcard = dbq("select * from jobcards where job_id={$_GET['id']} and mechanic_id={$_SESSION['user']['user_id']}");
-	if ($get_jobcard) {
-		if (dbr($get_jobcard) > 0) {
-			$jobcard_ = dbf($get_jobcard);
-			$get_plant = dbq("select * from plants_tbl where plant_id={$jobcard_['plant_id']}");
-			if ($get_plant) {
-				if (dbr($get_plant)) {
-					$plant_ = dbf($get_plant);
-				} else {
-					error("invalid plant.");
-					go('dashboard.php?page=open-job');
-				}
-			} else {
-				sqlError();
-				go('dashboard.php?page=open-job');
-			}
-		} else {
-			error("invalid job card.");
-			go('dashboard.php?page=open-job');
-		}
-	} else {
-		sqlError();
-		go('dashboard.php?page=open-job');
-	}
-} else {
-	go('dashboard.php?page=open-job');
-}
-?>
 <div class="row">
 	<div class="col-lg-12 mb-3">
 		<form method="post" id="addplant">
@@ -280,60 +250,34 @@ if (isset($_GET['id'])) {
 						<div class="modal-text">
 							<div class="row">
 								<div class="col-sm-12 col-md-4">
-									<label class="col-form-label">Plant #</label>
-									<input type="text" name="plant_number" placeholder="plant_number" class="form-control">
-								</div>
-								<div class="col-sm-12 col-md-4">
-									<label class="col-form-label">Date</label>
-									<input type="date" name="date" class="form-control">
-								</div>
-								<div class="col-sm-12 col-md-4">
-									<label class="col-form-label">Site</label>
-									<input type="text" name="site" placeholder="site" class="form-control">
-								</div>
-								<div class="col-sm-12 col-md-4">
-									<label class="col-form-label">HRS</label>
-									<input type="text" name="HRS" placeholder="HRS" class="form-control">
-								</div>
-								<div class="col-sm-12 col-md-4">
-									<label class="col-form-label">KM</label>
-									<input type="text" name="KM" placeholder="KM" class="form-control">
-								</div>
-								<!-- Pull From Job Card -->
-								<div class="col-sm-12 col-md-4">
-									<label class="col-form-label">Job Number</label>
-									<input type="text" name="jobnumber" placeholder="jobnumber" class="form-control">
+									<label class="col-form-label">Date/Time</label>
+									<?php
+									$datetime = date("Y-m-d\TH:i:s");
+									echo inp('request_date', '', 'hidden', $datetime)
+									?>
+									<input type="datetime-local" name="date" class="form-control" value="<?= $datetime ?>" disabled>
 								</div>
 							</div>
 							<hr>
 							<div class="row">
 								<div class="col-sm-3 col-md-3">
-									<label class="col-form-label">QTY</label>
-									<input type="number" name="qty" placeholder="qty" class="form-control">
+									<label class="col-form-label">Qty</label>
+									<input type="number" name="qty" placeholder="qty" min='1' value="1" class="form-control">
 								</div>
 								<div class="col-sm-3 col-md-3">
 									<label class="col-form-label">Part Number</label>
-									<input type="text" name="partnumber" placeholder="Part Number" class="form-control">
+									<input type="text" name="part_number" placeholder="Part Number" class="form-control">
 								</div>
 								<div class="col-sm-6 col-md-6">
 									<label class="col-form-label">Description</label>
-									<input type="text" name="description" placeholder="Description" class="form-control">
+									<input type="text" name="part_description" placeholder="Description" class="form-control">
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-sm-12 col-md-12">
 									<label class="col-form-label">Comment</label>
-									<textarea class="form-control" rows="3" id="textareaDefault"></textarea>
+									<textarea name="comment" class="form-control" rows="3" id="textareaDefault"></textarea>
 								</div>
-								<div class="col-sm-4 col-md-4"><br>
-									<button type="button" class="btn btn-primary">Add Part</button>
-								</div>
-							</div>
-							<hr>
-							<div class="row">
-								<p>Requested by: </p><br>
-								<p>Approved by: </p><br>
-								<p>BS REQ #: </p>
 							</div>
 						</div>
 					</div>
@@ -341,8 +285,8 @@ if (isset($_GET['id'])) {
 				<footer class="card-footer">
 					<div class="row">
 						<div class="col-md-12 text-right">
-							<button type="submit" name="submit_bo" class="btn btn-default">Submit BO</button>
-							<button class="btn btn-default modal-dismiss">Cancel</button>
+							<button name='add_part' type="submit" class="btn btn-primary">Add Part</button>
+							&nbsp;<button class="btn btn-default modal-dismiss">Cancel</button>
 						</div>
 					</div>
 				</footer>
@@ -436,7 +380,11 @@ if (isset($_GET['id'])) {
 													<div class="card-body">
 														<div class="modal-wrapper">
 															<div class="modal-text">
-																<p>Event info here...</p>
+																<b>Start Date/Time</b>&nbsp;' . $event['start_datetime'] . '<br>
+																<b>End Date/Time</b>&nbsp;' . $event['end_datetime'] . '<br>
+																<b>Event Type</b>&nbsp;' . $event['event'] . '<br>
+																<b>Total Hours</b>&nbsp;' . $event['total_hours'] . '<br>
+																<b>Comment</b><br>' . $event['comment'] . '<br>
 
 															</div>
 														</div>
@@ -483,35 +431,45 @@ if (isset($_GET['id'])) {
 				<div class="header-right">
 					<a class="mb-1 mt-1 mr-1 modal-basic" href="#modalrequestspare"><button class="btn btn-primary">Request Spares</button></a>
 				</div>
-				<table width="1047" class="table table-responsive-md mb-0">
+				<table class="table table-responsive-md mb-0">
 					<thead>
 						<tr>
-							<th width="100">Date</th>
-							<th width="100">Type</th>
-							<th width="120">Time Worked</th>
-							<th width="120">QC</th>
-							<th width="459">Comments</th>
-							<th width="120">Action</th>
+							<th>Date/Time</th>
+							<th>Part No.</th>
+							<th>Description</th>
+							<th>Qty</th>
+							<th>Comment</th>
+							<th>Status</th>
+							<th>Status:Comment</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td class="actions">
-								<!-- Modal Edit Event -->
-								<a class="mb-1 mt-1 mr-1 modal-basic" href="#modaleditspare"><i class="fas fa-pencil-alt"></i></a>
-								<!-- Modal Edit Event End -->
-								<!-- Modal Delete -->
-								<a class="mb-1 mt-1 mr-1 modal-basic" href="#modalviewspare"><i class="fa-solid fa-eye"></i></a>
-								<!-- Modal Delete End -->
-							</td>
-						</tr>
+						<?php
+						$get_jobcard_requesitions = dbq("select * from jobcard_requisitions where job_id={$_GET['id']}");
+						if ($get_jobcard_requesitions) {
+							if (dbr($get_jobcard_requesitions) > 0) {
+								while ($row = dbf($get_jobcard_requesitions)) {
+									echo "<tr>
+													<td>{$row['datetime']}</td>
+													<td>{$row['part_number']}</td>
+													<td>{$row['part_description']}</td>
+													<td>{$row['qty']}</td>
+													<td>{$row['comment']}</td>
+													<td>" . ucfirst($row['status']) . "</td>
+													<td>{$row['status_comment']}</td>
+											</tr>";
+								}
+							} else {
+								echo "<tr><td colspan='7'>Nothing to list...</td></tr>";
+							}
+						} else {
+							echo "<tr><td colspan='7'>Error: " . dbe() . "</td></tr>";
+						}
+
+						?>
 					</tbody>
 				</table>
+				<hr>
 			</div>
 		</section>
 	</div>

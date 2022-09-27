@@ -10,7 +10,7 @@ switch ($_GET['page']) {
     case 'add-job':
         $page_title = 'Request New Job Card';
         $page_name = 'mechanic/add-job-card';
-        include "./includes/forms/mechanic/jobcards/add-job-card.php";
+        require "./includes/forms/mechanic/jobcards/add-job-card.php";
         break;
 
     case 'open-job':
@@ -21,7 +21,7 @@ switch ($_GET['page']) {
     case 'daily-pre-task-mini':
         $page_title = 'Daily Pre-Task Mini Risk Assessment';
         $page_name = 'mechanic/daily-pre-task-mini';
-        include "./includes/forms/mechanic/jobcards/daily-pre-task-mini.php";
+        require "./includes/forms/mechanic/jobcards/daily-pre-task-mini.php";
         break;
 
     case 'plant-inspection':
@@ -37,13 +37,15 @@ switch ($_GET['page']) {
     case 'plant-schedule':
         $page_title = 'Plant Service Schedule';
         $page_name = 'mechanic/plant-schedule';
+        require "./includes/forms/mechanic/jobcards/plant-schedule.php";
         break;
 
     case 'job-card-view':
         $page_title = 'View Job Card';
         $page_name = 'mechanic/job-card-view';
-        include "./includes/forms/mechanic/jobcards/job-card-view.php";
+        require "./includes/forms/mechanic/jobcards/job-card-view.php";
         break;
+
 
     default:
         $page_title = 'Dashboard Overview';

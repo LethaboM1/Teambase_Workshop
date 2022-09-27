@@ -1,63 +1,48 @@
-<!-- Possitive Alert User Added -->
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-	<strong>Well done!</strong> Daily Pre-Task Completed!
-	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-hidden="true" aria-label="Close"></button>
-</div>
-<!-- Negative Alert Delete User-->
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
-	<strong>Oh snap!</strong> something went wrong!
-	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-hidden="true" aria-label="Close"></button>
-</div>
-<!-- Negative Alert End -->
 <div class="row">
 	<div class="col-xl-12">
-		<form action="" id="mini_risk">
-			<section class="card">
-				<header class="card-header">
-					<h2 class="card-title">Plant Service Schedule</h2>
-				</header>
-				<div class="card-body">
-					<div class="row">
-						<div class="col-sm-6 col-md-6 col-lg-6">
-							<label class="col-form-label" for="formGroupExampleInput">Plant No.</label>
-							<input type="text" name="plantnumber" placeholder="Plant No." class="form-control">
-						</div>
-						<div class="col-sm-6 col-md-6 col-lg-6">
-							<label class="col-form-label" for="formGroupExampleInput">Date</label>
-							<input type="date" name="date" placeholder="" class="form-control">
-						</div>
-						<div class="col-sm-6 col-md-6 col-lg-6">
-							<label class="col-form-label" for="formGroupExampleInput">HRS/KM</label>
-							<input type="text" name="hrs" placeholder="HRS/KM" class="form-control">
-						</div>
-						<div class="col-sm-6 col-md-6 col-lg-6">
-							<label class="col-form-label" for="formGroupExampleInput">Mechanic</label>
-							<input type="text" name="mechanic" placeholder="Mechanic" class="form-control">
-						</div>
-						<div class="col-sm-6 col-md-6 col-lg-6">
-							<label class="col-form-label" for="formGroupExampleInput">Job Number</label>
-							<input type="text" name="jobnumber" placeholder="Job Number" class="form-control">
-						</div>
+		<section class="card">
+			<header class="card-header">
+				<h2 class="card-title">Plant Service Schedule</h2>
+			</header>
+			<div class="card-body">
+				<div class="row">
+					<div class="col-sm-6 col-md-6 col-lg-6">
+						<label class="col-form-label" for="formGroupExampleInput">Job Number</label>
+						<input type="text" name="jobnumber" placeholder="Job Number" class="form-control" value="<?= $jobcard_['jobcard_number'] ?>" disabled>
 					</div>
-					<hr>
-					<div class="row">
-						<div class="col-sm-3 col-md-3 col-lg-3">
-							<h4><strong>A:</strong> (A) Routine Oil Change</h4>
-						</div>
-						<div class="col-sm-3 col-md-3 col-lg-3">
-							<h4><strong>B:</strong> (A+B) Minor Service</h4>
-						</div>
-						<div class="col-sm-3 col-md-3 col-lg-3">
-							<h4><strong>C:</strong> (A+B+C) Major Service</h4>
-						</div>
-						<div class="col-sm-3 col-md-3 col-lg-3">
-							<h4><strong>D:</strong> (A+B+C+D) Extended Major Service</h4>
-						</div>
-						<div class="col-sm-12 col-md-12 col-lg-12">
-							<h4>Carry out all items where applicable: 0 - Compulsory | C - Check</h4>
-						</div>
+					<div class="col-sm-6 col-md-6 col-lg-6">
+						<label class="col-form-label" for="formGroupExampleInput">Plant No.</label>
+						<input type="text" name="plantnumber" placeholder="Plant No." class="form-control" value="<?= $plant_['plant_number'] ?>" disabled>
 					</div>
-					<hr>
+					<div class="col-sm-6 col-md-6 col-lg-6">
+						<label class="col-form-label" for="formGroupExampleInput">Date Logged</label>
+						<input type="datetime-local" name="date" placeholder="" class="form-control" value="<?= $jobcard_['job_date'] ?>" disabled>
+					</div>
+					<div class="col-sm-6 col-md-6 col-lg-6">
+						<label class="col-form-label" for="formGroupExampleInput">(<?= strtoupper($plant_['reading_type']) ?>) Reading</label>
+						<input type="text" name="hrs" placeholder="HRS/KM" class="form-control" value="<?= $plant_[$plant_['reading_type'] . '_reading'] ?>" disabled>
+					</div>
+				</div>
+				<hr>
+				<div class="row">
+					<div class="col-sm-3 col-md-3 col-lg-3">
+						<h4><strong>A:</strong> (A) Routine Oil Change</h4>
+					</div>
+					<div class="col-sm-3 col-md-3 col-lg-3">
+						<h4><strong>B:</strong> (A+B) Minor Service</h4>
+					</div>
+					<div class="col-sm-3 col-md-3 col-lg-3">
+						<h4><strong>C:</strong> (A+B+C) Major Service</h4>
+					</div>
+					<div class="col-sm-3 col-md-3 col-lg-3">
+						<h4><strong>D:</strong> (A+B+C+D) Extended Major Service</h4>
+					</div>
+					<div class="col-sm-12 col-md-12 col-lg-12">
+						<h4>Carry out all items where applicable: 0 - Compulsory | C - Check</h4>
+					</div>
+				</div>
+				<hr>
+				<form method="post">
 					<div class="row">
 						<table class="table table-responsive-md table-bordered mb-0 dark">
 							<thead>
@@ -413,60 +398,63 @@
 								</tr>
 							</tbody>
 						</table>
+						<?= inp('save_progress', '', 'submit', 'Save', 'btn-primary') ?>
 					</div>
-					<br>
-					<br>
-					<div class="row">
-						<!-- Modal view -->
-						<div id="modaleditspare" class="modal-block modal-block-lg mfp-hide">
-							<section class="card">
-								<header class="card-header">
-									<h2 class="card-title">Edit Spares</h2>
-								</header>
-								<div class="card-body">
-									<div class="modal-wrapper">
-										<div class="modal-text">
-											<p>Spare info here...</p>
+				</form>
+				<br>
+				<br>
+				<div class="row">
+					<!-- Modal view -->
+					<div id="modaleditspare" class="modal-block modal-block-lg mfp-hide">
+						<section class="card">
+							<header class="card-header">
+								<h2 class="card-title">Edit Spares</h2>
+							</header>
+							<div class="card-body">
+								<div class="modal-wrapper">
+									<div class="modal-text">
+										<p>Spare info here...</p>
 
-										</div>
 									</div>
 								</div>
-								<footer class="card-footer">
-									<div class="row">
-										<div class="col-md-12 text-right">
-											<button class="btn btn-default modal-dismiss">Cancel</button>
-										</div>
-									</div>
-								</footer>
-							</section>
-						</div>
-						<!-- Modal view End -->
-						<!-- Modal view -->
-						<div id="modalviewspare" class="modal-block modal-block-lg mfp-hide">
-							<section class="card">
-								<header class="card-header">
-									<h2 class="card-title">View Spares</h2>
-								</header>
-								<div class="card-body">
-									<div class="modal-wrapper">
-										<div class="modal-text">
-											<p>spares info here...</p>
-
-										</div>
+							</div>
+							<footer class="card-footer">
+								<div class="row">
+									<div class="col-md-12 text-right">
+										<button class="btn btn-default modal-dismiss">Cancel</button>
 									</div>
 								</div>
-								<footer class="card-footer">
-									<div class="row">
-										<div class="col-md-12 text-right">
-											<button class="btn btn-default modal-dismiss">Cancel</button>
-										</div>
+							</footer>
+						</section>
+					</div>
+					<!-- Modal view End -->
+					<!-- Modal view -->
+					<div id="modalviewspare" class="modal-block modal-block-lg mfp-hide">
+						<section class="card">
+							<header class="card-header">
+								<h2 class="card-title">View Spares</h2>
+							</header>
+							<div class="card-body">
+								<div class="modal-wrapper">
+									<div class="modal-text">
+										<p>spares info here...</p>
+
 									</div>
-								</footer>
-							</section>
-						</div>
-						<!-- Modal view End -->
-						<!-- Modal view -->
-						<div id="modalrequestspare" class="modal-block modal-block-lg mfp-hide">
+								</div>
+							</div>
+							<footer class="card-footer">
+								<div class="row">
+									<div class="col-md-12 text-right">
+										<button class="btn btn-default modal-dismiss">Cancel</button>
+									</div>
+								</div>
+							</footer>
+						</section>
+					</div>
+					<!-- Modal view End -->
+					<!-- Modal view -->
+					<div id="modalrequestspare" class="modal-block modal-block-lg mfp-hide">
+						<form method="post">
 							<section class="card">
 								<header class="card-header">
 									<h2 class="card-title">Spares Requisition BO</h2>
@@ -476,60 +464,34 @@
 										<div class="modal-text">
 											<div class="row">
 												<div class="col-sm-12 col-md-4">
-													<label class="col-form-label">Plant #</label>
-													<input type="text" name="plantnumber" placeholder="plantnumber" class="form-control">
-												</div>
-												<div class="col-sm-12 col-md-4">
-													<label class="col-form-label">Date</label>
-													<input type="date" name="date" class="form-control">
-												</div>
-												<div class="col-sm-12 col-md-4">
-													<label class="col-form-label">Site</label>
-													<input type="text" name="site" placeholder="site" class="form-control">
-												</div>
-												<div class="col-sm-12 col-md-4">
-													<label class="col-form-label">HRS</label>
-													<input type="text" name="HRS" placeholder="HRS" class="form-control">
-												</div>
-												<div class="col-sm-12 col-md-4">
-													<label class="col-form-label">KM</label>
-													<input type="text" name="KM" placeholder="KM" class="form-control">
-												</div>
-												<!-- Pull From Job Card -->
-												<div class="col-sm-12 col-md-4">
-													<label class="col-form-label">Job Number</label>
-													<input type="text" name="jobnumber" placeholder="jobnumber" class="form-control">
+													<label class="col-form-label">Date/Time</label>
+													<?php
+													$datetime = date("Y-m-d\TH:i:s");
+													echo inp('request_date', '', 'hidden', $datetime)
+													?>
+													<input type="datetime-local" name="date" class="form-control" value="<?= $datetime ?>" disabled>
 												</div>
 											</div>
 											<hr>
 											<div class="row">
 												<div class="col-sm-3 col-md-3">
-													<label class="col-form-label">QTY</label>
-													<input type="number" name="qty" placeholder="qty" class="form-control">
+													<label class="col-form-label">Qty</label>
+													<input type="number" name="qty" placeholder="qty" min='1' value="1" class="form-control">
 												</div>
 												<div class="col-sm-3 col-md-3">
 													<label class="col-form-label">Part Number</label>
-													<input type="text" name="partnumber" placeholder="Part Number" class="form-control">
+													<input type="text" name="part_number" placeholder="Part Number" class="form-control">
 												</div>
 												<div class="col-sm-6 col-md-6">
 													<label class="col-form-label">Description</label>
-													<input type="text" name="description" placeholder="Description" class="form-control">
+													<input type="text" name="part_description" placeholder="Description" class="form-control">
 												</div>
 											</div>
 											<div class="row">
 												<div class="col-sm-12 col-md-12">
 													<label class="col-form-label">Comment</label>
-													<textarea class="form-control" rows="3" id="textareaDefault"></textarea>
+													<textarea name="comment" class="form-control" rows="3" id="textareaDefault"></textarea>
 												</div>
-												<div class="col-sm-4 col-md-4"><br>
-													<button type="button" class="btn btn-primary">Add Part</button>
-												</div>
-											</div>
-											<hr>
-											<div class="row">
-												<p>Requested by: </p><br>
-												<p>Approved by: </p><br>
-												<p>BS REQ #: </p>
 											</div>
 										</div>
 									</div>
@@ -537,67 +499,77 @@
 								<footer class="card-footer">
 									<div class="row">
 										<div class="col-md-12 text-right">
-											<button class="btn btn-default">Submit BO</button>
-											<button class="btn btn-default modal-dismiss">Cancel</button>
+											<button name='add_part' type="submit" class="btn btn-primary">Add Part</button>
+											&nbsp;<button class="btn btn-default modal-dismiss">Cancel</button>
 										</div>
 									</div>
 								</footer>
 							</section>
-						</div>
-						<!-- Modal view End -->
-						<div class="">
-							<section class="card">
-								<header class="card-header">
-									<h2 class="card-title">Spares Requisition BO</h2>
-								</header>
-								<div class="card-body">
-									<div class="header-right">
-										<a class="mb-1 mt-1 mr-1 modal-basic" href="#modalrequestspare"><button class="btn btn-primary">Request Spares</button></a>
-									</div>
-									<table width="1047" class="table table-responsive-md mb-0">
-										<thead>
-											<tr>
-												<th width="100">Date</th>
-												<th width="100">Type</th>
-												<th width="120">Time Worked</th>
-												<th width="120">Quality Check</th>
-												<th width="459">Comments</th>
-												<th width="120">Action</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td class="actions">
-													<!-- Modal Edit Event -->
-													<a class="mb-1 mt-1 mr-1 modal-basic" href="#modaleditspare"><i class="fas fa-pencil-alt"></i></a>
-													<!-- Modal Edit Event End -->
-													<!-- Modal Delete -->
-													<a class="mb-1 mt-1 mr-1 modal-basic" href="#modalviewspare"><i class="fa-solid fa-eye"></i></a>
-													<!-- Modal Delete End -->
-												</td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-							</section>
-						</div>
+						</form>
 					</div>
-					<hr>
-					<div class="row">
-						<label class="col-form-label">Chech and Comment</label>
-						<textarea class="form-control" rows="3" id="textareaDefault"></textarea>
+					<!-- Modal view End -->
+					<div class="">
+						<section class="card">
+							<header class="card-header">
+								<h2 class="card-title">Spares Requisition BO</h2>
+							</header>
+							<div class="card-body">
+								<div class="header-right">
+									<a class="mb-1 mt-1 mr-1 modal-basic" href="#modalrequestspare"><button class="btn btn-primary">Request Spares</button></a>
+								</div>
+								<table class="table table-responsive-md mb-0">
+									<thead>
+										<tr>
+											<th>Date/Time</th>
+											<th>Part No.</th>
+											<th>Description</th>
+											<th>Qty</th>
+											<th>Comment</th>
+											<th>Status</th>
+											<th>Status:Comment</th>
+										</tr>
+									</thead>
+									<tbody>
+										<?php
+										$get_jobcard_requesitions = dbq("select * from jobcard_requisitions where job_id={$_GET['id']}");
+										if ($get_jobcard_requesitions) {
+											if (dbr($get_jobcard_requesitions) > 0) {
+												while ($row = dbf($get_jobcard_requesitions)) {
+													echo "<tr>
+													<td>{$row['datetime']}</td>
+													<td>{$row['part_number']}</td>
+													<td>{$row['part_description']}</td>
+													<td>{$row['qty']}</td>
+													<td>{$row['comment']}</td>
+													<td>" . ucfirst($row['status']) . "</td>
+													<td>{$row['status_comment']}</td>
+											</tr>";
+												}
+											} else {
+												echo "<tr><td colspan='7'>Nothing to list...</td></tr>";
+											}
+										} else {
+											echo "<tr><td colspan='7'>Error: " . dbe() . "</td></tr>";
+										}
+
+										?>
+									</tbody>
+								</table>
+								<hr>
+							</div>
+						</section>
 					</div>
 				</div>
-				<footer class="card-footer text-end">
-					<button class="btn btn-primary">Submit Plant Service Schedule</button>
-					<button type="reset" class="btn btn-default">Reset</button>
-				</footer>
-			</section>
-		</form>
+				<hr>
+				<div class="row">
+					<label class="col-form-label">Chech and Comment</label>
+					<textarea class="form-control" rows="3" id="textareaDefault"></textarea>
+				</div>
+			</div>
+			<footer class="card-footer text-end">
+				<button class="btn btn-primary">Complete Service</button>
+				<button type="reset" class="btn btn-default">Reset</button>
+			</footer>
+		</section>
 	</div>
 </div>
