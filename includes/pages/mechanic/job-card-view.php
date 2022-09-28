@@ -436,11 +436,11 @@
 						<tr>
 							<th>Date/Time</th>
 							<th>Part No.</th>
-							<th class="d-none d-sm-block">Description</th>
+							<th class="d-none d-sm">Description</th>
 							<th>Qty</th>
-							<th class="d-none d-sm-block">Comment</th>
+							<th class="d-none d-sm">Comment</th>
 							<th>Status</th>
-							<th class="d-none d-sm-block">Status:Comment</th>
+							<th class="d-none d-sm">Status:Comment</th>
 							<th></th>
 						</tr>
 					</thead>
@@ -453,11 +453,11 @@
 									echo "<tr>
 													<td>{$row['datetime']}</td>
 													<td>{$row['part_number']}</td>
-													<td class='d-none d-sm-block'>{$row['part_description']}</td>
+													<td class='d-none d-sm'>{$row['part_description']}</td>
 													<td>{$row['qty']}</td>
-													<td class='d-none d-sm-block'>{$row['comment']}</td>
+													<td class='d-none d-sm'>{$row['comment']}</td>
 													<td>" . ucfirst($row['status']) . "</td>
-													<td class='d-none d-sm-block'>{$row['status_comment']}</td>
+													<td class='d-none d-sm'>{$row['status_comment']}</td>
 													<td class='actions'>
 														<a class='mb-1 mt-1 mr-1 modal-basic' href='#modalViewRequest_" . $row['request_id'] . "'><i class='fas fa-pencil-alt'></i></a>
 														<!-- Modal Edit Event End -->
