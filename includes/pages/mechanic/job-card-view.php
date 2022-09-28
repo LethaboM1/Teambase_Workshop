@@ -453,7 +453,7 @@
 									echo "<tr>
 													<td>{$row['datetime']}</td>
 													<td>{$row['part_number']}</td>
-													<td class='d-none d-sm-block table-cell'>{$row['part_description']}</td>
+													<td class='d-none d-sm-block-table-cell'>{$row['part_description']}</td>
 													<td>{$row['qty']}</td>
 													<td class='d-none d-sm'>{$row['comment']}</td>
 													<td>" . ucfirst($row['status']) . "</td>
