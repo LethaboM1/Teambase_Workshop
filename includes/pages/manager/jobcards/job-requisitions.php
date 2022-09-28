@@ -47,7 +47,7 @@
 	</div>
 	<div id="job_requisitions_list" class="col-xl-12">
 		<?php
-		$get_requisitions = dbq("select * from jobcard_requisitions where status!='completed' order by datetime");
+		$get_requisitions = dbq("select * from jobcard_requisitions where (status!='completed' && status!='canceled' && status!='denied') order by datetime");
 		if ($get_requisitions) {
 			if (dbr($get_requisitions) > 0) {
 				while ($row = dbf($get_requisitions)) {

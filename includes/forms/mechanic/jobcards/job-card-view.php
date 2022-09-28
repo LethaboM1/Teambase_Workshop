@@ -56,7 +56,7 @@ if (isset($_POST['complete_jobcard'])) {
                     sqlError();
                 }
             } else {
-                error("There are unresolved part requests for this job card. Management must cancel or deny this request before you can close the job card.");
+                error("There are unresolved part requests for this job card. Management must resolve this request before you can close the job card.");
             }
         } else {
             error("Invalid reading. Threshhold is 3.");
