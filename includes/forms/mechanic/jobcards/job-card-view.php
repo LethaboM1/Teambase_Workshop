@@ -104,7 +104,6 @@ if (isset($_POST['add_part'])) {
                                                 part_number='{$_POST['part_number']}',
                                                 part_description='{$_POST['part_description']}',
                                                 qty={$_POST['qty']},
-                                                comment='{$_POST['comment']}'
                                                 ");
             if ($add_part_request) {
                 msg("Part request send.");
