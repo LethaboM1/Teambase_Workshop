@@ -75,7 +75,6 @@ $request_status_select = [
 												<b>Qty</b>&nbsp;<?= $job_request['qty'] ?><br>
 												<br>
 												<br>
-												<br>
 											</div>
 											<div class="col-md-12">
 												<?= inp('request_id', '', 'hidden', $job_request['request_id'])
