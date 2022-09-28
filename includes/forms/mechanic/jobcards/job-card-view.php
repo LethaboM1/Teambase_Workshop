@@ -38,7 +38,11 @@ if (isset($_POST['delete_request'])) {
                 $person_ = dbf(dbq("select concat(name,' ',last_name) from users_tbl where user_id={$request_[$request_['status'] . '_by']}"));
                 error('This part has already neen approved.');
             }
+        } else {
+            error("Request not found.");
         }
+    } else {
+        sqlError();
     }
 }
 
