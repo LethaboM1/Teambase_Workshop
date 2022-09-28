@@ -34,8 +34,8 @@ if ($worked['hours'] == null) {
 }
 
 if ($row['allocated_hours'] > 0) {
-    $progess = $worked['hours'] / $row['allocated_hours'] * 100;
-    $progess = round($progess, 2);
+    $progress = $worked['hours'] / $row['allocated_hours'] * 100;
+    $progress = round($progress, 2);
 } else {
     $progress = 0;
 }
@@ -75,7 +75,7 @@ if ($row['allocated_hours'] > 0) {
                                                 <b>Make.</b>&nbsp;<?= $plant_['make'] ?><br>
                                                 <b>Reading (<?= strtoupper($plant_['reading_type']) ?>).</b>&nbsp;<?= $reading ?><br>
                                                 <b>Allocated Hrs.</b>&nbsp;<?= $row['allocated_hours'] ?><br>
-                                                <b>Progress.</b>&nbsp;<?= $progess ?>%<br>
+                                                <b>Progress.</b>&nbsp;<?= $progress ?>%<br>
 
                                             </div>
                                         </div>
@@ -136,7 +136,7 @@ if ($row['allocated_hours'] > 0) {
                 <h2 class="card-title">Job# <?= $row['jobcard_number'] ?>,&nbsp;Plant: <?= $plant_['plant_number'] ?></h2>
                 <p class="card-subtitle">Opened by: <?= $logged_by['name'] ?></p>
                 <div class="progress progress-xl progress-half-rounded m-2">
-                    <div class="progress-bar progress-bar-<?= $color ?>" role="progressbar" aria-valuenow="<?= $progess ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $progess ?>%;"><?= $progess ?>%</div>
+                    <div class="progress-bar progress-bar-<?= $color ?>" role="progressbar" aria-valuenow="<?= $progress ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $progress ?>%;"><?= $progress ?>%</div>
                 </div>
             </div>
         </a>
