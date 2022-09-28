@@ -517,7 +517,7 @@
 																<b>Qty</b>&nbsp;' . $row['qty'] . '<br>
 																<b>Comment</b>&nbsp;' . $row['comment'] . '<br>
 																<b>Status</b><br>' . $row['status'] . '<br>
-																<b>Status:Comment</b><br>' . $row['status_comment'] . '<br>
+																<b>Status:Comment</b><br>' . $comment_ . '<br>
 															</div>
 														</div>
 													</div>
