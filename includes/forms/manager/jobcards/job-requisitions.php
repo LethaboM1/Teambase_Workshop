@@ -9,7 +9,7 @@ if (isset($_POST['change_status'])) {
                 $query = "
                         approved_by={$_SESSION['user']['user_id']},
                         approved_by_time='" . date("Y-m-d\TH:i:s") . "',
-                        approved_by_comment='" . htmlentities($_POST['status_comment']) . "'
+                        approved_by_comment='" . htmlentities($_POST['status_comment']) . "',
                         ";
                 break;
 
@@ -17,7 +17,7 @@ if (isset($_POST['change_status'])) {
                 $query = "
                         ordered_by={$_SESSION['user']['user_id']},
                         ordered_by_time='" . date("Y-m-d\TH:i:s") . "',
-                        ordered_by_comment='" . htmlentities($_POST['status_comment']) . "'
+                        ordered_by_comment='" . htmlentities($_POST['status_comment']) . "',
                         ";
                 break;
 
@@ -25,7 +25,7 @@ if (isset($_POST['change_status'])) {
                 $query = "
                         received_by={$_SESSION['user']['user_id']},
                         received_by_time='" . date("Y-m-d\TH:i:s") . "',
-                        received_by_comment='" . htmlentities($_POST['status_comment']) . "'
+                        received_by_comment='" . htmlentities($_POST['status_comment']) . "',
                         ";
                 break;
 
@@ -33,7 +33,7 @@ if (isset($_POST['change_status'])) {
                 $query = "
                         completed_by={$_SESSION['user']['user_id']},
                         completed_by_time='" . date("Y-m-d\TH:i:s") . "',
-                        completed_by_comment='" . htmlentities($_POST['status_comment']) . "'
+                        completed_by_comment='" . htmlentities($_POST['status_comment']) . "',
                         ";
                 break;
 
@@ -41,7 +41,7 @@ if (isset($_POST['change_status'])) {
                 $query = "
                         canceled_by={$_SESSION['user']['user_id']},
                         canceled_by_time='" . date("Y-m-d\TH:i:s") . "',
-                        canceled_by_comment='" . htmlentities($_POST['status_comment']) . "'
+                        canceled_by_comment='" . htmlentities($_POST['status_comment']) . "',
                         ";
                 break;
 
@@ -49,7 +49,7 @@ if (isset($_POST['change_status'])) {
                 $query = "
                         denied_by={$_SESSION['user']['user_id']},
                         denied_by_time='" . date("Y-m-d\TH:i:s") . "',
-                        denied_by_comment='" . htmlentities($_POST['status_comment']) . "'
+                        denied_by_comment='" . htmlentities($_POST['status_comment']) . "',
                         ";
                 break;
         }
