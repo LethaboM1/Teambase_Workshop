@@ -451,6 +451,11 @@
 						if ($get_jobcard_requesitions) {
 							if (dbr($get_jobcard_requesitions) > 0) {
 								while ($row = dbf($get_jobcard_requesitions)) {
+									if ($row['status'] != 'requested') {
+										$comment_ = $row[$row['status'] . '_by_comment'];
+									} else {
+										$comment_ = '';
+									}
 									echo "<tr>
 													<td>{$row['datetime']}</td>
 													<td>{$row['part_number']}</td>
@@ -458,7 +463,7 @@
 													<td>{$row['qty']}</td>
 													<td class='d-none d-sm'>{$row['comment']}</td>
 													<td>" . ucfirst($row['status']) . "</td>
-													<td class='d-none d-sm'>{$row[$row['status'] . '_by_comment']}</td>
+													<td class='d-none d-sm'>{$comment_}</td>
 													<td class='actions'>
 														<a class='mb-1 mt-1 mr-1 modal-basic' href='#modalViewRequest_" . $row['request_id'] . "'><i class='fas fa-pencil-alt'></i></a>
 														<!-- Modal Edit Event End -->
