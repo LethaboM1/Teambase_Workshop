@@ -812,6 +812,8 @@ foreach ($data_holidays['holidays'] as $holiday) {
 
 function calc_hours($from, $to)
 {
+	$to = strtotime($to);
+	$from = strtotime($from);
 	$hours = ceil(($to - $from) / 3600);
 	/*
 	$date1 = new DateTime($from);
