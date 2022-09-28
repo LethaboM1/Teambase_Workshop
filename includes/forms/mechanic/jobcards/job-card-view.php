@@ -28,6 +28,18 @@ if (isset($_GET['id'])) {
     go('dashboard.php?page=open-job');
 }
 
+if (isset($_POST['delete_request'])) {
+    $get_request = dbq("select * from jobcard_requisitions where request_id={$_POST['request_id']}");
+    if ($get_request) {
+        if (dbr($get_request) > 0) {
+            $request_ = dbf($get_request);
+            if ($request_['status'] == 'requested') {
+            } else {
+                error('');
+            }
+        }
+    }
+}
 
 if (isset($_POST['add_part'])) {
     if ($_POST['qty'] > 0) {
@@ -39,6 +51,9 @@ if (isset($_POST['add_part'])) {
                                                 datetime='" . $_POST['request_date'] . "',
                                                 job_id='{$_GET['id']}',
                                                 plant_id='{$plant_['plant_id']}',
+                                                requested_by={$_SESSION['user']['user_id']},
+                                                requested_by={$_SESSION['user']['user_id']},
+                                                requested_by_datetime='" . date("Y-m-d\TH:i:s") . "',
                                                 part_number='{$_POST['part_number']}',
                                                 part_description='{$_POST['part_description']}',
                                                 qty={$_POST['qty']},

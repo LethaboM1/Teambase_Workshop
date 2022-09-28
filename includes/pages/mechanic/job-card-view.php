@@ -441,6 +441,7 @@
 							<th class="d-none d-sm-block">Comment</th>
 							<th>Status</th>
 							<th class="d-none d-sm-block">Status:Comment</th>
+							<th></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -457,7 +458,73 @@
 													<td class='d-none d-sm-block'>{$row['comment']}</td>
 													<td>" . ucfirst($row['status']) . "</td>
 													<td class='d-none d-sm-block'>{$row['status_comment']}</td>
+													<td class='actions'>
+														<a class='mb-1 mt-1 mr-1 modal-basic' href='#modalViewRequest_" . $row['request_id'] . "'><i class='fas fa-pencil-alt'></i></a>
+														<!-- Modal Edit Event End -->
+														<!-- Modal Delete -->
+														<a class='mb-1 mt-1 mr-1 modal-basic' href='#modalDeleteRequest_" .  $row['request_id'] . "'><i class='far fa-trash-alt'></i></a>
+														<!-- Modal Delete End -->
+													</td>
 											</tr>";
+
+									$modal .= '<div id="modalDeleteRequest_' . $row['request_id'] . '" class="modal-block modal-header-color modal-block-danger mfp-hide">
+												<form method="post">
+													<section class="card">
+														<header class="card-header">
+															<h2 class="card-title">Are you sure?</h2>
+														</header>
+														<div class="card-body">
+															<div class="modal-wrapper">
+																<div class="modal-icon">
+																	<i class="fas fa-times-circle"></i>
+																</div>
+																<div class="modal-text">
+																	<h4>Danger</h4>
+																	' . inp('request_id', '', 'hidden', $row['request_id']) . '
+																	<p>Are you sure that you want to delete this part request?</p>
+																</div>
+															</div>
+														</div>
+														<footer class="card-footer">
+															<div class="row">
+																<div class="col-md-12 text-right">
+																	<button name="delete_request" type="submit" class="btn btn-danger">Confirm</button>
+																	<button type="button" class="btn btn-danger modal-dismiss" data-bs-dismiss="modal">Cancel</button>
+																</div>
+															</div>
+														</footer>
+													</section>
+												</form>
+											</div>
+											
+											<div id="modalViewRequest_' . $row['request_id'] . '" class="modal-block modal-block-lg mfp-hide">
+												<section class="card">
+													<header class="card-header">
+														<h2 class="card-title">View Request</h2>
+													</header>
+													<div class="card-body">
+														<div class="modal-wrapper">
+															<div class="modal-text">
+																<b>Date/Time</b>&nbsp;' . $row['datetime'] . '<br>
+																<b>Part Number</b>&nbsp;' . $row['part_number'] . '<br>
+																<b>Part Description</b>&nbsp;' . $row['part_description'] . '<br>
+																<b>Qty</b>&nbsp;' . $row['qty'] . '<br>
+																<b>Comment</b>&nbsp;' . $row['comment'] . '<br>
+																<b>Status</b><br>' . $row['status'] . '<br>
+																<b>Status:Comment</b><br>' . $row['status_comment'] . '<br>
+															</div>
+														</div>
+													</div>
+													<footer class="card-footer">
+														<div class="row">
+															<div class="col-md-12 text-right">
+																<button class="btn btn-default modal-dismiss">Cancel</button>
+															</div>
+														</div>
+													</footer>
+												</section>
+											</div>
+											';
 								}
 							} else {
 								echo "<tr><td colspan='7'>Nothing to list...</td></tr>";
