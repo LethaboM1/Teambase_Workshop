@@ -33,7 +33,7 @@ if (isset($_POST['complete_jobcard'])) {
         strlen($_POST['reading']) > 0
         && is_numeric($_POST['reading'])
     ) {
-        if (check_reading($plant_['plant_id'], $_POST['reading'], 3)) {
+        if ($_POST['reading'] >= $plant_[$plant_['reading_type'] . '_reading']) {
             $events = dbr(dbq("select event_id from jobcard_events where job_id={$_GET['id']}"));
             if ($events == 0) {
                 error("There were no events for this job card.");
@@ -42,14 +42,14 @@ if (isset($_POST['complete_jobcard'])) {
             $requests = dbr(dbq("select request_id from jobcard_requisitions where job_id={$_GET['id']} and (status!='canceled' && status!='completed' && status!='denied')"));
             if ($requests == 0) {
                 $update_jobcard = dbq("update jobcards set
-                                    status='completed',
-                                    complete_datetime='{$_POST['compdate']}'
-                                    where job_id={$_GET['id']}
-                                    ");
+                                            status='completed',
+                                            complete_datetime='{$_POST['compdate']}'
+                                            where job_id={$_GET['id']}
+                                            ");
                 if ($update_jobcard) {
                     $update_plant = dbq("update plants_tbl set
-                                        {$plant_['reading_type']}_reading={$_POST['reading']},
-                                        where plant_id={$plant_['plant_id']}");
+                                                {$plant_['reading_type']}_reading={$_POST['reading']},
+                                                where plant_id={$plant_['plant_id']}");
                     if ($update_plant) {
                     }
                 } else {
@@ -59,7 +59,7 @@ if (isset($_POST['complete_jobcard'])) {
                 error("There are unresolved part requests for this job card. Management must resolve this request before you can close the job card.");
             }
         } else {
-            error("Invalid reading. Threshhold is 3.");
+            error("reading must be higher or equal to last reading");
         }
     } else {
         error('Must fill in a reading.');
