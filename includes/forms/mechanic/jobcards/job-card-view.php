@@ -39,7 +39,7 @@ if (isset($_POST['complete_jobcard'])) {
                 error("There were no events for this job card.");
             }
 
-            $requests = dbr(dbq("select request_id from jobcard_requisitions where job_id={$_GET['id']} and (status!='canceled' || status!='completed' || status!='denied')"));
+            $requests = dbr(dbq("select request_id from jobcard_requisitions where job_id={$_GET['id']} and (status!='canceled' && status!='completed' && status!='denied')"));
             if ($requests == 0) {
                 $update_jobcard = dbq("update jobcards set
                                     status='completed',
