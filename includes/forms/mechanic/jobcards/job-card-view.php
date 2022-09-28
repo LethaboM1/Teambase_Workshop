@@ -47,15 +47,15 @@ if (isset($_POST['complete_jobcard'])) {
                                             where job_id={$_GET['id']}
                                             ");
                 if (mysqli_affected_rows($db) > 0) {
-                    $update_plant = dbq("update plants_tbl set
+                    /*$update_plant = dbq("update plants_tbl set
                                                 {$plant_['reading_type']}_reading={$_POST['reading']},
                                                 where plant_id={$plant_['plant_id']}");
-                    if (mysqli_affected_rows($db) > 0) {
-                        msg("job card completed!");
-                        go('dashboard.php?page=open-job');
-                    } else {
+                    if (mysqli_affected_rows($db) > 0) {*/
+                    msg("job card completed!");
+                    go('dashboard.php?page=open-job');
+                    /*} else {
                         sqlError();
-                    }
+                    }*/
                 } else {
                     sqlError();
                 }
