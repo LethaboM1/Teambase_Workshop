@@ -36,7 +36,7 @@ if (isset($_POST['delete_request'])) {
             if ($request_['status'] == 'requested') {
             } else {
                 $person_ = dbf(dbq("select concat(name,' ',last_name) as name from users_tbl where user_id={$request_[$request_['status'] . '_by']}"));
-                error("This part has already neen approved by {$person_['name']}.");
+                error("This part request has already neen approved by {$person_['name']}. Contact them to cancel request.");
             }
         } else {
             error("Request not found.");
