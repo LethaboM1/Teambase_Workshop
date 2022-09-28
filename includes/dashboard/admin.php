@@ -59,8 +59,13 @@ switch ($_GET['page']) {
         $page_name = 'manager/jobcards/open-job-cards';
         break;
 
+    case 'completed-job':
+        $page_title = 'Completed Job Cards';
+        $page_name = 'manager/jobcards/completed-job-cards';
+        break;
+
     case 'arch-job':
-        $page_title = 'Job Cards Archives';
+        $page_title = 'Closed Job Cards';
         $page_name = 'manager/jobcards/archive-job-cards';
         break;
 
