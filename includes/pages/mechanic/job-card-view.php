@@ -458,7 +458,7 @@
 													<td>{$row['qty']}</td>
 													<td class='d-none d-sm'>{$row['comment']}</td>
 													<td>" . ucfirst($row['status']) . "</td>
-													<td class='d-none d-sm'>{$row['status_comment']}</td>
+													<td class='d-none d-sm'>{$row[$row['status'] . '_by_comment']}</td>
 													<td class='actions'>
 														<a class='mb-1 mt-1 mr-1 modal-basic' href='#modalViewRequest_" . $row['request_id'] . "'><i class='fas fa-pencil-alt'></i></a>
 														<!-- Modal Edit Event End -->
