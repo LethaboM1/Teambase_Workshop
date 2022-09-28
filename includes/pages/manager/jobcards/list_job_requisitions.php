@@ -37,6 +37,8 @@ $request_status_select = [
 	['name' => 'Ordered', 'value' => 'ordered'],
 	['name' => 'Received', 'value' => 'received'],
 	['name' => 'Completed', 'value' => 'completed'],
+	['name' => 'Completed', 'value' => 'canceled'],
+	['name' => 'Completed', 'value' => 'denied'],
 ];
 ?>
 <div class="col-md-12">

@@ -167,7 +167,8 @@
 							<div class="row">
 								<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 									<label class="col-form-label" for="formGroupExampleInput">Date Completed</label>
-									<input type="datetime-local" name="compDate" placeholder="Last Service Date" class="form-control" value="<?= date("Y-m-d\TH:i:s") ?>">
+									<?= inp('compdate', '', 'hidden', date("Y-m-d\TH:i:s")) ?>
+									<input type="datetime-local" name="compdate_" placeholder="Last Service Date" class="form-control" value="<?= date("Y-m-d\TH:i:s") ?>">
 								</div>
 								<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 									<label class="col-form-label" for="formGroupExampleInput">(<?= strtoupper($plant_['reading_type']) ?>) Reading</label>

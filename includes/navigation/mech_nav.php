@@ -17,7 +17,6 @@
 						<li><a class="nav-link" href="dashboard.php?page=add-job">Request a New Job Card</a></li>
 						<li><a class="nav-link" href="dashboard.php?page=open-job">Open Job Cards</a></li>
 						<li><a class="nav-link" href="dashboard.php?page=plant-inspection">Plant Inspection / Job Instruction Report</a></li>
-						<li><a class="nav-link" href="dashboard.php?page=plant-schedule">Plant Service Schedule</a></li>
 					</ul>
 				</li>
 			</ul>
