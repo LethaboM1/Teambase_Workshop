@@ -436,11 +436,11 @@
 						<tr>
 							<th>Date/Time</th>
 							<th>Part No.</th>
-							<th>Description</th>
+							<th class="d-none d-sm-block">Description</th>
 							<th>Qty</th>
-							<th>Comment</th>
+							<th class="d-none d-sm-block">Comment</th>
 							<th>Status</th>
-							<th>Status:Comment</th>
+							<th class="d-none d-sm-block">Status:Comment</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -452,11 +452,11 @@
 									echo "<tr>
 													<td>{$row['datetime']}</td>
 													<td>{$row['part_number']}</td>
-													<td>{$row['part_description']}</td>
+													<td class='d-none d-sm-block'>{$row['part_description']}</td>
 													<td>{$row['qty']}</td>
-													<td>{$row['comment']}</td>
+													<td class='d-none d-sm-block'>{$row['comment']}</td>
 													<td>" . ucfirst($row['status']) . "</td>
-													<td>{$row['status_comment']}</td>
+													<td class='d-none d-sm-block'>{$row['status_comment']}</td>
 											</tr>";
 								}
 							} else {
