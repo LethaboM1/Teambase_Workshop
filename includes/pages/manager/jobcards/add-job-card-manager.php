@@ -99,6 +99,20 @@
 						</div>
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<?= inp('jobcard_type', 'Jobcard Type', 'select', '', '', 0, [['name' => 'Breakdown', 'value' => 'breakdown'], ['name' => 'Service', 'value' => 'service']]) ?>
+							<?php
+							$jscript .= "
+										$('#jobcard_type').change(function () {
+											if ($(this).val() == 'service') {
+												$('#service_detail').show();
+											} else {
+												$('#service_detail').hide();
+											}
+										});
+										";
+							?>
+						</div>
+						<div id='service_detail' style="display:none;" class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+							<?= inp('service_type', 'Service Type', 'select', '', '', 0, [['name' => 'A', 'value' => 'A'], ['name' => 'B', 'value' => 'B'], ['name' => 'C', 'value' => 'C'], ['name' => 'D', 'value' => 'D']]) ?>
 						</div>
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<?= inp('priority', 'Priority', 'select', '', '', 0, [['name' => 'High', 'value' => 1], ['name' => 'Medium', 'value' => 2], ['name' => 'Low', 'value' => 3]]) ?>

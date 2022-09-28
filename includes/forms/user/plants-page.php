@@ -58,6 +58,7 @@ if (isset($_POST['request_jobcard'])) {
         ");
             if ($update_plant) {
                 msg("Breakdown started, Job ref: {$job_id}.");
+                go('dashboard.php?page=plants');
             } else {
                 sqlError();
             }
@@ -100,6 +101,7 @@ if (isset($_POST['start_break'])) {
                                         ");
                 if ($update_plant) {
                     msg("Break started!");
+                    go('dashboard.php?page=plants');
                 } else {
                     sqlError();
                 }
@@ -136,6 +138,7 @@ if (isset($_POST['end_break'])) {
                                     ");
                 if ($update_plant) {
                     msg("Break ended.");
+                    go('dashboard.php?page=plants');
                 } else {
                     sqlError('update plants_tbl', 'update plants_tbl');
                 }
@@ -171,6 +174,7 @@ if (isset($_POST['start_refuel'])) {
                                         where plant_id={$_POST['plant_id']}");
                     if ($update_plant) {
                         msg('Refuel started!');
+                        go('dashboard.php?page=plants');
                     } else {
                         sqlError('update plant', 'update plant');
                     }
@@ -215,6 +219,7 @@ if (isset($_POST['end_refuel'])) {
                                         where plant_id={$_POST['plant_id']}");
                     if ($update_plant) {
                         msg('Refuel ended!');
+                        go('dashboard.php?page=plants');
                     } else {
                         sqlError('update plant', 'update plant');
                     }
@@ -374,6 +379,7 @@ if (isset($_POST['submit_checklist'])) {
                                                 ");
                 if ($save_checklist) {
                     msg("Check list saved.");
+                    go('dashboard.php?page=plants');
                 } else {
                     sqlError();
                 }
@@ -413,6 +419,7 @@ if (isset($_POST['end_breakdown'])) {
                                                 ");
                         if ($update_plant) {
                             msg("Breakdown ended.");
+                            go('dashboard.php?page=plants');
                         } else {
                             sqlError('update plants_tbl', 'update plants_tbl');
                         }
@@ -508,6 +515,7 @@ if (isset($_POST['start_breakdown'])) {
                                                     ");
                         if ($update_plant) {
                             msg("Breakdown started, Job ref: {$job_id}.");
+                            go('dashboard.php?page=plants');
                         } else {
                             sqlError();
                         }
@@ -570,6 +578,7 @@ if (isset($_POST['end_log'])) {
                                     $update_plant = dbq($query);
                                     if (mysqli_affected_rows($db) != -1) {
                                         msg("Operator log submitted.");
+                                        go('dashboard.php?page=plants');
                                     } else {
                                         sqlError('Update plants_tbl', 'Update plants_tbl: ' . htmlentities($query, ENT_QUOTES));
                                     }
@@ -629,6 +638,7 @@ if (isset($_POST['add_log'])) {
                                                         ");
                                 if (mysqli_affected_rows($db) != -1) {
                                     msg("Operator log submitted.");
+                                    go('dashboard.php?page=plants');
                                 } else {
                                     sqlError('updating plant', 'updating plant');
                                 }

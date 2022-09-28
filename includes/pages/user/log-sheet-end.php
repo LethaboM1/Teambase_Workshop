@@ -40,7 +40,7 @@ if (folders_('operator_log', $plant_['plant_id'])) {
 			</div>
 			<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 				<?= inp('reading_type', '', 'hidden', $plant_['reading_type']) ?>
-				<label class="col-form-label" for="formGroupExampleInput">Reading</label>
+				<label class="col-form-label" for="formGroupExampleInput">(<?= strtoupper($plant_['reading_type']) ?>) Reading - Current (<?= $plant_[$plant_['reading_type'] . '_reading'] ?>)</label>
 				<input type="text" name="reading" placeholder="Reading" class="form-control">
 			</div>
 			<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
@@ -86,25 +86,6 @@ if (folders_('operator_log', $plant_['plant_id'])) {
 				<div id="image_list" class='mt-2 mb-2'></div>
 			</footer>
 		</div>
-		<!--<div class="row">
-	<div class="col-lg-6 mb-3">
-		<form action="" id="addplant">
-			<section class="card">
-				<header class="card-header">
-					<h2 class="card-title">Driver / Operator Log Sheet</h2>
-				</header>
-				<div class="card-body">
-					
-				</div>
-				<footer class="card-footer text-end">
-					<button class="btn btn-primary">Add Log </button>
-					<button type="reset" class="btn btn-default">Reset</button>
-				</footer>
-			</section>
-		</form>
-	</div>
-	 Events 
-</div>-->
 <?php
 	}
 }

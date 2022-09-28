@@ -48,354 +48,160 @@
 							<thead>
 								<tr>
 									<th width="500">Task</th>
-									<th width="150">A</th>
-									<th width="150">B</th>
-									<th width="150">C/D</th>
+									<th width="150"><?= $jobcard_['service_type'] ?></th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr>
 									<td><strong>Hours</strong></td>
-									<td><strong>300</strong></td>
-									<td><strong>600</strong></td>
-									<td><strong>1200 / 2400</strong></td>
+									<?php
+									switch ($jobcard_['service_type']) {
+										case "A":
+									?>
+											<td><strong>300</strong></td>
+										<?php
+											break;
+
+										case "B":
+										?>
+											<td><strong>600</strong></td>
+										<?php
+											break;
+
+										case "C":
+										?>
+											<td><strong>1200 / 2400</strong></td>
+										<?php
+											break;
+
+										case "D":
+										?>
+											<td><strong>1200 / 2400</strong></td>
+									<?php
+											break;
+									}
+									?>
 								</tr>
 								<tr>
 									<td><strong>Kilometres</strong></td>
-									<td><strong>5000</strong></td>
-									<td><strong>10000</strong></td>
-									<td><strong>20000 / 40000</strong></td>
+									<?php
+									switch ($jobcard_['service_type']) {
+										case "A":
+									?>
+											<td><strong>5000</strong></td>
+										<?php
+											break;
+
+										case "B":
+										?>
+											<td><strong>10000</strong></td>
+										<?php
+											break;
+
+										case "C":
+										?>
+											<td><strong>20000 / 40000</strong></td>
+										<?php
+											break;
+
+										case "D":
+										?>
+											<td><strong>20000 / 40000</strong></td>
+									<?php
+											break;
+									}
+									?>
 								</tr>
 								<tr>
 									<td><strong>Kilometres</strong></td>
-									<td><strong>10000</strong></td>
-									<td><strong>20000</strong></td>
-									<td><strong>40000 / 80000</strong></td>
+									<?php
+									switch ($jobcard_['service_type']) {
+										case "A":
+									?>
+											<td><strong>10000</strong></td>
+										<?php
+											break;
+
+										case "B":
+										?>
+											<td><strong>20000</strong></td>
+										<?php
+											break;
+
+										case "C":
+										?>
+											<td><strong>40000 / 80000</strong></td>
+										<?php
+											break;
+
+										case "D":
+										?>
+											<td><strong>40000 / 80000</strong></td>
+									<?php
+											break;
+									}
+									?>
 								</tr>
 								<tr>
 									<td><strong>Kilometres</strong></td>
-									<td><strong>15000</strong></td>
-									<td><strong>30000</strong></td>
-									<td><strong>45000 / 60000</strong></td>
+									<?php
+									switch ($jobcard_['service_type']) {
+										case "A":
+									?>
+											<td><strong>15000</strong></td>
+										<?php
+											break;
+
+										case "B":
+										?>
+											<td><strong>30000</strong></td>
+										<?php
+											break;
+
+										case "C":
+										?>
+											<td><strong>45000 / 60000</strong></td>
+										<?php
+											break;
+
+										case "D":
+										?>
+											<td><strong>45000 / 60000</strong></td>
+									<?php
+											break;
+									}
+									?>
 								</tr>
-								<tr>
-									<td>Change Engine Oil</td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Change Engine Oil Filter (Cut old, Inspect)</td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Reset Tappet Clearance Every <strong>(D)</strong></td>
-									<td></td>
-									<td></td>
-									<td>0 <strong>(D)</strong> <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Check Turbo Impellers and Function</td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Check For Excessive Smoke and Bypass</td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Change Fuel Filters</td>
-									<td></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Change and Clean Water Element</td>
-									<td></td>
-									<td></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Clean Every Service / Change Breathers When Necessary</td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Clean / Drain Sediment Feul Tank</td>
-									<td></td>
-									<td></td>
-									<td>0 <strong>(C/D)</strong> <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Check / Replace Fan Belts When Necessary</td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <strong>(D)</strong> <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Check / Replace Water Hoses When Necessary</td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Check / Replace Fuel / Oil / Air Lines If Required</td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Check Repair Parking Brake</td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Check / Repair Road Brakes / Compressor</td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Inspect / Tighten All Hose Clamps, Air Intake</td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Change Air Element Outer / Severe More Often</td>
-									<td></td>
-									<td></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Change Inner Air Element, Every <strong>(D)</strong></td>
-									<td></td>
-									<td></td>
-									<td>0 <strong>(D)</strong> <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Check Condition of Policeman and Pipe</td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Inspect / Tighten All Hose Clamps, Air Intake</td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Clean Radiator Core / Check Radiator Cap</td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Inspect Radiator Hoses, Tighten Clamps</td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Clean Radiator Core / Check Radiator Cap</td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Check Grease Nipples and Grease</td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Check Steering System, Repair if Faulty</td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Check and Adjust Steering Clutches Dozer <strong>(C)</strong></td>
-									<td></td>
-									<td></td>
-									<td>0 <strong>(C)</strong> <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Check Universal Joints</td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Check / Drain Diff Oils</td>
-									<td><strong>C</strong> <input type="checkbox" id="checkboxExample4"></td>
-									<td><strong>C</strong> <input type="checkbox" id="checkboxExample4"></td>
-									<td><strong>C</strong> <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Check Drain Transmission Oil</td>
-									<td><strong>C</strong> <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <strong>(B)</strong> <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <strong>(C/D)</strong> <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Change Transmission Filter Every 600 Hours Cut</td>
-									<td></td>
-									<td>0 <strong>(B)</strong> <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <strong>(C/D)</strong> <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Clean Transmission Screens Every 600 Hours</td>
-									<td></td>
-									<td>0 <strong>(B)</strong> <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <strong>(C/D)</strong> <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Check, Replace Worn Ball Joints</td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Check / Drain Hydraulic Tank Oil (every 600hr)</td>
-									<td><strong>C</strong> <input type="checkbox" id="checkboxExample4"></td>
-									<td><strong>C</strong> <input type="checkbox" id="checkboxExample4"></td>
-									<td><strong>C</strong> <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Change Hydraulic Filters (Cut Old, Inspect)</td>
-									<td></td>
-									<td></td>
-									<td>0 <strong>(C/D)</strong> <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Check Hydraulic Cylinders / Oil Leaks, Marks</td>
-									<td><strong>C</strong> <input type="checkbox" id="checkboxExample4"></td>
-									<td><strong>C</strong> <input type="checkbox" id="checkboxExample4"></td>
-									<td><strong>C</strong> <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Inspect Electrical System, Repair if Faulty</td>
-									<td><strong>C</strong> <input type="checkbox" id="checkboxExample4"></td>
-									<td><strong>C</strong> <input type="checkbox" id="checkboxExample4"></td>
-									<td><strong>C</strong> <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Check Operation, All Gauges</td>
-									<td><strong>C</strong> <input type="checkbox" id="checkboxExample4"></td>
-									<td><strong>C</strong> <input type="checkbox" id="checkboxExample4"></td>
-									<td><strong>C</strong> <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Clean / Check Battery Water 300 Hours</td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Check Number Plate, Licence, Operator Card C.O.F</td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Check Greasing System</td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Check and Adjust Grader Circle Every 300 Hr</td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Check Tandem Oil Condition</td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Check Tandem Chain Condition</td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Check and Adjust Track Tension</td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Check Track Idler Frame Wear and Report</td>
-									<td><strong>C</strong> <input type="checkbox" id="checkboxExample4"></td>
-									<td><strong>C</strong> <input type="checkbox" id="checkboxExample4"></td>
-									<td><strong>C</strong> <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Check Air Pressure</td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Check Repair All Oil, Diesel, Water Leaks</td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Check Machine for Loose Bolts, Nuts, Cracks</td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Check and Operate Machine for Normal Operation</td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Check and Record All Oil Pressure Every <strong>(D)</strong></td>
-									<td></td>
-									<td></td>
-									<td>0 <strong>(D)</strong> <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Change Antifreeze</td>
-									<td><strong>C</strong> <input type="checkbox" id="checkboxExample4"></td>
-									<td><strong>C</strong> <input type="checkbox" id="checkboxExample4"></td>
-									<td><strong>C</strong> <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Check and Drain Swing Motor Oil <strong>(D)</strong></td>
-									<td><strong>C</strong> <input type="checkbox" id="checkboxExample4"></td>
-									<td><strong>C</strong> <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <strong>(D)</strong> <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Check and Drain Damper Case Oil <strong>(D)</strong></td>
-									<td><strong>C</strong> <input type="checkbox" id="checkboxExample4"></td>
-									<td><strong>C</strong> <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <strong>(D)</strong> <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
-								<tr>
-									<td>Check Swing Pinion Grease <strong>(D)</strong></td>
-									<td><strong>C</strong> <input type="checkbox" id="checkboxExample4"></td>
-									<td><strong>C</strong> <input type="checkbox" id="checkboxExample4"></td>
-									<td>0 <strong>(D)</strong> <input type="checkbox" id="checkboxExample4"></td>
-								</tr>
+								<?php
+								$get_service_checklist = dbq("select * from service_checklist");
+								if ($get_service_checklist) {
+									if (dbr($get_service_checklist) > 0) {
+										while ($item = dbf($get_service_checklist)) {
+											$service_type = strtolower($jobcard_['service_type']) . '_service';
+											switch ($item[$service_type]) {
+												case "0":
+								?>
+													<tr>
+														<td><?= $item['question'] ?></td>
+														<td>0 <input type="checkbox" name="check_<?= $item['checklist_id'] ?>" value="Yes" id="checkboxExample4"></td>
+													</tr>
+												<?php
+													break;
+
+												case "C":
+												?>
+													<tr>
+														<td><?= $item['question'] ?></td>
+														<td>C <input type="checkbox" name="check_<?= $item['checklist_id'] ?>" value="Yes" id="checkboxExample4"></td>
+													</tr>
+								<?php
+													break;
+											}
+										}
+									}
+								}
+
+								?>
 							</tbody>
 						</table>
 						<?= inp('save_progress', '', 'submit', 'Save', 'btn-primary') ?>
@@ -562,7 +368,7 @@
 				</div>
 				<hr>
 				<div class="row">
-					<label class="col-form-label">Chech and Comment</label>
+					<label class="col-form-label">Comment</label>
 					<textarea class="form-control" rows="3" id="textareaDefault"></textarea>
 				</div>
 			</div>

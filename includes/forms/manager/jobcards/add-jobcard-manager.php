@@ -17,6 +17,12 @@ if (isset($_POST['add_jobcard'])) {
                 break;
         }
 
+        if ($_POST['jobcard_type'] == 'service') {
+            $job_type = "service_type='{$_POST['service_type']}',";
+        } else {
+            $job_type = '';
+        }
+
         $add_jobcard = dbq("insert into jobcards set
                                 jobcard_number='{$_POST['jobcard_number']}',
                                 plant_id={$_POST['plant_id']},
@@ -24,6 +30,7 @@ if (isset($_POST['add_jobcard'])) {
                                 logged_by='{$_SESSION['user']['user_id']}',
                                 mechanic_id='{$_POST['mechanic_id']}',
                                 {$reading}
+                                {$job_type}
                                 allocated_hours={$_POST['allocated_hours']},
                                 priority={$_POST['priority']},
                                 jobcard_type='{$_POST['jobcard_type']}',

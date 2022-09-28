@@ -812,6 +812,8 @@ foreach ($data_holidays['holidays'] as $holiday) {
 
 function calc_hours($from, $to)
 {
+	$hours = ceil(($to - $from) / 3600);
+	/*
 	$date1 = new DateTime($from);
 	$date2 = new DateTime($to);
 
@@ -819,7 +821,7 @@ function calc_hours($from, $to)
 
 	$hours = $diff->h;
 	$hours = $hours + ($diff->days * 24);
-
+	*/
 	return $hours;
 }
 

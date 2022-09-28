@@ -10,7 +10,7 @@
 					<div class="row">
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<?php
-							$get_plants = dbq("select concat(reg_number,' - ',vehicle_type,' ',make,' ',model) as name, plant_id as value from plants_tbl where active=1");
+							$get_plants = dbq("select concat(reg_number,' - ',vehicle_type,' ',make,' ',model) as name, plant_id as value from plants_tbl where active=1 and plant_id in (select plant_id from plant_user_tbl where user_id={$_SESSION['user']['user_id']})");
 							if ($get_plants) {
 								if (dbr($get_plants) > 0) {
 									while ($plant = dbf($get_plants)) {
