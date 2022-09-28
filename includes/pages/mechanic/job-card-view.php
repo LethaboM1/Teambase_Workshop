@@ -437,11 +437,11 @@
 						<tr>
 							<th>Date/Time</th>
 							<th>Part No.</th>
-							<th class="d-none d-sm">Description</th>
+							<th>Description</th>
 							<th>Qty</th>
-							<th class="d-none d-sm">Comment</th>
+							<th>Comment</th>
 							<th>Status</th>
-							<th class="d-none d-sm">Status:Comment</th>
+							<th>Status:Comment</th>
 							<th></th>
 						</tr>
 					</thead>
@@ -459,11 +459,11 @@
 									echo "<tr>
 													<td>{$row['datetime']}</td>
 													<td>{$row['part_number']}</td>
-													<td class='d-none d-sm-block-table-cell'>{$row['part_description']}</td>
+													<td>{$row['part_description']}</td>
 													<td>{$row['qty']}</td>
-													<td class='d-none d-sm'>{$row['comment']}</td>
+													<td>{$row['comment']}</td>
 													<td>" . ucfirst($row['status']) . "</td>
-													<td class='d-none d-sm'>{$comment_}</td>
+													<td>{$comment_}</td>
 													<td class='actions'>
 														<a class='mb-1 mt-1 mr-1 modal-basic' href='#modalViewRequest_" . $row['request_id'] . "'><i class='fas fa-pencil-alt'></i></a>
 														<!-- Modal Edit Event End -->
