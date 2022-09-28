@@ -103,7 +103,7 @@ if (isset($_POST['add_part'])) {
                                                 requested_by_time='" . date("Y-m-d\TH:i:s") . "',
                                                 part_number='{$_POST['part_number']}',
                                                 part_description='{$_POST['part_description']}',
-                                                qty={$_POST['qty']},
+                                                qty={$_POST['qty']}
                                                 ");
             if ($add_part_request) {
                 msg("Part request send.");
