@@ -62,6 +62,7 @@ switch ($_GET['page']) {
     case 'completed-job':
         $page_title = 'Completed Job Cards';
         $page_name = 'manager/jobcards/completed-job-cards';
+        require "./includes/forms/manager/jobcards/completed-job-cards.php";
         break;
 
     case 'arch-job':

@@ -104,7 +104,7 @@ $progress = 100;
                                     <form method="post">
                                         <div class="col-md-12 text-right">
                                             <?= inp('job_id', '', 'hidden', $row['job_id']) ?>
-                                            <?= inp('close_jobcard', '', 'inline-submit', 'Close', 'btn-primary') ?>&nbsp;<button class="btn btn-default modal-dismiss">Cancel</button>
+                                            <?= inp('close_jobcard', '', 'inline-submit', 'Close Job Card', 'btn-primary') ?>&nbsp;<button class="btn btn-default modal-dismiss">Cancel</button>
                                         </div>
                                     </form>
                                 </div>

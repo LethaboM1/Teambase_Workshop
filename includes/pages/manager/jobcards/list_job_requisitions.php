@@ -40,6 +40,7 @@ $request_status_select = [
 	['name' => 'Canceled', 'value' => 'canceled'],
 	['name' => 'Denied', 'value' => 'denied'],
 ];
+
 ?>
 <div class="col-md-12">
 	<section class="card card-featured-left card-featured-<?= $color ?> mb-4">
