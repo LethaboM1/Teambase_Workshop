@@ -44,7 +44,7 @@
 	</div>
 	<div id="open_jobs_list" class="col-xl-12">
 		<?php
-		$get_jobs = dbq("select * from jobcards where status='completed' order completed_datetime");
+		$get_jobs = dbq("select * from jobcards where status='completed' order complete_datetime");
 		if ($get_jobs) {
 			if (dbr($get_jobs) > 0) {
 				while ($row = dbf($get_jobs)) {
