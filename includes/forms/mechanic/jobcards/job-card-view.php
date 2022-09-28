@@ -50,7 +50,11 @@ if (isset($_POST['complete_jobcard'])) {
                     $update_plant = dbq("update plants_tbl set
                                                 {$plant_['reading_type']}_reading={$_POST['reading']},
                                                 where plant_id={$plant_['plant_id']}");
-                    if ($update_plant) {
+                    if (mysqli_affected_rows($db) > 0) {
+                        msg("job card completed!");
+                        go('dashboard.php?page=open-job');
+                    } else {
+                        sqlError();
                     }
                 } else {
                     sqlError();
