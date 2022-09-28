@@ -46,6 +46,7 @@ if (isset($_POST['add_part'])) {
                                                 ");
             if ($add_part_request) {
                 msg("Part request send.");
+                go("dashboard.php?page=job-card-view&id={$_GET['id']}");
             } else {
                 sqlError('', "date: {$_POST['request_date']}");
             }
@@ -72,6 +73,7 @@ if (isset($_POST['add_event'])) {
                                             ");
                 if ($add_event) {
                     msg("Event added.");
+                    go("dashboard.php?page=job-card-view&id={$_GET['id']}");
                 } else {
                     sqlError('', '');
                 }
@@ -83,5 +85,15 @@ if (isset($_POST['add_event'])) {
         }
     } else {
         error("fill in a comment.");
+    }
+}
+
+if (isset($_POST['delete_event'])) {
+    if ($_POST['event_id'] > 0) {
+        $delete_event = dbq("delete from jobcard_events where event_id={$_POST['event_id']}");
+        if ($delete_event) {
+            msg("event deleted!");
+            go("dashboard.php?page=job-card-view&id={$_GET['id']}");
+        }
     }
 }
