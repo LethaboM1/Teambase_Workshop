@@ -80,7 +80,7 @@
                 </div>
             </div>
             <footer class="card-footer text-end">
-                <button type="submit" name="add_user" class="btn btn-primary">Add User</button>
+                <button type="submit" name="save_profile" class="btn btn-primary">Save</button>
                 <button class="btn btn-default modal-dismiss">Cancel</button>
             </footer>
         </section>
