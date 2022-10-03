@@ -9,6 +9,7 @@ switch ($_GET['page']) {
     case "profile":
         $page_title = 'Your Profile';
         $page_name = 'profile';
+        require "includes/forms/profile.php";
         break;
 
     case 'add-user':
