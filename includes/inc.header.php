@@ -75,24 +75,24 @@
         <div class="header-right">
 
           <span class="separator"></span>
+          <ul class="notifications">
 
 
+            <?php
+            switch ($_SESSION['user']['role']) {
+              case "manager":
+                require "./includes/navigation/menus/manager.php";
+                break;
 
-          <?php
-          switch ($_SESSION['user']['role']) {
-            case "manager":
-              require "./includes/navigation/menus/manager.php";
-              break;
+              case "clerk":
+                require "./includes/navigation/menus/manager.php";
+                break;
 
-            case "clerk":
-              require "./includes/navigation/menus/manager.php";
-              break;
-
-            case "system":
-              require "./includes/navigation/menus/manager.php";
-              break;
-          }
-          ?>
+              case "system":
+                require "./includes/navigation/menus/manager.php";
+                break;
+            }
+            ?>
           </ul>
           <span class="separator"></span>
 
