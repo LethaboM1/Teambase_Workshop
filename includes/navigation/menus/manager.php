@@ -15,7 +15,7 @@ $total_notifications = $count_new_jobs + $count_new_requests;
     </a>
     <div class="dropdown-menu notification-menu">
         <div class="notification-title">
-            <span class="float-end badge badge-default">3</span>
+            <span class="float-end badge badge-default"><?= $total_notifications ?></span>
             Alerts
         </div>
 
