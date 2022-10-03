@@ -76,8 +76,6 @@
 
           <span class="separator"></span>
           <ul class="notifications">
-
-
             <?php
             switch ($_SESSION['user']['role']) {
               case "manager":
@@ -95,7 +93,6 @@
             ?>
           </ul>
           <span class="separator"></span>
-
           <div id="userbox" class="userbox">
             <a href="#" data-bs-toggle="dropdown">
               <figure class="profile-picture">

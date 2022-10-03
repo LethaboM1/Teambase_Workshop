@@ -90,7 +90,7 @@ switch ($_GET['page']) {
 
     default:
         $page_title = 'Dashboard Overview';
-        switch ($_SESSION['user']) {
+        switch ($_SESSION['user']['role']) {
             case "clerk":
                 $page_name = 'dash_clerk';
                 break;
