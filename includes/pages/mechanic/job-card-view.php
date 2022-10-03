@@ -59,7 +59,11 @@
 					<div class="row">
 						<?php
 						if (strlen($jobcard_['safety_audit']) > 0) {
-							$safety_audit = json_decode(base64_decode($jobcard_['safety_audit']), true);
+							if (is_json($jobcard_['safety_audit'])) {
+								$safety_audit = json_decode($jobcard_['safety_audit'], true);
+							} else {
+								$safety_audit = json_decode(base64_decode($jobcard_['safety_audit']), true);
+							}
 						} else {
 							$safety_audit = [];
 						}
@@ -80,7 +84,7 @@
 						} else {
 							?>
 							<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-								Non to list
+								Nothing to list
 							</div>
 						<?php
 						}
@@ -305,12 +309,12 @@
 				<div class="header-right">
 					<a class="mb-1 mt-1 mr-1 modal-basic" href="#modalAddEvent"><button class="btn btn-primary">Add Event</button></a>
 				</div>
-				<form action="#" class="search nav-form">
+				<!-- <form action="#" class="search nav-form">
 					<div class="input-group">
 						<input type="text" class="form-control" name="q" id="q" placeholder="Search Event...">
-						<button class="btn btn-default" type="submit"><i class="bx bx-search"></i></button>
+						<button class="btn btn-default"><i class="bx bx-search"></i></button>
 					</div>
-				</form>
+				</form> -->
 
 				<table width="1047" class="table table-responsive-md mb-0">
 					<thead>
