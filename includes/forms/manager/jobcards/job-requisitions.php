@@ -104,10 +104,10 @@ if (isset($_POST['change_status'])) {
                                 <p>
                                     <b>Request ID.</b>&nbsp;{$request_['request_id']}<br>
                                     <b>Part No.</b>&nbsp;{$request_['part_number']}<br>
-                                    <b>Part Description.</b>&nbsp;{$request_['part_number']}<br>
-                                    <b>Qty.</b>&nbsp;{$request_['part_number']}<br>
+                                    <b>Part Description.</b>&nbsp;{$request_['part_description']}<br>
+                                    <b>Qty.</b>&nbsp;{$request_['qty']}<br>
                                     <b>Comment</b><br>
-                                    {$request_['approved_by_comment']}
+                                    {$_POST['status_comment']}
                                 </p>
                                 Kind Regards,<br>
                                 <b>{$_SESSION['user']['name']} {$_SESSION['user']['last_name']}</b><br>
@@ -120,7 +120,7 @@ if (isset($_POST['change_status'])) {
                                     Part Description. : {$request_['part_number']}\n\r
                                     Qty. : {$request_['part_number']}\n\r
                                     Comment</b>\n\r
-                                        {$request_['approved_by_comment']}
+                                        {$request_['status_comment']}
                                     \n\r\n\r
                                     Kind Regards,\n\r
                                     {$_SESSION['user']['name']} {$_SESSION['user']['last_name']}\n\r
