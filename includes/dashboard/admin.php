@@ -6,6 +6,9 @@ if ($_SESSION['user']['role'] != 'manager' && $_SESSION['user']['role'] != 'syst
 }
 
 switch ($_GET['page']) {
+    case "profile":
+        break;
+
     case 'add-user':
 
         if ($_SESSION['user']['role'] == 'clerk') {

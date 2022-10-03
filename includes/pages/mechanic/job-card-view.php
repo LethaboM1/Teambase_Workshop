@@ -109,11 +109,11 @@
 					<div class="row">
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<label class="col-form-label" for="formGroupExampleInput">Start Date/Time</label>
-							<input type="datetime-local" name="start_date" class="form-control" value="<?= date("Y-m-d\TH:i:s") ?>">
+							<input type="datetime-local" name="start_date" class="form-control" value="<?= date("Y-m-d\TH:i") ?>">
 						</div>
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<label class="col-form-label" for="formGroupExampleInput">End Date/Time</label>
-							<input type="datetime-local" name="end_date" class="form-control" value="<?= date("Y-m-d\TH:i:s") ?>">
+							<input type="datetime-local" name="end_date" class="form-control" value="<?= date("Y-m-d\TH:i") ?>">
 						</div>
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<label class="col-form-label" for="formGroupExampleInput">Select Event</label>
@@ -168,7 +168,7 @@
 								<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 									<label class="col-form-label" for="formGroupExampleInput">Date Completed</label>
 									<?= inp('compdate', '', 'hidden', date("Y-m-d\TH:i:s")) ?>
-									<input type="datetime-local" name="compdate_" placeholder="Last Service Date" class="form-control" value="<?= date("Y-m-d\TH:i:s") ?>">
+									<input type="datetime-local" name="compdate_" placeholder="Last Service Date" class="form-control" value="<?= date("Y-m-d\TH:i") ?>">
 								</div>
 								<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 									<label class="col-form-label" for="formGroupExampleInput">(<?= strtoupper($plant_['reading_type']) ?>) Reading</label>

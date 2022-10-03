@@ -76,7 +76,7 @@
 						</div>
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<label class="col-form-label" for="formGroupExampleInput">Date</label>
-							<input type="datetime-local" name="job_date" placeholder="" class="form-control" value="<?= date('Y-m-d H:i:s') ?>">
+							<input type="datetime-local" name="job_date" placeholder="" class="form-control" value="<?= date('Y-m-d H:i') ?>">
 						</div>
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<label class="col-form-label" for="formGroupExampleInput">Allocated Hours</label>

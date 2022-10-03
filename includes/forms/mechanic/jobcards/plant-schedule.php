@@ -50,16 +50,21 @@ if (isset($_POST['complete_service'])) {
         }
 
         if (!is_error()) {
-            $update_jobcard = dbq("update jobcards set
+            $requests = dbr(dbq("select request_id from jobcard_requisitions where job_id={$_GET['id']} and (status!='canceled' && status!='completed' && status!='denied')"));
+            if ($requests == 0) {
+                $update_jobcard = dbq("update jobcards set
                                             status='completed',
                                             complete_datetime='{$_POST['compdate']}'
                                             where job_id={$_GET['id']}
                                             ");
-            if ($update_jobcard) {
-                msg("service completed.");
-                go('dashboard.php?page=open-job');
+                if ($update_jobcard) {
+                    msg("service completed.");
+                    go('dashboard.php?page=open-job');
+                } else {
+                    sqlError();
+                }
             } else {
-                sqlError();
+                error("There are unresolved part requests for this job card. Management must resolve this request before you can close the job card.");
             }
         }
     }
