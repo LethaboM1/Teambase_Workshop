@@ -9,7 +9,7 @@ switch ($_GET['page']) {
     case 'add-user':
 
         if ($_SESSION['user']['role'] == 'clerk') {
-            header("location: dashboard.php");
+            go("dashboard.php");
             echo "Role : {$_SESSION['user']['role']}";
         }
 
