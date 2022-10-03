@@ -83,7 +83,7 @@
 					<div class="row">
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<label class="col-form-label" for="formGroupExampleInput">Username</label>
-							<input type="email" name="email" placeholder="Email Address" class="form-control">
+							<input type="username" name="username" placeholder="Email Address" class="form-control">
 						</div>
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<label class="col-form-label" for="formGroupExampleInput">Password</label>
