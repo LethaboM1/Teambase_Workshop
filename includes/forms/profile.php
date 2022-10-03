@@ -38,14 +38,17 @@ if (isset($_POST['save_profile'])) {
     $chk_duplicate_username = dbq("select * from users_tbl where username='{$_POST['username']}' and user_id!='{$user_['user_id']}'");
     if (dbr($chk_duplicate_username) == 0) {
         $update_user = dbq("update users_tbl set 
-                                email='{$_POST['email']}',
                                 contact_number='{$_POST['contact_number']}',
-                                username='{$_POST['username']}',
-                                where user_id='{$_POST['user_id']}'
+                                email='{$_POST['email']}',
+                                username='{$_POST['username']}'
+                                where user_id={$_SESSION['user']['user_id']}
                                 ");
         if ($update_user) {
-            msg("User saved {$_POST['firstName']}!");
-            go("dashboard.php?page=add-user");
+            msg("Your porofile saved!");
+            $user_ = dbf(dbq("select * from users_tbl where user_id={$_SESSION['user']['user_id']}"));
+            $user_['password'] = '********';
+            $_SESSION['user'] = $user_;
+            go("dashboard.php?page=profile");
         } else {
             sqlError();
         }

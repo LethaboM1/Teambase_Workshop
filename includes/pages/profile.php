@@ -1,47 +1,44 @@
-<?php
-?>
-
 <div class="row">
     <form method="post" id="adduser" enctype="multipart/form-data">
         <section class="card">
             <header class="card-header">
-                <h2 class="card-title">Add New User</h2>
-                <p class="card-subtitle">Add new users. Photo should be in .jpg or .png format and not larger than 2MB.</p>
+                <h2 class="card-title">Your Profile</h2>
+                <p class="card-subtitle">Change you contact details OR username / password here</p>
             </header>
             <div class="card-body">
                 <div class="row">
                     <div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
                         <label class="col-form-label" for="formGroupExampleInput">First Name</label>
-                        <input type="text" name="name" placeholder="First Name" class="form-control">
+                        <input type="text" name="name" placeholder="First Name" class="form-control" value="<?= $_session['user']['namer'] ?>" disabled>
                     </div>
                     <div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
                         <label class="col-form-label" for="formGroupExampleInput">Last Name</label>
-                        <input type="text" name="last_name" placeholder="Last Name" class="form-control">
+                        <input type="text" name="last_name" placeholder="Last Name" class="form-control" value="<?= $_session['user']['last_name'] ?>" disabled>
                     </div>
                     <div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
                         <label class="col-form-label" for="formGroupExampleInput">ID Number</label>
-                        <input name="id_number" id="fc_inputmask_1" data-plugin-masked-input data-input-mask="999999-9999-999" placeholder="______-____-___" class="form-control">
+                        <input name="id_number" id="fc_inputmask_1" data-plugin-masked-input data-input-mask="999999-9999-999" class="form-control" value="<?= $_session['user']['id_number'] ?>" disabled>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
                         <label class="col-form-label" for="formGroupExampleInput">Company Number</label>
-                        <input name="company_number" id="company_number" class="form-control" placeholder="Company number">
+                        <input name="company_number" id="company_number" class="form-control" placeholder="Company number" value="<?= $_session['user']['company_number'] ?>" disabled>
                     </div>
                     <div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
                         <label class="col-form-label" for="formGroupExampleInput">Contact Number</label>
-                        <input name="contact_number" id="fc_inputmask_2" data-plugin-masked-input data-input-mask="999-999-9999" placeholder="___-___-____" class="form-control">
+                        <input name="contact_number" id="fc_inputmask_2" data-plugin-masked-input data-input-mask="999-999-9999" class="form-control" value="<?= $_session['user']['contact_number'] ?>" disabled>
                     </div>
                     <div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
                         <label class="col-form-label" for="formGroupExampleInput">Employee Number</label>
-                        <input type="text" name="emplyee_number" placeholder="Employee Number" class="form-control">
+                        <input type="text" name="emplyee_number" placeholder="Employee Number" class="form-control" value="<?= $_session['user']['employee_number'] ?>" disabled>
                     </div>
                 </div>
                 <?= inp('fake-creds', '', 'fake-creds') ?>
                 <div class="row">
                     <div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
                         <label class="col-form-label" for="formGroupExampleInput">Username</label>
-                        <input type="username" name="username" placeholder="Username" class="form-control">
+                        <input type="username" name="username" placeholder="Username" class="form-control" value="<?= $_session['user']['username'] ?>">
                     </div>
                     <div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
                         <label class="col-form-label" for="formGroupExampleInput">Password</label>
@@ -55,18 +52,7 @@
                 <div class="row">
                     <div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
                         <label class="col-form-label" for="formGroupExampleInput">Email Address</label>
-                        <input type="email" name="email" placeholder="Email Address" class="form-control">
-                    </div>
-                    <div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-                        <label class="col-form-label" for="formGroupExampleInput">User Roll</label>
-                        <select name="role" class="form-control mb-3" id="roll">
-                            <option value="">Select a User Roll</option>
-                            <option value="manager">Manager</option>
-                            <option value="clerk">Clerk</option>
-                            <option value="supervisor">Supervisor</option>
-                            <option value="mechanic">Mechanic</option>
-                            <option value="user">Driver / Opperator</option>
-                        </select>
+                        <input type="email" name="email" placeholder="Email Address" class="form-control" value="<?= $_session['user']['email'] ?>">
                     </div>
                     <div class="col-sm-12 col-md-4 pb-sm-12 pb-md-0">
                         <label class="col-form-label" for="photo">Photo</label>
