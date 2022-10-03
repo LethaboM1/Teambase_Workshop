@@ -86,7 +86,7 @@ if (isset($_POST['add_user'])) {
         if ($_POST['password'] == $_POST['confirmpassword']) {
             if (validPass($_POST['password'])) {
                 $chk_duplicate_username = dbq("select * from users_tbl where username='{$_POST['username']}'");
-                if (dbr($chk_duplicate_email) == 0) {
+                if (dbr($chk_duplicate_username) == 0) {
 
                     $insert_user = dbq("insert into users_tbl set
                                             name='{$_POST['name']}',
