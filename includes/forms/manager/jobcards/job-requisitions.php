@@ -9,7 +9,7 @@ require 'vendor/autoload.php';
 if (isset($_POST['change_status'])) {
     if (strlen($_POST['status']) > 0) {
         $query = "";
-        $request_ = dbf(dbq("select * from jobcard_requisitions where request_id={$_POST['request_id']}"));
+
         switch ($_POST['status']) {
             case 'approved':
                 $query = "
@@ -68,6 +68,7 @@ if (isset($_POST['change_status'])) {
                                     where request_id={$_POST['request_id']}
                                     ");
         if ($update_status) {
+            $request_ = dbf(dbq("select * from jobcard_requisitions where request_id={$_POST['request_id']}"));
             msg("Status changed!");
 
             $mail = new PHPMailer(true);
@@ -98,14 +99,14 @@ if (isset($_POST['change_status'])) {
 
                 //Content
                 $mail->isHTML(true);                                  //Set email format to HTML
-                $mail->Subject = 'Part Requisition';
+                $mail->Subject = "#{$request_['request_id']} - Part Requisition";
                 $mail->Body    = "
                                 <b>Part Requisition</b><br>
                                 <p>
                                     <b>Request ID.</b>&nbsp;{$request_['request_id']}<br>
                                     <b>Part No.</b>&nbsp;{$request_['part_number']}<br>
                                     <b>Part Description.</b>&nbsp;{$request_['part_description']}<br>
-                                    <b>Qty.</b>&nbsp;{$request_['qty']}<br>
+                                    <b>Qty.</b>&nbsp;{$request_['qty']}<br><br>
                                     <b>Comment</b><br>
                                     {$_POST['status_comment']}
                                 </p>
