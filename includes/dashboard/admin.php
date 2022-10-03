@@ -7,9 +7,10 @@ if ($_SESSION['user']['role'] != 'manager' && $_SESSION['user']['role'] != 'syst
 
 switch ($_GET['page']) {
     case 'add-user':
-        echo "Role : {$_SESSION['user']['role']}";
+
         if ($_SESSION['user']['role'] == 'clerk') {
             go("dashboard.php");
+            echo "Role : {$_SESSION['user']['role']}";
         }
 
         $page_title = 'Add/Manage Users';
