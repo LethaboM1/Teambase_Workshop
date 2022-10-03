@@ -195,9 +195,18 @@
 								?>
 													<tr>
 														<td><?= $item['question'] ?></td>
-														<td>0 <input type="checkbox" name="check_<?= $item['checklist_id'] ?>" value="Yes" id="checkboxExample4" <?php if ($save_checklist[$item['checklist_id']]['answer'] == 'Yes') {
+														<td>0
+															<div class="button r" id="button-1">
+																<input type="checkbox" class="checkbox" name="check_<?= $item['checklist_id'] ?>" value="Yes" <?php if ($save_checklist[$item['checklist_id']]['answer'] == 'Yes') {
+																																									echo " checked='checked' ";
+																																								} ?>>
+																<div class="knobs"></div>
+																<div class="layer"></div>
+															</div>
+
+															<!-- <input type="checkbox" name="check_<?= $item['checklist_id'] ?>" value="Yes" id="checkboxExample4" <?php /* if ($save_checklist[$item['checklist_id']]['answer'] == 'Yes') {
 																																										echo " checked='checked' ";
-																																									} ?>></td>
+																																									}*/ ?>></td> -->
 													</tr>
 												<?php
 													break;
@@ -206,9 +215,17 @@
 												?>
 													<tr>
 														<td><?= $item['question'] ?></td>
-														<td>C <input type="checkbox" name="check_<?= $item['checklist_id'] ?>" value="Yes" id="checkboxExample4" <?php if ($save_checklist[$item['checklist_id']]['answer'] == 'Yes') {
+														<td>C
+															<div class="button r" id="button-1">
+																<input type="checkbox" class="checkbox" name="check_<?= $item['checklist_id'] ?>" value="Yes" <?php if ($save_checklist[$item['checklist_id']]['answer'] == 'Yes') {
+																																									echo " checked='checked' ";
+																																								} ?>>
+																<div class="knobs"></div>
+																<div class="layer"></div>
+															</div>
+															<!-- <input type="checkbox" name="check_<?= $item['checklist_id'] ?>" value="Yes" id="checkboxExample4" <?php /*if ($save_checklist[$item['checklist_id']]['answer'] == 'Yes') {
 																																										echo " checked='checked' ";
-																																									} ?>></td>
+																																									}*/ ?>></td> -->
 													</tr>
 								<?php
 													break;

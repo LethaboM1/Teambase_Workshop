@@ -92,31 +92,33 @@
   
   /* Button 1 */
   #button-1 .knobs:before {
-	content: "YES";
+	content: "NO";
+	text-shadow: 0px 0px 1px black;
 	position: absolute;
 	top: 4px;
 	left: 4px;
-	width: 20px;
-	height: 10px;
+	width: 30px;
+	height: 30px;
 	color: #fff;
 	font-size: 10px;
 	font-weight: bold;
 	text-align: center;
 	line-height: 1;
 	padding: 9px 4px;
-	background-color: #f3b426;
+	background-color: #B90003;
 	border-radius: 50%;
 	transition: 0.3s cubic-bezier(0.18, 0.89, 0.35, 1.15) all;
+	box-shadow: 0px 0px 3px black;
   }
   
   #button-1 .checkbox:checked + .knobs:before {
-	content: "NO";
+	content: "YES";
 	left: 42px;
-	background-color: #B90003;
+	background-color: #f3b426; ;
   }
   
   #button-1 .checkbox:checked ~ .layer {
-	background-color: #FF6B60;
+	background-color: #f3fab5;
   }
   
   #button-1 .knobs,
