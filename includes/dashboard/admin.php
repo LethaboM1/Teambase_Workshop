@@ -11,20 +11,21 @@ switch ($_GET['page']) {
         if ($_SESSION['user']['role'] == 'clerk') {
             go("dashboard.php");
             echo "Role : {$_SESSION['user']['role']}";
+        } else {
+            $page_title = 'Add/Manage Users';
+            $page_name = 'manager/users/add-manage-users';
+            require "includes/forms/manager/users/manage-users-form.php";
         }
-
-        $page_title = 'Add/Manage Users';
-        $page_name = 'manager/users/add-manage-users';
-        require "includes/forms/manager/users/manage-users-form.php";
         break;
 
     case 'add-plant':
         if ($_SESSION['user']['role'] == 'clerk') {
             go("dashboard.php");
+        } else {
+            $page_title = 'Add/Manage Plant';
+            $page_name = 'manager/plants/add-manage-plant';
+            require "includes/forms/manager/plants/manage-plants-form.php";
         }
-        $page_title = 'Add/Manage Plant';
-        $page_name = 'manager/plants/add-manage-plant';
-        require "includes/forms/manager/plants/manage-plants-form.php";
 
         break;
 
@@ -32,29 +33,28 @@ switch ($_GET['page']) {
 
         if ($_SESSION['user']['role'] == 'clerk') {
             go("dashboard.php");
-        }
-        $back_page = "dashboard.php?page=add-plant";
-        $page_title = 'Plant';
-        $page_name = 'manager/plants/plant-view';
+        } else {
+            $back_page = "dashboard.php?page=add-plant";
+            $page_title = 'Plant';
+            $page_name = 'manager/plants/plant-view';
 
-        if (!isset($_GET['id'])) {
-            go($back_page);
-        }
+            if (!isset($_GET['id'])) {
+                go($back_page);
+            }
 
-        $get_plant = dbq("select * from plants_tbl where plant_id='{$_GET['id']}'");
-        if ($get_plant) {
-            if (dbr($get_plant) == 1) {
-                $plant_ = dbf($get_plant);
+            $get_plant = dbq("select * from plants_tbl where plant_id='{$_GET['id']}'");
+            if ($get_plant) {
+                if (dbr($get_plant) == 1) {
+                    $plant_ = dbf($get_plant);
+                } else {
+                    go($back_page);
+                }
             } else {
                 go($back_page);
             }
-        } else {
-            go($back_page);
+
+            require "includes/forms/manager/plants/view-plant-form.php";
         }
-
-        require "includes/forms/manager/plants/view-plant-form.php";
-
-
         break;
 
     case 'add-job':
