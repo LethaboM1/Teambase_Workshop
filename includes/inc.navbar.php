@@ -14,7 +14,11 @@
     <?
     switch ($dashboard) {
       case "admin":
-        include('includes/navigation/manager_nav.php');
+        if ($_SESSION['user']['role'] == 'clerk') {
+          include('includes/navigation/clerk_nav.php');
+        } else {
+          include('includes/navigation/manager_nav.php');
+        }
         break;
 
       case "user":

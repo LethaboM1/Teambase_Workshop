@@ -14,9 +14,9 @@
 						<span>Job Cards</span>
 					</a>
 					<ul class="nav nav-children">
-						<li><a class="nav-link" href="dashboard4.php?page=add-job">Create a New Job Card</a></li>
-						<li><a class="nav-link" href="dashboard4.php?page=open-job">Open Job Cards</a></li>
-						<li><a class="nav-link" href="dashboard4.php?page=arch-job">Archive Job Cards</a></li>
+						<li><a class="nav-link" href="dashboard.php?page=add-job">Create a New Job Card</a></li>
+						<li><a class="nav-link" href="dashboard.php?page=open-job">Open Job Cards</a></li>
+						<li><a class="nav-link" href="dashboard.php?page=arch-job">Archive Job Cards</a></li>
 					</ul>
 				</li>
 				<li class="nav-parent">
