@@ -9,8 +9,15 @@ switch ($_GET['page']) {
     case 'add-user':
 
         if ($_SESSION['user']['role'] == 'clerk') {
-            go("dashboard.php");
-            echo "Role : {$_SESSION['user']['role']}";
+            $page_title = 'Dashboard Overview';
+            switch ($_SESSION['user']['role']) {
+                case "clerk":
+                    $page_name = 'dash_clerk';
+                    break;
+
+                default:
+                    $page_name = 'dash_manager';
+            }
         } else {
             $page_title = 'Add/Manage Users';
             $page_name = 'manager/users/add-manage-users';
@@ -20,7 +27,15 @@ switch ($_GET['page']) {
 
     case 'add-plant':
         if ($_SESSION['user']['role'] == 'clerk') {
-            go("dashboard.php");
+            $page_title = 'Dashboard Overview';
+            switch ($_SESSION['user']['role']) {
+                case "clerk":
+                    $page_name = 'dash_clerk';
+                    break;
+
+                default:
+                    $page_name = 'dash_manager';
+            }
         } else {
             $page_title = 'Add/Manage Plant';
             $page_name = 'manager/plants/add-manage-plant';
@@ -32,7 +47,15 @@ switch ($_GET['page']) {
     case 'view-plant':
 
         if ($_SESSION['user']['role'] == 'clerk') {
-            go("dashboard.php");
+            $page_title = 'Dashboard Overview';
+            switch ($_SESSION['user']['role']) {
+                case "clerk":
+                    $page_name = 'dash_clerk';
+                    break;
+
+                default:
+                    $page_name = 'dash_manager';
+            }
         } else {
             $back_page = "dashboard.php?page=add-plant";
             $page_title = 'Plant';
