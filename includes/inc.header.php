@@ -76,58 +76,23 @@
 
           <span class="separator"></span>
 
-          <ul class="notifications">
-            <li>
-              <a href="#" class="dropdown-toggle notification-icon" data-bs-toggle="dropdown">
-                <i class="bx bx-list-ol"></i>
-                <span class="badge">3</span>
-              </a>
 
-              <div class="dropdown-menu notification-menu large">
-                <div class="notification-title">
-                  <span class="float-end badge badge-default">3</span>
-                  Tasks
-                </div>
 
-                <div class="content">
-                  <ul>
-                    <li>
-                      <p class="clearfix mb-1">
-                        <span class="message float-start">Generating Sales Report</span>
-                        <span class="message float-end text-dark">60%</span>
-                      </p>
-                      <div class="progress progress-xs light">
-                        <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;"></div>
-                      </div>
-                    </li>
+          <?php
+          switch ($_SESSION['user']['role']) {
+            case "manager":
+              require "./includes/navigation/menus/manager.php";
+              break;
 
-                    <li>
-                      <p class="clearfix mb-1">
-                        <span class="message float-start">Importing Contacts</span>
-                        <span class="message float-end text-dark">98%</span>
-                      </p>
-                      <div class="progress progress-xs light">
-                        <div class="progress-bar" role="progressbar" aria-valuenow="98" aria-valuemin="0" aria-valuemax="100" style="width: 98%;"></div>
-                      </div>
-                    </li>
+            case "clerk":
+              require "./includes/navigation/menus/manager.php";
+              break;
 
-                    <li>
-                      <p class="clearfix mb-1">
-                        <span class="message float-start">Uploading something big</span>
-                        <span class="message float-end text-dark">33%</span>
-                      </p>
-                      <div class="progress progress-xs light mb-1">
-                        <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width: 33%;"></div>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </li>
-
-            <?php
-            require "./includes/navigation/menus/manager.php";
-            ?>
+            case "system":
+              require "./includes/navigation/menus/manager.php";
+              break;
+          }
+          ?>
           </ul>
           <span class="separator"></span>
 
