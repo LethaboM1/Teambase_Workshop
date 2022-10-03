@@ -72,9 +72,10 @@ include "includes/inc.header.php";
 					</div>
 
 					<div class="form-group mb-3">
+
 						<div class="clearfix">
 							<label class="float-left">Password</label>
-							<a href="recover-password.php" class="float-end">Lost Password?</a>
+							<!-- <a href="recover-password.php" class="float-end">Lost Password?</a> -->
 						</div>
 						<div class="input-group">
 							<input name="<?= $field_names['password'] ?>" type="password" class="form-control form-control-lg" />
@@ -86,10 +87,7 @@ include "includes/inc.header.php";
 
 					<div class="row">
 						<div class="col-sm-8">
-							<div class="checkbox-custom checkbox-default">
-								<input id="RememberMe" name="rememberme" type="checkbox" />
-								<label for="RememberMe">Remember Me</label>
-							</div>
+							&nbsp;
 						</div>
 						<div class="col-sm-4 text-end">
 							<button name="sign-in" type="submit" class="btn btn-primary mt-2">Sign In</button>
