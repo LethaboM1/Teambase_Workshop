@@ -7,6 +7,8 @@ if ($_SESSION['user']['role'] != 'manager' && $_SESSION['user']['role'] != 'syst
 
 switch ($_GET['page']) {
     case "profile":
+        $page_title = 'Your Profile';
+        $page_name = 'profile';
         break;
 
     case 'add-user':
