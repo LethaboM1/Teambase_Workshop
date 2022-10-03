@@ -9,36 +9,36 @@
                 <div class="row">
                     <div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
                         <label class="col-form-label" for="formGroupExampleInput">First Name</label>
-                        <input type="text" name="name" placeholder="First Name" class="form-control" value="<?= $_session['user']['namer'] ?>" disabled>
+                        <input type="text" name="name" placeholder="First Name" class="form-control" value="<?= $_SESSION['user']['namer'] ?>" disabled>
                     </div>
                     <div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
                         <label class="col-form-label" for="formGroupExampleInput">Last Name</label>
-                        <input type="text" name="last_name" placeholder="Last Name" class="form-control" value="<?= $_session['user']['last_name'] ?>" disabled>
+                        <input type="text" name="last_name" placeholder="Last Name" class="form-control" value="<?= $_SESSION['user']['last_name'] ?>" disabled>
                     </div>
                     <div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
                         <label class="col-form-label" for="formGroupExampleInput">ID Number</label>
-                        <input name="id_number" id="fc_inputmask_1" data-plugin-masked-input data-input-mask="999999-9999-999" class="form-control" value="<?= $_session['user']['id_number'] ?>" disabled>
+                        <input name="id_number" id="fc_inputmask_1" data-plugin-masked-input data-input-mask="999999-9999-999" class="form-control" value="<?= $_SESSION['user']['id_number'] ?>" disabled>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
                         <label class="col-form-label" for="formGroupExampleInput">Company Number</label>
-                        <input name="company_number" id="company_number" class="form-control" placeholder="Company number" value="<?= $_session['user']['company_number'] ?>" disabled>
+                        <input name="company_number" id="company_number" class="form-control" placeholder="Company number" value="<?= $_SESSION['user']['company_number'] ?>" disabled>
                     </div>
                     <div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
                         <label class="col-form-label" for="formGroupExampleInput">Contact Number</label>
-                        <input name="contact_number" id="fc_inputmask_2" data-plugin-masked-input data-input-mask="999-999-9999" class="form-control" value="<?= $_session['user']['contact_number'] ?>" disabled>
+                        <input name="contact_number" id="fc_inputmask_2" data-plugin-masked-input data-input-mask="999-999-9999" class="form-control" value="<?= $_SESSION['user']['contact_number'] ?>" disabled>
                     </div>
                     <div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
                         <label class="col-form-label" for="formGroupExampleInput">Employee Number</label>
-                        <input type="text" name="emplyee_number" placeholder="Employee Number" class="form-control" value="<?= $_session['user']['employee_number'] ?>" disabled>
+                        <input type="text" name="emplyee_number" placeholder="Employee Number" class="form-control" value="<?= $_SESSION['user']['employee_number'] ?>" disabled>
                     </div>
                 </div>
                 <?= inp('fake-creds', '', 'fake-creds') ?>
                 <div class="row">
                     <div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
                         <label class="col-form-label" for="formGroupExampleInput">Username</label>
-                        <input type="username" name="username" placeholder="Username" class="form-control" value="<?= $_session['user']['username'] ?>">
+                        <input type="username" name="username" placeholder="Username" class="form-control" value="<?= $_SESSION['user']['username'] ?>">
                     </div>
                     <div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
                         <label class="col-form-label" for="formGroupExampleInput">Password</label>
@@ -52,7 +52,7 @@
                 <div class="row">
                     <div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
                         <label class="col-form-label" for="formGroupExampleInput">Email Address</label>
-                        <input type="email" name="email" placeholder="Email Address" class="form-control" value="<?= $_session['user']['email'] ?>">
+                        <input type="email" name="email" placeholder="Email Address" class="form-control" value="<?= $_SESSION['user']['email'] ?>">
                     </div>
                     <div class="col-sm-12 col-md-4 pb-sm-12 pb-md-0">
                         <label class="col-form-label" for="photo">Photo</label>
