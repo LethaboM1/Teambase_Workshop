@@ -117,8 +117,8 @@ if (isset($_POST['change_status'])) {
                                     Part Requisition\n\r\n\r
                                     Request ID. : {$request_['request_id']}\n\r
                                     Part No. : {$request_['part_number']}\n\r
-                                    Part Description. : {$request_['part_number']}\n\r
-                                    Qty. : {$request_['part_number']}\n\r
+                                    Part Description. : {$request_['part_description']}\n\r
+                                    Qty. : {$request_['qty']}\n\r
                                     Comment</b>\n\r
                                         {$request_['status_comment']}
                                     \n\r\n\r
