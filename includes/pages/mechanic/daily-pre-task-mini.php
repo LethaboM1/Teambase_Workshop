@@ -46,11 +46,10 @@
 												<td><?= $question['item_order'] ?></td>
 												<td><?= $question['question'] ?></td>
 												<td>
-													<div class="radio-custom radio-warning">
-														<input type="radio" name="q_<?= $question['checklist_id'] ?>" value="yes"><label>Yes</label>
-													</div>
-													<div class="radio-custom radio-warning">
-														<input type="radio" name="q_<?= $question['checklist_id'] ?>" value="no"><label>No</label>
+													<div class="button r mt-1" id="button-1">
+														<input type="checkbox" class="checkbox" name="q_<?= $question['checklist_id'] ?>" value="Yes">
+														<div class="knobs"></div>
+														<div class="layer"></div>
 													</div>
 												</td>
 												<td>
@@ -59,6 +58,14 @@
 											</tr>
 
 								<?php
+											/* 
+													<div class="radio-custom radio-warning">
+														<input type="radio" name="q_<?= $question['checklist_id'] ?>" value="yes"><label>Yes</label>
+													</div>
+													<div class="radio-custom radio-warning">
+														<input type="radio" name="q_<?= $question['checklist_id'] ?>" value="no"><label>No</label>
+													</div>
+											*/
 										}
 									}
 								}

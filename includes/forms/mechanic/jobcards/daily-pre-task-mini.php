@@ -33,18 +33,18 @@ if (isset($_POST['add_job_checklist'])) {
         $check_list = dbq("select * from job_checklist order by item_order");
         if ($check_list) {
             while ($row = dbf($check_list)) {
-                if (!isset($_POST['q_' . $row['checklist_id']])) {
-                    if (!is_error()) {
-                        error("You must answer all the questions.");
-                    }
+                if ($_POST['q_' . $row['checklist_id']] == 'Yes') {
+                    $answer = 'Yes';
                 } else {
-                    $job_check_list[] = [
-                        'job_id' => $_GET['id'],
-                        'question' => $row['question'],
-                        'answer' => $_POST['q_' . $row['checklist_id']],
-                        'comment' => $_POST['comment_' . $row['checklist_id']]
-                    ];
+                    $answer = "No";
                 }
+
+                $job_check_list[] = [
+                    'job_id' => $_GET['id'],
+                    'question' => $row['question'],
+                    'answer' => $answer,
+                    'comment' => $_POST['comment_' . $row['checklist_id']]
+                ];
             }
         } else {
             sqlError();
