@@ -66,7 +66,7 @@ $total_notifications = $count_new_jobs + $count_new_requests;
 <?php
 
 /* 
- <ul class="notifications">
+ 
             <li>
               <a href="#" class="dropdown-toggle notification-icon" data-bs-toggle="dropdown">
                 <i class="bx bx-list-ol"></i>
