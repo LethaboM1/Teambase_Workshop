@@ -8,7 +8,7 @@ if (isset($_POST['del_user'])) {
 if (isset($_POST['save_user'])) {
     if (
         strlen($_POST['name']) > 0
-        && strlen($_POST['email']) > 0
+        && strlen($_POST['username']) > 0
         && $_POST['role'] != ''
 
     ) {
@@ -46,8 +46,8 @@ if (isset($_POST['save_user'])) {
         }
 
         $user_ = dbf(dbq("select * from users_tbl where user_id='{$_POST['user_id']}'"));
-        $chk_duplicate_email = dbq("select * from users_tbl where email='{$_POST['email']}' and email!='{$user_['email']}'");
-        if (dbr($chk_duplicate_email) == 0) {
+        $chk_duplicate_username = dbq("select * from users_tbl where username='{$_POST['username']}' and user_id!='{$user_['user_id']}'");
+        if (dbr($chk_duplicate_username) == 0) {
             $update_user = dbq("update users_tbl set 
                                     name='{$_POST['name']}',
                                     last_name='{$_POST['last_name']}',
@@ -55,6 +55,7 @@ if (isset($_POST['save_user'])) {
                                     id_number='{$_POST['id_number']}',
                                     company_number='{$_POST['company_number']}',
                                     contact_number='{$_POST['contact_number']}',
+                                    username='{$_POST['username']}',
                                     email='{$_POST['email']}',
                                     role='{$_POST['role']}'
                                     where user_id='{$_POST['user_id']}'
@@ -66,7 +67,7 @@ if (isset($_POST['save_user'])) {
                 sqlError();
             }
         } else {
-            error("User with email address {$_POST['email']} already exists.");
+            error("User with username '{$_POST['username']}' already exists.");
         }
     } else {
         error("fill in name, email and passwords at least.");
@@ -76,7 +77,7 @@ if (isset($_POST['save_user'])) {
 if (isset($_POST['add_user'])) {
     if (
         strlen($_POST['name']) > 0
-        && strlen($_POST['email']) > 0
+        && strlen($_POST['username']) > 0
         && strlen($_POST['password']) > 0
         && strlen($_POST['confirmpassword']) > 0
         && $_POST['role'] != ''
@@ -84,7 +85,7 @@ if (isset($_POST['add_user'])) {
     ) {
         if ($_POST['password'] == $_POST['confirmpassword']) {
             if (validPass($_POST['password'])) {
-                $chk_duplicate_email = dbq("select * from users_tbl where email='{$_POST['email']}'");
+                $chk_duplicate_username = dbq("select * from users_tbl where username='{$_POST['username']}'");
                 if (dbr($chk_duplicate_email) == 0) {
 
                     $insert_user = dbq("insert into users_tbl set
@@ -94,6 +95,7 @@ if (isset($_POST['add_user'])) {
                                             id_number='{$_POST['id_number']}',
                                             company_number='{$_POST['company_number']}',
                                             contact_number='{$_POST['contact_number']}',
+                                            username='{$_POST['username']}',
                                             email='{$_POST['email']}',
                                             password='" . password_hash($_POST['password'], PASSWORD_DEFAULT) . "',
                                             role='{$_POST['role']}'
@@ -120,7 +122,7 @@ if (isset($_POST['add_user'])) {
                         sqlError();
                     }
                 } else {
-                    error("User with email address {$_POST['email']} already exists.");
+                    error("User with username {$_POST['username']} already exists.");
                 }
             } else {
                 error('Invalid password. Password must include: uppercase, lowercase, special characters, numbers and must be atleast 8 characters');

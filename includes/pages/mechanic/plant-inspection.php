@@ -12,7 +12,7 @@
 <!-- Negative Alert End -->
 
 <div class="row">
-	<div class="col-lg-6 mb-3">
+	<div class="col-lg-12 mb-3">
 		<form action="" id="inspection">
 			<section class="card">
 				<header class="card-header">
@@ -68,7 +68,7 @@
 		</form>
 	</div>
 
-	<div class="col-lg-6 mb-3">
+	<div class="col-lg-12 mb-3">
 		<form action="" id="inspection">
 			<section class="card">
 				<header class="card-header">

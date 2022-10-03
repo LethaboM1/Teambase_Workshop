@@ -21,15 +21,15 @@ $token_id = $csrf->get_token_id();
 $token_value = $csrf->get_token($token_id);
 
 // Generate Random Form Names
-$field_names = $csrf->form_names(array('email', 'password'), false);
+$field_names = $csrf->form_names(array('username', 'password'), false);
 
 
-if (isset($_POST[$field_names['email']], $_POST[$field_names['password']])) {
+if (isset($_POST[$field_names['username']], $_POST[$field_names['password']])) {
 	if ($csrf->check_valid('post')) {
 
 		dbconn('127.0.0.1', $database_name, $database_user, $database_password);
 
-		$chk_user = dbq("select * from users_tbl where email='{$_POST[$field_names['email']]}'");
+		$chk_user = dbq("select * from users_tbl where username='{$_POST[$field_names['username']]}'");
 		if (dbr($chk_user) > 0) {
 			$user_ = dbf($chk_user);
 			if (password_verify($_POST[$field_names['password']], $user_['password'])) {
@@ -45,7 +45,7 @@ if (isset($_POST[$field_names['email']], $_POST[$field_names['password']])) {
 	} else {
 		$error[] = "Incorrect username or password! csrf";
 	}
-	$field_names = $csrf->form_names(array('email', 'password'), true);
+	$field_names = $csrf->form_names(array('username', 'password'), true);
 }
 
 include "includes/inc.header.php";
@@ -64,7 +64,7 @@ include "includes/inc.header.php";
 					<div class="form-group mb-3">
 						<label>Username</label>
 						<div class="input-group">
-							<input name="<?= $field_names['email'] ?>" type="text" class="form-control form-control-lg" />
+							<input name="<?= $field_names['username'] ?>" type="text" class="form-control form-control-lg" />
 							<span class="input-group-text">
 								<i class="bx bx-user text-4"></i>
 							</span>

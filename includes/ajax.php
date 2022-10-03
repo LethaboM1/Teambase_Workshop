@@ -382,8 +382,8 @@ switch ($_POST['cmd']) {
                         . inp('fake-creds', '', 'fake-creds')
                         . "<div class='row'>
                             <div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
-                                <label class='col-form-label' for='formGroupExampleInput'>Email Address</label>
-                                <input id='email' type='email' name='email' placeholder='Email Address' class='form-control' value='{$user_['email']}'>
+                                <label class='col-form-label' for='formGroupExampleInput'>Username</label>
+                                <input id='username' type='username' name='username' placeholder='Email Address' class='form-control' value='{$user_['username']}'>
                             </div>
                             <div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
                                 <label title='Leave blank to keep password unchanged.' class='col-form-label' for='formGroupExampleInput'>Password</label>
@@ -407,6 +407,10 @@ switch ($_POST['cmd']) {
 
 
                     echo "          </select>
+                            </div>
+                            <div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
+                                <label class='col-form-label' for='formGroupExampleInput'>Email Address</label>
+                                <input id='email' type='email' name='email' placeholder='Email Address' class='form-control' value='{$user_['email']}'>
                             </div>
                             <div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
                                     <label class='col-form-label' for='photo-edt'>Photo</label>
