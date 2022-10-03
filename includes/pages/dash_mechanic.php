@@ -10,7 +10,7 @@ if ($_SESSION['user']['role'] != 'mechanic') {
 				<h2 class="card-title">Job Requisitions</h2>
 			</header>
 			<div class="card-body">
-				<table class="table table-responsive-md table-striped mb-0">
+				<table class="table table-responsive-md table-hover table-striped mb-0">
 					<thead>
 						<tr>
 							<th>Job</th>
@@ -30,10 +30,10 @@ if ($_SESSION['user']['role'] != 'mechanic') {
 									$jobcard_ = dbf(dbq("select * from jobcards where job_id={$row['job_id']}"));
 									$plant_ = dbf(dbq("select * from plants_tbl where plant_id={$row['plant_id']}"));
 						?>
-									<tr>
+									<tr class="pointer" onclick="window.open(`dashboard.php?page=job-card-view&id=<?= $row['job_id'] ?>`,`_SELF`);">
 										<td><?= $jobcard_['jobcard_number'] ?></td>
 										<td><?= $plant_['plant_number'] ?></td>
-										<td><?= $row['request_id'] ?></td>
+										<td>#<?= $row['request_id'] ?></td>
 										<td>
 											<?php
 
@@ -93,6 +93,9 @@ if ($_SESSION['user']['role'] != 'mechanic') {
 													<?= $percentage ?>%
 												</div>
 											</div>
+										</td>
+										<td>
+											<i class="fa fa-folder-open"></i>
 										</td>
 									</tr>
 						<?php

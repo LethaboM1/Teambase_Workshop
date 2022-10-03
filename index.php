@@ -35,6 +35,10 @@ if (isset($_POST[$field_names['username']], $_POST[$field_names['password']])) {
 			if (password_verify($_POST[$field_names['password']], $user_['password'])) {
 				$user_['password'] = '********';
 				$_SESSION['user'] = $user_;
+				$get_settings = dbq("select * from settings");
+				if ($get_settings) {
+					$_SESSION['settings'] = dbf($get_settings);
+				}
 				go('dashboard.php');
 			} else {
 				$error[] = "Incorrect username or password! wrong-pass";

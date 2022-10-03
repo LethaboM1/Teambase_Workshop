@@ -77,10 +77,34 @@ $request_status_select = [
 												<br>
 											</div>
 											<div class="col-md-12">
-												<?= inp('request_id', '', 'hidden', $job_request['request_id'])
-													. inp('comments', 'Mechanic Comment', 'textarea', $job_request['comment'], '', 0, '', 'disabled')
-													. inp('status', 'Status', 'select', $job_request['status'], '', 0, $request_status_select)
-													. inp('status_comment', 'Comment', 'textarea') ?>
+												<?php
+												if ($row['status'] == 'requested') {
+													$request_status_select = [
+														['name' => 'Choose', 'value' => '0'],
+														['name' => 'Approved', 'value' => 'approved'],
+														['name' => 'Denied', 'value' => 'denied'],
+													];
+
+													echo inp('request_id', '', 'hidden', $job_request['request_id'])
+														. inp('comments', 'Mechanic Comment', 'textarea', $job_request['comment'], '', 0, '', 'disabled')
+														. inp('status', 'Status', 'select', '', '', 0, $request_status_select)
+														. inp('status_comment', 'Comment', 'textarea');
+												} else {
+													$request_status_select = [
+														['name' => 'Choose', 'value' => '0'],
+														['name' => 'Ordered', 'value' => 'ordered'],
+														['name' => 'Received', 'value' => 'received'],
+														['name' => 'Completed', 'value' => 'completed'],
+														['name' => 'Canceled', 'value' => 'canceled'],
+														['name' => 'Denied', 'value' => 'denied'],
+													];
+
+													echo inp('request_id', '', 'hidden', $job_request['request_id'])
+														. inp('comments', 'Mechanic Comment', 'textarea', $job_request['comment'], '', 0, '', 'disabled')
+														. inp('status', 'Status', 'select', $job_request['status'], '', 0, $request_status_select)
+														. inp('status_comment', 'Comment', 'textarea');
+												}
+												?>
 											</div>
 										</div>
 
