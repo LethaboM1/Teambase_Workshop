@@ -85,7 +85,7 @@ if (isset($_POST['change_status'])) {
                 //$mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
                 //Recipients
-                $mail->setFrom($_SESSION['user']['email'], $_SESSION['name'] . ' ' . $_SESSION['user']['last_name']);
+                //$mail->setFrom($_SESSION['user']['email'], $_SESSION['name'] . ' ' . $_SESSION['user']['last_name']);
                 $mail->addAddress($_SESSION['settings']['requisition_mail']);     //Add a recipient
                 //$mail->addAddress('ellen@example.com');               //Name is optional
                 $mail->addReplyTo($_SESSION['user']['email'], $_SESSION['name'] . ' ' . $_SESSION['user']['last_name']);
