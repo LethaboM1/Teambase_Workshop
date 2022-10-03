@@ -698,7 +698,7 @@ function inp($name, $label, $type = 'text', $value = '', $class = '', $required 
 			if ($required) {
 				$form .= "required";
 			}
-			$form .= "' rows='3' name='" . $name . "'  id='" . $name . "'>$value</textarea>
+			$form .= "' rows='3' name='" . $name . "'  id='" . $name . "' {$extra}>$value</textarea>
 		</div>";
 
 			return $form;

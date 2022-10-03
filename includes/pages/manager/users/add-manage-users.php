@@ -100,6 +100,7 @@
 							<select name="role" class="form-control mb-3" id="roll">
 								<option value="">Select a User Roll</option>
 								<option value="manager">Manager</option>
+								<option value="clerk">Clerk</option>
 								<option value="supervisor">Supervisor</option>
 								<option value="mechanic">Mechanic</option>
 								<option value="user">Driver / Opperator</option>

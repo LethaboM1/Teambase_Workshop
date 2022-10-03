@@ -5,6 +5,13 @@ if ($_SESSION['user']['role'] != 'system' && $_SESSION['user']['role'] != 'manag
 ?>
 
 <div class="row">
+
+</div>
+
+<?php
+
+/* 
+
 	<div class="col-lg-6 mb-3">
 		<section class="card">
 			<div class="card-body">
@@ -240,5 +247,4 @@ if ($_SESSION['user']['role'] != 'system' && $_SESSION['user']['role'] != 'manag
 		</section>
 	</div>
 </div>
-
-</div>
+*/

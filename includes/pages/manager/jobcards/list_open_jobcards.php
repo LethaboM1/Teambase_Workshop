@@ -70,6 +70,7 @@ if ($row['allocated_hours'] > 0) {
                                                 <b>Hour Spend.</b>&nbsp;<?= $worked['hours'] ?><br>
                                             </div>
                                             <div class="col-md-6">
+                                                <b>Job card type.</b>&nbsp;<?= $row['jobcard_type'] ?><br>
                                                 <b>Plant.</b>&nbsp;<?= $plant_['reg_number'] ?><br>
                                                 <b>Logged by.</b>&nbsp;<?= $logged_by['name'] ?><br>
                                                 <b>Make.</b>&nbsp;<?= $plant_['make'] ?><br>

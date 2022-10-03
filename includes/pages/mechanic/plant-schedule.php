@@ -43,6 +43,8 @@
 				</div>
 				<hr>
 				<form method="post">
+					<?= inp('job_id', '', 'hidden', $_GET['id']) ?>
+					<?= inp('service_type', '', 'hidden', $jobcard_['service_type']) ?>
 					<div class="row">
 						<table class="table table-responsive-md table-bordered mb-0 dark">
 							<thead>
@@ -173,6 +175,16 @@
 									?>
 								</tr>
 								<?php
+								//echo $jobcard_['service_checklist'];
+								$jobcard_['service_checklist'] = rtrim($jobcard_['service_checklist'], "\0");
+								$save_checklist = json_decode(base64_decode($jobcard_['service_checklist']), true); //, 512, JSON_UNESCAPED_UNICODE
+
+								if ($save_checklist === null) {
+									echo "Error: " . json_last_error_msg();
+								}
+
+
+								//echo "<pre>xxx" . print_r($save_checklist, true) . "</pre>";
 								$get_service_checklist = dbq("select * from service_checklist");
 								if ($get_service_checklist) {
 									if (dbr($get_service_checklist) > 0) {
@@ -183,7 +195,9 @@
 								?>
 													<tr>
 														<td><?= $item['question'] ?></td>
-														<td>0 <input type="checkbox" name="check_<?= $item['checklist_id'] ?>" value="Yes" id="checkboxExample4"></td>
+														<td>0 <input type="checkbox" name="check_<?= $item['checklist_id'] ?>" value="Yes" id="checkboxExample4" <?php if ($save_checklist[$item['checklist_id']]['answer'] == 'Yes') {
+																																										echo " checked='checked' ";
+																																									} ?>></td>
 													</tr>
 												<?php
 													break;
@@ -192,7 +206,9 @@
 												?>
 													<tr>
 														<td><?= $item['question'] ?></td>
-														<td>C <input type="checkbox" name="check_<?= $item['checklist_id'] ?>" value="Yes" id="checkboxExample4"></td>
+														<td>C <input type="checkbox" name="check_<?= $item['checklist_id'] ?>" value="Yes" id="checkboxExample4" <?php if ($save_checklist[$item['checklist_id']]['answer'] == 'Yes') {
+																																										echo " checked='checked' ";
+																																									} ?>></td>
 													</tr>
 								<?php
 													break;
@@ -314,6 +330,37 @@
 						</form>
 					</div>
 					<!-- Modal view End -->
+
+					<div id="modalCompleteService" class="modal-block modal-block-lg mfp-hide">
+						<form method="post">
+							<section class="card">
+								<header class="card-header">
+									<h2 class="card-title">Complete Service</h2>
+								</header>
+								<div class="card-body">
+									<div class="modal-wrapper">
+										<div class="modal-text">
+											<div class="row">
+												<?= inp('service_checklist', '', 'hidden', $jobcard_['service_checklist']) ?>
+												<?= inp('service_type', '', 'hidden', $jobcard_['service_type']) ?>
+												<?= inp('compdate', '', 'datetime', date("Y-m-d\TH:i")) ?>
+												<label>Are you sure you want to complete / Close this service?</label>
+											</div>
+										</div>
+									</div>
+								</div>
+								<footer class="card-footer">
+									<div class="row">
+										<div class="col-md-12 text-right">
+											<button name='complete_service' type="submit" class="btn btn-primary">Complete Service</button>
+											&nbsp;<button class="btn btn-default modal-dismiss">Cancel</button>
+										</div>
+									</div>
+								</footer>
+							</section>
+						</form>
+					</div>
+
 					<div class="">
 						<section class="card">
 							<header class="card-header">
@@ -373,8 +420,10 @@
 				</div>
 			</div>
 			<footer class="card-footer text-end">
-				<button class="btn btn-primary">Complete Service</button>
-				<button type="reset" class="btn btn-default">Reset</button>
+				<form method="post">
+					<a class="mb-1 mt-1 mr-1 modal-basic" href="#modalCompleteService"><button class="btn btn-primary">Complete Service</button></a>
+					<button type="reset" class="btn btn-default">Reset</button>
+				</form>
 			</footer>
 		</section>
 	</div>

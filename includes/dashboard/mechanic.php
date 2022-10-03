@@ -48,6 +48,8 @@ switch ($_GET['page']) {
 
 
     default:
-        $page_title = 'Dashboard Overview';
-        $page_name = 'dash_mechanic';
+        $page_title = 'Open Job Cards';
+        $page_name = 'mechanic/open-job-cards';
+        //$page_title = 'Dashboard Overview';
+        //$page_name = 'dash_mechanic';
 }

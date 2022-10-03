@@ -14,16 +14,41 @@
                             <div class="modal-wrapper">
                                 <div class="modal-text">
                                     <b>Logged by:</b>&nbsp;<?= $logged_by_['name'] ?><br>
-                                    <b>Fault:</b><br><?= $logged_by_['fault_description'] ?><br>
+                                    <b>Fault:</b><br><?= $jobcard['fault_description'] ?><br>
                                     <b>Extras</b><br>
-                                    <?php
-                                    $items = json_decode($jobcard['safety_audit'], true);
-                                    echo "<ul>";
-                                    foreach ($items as $item) {
-                                        echo "<li>{$item['name']} - [{$item['answer']}]</li>";
-                                    }
-                                    echo "</ul>";
-                                    ?>
+                                    <div class="row">
+                                        <?php
+                                        if (strlen($jobcard['safety_audit']) > 0) {
+                                            $safety_audit = json_decode(base64_decode($jobcard['safety_audit']), true);
+                                        } else {
+                                            $safety_audit = [];
+                                        }
+
+                                        if (is_array($safety_audit)) {
+
+                                            if (count($safety_audit) > 0) {
+                                                foreach ($safety_audit as $line) {
+                                        ?>
+                                                    <div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+                                                        <div class="checkbox-custom checkbox-default">
+                                                            <input type="checkbox" <?php if ($line['answer'] == 'Yes') {
+                                                                                        echo "checked='checked'";
+                                                                                    } ?> disabled>
+                                                            <label for="checkboxExample1"><?= $line['name'] ?></label>
+                                                        </div>
+                                                    </div>
+                                                <?php
+                                                }
+                                            } else {
+                                                ?>
+                                                <div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+                                                    Nothing to list
+                                                </div>
+                                        <?php
+                                            }
+                                        }
+                                        ?>
+                                    </div>
                                 </div>
                             </div>
                         </div>

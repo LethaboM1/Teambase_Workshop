@@ -1,5 +1,9 @@
 <div class="row">
-	<div class="col-xl-6">
+
+</div>
+<?php
+/* 
+<div class="col-xl-6">
 		<section class="card">
 			<header class="card-header card-header-transparent">
 				<h2 class="card-title">Job Stats</h2>
@@ -104,4 +108,4 @@
 			</div>
 		</section>
 	</div>
-</div>
+*/

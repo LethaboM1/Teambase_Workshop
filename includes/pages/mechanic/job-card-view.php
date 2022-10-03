@@ -59,7 +59,7 @@
 					<div class="row">
 						<?php
 						if (strlen($jobcard_['safety_audit']) > 0) {
-							$safety_audit = json_decode($jobcard_['safety_audit'], true);
+							$safety_audit = json_decode(base64_decode($jobcard_['safety_audit']), true);
 						} else {
 							$safety_audit = [];
 						}

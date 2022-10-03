@@ -78,6 +78,7 @@ $request_status_select = [
 											</div>
 											<div class="col-md-12">
 												<?= inp('request_id', '', 'hidden', $job_request['request_id'])
+													. inp('comments', 'Mechanic Comment', 'textarea', $job_request['comment'], '', 0, '', 'disabled')
 													. inp('status', 'Status', 'select', $job_request['status'], '', 0, $request_status_select)
 													. inp('status_comment', 'Comment', 'textarea') ?>
 											</div>

@@ -10,6 +10,10 @@ switch ($_SESSION['user']['role']) {
 		$dashboard = 'admin';
 		break;
 
+	case "clerk":
+		$dashboard = 'admin';
+		break;
+
 	case "user":
 		$dashboard = 'user';
 		break;

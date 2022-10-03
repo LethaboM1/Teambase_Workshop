@@ -38,7 +38,7 @@ if (isset($_POST['add_jobcard'])) {
                                 ");
         if ($add_jobcard) {
             msg("Job card logged!");
-            go('dashboard.php');
+            go('dashboard.php?page=open-job');
         } else {
             sqlError();
         }

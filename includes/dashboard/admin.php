@@ -1,44 +1,56 @@
 
 <?php
 require_once "includes/check.php";
-if ($_SESSION['user']['role'] != 'manager' && $_SESSION['user']['role'] != 'system') {
+if ($_SESSION['user']['role'] != 'manager' && $_SESSION['user']['role'] != 'system' && $_SESSION['user']['role'] != 'clerk') {
     go('index.php');
 }
 
 switch ($_GET['page']) {
     case 'add-user':
-        $page_title = 'Add/Manage Users';
-        $page_name = 'manager/users/add-manage-users';
-        require "includes/forms/manager/users/manage-users-form.php";
+        if ($_SESSION['user']['role'] != 'clerk') {
+            $page_title = 'Add/Manage Users';
+            $page_name = 'manager/users/add-manage-users';
+            require "includes/forms/manager/users/manage-users-form.php";
+        } else {
+            go("dashboard.php");
+        }
         break;
 
     case 'add-plant':
-        $page_title = 'Add/Manage Plant';
-        $page_name = 'manager/plants/add-manage-plant';
-        require "includes/forms/manager/plants/manage-plants-form.php";
+        if ($_SESSION['user']['role'] != 'clerk') {
+            $page_title = 'Add/Manage Plant';
+            $page_name = 'manager/plants/add-manage-plant';
+            require "includes/forms/manager/plants/manage-plants-form.php";
+        } else {
+            go("dashboard.php");
+        }
         break;
 
     case 'view-plant':
-        $back_page = "dashboard.php?page=add-plant";
-        $page_title = 'Plant';
-        $page_name = 'manager/plants/plant-view';
+        if ($_SESSION['user']['role'] != 'clerk') {
+            $back_page = "dashboard.php?page=add-plant";
+            $page_title = 'Plant';
+            $page_name = 'manager/plants/plant-view';
 
-        if (!isset($_GET['id'])) {
-            go($back_page);
-        }
+            if (!isset($_GET['id'])) {
+                go($back_page);
+            }
 
-        $get_plant = dbq("select * from plants_tbl where plant_id='{$_GET['id']}'");
-        if ($get_plant) {
-            if (dbr($get_plant) == 1) {
-                $plant_ = dbf($get_plant);
+            $get_plant = dbq("select * from plants_tbl where plant_id='{$_GET['id']}'");
+            if ($get_plant) {
+                if (dbr($get_plant) == 1) {
+                    $plant_ = dbf($get_plant);
+                } else {
+                    go($back_page);
+                }
             } else {
                 go($back_page);
             }
-        } else {
-            go($back_page);
-        }
 
-        require "includes/forms/manager/plants/view-plant-form.php";
+            require "includes/forms/manager/plants/view-plant-form.php";
+        } else {
+            go("dashboard.php");
+        }
 
         break;
 
@@ -78,5 +90,12 @@ switch ($_GET['page']) {
 
     default:
         $page_title = 'Dashboard Overview';
-        $page_name = 'dash_manager';
+        switch ($_SESSION['user']) {
+            case "clerk":
+                $page_name = 'dash_clerk';
+                break;
+
+            default:
+                $page_name = 'dash_manager';
+        }
 }

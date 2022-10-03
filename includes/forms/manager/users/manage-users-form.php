@@ -95,7 +95,7 @@ if (isset($_POST['add_user'])) {
                                             company_number='{$_POST['company_number']}',
                                             contact_number='{$_POST['contact_number']}',
                                             email='{$_POST['email']}',
-                                            password='" . password_hash($_POST['password'], PASSWORD_DEFAULT) . "'
+                                            password='" . password_hash($_POST['password'], PASSWORD_DEFAULT) . "',
                                             role='{$_POST['role']}'
                                             ");
                     if ($insert_user) {

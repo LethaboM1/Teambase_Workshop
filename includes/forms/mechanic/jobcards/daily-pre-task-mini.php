@@ -52,7 +52,7 @@ if (isset($_POST['add_job_checklist'])) {
 
         if (!is_error()) {
             if (isset($job_check_list)) {
-                $job_check_list = json_encode($job_check_list);
+                $job_check_list = base64_encode(json_encode($job_check_list));
                 $update_jobcard = dbq("update jobcards set
                                                 status='busy',
                                                 risk_assessment='" . esc($job_check_list) . "'

@@ -34,7 +34,7 @@ if (isset($_POST['request_jobcard'])) {
         }
 
         if (isset($safety_stuff)) {
-            $safety_stuff = json_encode($safety_stuff);
+            $safety_stuff = base64_encode(json_encode($safety_stuff));
         } else {
             $safety_stuff = '';
         }
@@ -301,7 +301,7 @@ if (isset($_POST['submit_checklist'])) {
 
         if (!is_error()) {
 
-            $results = json_encode($json_checklist);
+            $results = base64_encode(json_encode($json_checklist));
 
             if ($faulty) {
                 switch ($status) {
@@ -473,7 +473,7 @@ if (isset($_POST['start_breakdown'])) {
             }
 
             if (isset($safety_stuff)) {
-                $safety_stuff = json_encode($safety_stuff);
+                $safety_stuff = base64_encode(json_encode($safety_stuff));
             } else {
                 $safety_stuff = '';
             }
