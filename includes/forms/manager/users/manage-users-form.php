@@ -5,7 +5,7 @@ if (isset($_POST['out_of_office'])) {
 }
 
 if (isset($_POST['back_at_office'])) {
-    $update = dbq("update users_tbl set out_of_office=1 where user_id={$_POST['user_id']}");
+    $update = dbq("update users_tbl set out_of_office=0 where user_id={$_POST['user_id']}");
 }
 
 if (isset($_POST['del_user'])) {
