@@ -58,7 +58,7 @@
 						</div>
 						<?php
 
-						$get_clerks = dbq("select name, user_id as value, out_of_office from users_tbl where role='clerk'");
+						$get_clerks = dbq("select concat(name,' ',last_name) as name, user_id as value, out_of_office from users_tbl where role='clerk'");
 						if ($get_clerks) {
 							$clerk_select_[] = ['name' => 'Select One', 'value' => 0];
 							if (dbr($get_clerks)) {
