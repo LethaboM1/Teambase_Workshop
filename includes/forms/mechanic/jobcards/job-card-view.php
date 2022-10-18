@@ -33,6 +33,7 @@ if (isset($_POST['allocate_clerk'])) {
         $update_jobcard = dbq("update jobcards set clerk_id={$_POST['clerk_id']} where job_id={$_GET['id']}");
         if (mysqli_affected_rows($db) != -1) {
             msg("Clerk has been allocated.");
+            $jobcard_['clerk_id'] = $_POST['clerk_id'];
         } else {
             sqlError();
         }
