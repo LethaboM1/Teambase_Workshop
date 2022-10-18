@@ -4,8 +4,8 @@ if (!isset($_POST['mechanic'])) {
 	$_POST['mechanic'] = $_POST['mechanic_id'];
 }
 
-if (!isset({$_POST['jobnumber'])) {
-	$_POST['jobnumber'] = {$_POST['jobnumber'];
+if (!isset($_POST['jobnumber'])) {
+	$_POST['jobnumber'] = $_POST['jobcard_number'];
 }
 
 $mechanic_ = dbf(dbq("select * from users_tbl where user_id={$_POST['mechanic']}"));
