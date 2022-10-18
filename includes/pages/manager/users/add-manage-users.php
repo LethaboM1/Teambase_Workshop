@@ -167,8 +167,11 @@
 					</thead>
 					<tbody id="users_list">
 						<?php
-
-						$get_users = dbq("select * from users_tbl where role!='system' order by name");
+						if ($_SESSION['user']['role'] == 'system') {
+							$get_users = dbq("select * from users_tbl where role!='system' order by name");
+						} else {
+							$get_users = dbq("select * from users_tbl where role!='system' and active=1 order by name");
+						}
 
 						if ($get_users) {
 							if (dbr($get_users) > 0) {
