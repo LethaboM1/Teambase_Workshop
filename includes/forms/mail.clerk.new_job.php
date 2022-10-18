@@ -12,7 +12,7 @@ if (strlen($clerk_['email']) > 0) {
 
 
     $jobcard_ = dbf(dbq("select * from jobcards where job_id={$job_id}"));
-    $mechanic_ = dbf(dbq("select * from users_tbl where user_id-{$jobcard_['mechanic_id']}"));
+    $mechanic_ = dbf(dbq("select * from users_tbl where user_id={$jobcard_['mechanic_id']}"));
     $mail = new PHPMailer(true);
 
 
