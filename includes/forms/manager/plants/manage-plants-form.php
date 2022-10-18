@@ -1,8 +1,14 @@
 <?php
 
 if (isset($_POST['del_plant'])) {
-    // Check data if none delete from table or Set as suspended
-
+    if ($_POST['user_id'] > 0) {
+        $update_user = dbq("update plants_tbl set active=0 where plant_id={$_POST['plant_id']}");
+        if ($update_user) {
+            msg("User has been removed!");
+        } else {
+            sqlError();
+        }
+    }
 }
 
 if (isset($_POST['save_plant'])) {

@@ -5,7 +5,7 @@ if (isset($_POST['del_user'])) {
     if ($_POST['user_id'] > 0) {
         $update_user = dbq("update users_tbl set active=0 where user_id={$_POST['user_id']}");
         if ($update_user) {
-            msg("User has been deleted!");
+            msg("User has been removed!");
         } else {
             sqlError();
         }

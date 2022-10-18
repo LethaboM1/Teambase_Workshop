@@ -132,8 +132,11 @@
 					</thead>
 					<tbody id="plants_list">
 						<?php
-
-						$get_plants = dbq("select * from plants_tbl order by reg_number");
+						if ($_SESSION['user']['role'] == 'system') {
+							$get_plants = dbq("select * from plants_tbl order by reg_number");
+						} else {
+							$get_plants = dbq("select * from plants_tbl where active=1 order by reg_number");
+						}
 
 						if ($get_plants) {
 							if (dbr($get_plants) > 0) {
