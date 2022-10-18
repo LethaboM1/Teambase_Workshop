@@ -1,6 +1,6 @@
 <?php
 if ($row['out_of_office'] == 1) {
-    $out_of_office = 'Yes';
+    $out_of_office = "<span class='badge badge-danger'>Yes</span>";
 } else {
     $out_of_office = 'No';
 }
