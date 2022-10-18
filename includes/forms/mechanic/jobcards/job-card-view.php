@@ -66,6 +66,10 @@ if (isset($_POST['complete_jobcard'])) {
                                                 where plant_id={$plant_['plant_id']}");
                     if (mysqli_affected_rows($db) > 0) {*/
                     msg("job card completed!");
+
+                    $job_id = $_GET['id'];
+                    $mechanic_id = $jobcard_['mechanic_id'];
+                    require_once "./includes/forms/mail.manager.job_completed.php";
                     go('dashboard.php?page=open-job');
                     /*} else {
                         sqlError();
