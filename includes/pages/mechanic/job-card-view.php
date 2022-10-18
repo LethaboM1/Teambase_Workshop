@@ -120,7 +120,7 @@
 			}
 			?>
 			<div class='col-sm-12 col-md-6 pb-sm-3 pb-md-0'>
-				<?= inp('allocate_clerk', '', 'submit', 'Allocate', 'btn-primary')	?>
+				<?= inp('allocate_clerk', '&nbsp', 'submit', 'Allocate', 'btn-primary')	?>
 			</div>
 		</div>
 	<?php } ?>
