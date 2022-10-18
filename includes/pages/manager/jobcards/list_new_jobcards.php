@@ -83,7 +83,7 @@
                                         <input type="number" name="allocated_hours" class="form-control">
                                     </div>
                                     <?= inp('job_id', '', 'hidden', $jobcard['job_id']) ?>
-                                    <?= inp('mechanic', 'Select Mechanic', 'select', '', '', 0, $mechanic_select_) ?>
+                                    <?= inp('mechanic', 'Select Mechanic', 'select', $jobcard['mechanic_id'], '', 0, $mechanic_select_) ?>
                                 </div>
                             </div>
                             <footer class="card-footer">
