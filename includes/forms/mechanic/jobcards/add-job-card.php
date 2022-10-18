@@ -34,6 +34,7 @@ if (isset($_POST['request_jobcard'])) {
                                     plant_id={$_POST['plant_id']},
                                     job_date='" . date('Y-m-d') . "',
                                     clerk_id={$_POST['clerk_id']},
+                                    mechanic_id={$_SESSION['user']['user_id']},
                                     logged_by='{$_SESSION['user']['user_id']}',
                                     fault_description='" . htmlentities($_POST['comment'], ENT_QUOTES) . "',
                                     safety_audit='{$safety_stuff}',
@@ -42,6 +43,8 @@ if (isset($_POST['request_jobcard'])) {
                                     ");
         if ($add_jobcard) {
             msg("Job card added.");
+            require_once "../../mail.clerk.new_job.php";
+            go('dashboard.php');
         } else {
             sqlError('Adding job card', 'adding job card');
         }

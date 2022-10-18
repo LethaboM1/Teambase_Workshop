@@ -1,5 +1,9 @@
 <?php
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\SMTP;
+
 if (isset($_POST['add_jobcard'])) {
     if (
         strlen($_POST['jobcard_number']) > 0
@@ -40,6 +44,7 @@ if (isset($_POST['add_jobcard'])) {
                                 ");
         if ($add_jobcard) {
             msg("Job card logged!");
+            require_once "../../mail.clerk.new_job.php";
             go('dashboard.php?page=open-job');
         } else {
             sqlError();

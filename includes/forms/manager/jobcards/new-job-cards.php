@@ -28,6 +28,7 @@ if (isset($_POST['allocate_mechanic'])) {
 
                                 if (mysqli_affected_rows($db) != -1) {
                                     msg("Mechanic allocated!");
+                                    require_once "../../sms.mechanic.allocated.php";
                                     go('dashboard.php?page=new-job');
                                 } else {
                                     sqlError();

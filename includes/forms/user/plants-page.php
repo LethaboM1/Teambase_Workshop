@@ -1,5 +1,9 @@
 <?php
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\SMTP;
+
 if (isset($_POST['request_jobcard'])) {
     $plant_ = dbf(dbq("select * from plants_tbl where plant_id={$_POST['plant_id']}"));
 
@@ -51,6 +55,7 @@ if (isset($_POST['request_jobcard'])) {
                                 ");
         if ($add_jobcard) {
             $job_id = mysqli_insert_id($db);
+            require_once "../../mail.clerk.new_job.php";
             $update_plant = dbq("update plants_tbl set
                                 {$reading},
                                 status='breakdown'
@@ -441,98 +446,152 @@ if (isset($_POST['end_breakdown'])) {
 }
 
 if (isset($_POST['start_breakdown'])) {
-    if (isset($_SESSION['upload_images']) && count($_SESSION['upload_images']) > 0) {
-        if (is_numeric($_POST['reading']) && $_POST['reading'] > 0) {
-            /* Log Job card */
-            switch ($_POST['reading_type']) {
-                case "hr":
-                    $reading = "hr_reading='{$_POST['reading']}',";
-                    break;
+    if ($_POST['clerk_id'] > 0) {
+        if (isset($_SESSION['upload_images']) && count($_SESSION['upload_images']) > 0) {
+            if (is_numeric($_POST['reading']) && $_POST['reading'] > 0) {
+                /* Log Job card */
+                switch ($_POST['reading_type']) {
+                    case "hr":
+                        $reading = "hr_reading='{$_POST['reading']}',";
+                        break;
 
-                case "km":
-                    $reading = "km_reading='{$_POST['reading']}',";
-                    break;
-            }
+                    case "km":
+                        $reading = "km_reading='{$_POST['reading']}',";
+                        break;
+                }
 
-            $get_safety_equipment = dbq("select * from safety_equipment");
-            if ($get_safety_equipment) {
-                if (dbr($get_safety_equipment) > 0) {
-                    while ($equipment = dbf($get_safety_equipment)) {
-                        if ($_POST[$equipment['code']] == 'on') {
-                            $answer = 'Yes';
-                        } else {
-                            $answer = 'No';
+                $get_safety_equipment = dbq("select * from safety_equipment");
+                if ($get_safety_equipment) {
+                    if (dbr($get_safety_equipment) > 0) {
+                        while ($equipment = dbf($get_safety_equipment)) {
+                            if ($_POST[$equipment['code']] == 'on') {
+                                $answer = 'Yes';
+                            } else {
+                                $answer = 'No';
+                            }
+
+                            $safety_stuff[] = [
+                                'name' => $equipment['name'],
+                                'answer' => $answer
+                            ];
                         }
-
-                        $safety_stuff[] = [
-                            'name' => $equipment['name'],
-                            'answer' => $answer
-                        ];
                     }
                 }
-            }
 
-            if (isset($safety_stuff)) {
-                $safety_stuff = base64_encode(json_encode($safety_stuff));
-            } else {
-                $safety_stuff = '';
-            }
+                if (isset($safety_stuff)) {
+                    $safety_stuff = base64_encode(json_encode($safety_stuff));
+                } else {
+                    $safety_stuff = '';
+                }
 
-            $add_jobcard = dbq("insert into jobcards set
-                                        plant_id={$_POST['plant_id']},
-                                        job_date='" . date('Y-m-d') . "',
-                                        fault_description='" . $_POST['fault_area'] . " - " . htmlentities($_POST['comment'], ENT_QUOTES) . "',
-                                        logged_by='{$_SESSION['user']['user_id']}',
-                                        log_id={$_POST['log_id']},
-                                        safety_audit='{$safety_stuff}',
-                                        {$reading}
-                                        priority=1
-                                        ");
-            if ($add_jobcard) {
-                $job_id = mysqli_insert_id($db);
-
-                $add_event = dbq("insert into operator_events set
-                                            operator_log={$_POST['log_id']},
-                                            start_datetime='{$_POST['start_datetime']}',
-                                            type='breakdown',
-                                            start_comment='" . htmlentities($_POST['comment'], ENT_QUOTES) . "'
+                $add_jobcard = dbq("insert into jobcards set
+                                            plant_id={$_POST['plant_id']},
+                                            job_date='" . date('Y-m-d') . "',
+                                            fault_description='" . $_POST['fault_area'] . " - " . htmlentities($_POST['comment'], ENT_QUOTES) . "',
+                                            logged_by='{$_SESSION['user']['user_id']}',
+                                            clerk_id={$_POST['clerk_id']},
+                                            log_id={$_POST['log_id']},
+                                            safety_audit='{$safety_stuff}',
+                                            {$reading}
+                                            priority=1
                                             ");
-                if ($add_event) {
-                    $event_id = mysqli_insert_id($db);
-                    if (!upload_images('breakdown_start', $_SESSION['user']['user_id'], $_POST['plant_id'], $_SESSION['upload_images'], $event_id)) {
-                        error("There was an error uploading the photos.");
-                    }
-                    $update_log = dbq("update operator_log set
-                                                status='breakdown',
-                                                status_id={$event_id}
-                                                where log_id={$_POST['log_id']}");
-                    if ($update_log) {
+                if ($add_jobcard) {
+                    $job_id = mysqli_insert_id($db);
 
-                        $update_plant = dbq("update plants_tbl set
-                                                    {$_POST['reading_type']}_reading={$_POST['reading']},
-                                                    status='breakdown'
-                                                    where plant_id={$_POST['plant_id']}
-                                                    ");
-                        if ($update_plant) {
-                            msg("Breakdown started, Job ref: {$job_id}.");
-                            go('dashboard.php?page=plants');
+                    $clerk_ = dbf(dbq("select * from users_tbl where clerk_id={$_POST['clerk_id']}"));
+                    if (strlen($clerk_['email']) > 0) {
+                        $job_id = mysqli_insert_id($db);
+                        $jobcard_ = dbf(dbq("select * from jobcards wher job_id={$job_id}"));
+                        $mechanic_ = dbf(dbq("select * from users_tbl where user_id-{$jobcard_['mechanic_id']}"));
+                        $mail = new PHPMailer(true);
+
+
+                        try {
+                            $mail->addAddress($clerk_['email'], $clerk_['name'] . ' ' . $clerk_['last_name']);     //Add a recipient                    
+                            //$mail->addReplyTo($_SESSION['user']['email'], $_SESSION['name'] . ' ' . $_SESSION['user']['last_name']);
+                            $mail->addCC($_SESSION['settings']['requisition_mail']);
+
+                            //Content
+                            $mail->isHTML(true);                                  //Set email format to HTML
+                            $mail->Subject = "#{$jobcard_['job_id']} - Job card requested";
+                            $mail->Body    = "
+                                <b>Job Card request</b><br>
+                                <p>
+                                    <b>Date time.</b>&nbsp;" . date("Y-m-d H:i") . "<br>
+                                    <b>Job ID.</b>&nbsp;{$jobcard_['job_id']}<br>
+                                    <b>Mechanic.</b>&nbsp;{$mechanic_['name']} {$mechanic_['last_name']}<br>
+                                    <b>Description.</b>&nbsp;{$jobcard_['fault_description']}<br>
+                                    <b>Priority.</b>&nbsp;{$jobcard_['priority']}<br><br>
+                                </p>
+                                Kind Regards,<br>
+                                <b>{$_SESSION['user']['name']} {$_SESSION['user']['last_name']}</b><br>
+                                E-mail: {$_SESSION['user']['email']}
+                                ";
+                            $mail->AltBody = "
+                                    Job Card request\n\r\n\r
+                                    Date time. : " . date("Y-m-d H:i") . "\n\r
+                                    Job ID. : {$jobcard_['jobcard_id']}\n\r
+                                    Mechanic. : {$mechanic_['name']} {$mechanic_['last_name']}\n\r
+                                    Description. : {$jobcard_['fault_description']}\n\r
+                                    Priority. : {$jobcard_['priority']}\n\r                                    
+                                    \n\r\n\r
+                                    Kind Regards,\n\r
+                                    {$_SESSION['user']['name']} {$_SESSION['user']['last_name']}\n\r
+                                    E-mail: {$_SESSION['user']['email']}
+                                    ";
+
+                            $mail->send();
+                            msg('Mail was send to buyer.');
+                        } catch (Exception $e) {
+                            error("Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
+                        }
+                    }
+
+                    $add_event = dbq("insert into operator_events set
+                                                operator_log={$_POST['log_id']},
+                                                start_datetime='{$_POST['start_datetime']}',
+                                                type='breakdown',
+                                                start_comment='" . htmlentities($_POST['comment'], ENT_QUOTES) . "'
+                                                ");
+                    if ($add_event) {
+                        $event_id = mysqli_insert_id($db);
+                        if (!upload_images('breakdown_start', $_SESSION['user']['user_id'], $_POST['plant_id'], $_SESSION['upload_images'], $event_id)) {
+                            error("There was an error uploading the photos.");
+                        }
+                        $update_log = dbq("update operator_log set
+                                                    status='breakdown',
+                                                    status_id={$event_id}
+                                                    where log_id={$_POST['log_id']}");
+                        if ($update_log) {
+
+                            $update_plant = dbq("update plants_tbl set
+                                                        {$_POST['reading_type']}_reading={$_POST['reading']},
+                                                        status='breakdown'
+                                                        where plant_id={$_POST['plant_id']}
+                                                        ");
+                            if ($update_plant) {
+                                msg("Breakdown started, Job ref: {$job_id}.");
+                                go('dashboard.php?page=plants');
+                            } else {
+                                sqlError();
+                            }
                         } else {
-                            sqlError();
+                            sqlError('');
                         }
                     } else {
-                        sqlError('');
+                        sqlError('Adding event', 'Adding event');
                     }
                 } else {
-                    sqlError('Adding event', 'Adding event');
+                    sqlError('Error adding job card', 'Error adding job card.');
                 }
             } else {
-                sqlError('Error adding job card', 'Error adding job card.');
+                error("Must fill in the reading.");
             }
         } else {
-            error("Must fill in the reading.");
+            error("please submit photos.");
         }
     } else {
-        error("please submit photos.");
+        error("Please select the clerk to request job card.");
     }
 }
 
