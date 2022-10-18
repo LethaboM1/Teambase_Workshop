@@ -109,7 +109,9 @@
               </figure>
               <div class="profile-info" data-lock-name="John Doe" data-lock-email="johndoe@okler.com">
                 <span class="name"><?= $_SESSION['user']['name'] . " " . $_SESSION['user']['last_name'] ?></span>
-                <span class="role"><?= strtoupper($_SESSION['user']['role']) ?></span>
+                <span class="role"><?= strtoupper($_SESSION['user']['role']) ?><?php if ($_SESSION['user']['out_of_office'] == 1) {
+                                                                                  echo "&nbsp;-&nbsp;Out of Office";
+                                                                                } ?></span>
               </div>
 
               <i class="fa custom-caret"></i>
