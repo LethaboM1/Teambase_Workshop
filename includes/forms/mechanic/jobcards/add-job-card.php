@@ -4,6 +4,7 @@ if (isset($_POST['request_jobcard'])) {
     if (
         strlen($_POST['plant_id']) > 0
         && strlen($_POST['site']) > 0
+        && $_POST['clerk_id'] > 0
     ) {
         $get_safety_equipment = dbq("select * from safety_equipment");
         if ($get_safety_equipment) {
@@ -32,6 +33,7 @@ if (isset($_POST['request_jobcard'])) {
         $add_jobcard = dbq("insert into jobcards set
                                     plant_id={$_POST['plant_id']},
                                     job_date='" . date('Y-m-d') . "',
+                                    clerk_id={$_POST['clerk_id']},
                                     logged_by='{$_SESSION['user']['user_id']}',
                                     fault_description='" . htmlentities($_POST['comment'], ENT_QUOTES) . "',
                                     safety_audit='{$safety_stuff}',

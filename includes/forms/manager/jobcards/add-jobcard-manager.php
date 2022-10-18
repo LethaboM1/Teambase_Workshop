@@ -4,6 +4,7 @@ if (isset($_POST['add_jobcard'])) {
     if (
         strlen($_POST['jobcard_number']) > 0
         && strlen($_POST['site']) > 0
+        && $_POST['clerk_id'] > 0
         && $_POST['mechanic_id'] != '0'
         && $_POST['allocated_hours'] > 0
     ) {
@@ -28,6 +29,7 @@ if (isset($_POST['add_jobcard'])) {
                                 plant_id={$_POST['plant_id']},
                                 job_date='{$_POST['job_date']}',
                                 logged_by='{$_SESSION['user']['user_id']}',
+                                clerk_id={$_POST['clerk_id']},
                                 mechanic_id='{$_POST['mechanic_id']}',
                                 {$reading}
                                 {$job_type}
