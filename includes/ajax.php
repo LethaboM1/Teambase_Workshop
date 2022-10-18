@@ -338,7 +338,14 @@ switch ($_POST['cmd']) {
         if ($get_user) {
             if (dbr($get_user) > 0) {
                 $user_ = dbf($get_user);
-                echo "{$user_['name']} {$user_['last_name']}";
+                echo "<b>Name</b>&nbsp;{$user_['name']} {$user_['last_name']}"
+                    . inp('user_id', '', 'hidden', $user_['user_id']);
+
+                if ($user_['out_of_office'] == 0) {
+                    echo inp('out_of_office', '', 'submit', 'Out of Office');
+                } else {
+                    echo inp('back_at_office', '', 'submit', 'Out of Office');
+                }
             }
         }
         break;

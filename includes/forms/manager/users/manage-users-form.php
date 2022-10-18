@@ -1,5 +1,13 @@
 <?php
 
+if (isset($_POST['out_of_office'])) {
+    $update = dbq("update users_tbl set out_of_office=1 where user_id={$_POST['user_id']}");
+}
+
+if (isset($_POST['back_at_office'])) {
+    $update = dbq("update users_tbl set out_of_office=1 where user_id={$_POST['user_id']}");
+}
+
 if (isset($_POST['del_user'])) {
     // Check data if none delete from table or Set as suspended
     if ($_POST['user_id'] > 0) {

@@ -162,6 +162,7 @@
 							<th width="150">ID Number</th>
 							<th width="150">Employee Number</th>
 							<th width="100">Roll</th>
+							<th>Out of Office</th>
 							<th width="25">Actions</th>
 						</tr>
 					</thead>
