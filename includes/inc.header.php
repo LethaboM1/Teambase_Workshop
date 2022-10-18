@@ -122,7 +122,17 @@
                   <a role="menuitem" tabindex="-1" href="dashboard.php?page=profile"><i class="bx bx-user-circle"></i> My Profile</a>
                 </li>
                 <li>
-                  <a role="menuitem" tabindex="-1" href="dashboard.php?outofoffice"><i class="bx bx-lock"></i>Out of Office</a>
+                  <?php
+                  if ($_SESSION['user']['outofoffice'] == 1) {
+                  ?><a role="menuitem" tabindex="-1" href="dashboard.php?outofoffice=false"><i class="bx bx-lock"></i>Back at Office</a><?php
+                                                                                                                                      } else {
+                                                                                                                                        ?>
+                    <a role="menuitem" tabindex="-1" href="dashboard.php?outofoffice=true"><i class="bx bx-lock"></i>Out of Office</a>
+                  <?php
+
+                                                                                                                                      }
+                  ?>
+
                 </li>
                 <li>
                   <a role="menuitem" tabindex="-1" href="logout.php"><i class="bx bx-power-off"></i> Logout</a>

@@ -122,6 +122,7 @@ switch ($_GET['page']) {
 
     default:
         $page_title = 'Dashboard Overview';
+        include "./includes/forms/dashboard.php";
         switch ($_SESSION['user']['role']) {
             case "clerk":
                 $page_name = 'dash_clerk';
