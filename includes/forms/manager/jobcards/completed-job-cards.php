@@ -26,7 +26,7 @@ if (isset($_POST['reopen_jobcard'])) {
         if (mysqli_affected_rows($db) != -1) {
             $jobcard_ = dbf(dbq("select jobcard_number, mechanic_id from jobcards where job_id={$_POST['job_id']}"));
             $mechanic_ = dbf(dbq("select contact_number from users_tbl where user_id={$jobcard_['mechanic_id']}"));
-            $message = "Job Card {$jobcard_['jobcard_number']} has been re-opened by {$_SESSION['user']['name']} {$_SESSION['user']['last_name']}. {$_POST['reason']}";
+            $message = "Job Card {$jobcard_['jobcard_number']} has been re-opened by {$_SESSION['user']['name']} {$_SESSION['user']['last_name']}. {$_POST['comment']}";
 
             sms_($mechanic_['contact_number'], $message);
             msg("job card closed.");
