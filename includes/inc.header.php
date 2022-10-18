@@ -122,7 +122,7 @@
                   <a role="menuitem" tabindex="-1" href="dashboard.php?page=profile"><i class="bx bx-user-circle"></i> My Profile</a>
                 </li>
                 <li>
-                  <a role="menuitem" tabindex="-1" href="#" data-lock-screen="true"><i class="bx bx-lock"></i> Lock Screen</a>
+                  <a role="menuitem" tabindex="-1" href="dashboard.php?outofoffice"><i class="bx bx-lock"></i>Out of Office</a>
                 </li>
                 <li>
                   <a role="menuitem" tabindex="-1" href="logout.php"><i class="bx bx-power-off"></i> Logout</a>
