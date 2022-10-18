@@ -121,6 +121,10 @@ if (isset($_POST['add_part'])) {
                                                 ");
             if ($add_part_request) {
                 msg("Part request send.");
+                $job_id = $_GET['id'];
+                $mechanic_id = $_SESSION['user']['user_id'];
+                $request_id = mysqli_insert_id($db);
+                require_once "./includes/forms/mail.manager.new_request.php";
                 go("dashboard.php?page=job-card-view&id={$_GET['id']}");
             } else {
                 sqlError('', "date: {$_POST['request_date']}");

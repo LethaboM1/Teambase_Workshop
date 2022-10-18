@@ -51,7 +51,7 @@ if (strlen($clerk_['email']) > 0) {
                                     ";
 
         $mail->send();
-        msg('Mail was send to buyer.');
+        msg('Mail was send to clerk.');
     } catch (Exception $e) {
         error("Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
     }
