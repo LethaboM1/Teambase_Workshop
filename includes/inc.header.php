@@ -123,7 +123,7 @@
                 </li>
                 <li>
                   <?php
-                  if ($_SESSION['user']['out_of_office'] == 1) {
+                  if ($_SESSION['user']['out_of_office'] == 0) {
                   ?>
                     <form method="post" id="frm_ooo">
                       <?= inp('outofoffice', '', 'hidden', 'true') ?>
