@@ -10,6 +10,8 @@ if (!isset($job_id)) {
 $get_managers = dbq("select * from users_tbl where role='manager'");
 if ($get_managers) {
     if (dbr($get_managers) > 0) {
+
+        $mail = new PHPMailer(true);
         while ($manager = dbf($get_managers)) {
             $mail->addAddress($manager['email'], $manager['name'] . ' ' . $manager['last_name']);
         }
@@ -18,7 +20,6 @@ if ($get_managers) {
         $mechanic_ = dbf(dbq("select * from users_tbl where user_id={$mechanic_id}"));
         $job_request_ = dbf(dbq("select * from jobcard_requisitions where request_id={$request_id}"));
 
-        $mail = new PHPMailer(true);
         $mail->addAddress($clerk_['email'], $clerk_['name'] . ' ' . $clerk_['last_name']);     //Add a recipient                    
         //$mail->addReplyTo($_SESSION['user']['email'], $_SESSION['name'] . ' ' . $_SESSION['user']['last_name']);
         $mail->addCC($_SESSION['settings']['requisition_mail']);
