@@ -105,23 +105,24 @@
 	if ($jobcard_['status'] == 'logged' || is_null($jobcard_['clerk_id']) || $jobcard_['clerk_id'] == 0) {
 	?>
 		<div class="row">
-
-			<?php
-			$get_clerks = dbq("select name, user_id as value from users_tbl where role='clerk'");
-			if ($get_clerks) {
-				$clerk_select_[] = ['name' => 'Select One', 'value' => 0];
-				if (dbr($get_clerks)) {
-					while ($clerk = dbf($get_clerks)) {
-						$clerk_select_[] = $clerk;
+			<form method="post">
+				<?php
+				$get_clerks = dbq("select name, user_id as value from users_tbl where role='clerk'");
+				if ($get_clerks) {
+					$clerk_select_[] = ['name' => 'Select One', 'value' => 0];
+					if (dbr($get_clerks)) {
+						while ($clerk = dbf($get_clerks)) {
+							$clerk_select_[] = $clerk;
+						}
 					}
-				}
 
-				echo "<div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>" . inp('clerk_id', 'Clerk', 'select', $jobcard_['clerk_id'], '', 0, $clerk_select_) . "</div>";
-			}
-			?>
-			<div class='col-sm-12 col-md-6 pb-sm-3 pb-md-0'>
-				<?= inp('allocate_clerk', '&nbsp', 'submit', 'Allocate', 'btn-primary')	?>
-			</div>
+					echo "<div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>" . inp('clerk_id', 'Clerk', 'select', $jobcard_['clerk_id'], '', 0, $clerk_select_) . "</div>";
+				}
+				?>
+				<div class='col-sm-12 col-md-6 pb-sm-3 pb-md-0'>
+					<?= inp('allocate_clerk', '&nbsp', 'submit', 'Allocate', 'btn-primary')	?>
+				</div>
+			</form>
 		</div>
 	<?php } ?>
 	<!-- Modal add event -->
