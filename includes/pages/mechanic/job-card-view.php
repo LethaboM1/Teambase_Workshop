@@ -102,7 +102,7 @@
 	</div>
 	<!-- Events -->
 	<?php
-	if ($jobcard_['status'] == 'logged') {
+	if ($jobcard_['status'] == 'logged' || is_null($jobcard_['clerk_id']) || $jobcard_['clerk_id'] == 0) {
 	?>
 		<div class="row">
 			<div class="col-sm-12 col-md-6 pb-sm-3 pb-md-0">
