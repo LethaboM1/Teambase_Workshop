@@ -22,7 +22,9 @@ if ($get_managers) {
 
         //$mail->addAddress($clerk_['email'], $clerk_['name'] . ' ' . $clerk_['last_name']);     //Add a recipient                    
         //$mail->addReplyTo($_SESSION['user']['email'], $_SESSION['name'] . ' ' . $_SESSION['user']['last_name']);
-        $mail->addCC($_SESSION['settings']['requisition_mail']);
+        if (strlen($_SESSION['settings']['requisition_mail']) > 0) {
+            $mail->addCC($_SESSION['settings']['requisition_mail']);
+        }
 
         //Content
         $mail->isHTML(true);                                  //Set email format to HTML
