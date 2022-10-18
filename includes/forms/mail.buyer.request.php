@@ -75,7 +75,7 @@ if ($get_buyer) {
             error("Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
         }
     } else {
-        /* No Managers */
+        /* No Buyers */
     }
 } else {
     sqlError();
