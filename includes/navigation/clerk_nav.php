@@ -1,9 +1,10 @@
 <?php
 $get_requisitions = dbq("select request_id from jobcard_requisitions where (status!='completed' && status!='denied'  && status!='canceled')");
-
 $get_new = dbq("select job_id from jobcards where status='logged' and clerk_id={$_SESSION['user']['user_id']}");
 $get_open = dbq("select job_id from jobcards where status='open' and clerk_id={$_SESSION['user']['user_id']}");
 $get_completed = dbq("select job_id from jobcards where status='completed' and clerk_id={$_SESSION['user']['user_id']}");
+
+$total = dbr($get_requisitions) + dbr($get_new) + dbr($get_open) + dbr($get_completed);
 
 ?>
 <div class="nano">
