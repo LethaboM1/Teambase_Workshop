@@ -20,7 +20,7 @@ if ($get_managers) {
         $mechanic_ = dbf(dbq("select * from users_tbl where user_id={$mechanic_id}"));
         $job_request_ = dbf(dbq("select * from jobcard_requisitions where request_id={$request_id}"));
 
-        $mail->addAddress($clerk_['email'], $clerk_['name'] . ' ' . $clerk_['last_name']);     //Add a recipient                    
+        //$mail->addAddress($clerk_['email'], $clerk_['name'] . ' ' . $clerk_['last_name']);     //Add a recipient                    
         //$mail->addReplyTo($_SESSION['user']['email'], $_SESSION['name'] . ' ' . $_SESSION['user']['last_name']);
         $mail->addCC($_SESSION['settings']['requisition_mail']);
 
