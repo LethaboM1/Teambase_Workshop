@@ -96,6 +96,7 @@ $request_status_select = [
 													];
 
 													$get_buyers = dbq("select concat(name,' ',last_name) as name, user_id as value from users_tbl where active=1 and role='buyer'");
+													unset($buyer_select_);
 													$buyer_select_[] = ['name' => 'Choose buyer', 'value' => 0];
 													if ($get_buyers) {
 
