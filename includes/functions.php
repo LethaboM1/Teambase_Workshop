@@ -11,6 +11,16 @@ use Spipu\Html2Pdf\Exception\ExceptionFormatter;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 
+
+function sms_($number, $message)
+{
+
+	$to = $number . "@e-mail2sms.co.za";     //Add a recipient                    
+	$subject = "#duncanm@digitalextreme.co.za,dx0392781#";
+	$body = $message;
+	@mail($to, $subject, $body);
+}
+
 function csvToArray($file, $has_header = 0, $delimiter = ',')
 {
 	$rows = array();
