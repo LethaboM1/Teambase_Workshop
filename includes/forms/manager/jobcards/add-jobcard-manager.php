@@ -44,7 +44,7 @@ if (isset($_POST['add_jobcard'])) {
                                 ");
         if ($add_jobcard) {
             msg("Job card logged!");
-            require_once "../../mail.clerk.new_job.php";
+            require_once "./includes/forms/sms.mechanic.allocated.php";
             go('dashboard.php?page=open-job');
         } else {
             sqlError();
