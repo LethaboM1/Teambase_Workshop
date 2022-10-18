@@ -344,7 +344,7 @@ switch ($_POST['cmd']) {
                 if ($user_['out_of_office'] == 0) {
                     echo inp('out_of_office', '', 'submit', 'Out of Office', 'btn-primary');
                 } else {
-                    echo inp('back_at_office', '', 'submit', 'Out of Office', 'btn-primary');
+                    echo inp('back_at_office', '', 'submit', 'Back at Office', 'btn-primary');
                 }
             }
         }
