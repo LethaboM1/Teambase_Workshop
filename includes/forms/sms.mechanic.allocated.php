@@ -4,6 +4,10 @@ if (!isset($_POST['mechanic'])) {
 	$_POST['mechanic'] = $_POST['mechanic_id'];
 }
 
+if (!isset({$_POST['jobnumber'])) {
+	{$_POST['jobnumber'] = {$_POST['jobnumber'];
+}
+
 $mechanic_ = dbf(dbq("select * from users_tbl where user_id={$_POST['mechanic']}"));
 
 //$mail = new PHPMailer(true);
