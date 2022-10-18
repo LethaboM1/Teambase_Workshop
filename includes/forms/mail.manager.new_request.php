@@ -7,7 +7,7 @@ use PHPMailer\PHPMailer\SMTP;
 if (!isset($job_id)) {
     $job_id = mysqli_insert_id($db);
 }
-$get_managers = dbq("select * from users_tbl where role='manager");
+$get_managers = dbq("select * from users_tbl where role='manager'");
 if ($get_managers) {
     if (dbr($get_managers) > 0) {
         while ($manager = dbf($get_managers)) {
