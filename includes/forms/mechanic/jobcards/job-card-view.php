@@ -94,6 +94,12 @@ if (isset($_POST['delete_request'])) {
         if (dbr($get_request) > 0) {
             $request_ = dbf($get_request);
             if ($request_['status'] == 'requested') {
+                $update_request = dbq("update jobcard_requisitions set status='canceled',canceled_by_comment='Canceled by mechanic before approved.',canceled_by={$_SESSION['user']['user_id']} where request_id={{$_POST['request_id']}");
+                if ($update_request) {
+                    msg("Request has been canceled.");
+                } else {
+                    sqlError();
+                }
             } else {
                 $person_ = dbf(dbq("select concat(name,' ',last_name) as name from users_tbl where user_id={$request_[$request_['status'] . '_by']}"));
                 error("This part request has already neen approved by {$person_['name']}. Contact them to cancel request.");
