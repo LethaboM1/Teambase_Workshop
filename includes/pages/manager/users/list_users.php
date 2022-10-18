@@ -2,7 +2,7 @@
 if ($row['out_of_office'] == 1) {
     $out_of_office = 'Yes';
 } else {
-    $out_of_office = 'Yes';
+    $out_of_office = 'No';
 }
 
 echo "<tr>
