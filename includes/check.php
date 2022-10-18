@@ -23,4 +23,4 @@ require_once "functions.php";
 
 dbconn('127.0.0.1', $database_name, $database_user, $database_password);
 
-$dash_roles = array("manager", "clerk", "mechanic", "manager", "user");
+$dash_roles = array("manager", "clerk", "buyer", "mechanic", "manager", "user");

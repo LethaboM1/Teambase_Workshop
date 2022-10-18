@@ -43,7 +43,7 @@ if (isset($_POST['request_jobcard'])) {
                                     ");
         if ($add_jobcard) {
             msg("Job card added.");
-            require_once "../../mail.clerk.new_job.php";
+            require_once "./includes/forms/mail.clerk.new_job.php";
             go('dashboard.php');
         } else {
             sqlError('Adding job card', 'adding job card');

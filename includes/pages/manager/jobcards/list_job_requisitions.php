@@ -3,6 +3,9 @@ $job_request = $row;
 $jobcard_ = dbf(dbq("select * from jobcards where job_id={$job_request['job_id']}"));
 $plant_ = dbf(dbq("select * from plants_tbl where plant_id={$job_request['plant_id']}"));
 $mechanic_ = dbf(dbq("select * from users_tbl where user_id={$jobcard_['mechanic_id']}"));
+if ($job_request['buyer_id'] > 0) {
+	$buyer_ = dbf(dbq("select * from users_tbl where user_id={$job_request['buyer_id']}"));
+}
 
 switch ($row['status']) {
 	case "requested":
@@ -60,12 +63,19 @@ $request_status_select = [
 									<div class="modal-text">
 										<div class="row">
 											<div class="col-md-6">
-												<b>Job No.</b>&nbsp;<?= $jobcard_['jobcard_number'] ?><br>
+												<b>Job card no.</b>&nbsp;<?= $jobcard_['jobcard_number'] ?><br>
 												<b>Request Date.</b>&nbsp;<?= $job_request['datetime'] ?><br>
 												<b>Plant No.</b>&nbsp;<?= $plant_['plant_number'] ?><br>
 												<b>Plant Type.</b>&nbsp;<?= $plant_['vehicle_type'] ?><br>
 												<b>Plant Model.</b>&nbsp;<?= $plant_['model'] ?><br>
 												<b>Mechanic.</b>&nbsp;<?= $mechanic_['name'] ?><br>
+												<?php
+												if ($row['status'] != 'requested') {
+												?>
+													<b>Buyer</b>&nbsp;<?= $buyer_['name'] ?> <?= $buyer_['last_name'] ?><br>
+												<?php
+												}
+												?>
 											</div>
 											<div class="col-md-6">
 												<b>Job card status</b>&nbsp;<?= ucfirst($jobcard_['status']) ?><br>
@@ -85,9 +95,21 @@ $request_status_select = [
 														['name' => 'Denied', 'value' => 'denied'],
 													];
 
+													$get_buyers = dbq("select concat(name,' ',last_name) as name, user_id as value from users_tbl where active=1 and role='buyer'");
+													$buyer_select_[] = ['name' => 'Choose buyer', 'value' => 0];
+													if ($get_buyers) {
+
+														if (dbr($get_buyers)) {
+															while ($buyer = dbf($get_buyers)) {
+																$buyer_select_[] = $buyer;
+															}
+														}
+													}
+
 													echo inp('request_id', '', 'hidden', $job_request['request_id'])
 														. inp('comments', 'Mechanic Comment', 'textarea', $job_request['comment'], '', 0, '', 'disabled')
 														. inp('status', 'Status', 'select', '', '', 0, $request_status_select)
+														. inp('buyer_id', 'Buyer', 'select', '', '', 0, $buyer_select_)
 														. inp('status_comment', 'Comment', 'textarea');
 												} else {
 													$request_status_select = [

@@ -82,6 +82,10 @@
                 require "./includes/navigation/menus/manager.php";
                 break;
 
+              case "buyer":
+                require "./includes/navigation/menus/buyer.php";
+                break;
+
               case "clerk":
                 require "./includes/navigation/menus/manager.php";
                 break;

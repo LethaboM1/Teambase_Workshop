@@ -82,7 +82,7 @@
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<label class="col-form-label" for="formGroupExampleInput">Reading <span id="reading_lbl"></span></label>
 							<?= inp('reading_type', '', 'hidden') ?>
-							<input id="reading" type="text" name="reading" placeholder="Reading" class="form-control" disabled>
+							<input id="reading" type="text" name="reading" placeholder="Reading" class="form-control">
 						</div>
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<label class="col-form-label" for="formGroupExampleInput">Site</label>

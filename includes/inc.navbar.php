@@ -21,6 +21,10 @@
         }
         break;
 
+      case "buyer":
+        include('includes/navigation/buyer_nav.php');
+        break;
+
       case "user":
         include('includes/navigation/user_nav.php');
         break;

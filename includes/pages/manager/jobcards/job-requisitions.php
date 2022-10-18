@@ -49,6 +49,8 @@
 		<?php
 		if ($_SESSION['user']['role'] == 'clerk') {
 			$get_requisitions = dbq("select * from jobcard_requisitions where (status!='completed' && status!='canceled' && status!='denied') and clerk_id={$_SESSION['user']['user_id']} order by datetime");
+		} else if ($_SESSION['user']['role'] == 'buyer') {
+			$get_requisitions = dbq("select * from jobcard_requisitions where (status!='completed' && status!='canceled' && status!='denied') and buyer_id={$_SESSION['user']['user_id']} order by datetime");
 		} else {
 			$get_requisitions = dbq("select * from jobcard_requisitions where (status!='completed' && status!='canceled' && status!='denied') order by datetime");
 		}

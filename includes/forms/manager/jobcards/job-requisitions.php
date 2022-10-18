@@ -13,9 +13,10 @@ if (isset($_POST['change_status'])) {
         switch ($_POST['status']) {
             case 'approved':
                 $query = "
-                        approved_by={$_SESSION['user']['user_id']},
+                        approved_by={$_SESSION['user']['user_id']},                        
                         approved_by_time='" . date("Y-m-d\TH:i:s") . "',
                         approved_by_comment='" . htmlentities($_POST['status_comment']) . "',
+                        buyer_id='" . $_POST['buyer_id'] . "',
                         ";
                 break;
 

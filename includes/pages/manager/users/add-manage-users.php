@@ -105,6 +105,7 @@
 								<option value="">Select a User Roll</option>
 								<option value="manager">Manager</option>
 								<option value="clerk">Clerk</option>
+								<option value="buyer">Buyer</option>
 								<option value="supervisor">Supervisor</option>
 								<option value="mechanic">Mechanic</option>
 								<option value="user">Driver / Opperator</option>

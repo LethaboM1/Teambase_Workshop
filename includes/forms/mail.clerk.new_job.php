@@ -4,13 +4,14 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\SMTP;
 
-$clerk_ = dbf(dbq("select * from users_tbl where clerk_id={$_POST['clerk_id']}"));
+if (!isset($job_id)) {
+    $job_id = mysqli_insert_id($db);
+}
+$clerk_ = dbf(dbq("select * from users_tbl where user_id={$_POST['clerk_id']}"));
 if (strlen($clerk_['email']) > 0) {
-    if (!isset($job_id)) {
-        $job_id = mysqli_insert_id($db);
-    }
 
-    $jobcard_ = dbf(dbq("select * from jobcards wher job_id={$job_id}"));
+
+    $jobcard_ = dbf(dbq("select * from jobcards where job_id={$job_id}"));
     $mechanic_ = dbf(dbq("select * from users_tbl where user_id-{$jobcard_['mechanic_id']}"));
     $mail = new PHPMailer(true);
 
