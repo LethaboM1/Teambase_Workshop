@@ -126,15 +126,15 @@
                   if ($_SESSION['user']['out_of_office'] == 0) {
                   ?>
                     <form method="post" id="frm_ooo">
-                      <?= inp('outofoffice', '', 'hidden', 'true') ?>
-                      <a onclick="document.getElementById('frm_ooo').submit();" name='outofoffice' value='true' tabindex="-1"><i class="bx bx-lock"></i>Back at Office</a>
+                      <?= inp('outofoffice', '', 'hidden', 'false') ?>
+                      <a onclick="document.getElementById('frm_ooo').submit();" tabindex="-1"><i class="bx bx-lock"></i>Back at Office</a>
                     </form>
                   <?php
                   } else {
                   ?>
                     <form method="post" id="frm_ooo">
-                      <?= inp('outofoffice', '', 'hidden', 'false') ?>
-                      <a onclick="document.getElementById('frm_ooo').submit();" name='outofoffice' value='false' tabindex="-1"><i class="bx bx-lock"></i>Out of Office</a>
+                      <?= inp('outofoffice', '', 'hidden', 'true') ?>
+                      <a onclick="document.getElementById('frm_ooo').submit();" tabindex="-1"><i class="bx bx-lock"></i>Out of Office</a>
                     </form>
                   <?php
 
