@@ -28,6 +28,19 @@ if (isset($_GET['id'])) {
     go('dashboard.php?page=open-job');
 }
 
+if (isset($_POST['allocate_clerk'])) {
+    if ($_POST['clerk_id'] > 0) {
+        $update_jobcard = dbq("update jobcards set clerk_id={$_POST['clerk_id']} where job_id={$_GET['id']}");
+        if (mysqli_affected_rows($db) != -1) {
+            msg("Clerk has been allocated.");
+        } else {
+            sqlError();
+        }
+    } else {
+        error("You must choose a clerk.");
+    }
+}
+
 if (isset($_POST['complete_jobcard'])) {
     if (
         strlen($_POST['reading']) > 0
