@@ -126,13 +126,13 @@
                   if ($_SESSION['user']['out_of_office'] == 1) {
                   ?>
                     <form method="post">
-                      <a role="menuitem" type='submit' name='outofoffice' value='true' tabindex="-1"><i class="bx bx-lock"></i>Back at Office</a>
+                      <button role="menuitem" type='submit' name='outofoffice' value='true' tabindex="-1"><i class="bx bx-lock"></i>Back at Office</button>
                     </form>
                   <?php
                   } else {
                   ?>
                     <form method="post">
-                      <a role="menuitem" type='submit' name='outofoffice' value='false' tabindex="-1"><i class="bx bx-lock"></i>Out of Office</a>
+                      <button role="menuitem" type='submit' name='outofoffice' value='false' tabindex="-1"><i class="bx bx-lock"></i>Out of Office</button>
                     </form>
                   <?php
 
