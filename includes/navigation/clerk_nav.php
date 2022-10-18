@@ -4,7 +4,7 @@ $get_new = dbq("select job_id from jobcards where status='logged' and clerk_id={
 $get_open = dbq("select job_id from jobcards where status='open' and clerk_id={$_SESSION['user']['user_id']}");
 $get_completed = dbq("select job_id from jobcards where status='completed' and clerk_id={$_SESSION['user']['user_id']}");
 
-$total = dbr($get_requisitions) + dbr($get_new) + dbr($get_open) + dbr($get_completed);
+$total_jobs = dbr($get_requisitions) + dbr($get_new) + dbr($get_open) + dbr($get_completed);
 
 ?>
 <div class="nano">
@@ -20,7 +20,7 @@ $total = dbr($get_requisitions) + dbr($get_new) + dbr($get_open) + dbr($get_comp
 				<li class="nav-parent">
 					<a class="nav-link" href="#">
 						<i class="bx bx-spreadsheet" aria-hidden="true"></i>
-						<span>Job Cards</span>
+						<span>Job Cards&nbsp;<span class='badge badge-danger'><?= $total_jobs ?></span></span>
 					</a>
 					<ul class="nav nav-children">
 						<li><a class="nav-link" href="dashboard.php?page=add-job">Create a New Job Card</a></li>
