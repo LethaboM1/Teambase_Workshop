@@ -44,7 +44,11 @@
 	</div>
 	<div id="open_jobs_list" class="col-xl-12">
 		<?php
-		$get_jobs = dbq("select * from jobcards where status='completed' order by complete_datetime");
+		if ($_SESSION['user']['role'] == 'clerk') {
+			$get_jobs = dbq("select * from jobcards where status='completed' and clerk_id={$_SESSION['user']['user_id']} order by complete_datetime");
+		} else {
+			$get_jobs = dbq("select * from jobcards where status='completed' order by complete_datetime");
+		}
 		if ($get_jobs) {
 			if (dbr($get_jobs) > 0) {
 				while ($row = dbf($get_jobs)) {

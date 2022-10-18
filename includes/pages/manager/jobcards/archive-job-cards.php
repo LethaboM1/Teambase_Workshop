@@ -14,7 +14,12 @@
 
 <div class="row">
 	<?php
-	$get_jobcards = dbq("select * from jobcards where status='closed'");
+	if ($_SESSION['user']['role'] == 'clerk') {
+		$get_jobcards = dbq("select * from jobcards where status='closed' and clerk_id={$_SESSION['user']['user_id']}");
+	} else {
+		$get_jobcards = dbq("select * from jobcards where status='closed'");
+	}
+
 	if ($get_jobcards) {
 		if (dbr($get_jobcards) > 0) {
 			while ($row = dbf($get_jobcards)) {
