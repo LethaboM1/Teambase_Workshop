@@ -63,7 +63,7 @@ if ($get_managers) {
 
         try {
             $mail->send();
-            msg('Mail was send to manager.');
+            msg('Mail was send to buyer.');
         } catch (Exception $e) {
             error("Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
         }

@@ -37,8 +37,8 @@ if ($get_buyer) {
                                 <p>
                                     <b>Date time.</b>&nbsp;" . $job_request_['requested_by_time'] . "<br>
                                     <b>Job Number.</b>&nbsp;{$jobcard_['jobcard_number']}<br>
-                                    <b>Plant No.</b>&nbsp;{$plant_['plant_number']}
-                                    <b>Fleet No.</b>&nbsp;{$plant_['fleet_number']}
+                                    <b>Plant No.</b>&nbsp;{$plant_['plant_number']}<br>
+                                    <b>Fleet No.</b>&nbsp;{$plant_['fleet_number']}<br>
                                     <b>Request ID.</b>&nbsp;{$job_request_['request_id']}<br>
                                     <b>Mechanic.</b>&nbsp;{$mechanic_['name']} {$mechanic_['last_name']}<br>
                                     <b>Part no.</b>&nbsp;{$job_request_['part_number']}<br>
