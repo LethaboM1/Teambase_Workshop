@@ -75,6 +75,13 @@ if (isset($_POST['change_status'])) {
 
                     require_once "./includes/forms/sms.mechanic.parts_receieved.php";
                     break;
+                case "approved":
+                    $job_request_ = dbf(dbq("select * from jobcard_requisitions where request_id={$_POST['request_id']}"));
+                    $job_id = $job_request_['job_id'];
+                    $mechanic_id = $job_request_['requested_by'];
+                    $request_id = $job_request_['request_id'];
+                    require_once "./includes/forms/mail.buyer.request.php";
+                    break;
             }
 
             go('dashboard.php?page=job-requisitions');
