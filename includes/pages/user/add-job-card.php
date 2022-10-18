@@ -58,12 +58,16 @@
 						</div>
 						<?php
 
-						$get_clerks = dbq("select name, user_id as value from users_tbl where role='clerk'");
+						$get_clerks = dbq("select name, user_id as value, out_of_office from users_tbl where role='clerk'");
 						if ($get_clerks) {
 							$clerk_select_[] = ['name' => 'Select One', 'value' => 0];
 							if (dbr($get_clerks)) {
 								while ($clerk = dbf($get_clerks)) {
-									$clerk_select_[] = $clerk;
+									if ($clerk['out_of_office'] == 1) {
+										$clerk_select_[] = ['name' => $clerk['name'] . " - Out of office", 'value' => $clerk['value']];
+									} else {
+										$clerk_select_[] = ['name' => $clerk['name'], 'value' => $clerk['value']];
+									}
 								}
 							}
 
