@@ -53,14 +53,27 @@
 											});
 										});
 										";
+
 							?>
 						</div>
+						<?php
+
+						$get_clerks = dbq("select name, user_id as value from users_tbl where role='clerk'");
+						if ($get_clerks) {
+							$clerk_select_[] = ['name' => 'Select One', 'value' => 0];
+							if (dbr($get_clerks)) {
+								while ($clerk = dbf($get_clerks)) {
+									$clerk_select_[] = $clerk;
+								}
+							}
+
+							echo "<div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>" . inp('clerk_id', 'Clerk', 'select', '', '', 0, $clerk_select_) . "</div>";
+						}
+						?>
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<label class="col-form-label" for="formGroupExampleInput">Date</label>
 							<input type="date" name="date" placeholder="" class="form-control" value="<?= date('Y-m-d') ?>">
 						</div>
-					</div>
-					<div class="row">
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<label class="col-form-label" for="formGroupExampleInput">Reading <span id="reading_lbl"></span></label>
 							<?= inp('reading_type', '', 'hidden') ?>
