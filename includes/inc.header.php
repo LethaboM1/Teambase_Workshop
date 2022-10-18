@@ -124,13 +124,19 @@
                 <li>
                   <?php
                   if ($_SESSION['user']['out_of_office'] == 1) {
-                  ?><a role="menuitem" tabindex="-1" href="dashboard.php?outofoffice=false"><i class="bx bx-lock"></i>Back at Office</a><?php
-                                                                                                                                      } else {
-                                                                                                                                        ?>
-                    <a role="menuitem" tabindex="-1" href="dashboard.php?outofoffice=true"><i class="bx bx-lock"></i>Out of Office</a>
+                  ?>
+                    <form method="post">
+                      <a role="menuitem" type='submit' name='outofoffice' value='true' tabindex="-1"><i class="bx bx-lock"></i>Back at Office</a>
+                    </form>
+                  <?php
+                  } else {
+                  ?>
+                    <form method="post">
+                      <a role="menuitem" type='submit' name='outofoffice' value='false' tabindex="-1"><i class="bx bx-lock"></i>Out of Office</a>
+                    </form>
                   <?php
 
-                                                                                                                                      }
+                  }
                   ?>
 
                 </li>
