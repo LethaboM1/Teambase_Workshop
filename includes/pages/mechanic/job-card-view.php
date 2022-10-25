@@ -366,12 +366,13 @@
 											<a class="mb-1 mt-1 mr-1 modal-basic" href="#modalViewEvent_<?= $event['event_id'] ?>"><i class="fas fa-pencil-alt"></i></a>
 											<!-- Modal Edit Event End -->
 											<!-- Modal Delete -->
-											<a class="mb-1 mt-1 mr-1 modal-basic" href="#modalDeleteEvent_<?= $event['event_id'] ?>"><i class="far fa-trash-alt"></i></a>
-											<!-- Modal Delete End -->
+											<!--<a class="mb-1 mt-1 mr-1 modal-basic" href="#modalDeleteEvent_<?= $event['event_id'] ?>"><i class="far fa-trash-alt"></i></a>
+											 Modal Delete End -->
 										</td>
 									</tr>
 						<?php
-									$modal .= '<div id="modalDeleteEvent_' . $event['event_id'] . '" class="modal-block modal-header-color modal-block-danger mfp-hide">
+									/* 
+						<div id="modalDeleteEvent_' . $event['event_id'] . '" class="modal-block modal-header-color modal-block-danger mfp-hide">
 												<form method="post">
 													<section class="card">
 														<header class="card-header">
@@ -400,6 +401,8 @@
 													</section>
 												</form>
 											</div>
+						*/
+									$modal .= '
 											
 											<div id="modalViewEvent_' . $event['event_id'] . '" class="modal-block modal-block-lg mfp-hide">
 												<section class="card">
