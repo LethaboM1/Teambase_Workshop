@@ -31,7 +31,7 @@ if (isset($_GET['id'])) {
 
 if (isset($_POST['allocate_hours'])) {
     if ($_POST['allocated_hours'] > 0) {
-        $update_jobcard = dbq("update jobcards set allocated_hours={$_POST['allocate_hours']} where job_id={$_GET['id']}");
+        $update_jobcard = dbq("update jobcards set allocated_hours={$_POST['allocated_hours']} where job_id={$_GET['id']}");
         if (mysqli_affected_rows($db) != -1) {
             msg("Allocated hours has been saved.");
             $jobcard_['allocated_hours'] = $_POST['allocated_hours'];

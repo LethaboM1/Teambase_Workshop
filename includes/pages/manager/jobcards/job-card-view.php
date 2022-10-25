@@ -136,30 +136,31 @@
 		</div>
 	<?php } ?>
 	<div class="col-lg-6 mb-3">
-		<section class="card">
-			<header class="card-header">
-				<div class="row">
-					<div class="col-md-9">
-						<h2 class="card-title">Allocated Hours</h2>
-						<p class="card-subtitle">Allocated Hours</p>
+		<form method="post">
+			<section class="card">
+				<header class="card-header">
+					<div class="row">
+						<div class="col-md-9">
+							<h2 class="card-title">Allocated Hours</h2>
+							<p class="card-subtitle">Allocated Hours</p>
+						</div>
+					</div>
+				</header>
+				<div class="card-body">
+					<div class="row">
+						<div class="col-md-12 mb-4">
+							<?= inp('allocated_hours', 'Allocated Hours', 'number', $jobcard_['allocated_hours']) ?>
+						</div>
+						<div class='col-md-12'>
+							<?= inp('allocate_hours', '&nbsp', 'inline-submit', 'Allocate', 'btn-primary') ?>
+						</div>
 					</div>
 				</div>
-			</header>
-			<div class="card-body">
-				<div class="row">
-					<div class="col-md-12 mb-4">
-						<?= inp('allocated_hours', 'Allocated Hours', 'number', $jobcard_['allocated_hours']) ?>
-					</div>
-					<div class='col-md-12'>
-						<?= inp('allocate_hours', '&nbsp', 'inline-submit', 'Allocate', 'btn-primary') ?>
-					</div>
-				</div>
-			</div>
-			<footer class="card-footer text-end">
+				<footer class="card-footer text-end">
 
-			</footer>
-		</section>
-
+				</footer>
+			</section>
+		</form>
 	</div>
 	<!-- Modal add event -->
 	<div id="modalAddEvent" class="modal-block modal-block-lg mfp-hide">
