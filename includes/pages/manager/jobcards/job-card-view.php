@@ -92,6 +92,7 @@
 			</section>
 		</form>
 	</div>
+	<!-- Events -->
 	<?php
 	if ($jobcard_['status'] == 'logged' || is_null($jobcard_['clerk_id']) || $jobcard_['clerk_id'] == 0) {
 	?><div class="col-lg-6 mb-3">
@@ -134,7 +135,32 @@
 			</section>
 		</div>
 	<?php } ?>
+	<div class="col-lg-6 mb-3">
+		<section class="card">
+			<header class="card-header">
+				<div class="row">
+					<div class="col-md-9">
+						<h2 class="card-title">Allocated Hours</h2>
+						<p class="card-subtitle">Allocated Hours</p>
+					</div>
+				</div>
+			</header>
+			<div class="card-body">
+				<div class="row">
+					<div class="col-md-12 mb-4">
+						<?= inp('allocated_hours', 'Allocated Hours', 'number', $jobcard_['allocated_hours']) ?>
+					</div>
+					<div class='col-md-12'>
+						<?= inp('allocate_hours', '&nbsp', 'inline-submit', 'Allocate', 'btn-primary') ?>
+					</div>
+				</div>
+			</div>
+			<footer class="card-footer text-end">
 
+			</footer>
+		</section>
+
+	</div>
 	<!-- Modal add event -->
 	<div id="modalAddEvent" class="modal-block modal-block-lg mfp-hide">
 		<form method="post">
@@ -168,7 +194,7 @@
 						<div class="col-sm-12 col-md-8 pb-sm-9 pb-md-0">
 							<label class="col-lg-3 control-label" for="Comment">Comment</label>
 							<div class="col-lg-12">
-								<textarea name="comment" class="form-control" rows="3" id="Comment"></textarea>
+								<textarea name="comment" class="form-control" rows="3" id="Comment"></textarea>view eve
 							</div>
 						</div>
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
@@ -372,12 +398,14 @@
 											<a class="mb-1 mt-1 mr-1 modal-basic" href="#modalEditEvent_<?= $event['event_id'] ?>"><i class="fas fa-pencil-alt"></i></a>
 											<!-- Modal Edit Event End -->
 											<!-- Modal Delete -->
-											<!--<a class="mb-1 mt-1 mr-1 modal-basic" href="#modalDeleteEvent_<?= $event['event_id'] ?>"><i class="far fa-trash-alt"></i></a>
-											 Modal Delete End -->
+											<a class="mb-1 mt-1 mr-1 modal-basic" href="#modalDeleteEvent_<?= $event['event_id'] ?>"><i class="far fa-trash-alt"></i></a>
+
 										</td>
 									</tr>
 						<?php
 									/* 
+						*/
+									$modal .= '
 						<div id="modalDeleteEvent_' . $event['event_id'] . '" class="modal-block modal-header-color modal-block-danger mfp-hide">
 												<form method="post">
 													<section class="card">
@@ -407,14 +435,12 @@
 													</section>
 												</form>
 											</div>
-						*/
-									$modal .= '
 											
 											<div id="modalEditEvent_' . $event['event_id'] . '" class="modal-block modal-block-lg mfp-hide">
 												<section class="card">
-													<form method="post">
+												<form method="post">
 													<header class="card-header">
-														<h2 class="card-title">View Event</h2>
+														<h2 class="card-title">Edit Event</h2>
 													</header>
 													<div class="card-body">
 													
@@ -450,7 +476,7 @@
 													<footer class="card-footer">
 														<div class="row">
 															<div class="col-md-12 text-right">															
-																<button type="submit" value="save" name="save_event" class="btn btn-primary">Save</button>
+															<button type="submit" value="save" name="save_event" class="btn btn-primary">Save</button>
 																<button class="btn btn-default modal-dismiss">Cancel</button>
 															</div>
 														</div>

@@ -45,9 +45,9 @@
 	<div id="open_jobs_list" class="col-xl-12">
 		<?php
 		if ($_SESSION['user']['role'] == 'clerk') {
-			$get_jobs = dbq("select * from jobcards where status='open' || status='busy' and clerk_id={$_SESSION['user']['user_id']} order by priority");
+			$get_jobs = dbq("select * from jobcards where (status='open' || status='busy') and clerk_id={$_SESSION['user']['user_id']} order by priority");
 		} else {
-			$get_jobs = dbq("select * from jobcards where status='open' || status='busy' order by priority");
+			$get_jobs = dbq("select * from jobcards where (status='open' || status='busy') order by priority");
 		}
 
 		if ($get_jobs) {

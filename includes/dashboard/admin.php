@@ -6,6 +6,13 @@ if ($_SESSION['user']['role'] != 'manager' && $_SESSION['user']['role'] != 'syst
 }
 
 switch ($_GET['page']) {
+
+    case 'job-card-view':
+        $page_title = 'View Job Card';
+        $page_name = 'manager/jobcards/job-card-view';
+        require "./includes/forms/manager/jobcards/job-card-view.php";
+        break;
+
     case "profile":
         $page_title = 'Your Profile';
         $page_name = 'profile';

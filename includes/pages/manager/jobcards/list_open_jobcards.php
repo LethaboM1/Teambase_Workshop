@@ -45,12 +45,31 @@ if ($row['allocated_hours'] > 0) {
 <div class="col-md-12">
 
     <section class="card card-featured-left card-featured-<?= $color ?> mb-4">
-        <a class="modal-sizes" href="#modalviewjob_<?= $row['job_id'] ?>">
+        <a href="dashboard.php?page=job-card-view&id=<?= $row['job_id'] ?>">
             <div class="card-body">
                 <div class="card-actions">
                     <!-- Job Card Good -->
                     <i class="fa-solid fa-eye"></i>
-                    <!-- Modal view -->
+
+                    <!-- Modal view End -->
+                    <!-- Job Card End -->
+                </div>
+                <h2 class="card-title">Job# <?= $row['jobcard_number'] ?>,&nbsp;Plant: <?= $plant_['plant_number'] ?></h2>
+                <p class="card-subtitle">Opened by: <?= $logged_by['name'] ?></p>
+                <div class="progress progress-xl progress-half-rounded m-2">
+                    <div class="progress-bar progress-bar-<?= $color ?>" role="progressbar" aria-valuenow="<?= $progress ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $progress ?>%;"><?= $progress ?>%</div>
+                </div>
+            </div>
+        </a>
+    </section>
+</div>
+<!-- Job Card Good End -->
+
+<?php
+
+/* 
+
+<!-- Modal view -->
                     <div id="modalviewjob_<?= $row['job_id'] ?>" class="modal-block modal-block-lg mfp-hide">
                         <section class="card">
                             <header class="card-header">
@@ -131,25 +150,6 @@ if ($row['allocated_hours'] > 0) {
                             </footer>
                         </section>
                     </div>
-                    <!-- Modal view End -->
-                    <!-- Job Card End -->
-                </div>
-                <h2 class="card-title">Job# <?= $row['jobcard_number'] ?>,&nbsp;Plant: <?= $plant_['plant_number'] ?></h2>
-                <p class="card-subtitle">Opened by: <?= $logged_by['name'] ?></p>
-                <div class="progress progress-xl progress-half-rounded m-2">
-                    <div class="progress-bar progress-bar-<?= $color ?>" role="progressbar" aria-valuenow="<?= $progress ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $progress ?>%;"><?= $progress ?>%</div>
-                </div>
-            </div>
-        </a>
-    </section>
-</div>
-<!-- Job Card Good End -->
-
-<?php
-
-/* 
-
-
 		<!-- Job Card Causion -->
 		<div class="col-md-12">
 			<section class="card card-featured-left card-featured-warning mb-4">

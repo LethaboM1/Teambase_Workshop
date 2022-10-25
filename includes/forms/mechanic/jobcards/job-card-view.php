@@ -28,6 +28,7 @@ if (isset($_GET['id'])) {
     go('dashboard.php?page=open-job');
 }
 
+
 if (isset($_POST['allocate_clerk'])) {
     if ($_POST['clerk_id'] > 0) {
         $update_jobcard = dbq("update jobcards set clerk_id={$_POST['clerk_id']} where job_id={$_GET['id']}");
@@ -154,24 +155,18 @@ if (isset($_POST['add_part'])) {
 if (isset($_POST['add_event'])) {
     if (strlen($_POST['comment']) > 0) {
         if ($_POST['event'] != '0') {
-            $total_hours = calc_hours($_POST['start_date'], $_POST['end_date']);
-            if (date_create($_POST['start_date']) && date_create($_POST['end_date'])) {
-                $add_event = dbq("insert into jobcard_events set
+            $add_event = dbq("insert into jobcard_events set
                                             job_id={$_GET['id']},
-                                            start_datetime='{$_POST['start_date']}',
-                                            end_datetime='{$_POST['end_date']}',
-                                            total_hours={$total_hours},
+                                            start_datetime='" . date('Y-m-d H:i') . "',
+                                            total_hours={$_POST['total_hours']},
                                             event='{$_POST['event']}',
                                             comment='" . htmlentities($_POST['comment'], ENT_QUOTES) . "'
                                             ");
-                if ($add_event) {
-                    msg("Event added.");
-                    go("dashboard.php?page=job-card-view&id={$_GET['id']}");
-                } else {
-                    sqlError('', '');
-                }
+            if ($add_event) {
+                msg("Event added.");
+                go("dashboard.php?page=job-card-view&id={$_GET['id']}");
             } else {
-                error('Invalid date/time');
+                sqlError('', '');
             }
         } else {
             error("You must allocate an event type.");
@@ -181,12 +176,25 @@ if (isset($_POST['add_event'])) {
     }
 }
 
-if (isset($_POST['delete_event'])) {
-    if ($_POST['event_id'] > 0) {
-        $delete_event = dbq("delete from jobcard_events where event_id={$_POST['event_id']}");
-        if ($delete_event) {
-            msg("event deleted!");
-            go("dashboard.php?page=job-card-view&id={$_GET['id']}");
+if (isset($_POST['save_event'])) {
+    if (strlen($_POST['comment']) > 0) {
+        if ($_POST['event'] != '0' && $_POST['event_id'] > 0) {
+            $add_event = dbq("update jobcard_events set
+                                            total_hours={$_POST['total_hours']},
+                                            event='{$_POST['event']}',
+                                            comment='" . htmlentities($_POST['comment'], ENT_QUOTES) . "'
+                                            where event_id={$_POST['event_id']}
+                                            ");
+            if ($add_event) {
+                msg("Event added.");
+                go("dashboard.php?page=job-card-view&id={$_GET['id']}");
+            } else {
+                sqlError('', '');
+            }
+        } else {
+            error("You must allocate an event type.");
         }
+    } else {
+        error("fill in a comment.");
     }
 }

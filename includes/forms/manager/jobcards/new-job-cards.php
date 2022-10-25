@@ -56,3 +56,19 @@ if (isset($_POST['allocate_mechanic'])) {
         error("Type in the job card number and choose a mechanic.");
     }
 }
+
+if (isset($_POST['delete_jobcard'])) {
+    if ($_POST['job_id'] > 0) {
+        $update_ = dbq("update jobcards set 
+                            status='completed', 
+                            complete_comment='Job card was deleted by {$_SESSION['user']['name']} {$_SESSION['user']['last_name']}', 
+                            complete_datetime='" . date('Y-m-d H:i') . "'
+                            where job_id={$_POST['job_id']}");
+
+        if ($update_) {
+            msg("Job card deleted.");
+        } else {
+            sqlError();
+        }
+    }
+}
