@@ -1,5 +1,4 @@
 <?php
-
 if (isset($_GET['id'])) {
     $get_jobcard = dbq("select * from jobcards where job_id={$_GET['id']} and mechanic_id={$_SESSION['user']['user_id']}");
     if ($get_jobcard) {
