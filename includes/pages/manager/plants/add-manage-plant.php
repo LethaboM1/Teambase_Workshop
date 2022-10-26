@@ -98,8 +98,8 @@
 							<input type="date" name="last_service" placeholder="Last Service Date" class="form-control">
 						</div>
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<label class="col-form-label" for="formGroupExampleInput">Next Service Date</label>
-							<input type="date" name="next_service" placeholder="Next Service Date" class="form-control">
+							<label class="col-form-label" for="formGroupExampleInput">Next Service Reading</label>
+							<input type="number" name="next_service_reading" placeholder="Next Service Reading" class="form-control">
 						</div>
 					</div>
 				</div>
@@ -126,16 +126,16 @@
 							<th width="200">Registration Number</th>
 							<th width="120">Reading</th>
 							<th width="150">Last Service Date</th>
-							<th width="150">Next Service Date</th>
+							<th width="150">Next Service</th>
 							<th width="25">Action</th>
 						</tr>
 					</thead>
 					<tbody id="plants_list">
 						<?php
 						if ($_SESSION['user']['role'] == 'system') {
-							$get_plants = dbq("select * from plants_tbl order by reg_number");
+							$get_plants = dbq("select * from plants_tbl order by plant_number");
 						} else {
-							$get_plants = dbq("select * from plants_tbl where active=1 order by reg_number");
+							$get_plants = dbq("select * from plants_tbl where active=1 order by plant_number");
 						}
 
 						if ($get_plants) {

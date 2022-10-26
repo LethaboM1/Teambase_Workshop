@@ -361,7 +361,6 @@
 												<?= inp('service_checklist', '', 'hidden', $jobcard_['service_checklist']) ?>
 												<?= inp('service_type', '', 'hidden', $jobcard_['service_type']) ?>
 												<?= inp('compdate', '', 'datetime', date("Y-m-d\TH:i")) ?>
-												<?= inp('next_service_reading', 'Next Service Reading', 'number') ?>
 												<label>Are you sure you want to complete / Close this service?</label>
 											</div>
 										</div>

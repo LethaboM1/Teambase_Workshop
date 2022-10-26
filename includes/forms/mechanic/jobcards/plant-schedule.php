@@ -52,16 +52,30 @@ if (isset($_POST['complete_service'])) {
         if (!is_error()) {
             $requests = dbr(dbq("select request_id from jobcard_requisitions where job_id={$_GET['id']} and (status!='canceled' && status!='completed' && status!='denied')"));
             if ($requests == 0) {
-                $update_jobcard = dbq("update jobcards set
+                if ($_POST['next_service_reading'] > 0) {
+                    $update_jobcard = dbq("update jobcards set
                                             status='completed',
-                                            complete_datetime='{$_POST['compdate']}'
+                                            complete_datetime='{$_POST['compdate']}',
+                                            last_service='{$_POST['compdate']}'
                                             where job_id={$_GET['id']}
                                             ");
-                if ($update_jobcard) {
-                    msg("service completed.");
-                    go('dashboard.php?page=open-job');
+                    if ($update_jobcard) {
+                        msg("service completed.");
+                        $update_plant = dbq("update plants_tbl set
+                                                next_service_reading={$_POST['next_service_reading']}
+                                                where plant_id={$plant_['plant_id']}
+                                                ");
+                        if ($update_plant) {
+                            msg("Updated next service reading.");
+                        } else {
+                            sqlError();
+                        }
+                        go('dashboard.php?page=open-job');
+                    } else {
+                        sqlError();
+                    }
                 } else {
-                    sqlError();
+                    error("Invalid reading.");
                 }
             } else {
                 error("There are unresolved part requests for this job card. Management must resolve this request before you can close the job card.");

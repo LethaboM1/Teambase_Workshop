@@ -231,7 +231,7 @@ switch ($_POST['cmd']) {
                             </div>
                             <div class='modal-text'>
                                 <h4>Danger</h4>
-                                <p>Are you sure that you want to delete this plant {$plant_['vehicle_type']}, reg no. {$plant_['reg_number']}?</p>
+                                <p>Are you sure that you want to delete this plant {$plant_['vehicle_type']}, plant no. {$plant_['plant_number']}, fleet no. {$plant_['fleet_number']}?</p>
                             </div>
                         </div>";
             }
@@ -303,8 +303,8 @@ switch ($_POST['cmd']) {
 					</div>
                     <div class='row'>
                         <div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
-                            <label class='col-form-label' for='formGroupExampleInput'>Next Service Date</label>
-                            <input type='date' name='next_service' placeholder='Next Service Date' class='form-control' value='{$plant_['next_service']}'>
+                            <label class='col-form-label' for='formGroupExampleInput'>Next Service Reading</label>
+                            <input type='number' name='next_service_reading' placeholder='Next Service Reading' class='form-control' value='{$plant_['next_service_reading']}'>
                         </div>
                     </div>";
                 }

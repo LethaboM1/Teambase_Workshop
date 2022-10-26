@@ -39,6 +39,11 @@ if (isset($_POST['save_plant'])) {
                                         ";
                         break;
                 }
+
+                if (!is_numeric($_POST['next_service_reading'])) {
+                    $_POST['next_service_reading'] = 0;
+                }
+
                 $update_plant = dbq("update plants_tbl set 
                                         plant_number='{$_POST['plant_number']}',   
                                         vehicle_type='{$_POST['vehicle_type']}',
@@ -49,7 +54,7 @@ if (isset($_POST['save_plant'])) {
                                         reading_type='{$_POST['reading_type']}',
                                         {$query_reading}
                                         last_service='{$_POST['last_service']}',
-                                        next_service='{$_POST['next_service']}'
+                                        next_service_reading='{$_POST['next_service_reading']}'
                                         where plant_id='{$_POST['plant_id']}'
                                         ");
                 if ($update_plant) {
@@ -83,6 +88,10 @@ if (isset($_POST['add_plant'])) {
         if (dbr($chk_duplicate_reg) == 0) {
             $chk_duplicate_reg = dbq("select * from plants_tbl where vin_number='{$_POST['vin_number']}'");
             if (dbr($chk_duplicate_reg) == 0) {
+                if (!is_numeric($_POST['next_service_reading'])) {
+                    $_POST['next_service_reading'] = 0;
+                }
+
                 switch ($_POST['reading_type']) {
                     case "km":
                         $query_reading = "
@@ -108,7 +117,7 @@ if (isset($_POST['add_plant'])) {
                                                 reading_type='{$_POST['reading_type']}',
                                                 {$query_reading}
                                                 last_service='{$_POST['last_service']}',
-                                                next_service='{$_POST['next_service']}',
+                                                next_service_reading='{$_POST['next_service_reading']}',
                                                 status='ready'
                                             ");
                 if ($insert_plant) {
