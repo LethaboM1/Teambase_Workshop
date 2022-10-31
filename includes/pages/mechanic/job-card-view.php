@@ -225,54 +225,7 @@
 	<!-- Modal view End -->
 
 
-	<!-- Modal view -->
-	<div id="modaleditspare" class="modal-block modal-block-lg mfp-hide">
-		<section class="card">
-			<header class="card-header">
-				<h2 class="card-title">Edit Spares</h2>
-			</header>
-			<div class="card-body">
-				<div class="modal-wrapper">
-					<div class="modal-text">
-						<p>Spare info here...</p>
 
-					</div>
-				</div>
-			</div>
-			<footer class="card-footer">
-				<div class="row">
-					<div class="col-md-12 text-right">
-						<button class="btn btn-default modal-dismiss">Cancel</button>
-					</div>
-				</div>
-			</footer>
-		</section>
-	</div>
-	<!-- Modal view End -->
-	<!-- Modal view -->
-	<div id="modalviewspare" class="modal-block modal-block-lg mfp-hide">
-		<section class="card">
-			<header class="card-header">
-				<h2 class="card-title">View Spares</h2>
-			</header>
-			<div class="card-body">
-				<div class="modal-wrapper">
-					<div class="modal-text">
-						<p>spares info here...</p>
-
-					</div>
-				</div>
-			</div>
-			<footer class="card-footer">
-				<div class="row">
-					<div class="col-md-12 text-right">
-						<button class="btn btn-default modal-dismiss">Cancel</button>
-					</div>
-				</div>
-			</footer>
-		</section>
-	</div>
-	<!-- Modal view End -->
 	<!-- Modal view -->
 	<div id="modalrequestspare" class="modal-block modal-block-lg mfp-hide">
 		<form method="post">

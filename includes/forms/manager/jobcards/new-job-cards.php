@@ -4,7 +4,7 @@ if (isset($_POST['allocate_mechanic'])) {
     if (
         $_POST['mechanic'] != '0'
         && strlen($_POST['jobnumber']) > 0
-        && $_POST['allocated_hours'] > 0
+        && (($_POST['jobcard_type'] != 'sundry' && $_POST['allocated_hours'] > 0) || ($_POST['jobcard_type'] == 'sundry'))
     ) {
         $get_jobcard = dbq("select job_id, status from jobcards where job_id={$_POST['job_id']}");
         if ($get_jobcard) {
@@ -16,19 +16,28 @@ if (isset($_POST['allocate_mechanic'])) {
                         if (dbr($get_mechanic) > 0) {
                             $mechanic_ = dbf($get_mechanic);
                             if ($mechanic_['role'] == 'mechanic') {
+                                if ($jobcard_['jobcard_type'] == 'sundry') {
+                                    $status = "status='busy'";
+                                } else {
+                                    $status = "status='open'";
+                                }
+
+                                if (!isset($_POST['allocated_hours'])) {
+                                    $_POST['allocated_hours'] = 0;
+                                }
+
                                 $update_jobcard = dbq("update jobcards set 
                                                             authorized_by={$_SESSION['user']['user_id']},
                                                             jobcard_number='{$_POST['jobnumber']}',
                                                             site='{$_POST['site']}',
                                                             mechanic_id={$_POST['mechanic']},
                                                             allocated_hours={$_POST['allocated_hours']},
-                                                            status='open'
+                                                            {$status}
                                                             where job_id={$_POST['job_id']}
                                                             ");
 
                                 if (mysqli_affected_rows($db) != -1) {
                                     msg("Mechanic allocated!");
-
                                     require_once "./includes/forms/sms.mechanic.allocated.php";
                                     go('dashboard.php?page=new-job');
                                 } else {

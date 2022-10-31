@@ -9,17 +9,68 @@
 				<div class="card-body">
 					<div class="row">
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+							<?= inp('jobcard_type', 'Jobcard Type', 'select', '', '', 0, [['name' => 'Sundry', 'value' => 'sundry'], ['name' => 'Breakdown', 'value' => 'breakdown'], ['name' => 'Service', 'value' => 'service']]) ?>
 							<?php
-							$get_plants = dbq("select concat(plant_number,' - ',vehicle_type,' ',make,' ',model) as name, plant_id as value from plants_tbl where active=1");
-							if ($get_plants) {
-								if (dbr($get_plants) > 0) {
-									while ($plant = dbf($get_plants)) {
-										$plant_select_[] = $plant;
+							$jscript .= "
+										$('#jobcard_type').change(function () {
+											if ($(this).val() == 'service') {
+												$('#service_detail').show();
+												$('#plant_details').show();
+												$('#priority_detail').hide();
+												$('#breakdown_details').hide();
+												$('#extras_details').show();
+											} else if ($(this).val() == 'sundry') {
+												$('#service_detail').hide();
+												$('#plant_details').hide();
+												$('#priority_detail').hide();
+												$('#breakdown_details').hide();
+												$('#extras_details').hide();
+											} else {
+												$('#service_detail').hide();
+												$('#plant_details').show();
+												$('#priority_detail').show();
+												$('#breakdown_details').show();
+												$('#extras_details').show();
+											}
+										});
+										";
+							?>
+						</div>
+						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+							<label class="col-form-label" for="formGroupExampleInput">Date</label>
+							<input type="date" name="date" placeholder="" class="form-control" value="<?= date('Y-m-d') ?>">
+						</div>
+						<?php
+
+						$get_clerks = dbq("select concat(name,' ',last_name) as name, user_id as value, out_of_office from users_tbl where role='clerk'");
+						if ($get_clerks) {
+							$clerk_select_[] = ['name' => 'Select One', 'value' => 0];
+							if (dbr($get_clerks)) {
+								while ($clerk = dbf($get_clerks)) {
+									if ($clerk['out_of_office'] == 1) {
+										$clerk_select_[] = ['name' => $clerk['name'] . " - Out of office", 'value' => $clerk['value']];
+									} else {
+										$clerk_select_[] = ['name' => $clerk['name'], 'value' => $clerk['value']];
 									}
 								}
 							}
-							echo inp('plant_id', 'Plant Number', 'datalist', '', '', 0, $plant_select_);
-							$jscript .= "
+
+							echo "<div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>" . inp('clerk_id', 'Clerk', 'select', '', '', 0, $clerk_select_) . "</div>";
+						}
+						?>
+						<div id="plant_details" style="display:none" class="row">
+							<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+								<?php
+								$get_plants = dbq("select concat(plant_number,' - ',vehicle_type,' ',make,' ',model) as name, plant_id as value from plants_tbl where active=1");
+								if ($get_plants) {
+									if (dbr($get_plants) > 0) {
+										while ($plant = dbf($get_plants)) {
+											$plant_select_[] = $plant;
+										}
+									}
+								}
+								echo inp('plant_id', 'Plant Number', 'datalist', '', '', 0, $plant_select_);
+								$jscript .= "
 										$('#plant_id').change(function () {
 											console.log('Changed!');
 											$.ajax({
@@ -54,45 +105,29 @@
 										});
 										";
 
-							?>
-						</div>
-						<?php
+								?>
+							</div>
+							<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+								<label class="col-form-label" for="formGroupExampleInput">Reading <span id="reading_lbl"></span></label>
+								<?= inp('reading_type', '', 'hidden') ?>
+								<input id="reading" type="text" name="reading" placeholder="Reading" class="form-control">
+							</div>
+							<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+								<label class="col-form-label" for="formGroupExampleInput">Site</label>
+								<input type="text" name="site" placeholder="site" class="form-control">
+							</div>
 
-						$get_clerks = dbq("select concat(name,' ',last_name) as name, user_id as value, out_of_office from users_tbl where role='clerk'");
-						if ($get_clerks) {
-							$clerk_select_[] = ['name' => 'Select One', 'value' => 0];
-							if (dbr($get_clerks)) {
-								while ($clerk = dbf($get_clerks)) {
-									if ($clerk['out_of_office'] == 1) {
-										$clerk_select_[] = ['name' => $clerk['name'] . " - Out of office", 'value' => $clerk['value']];
-									} else {
-										$clerk_select_[] = ['name' => $clerk['name'], 'value' => $clerk['value']];
-									}
-								}
-							}
 
-							echo "<div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>" . inp('clerk_id', 'Clerk', 'select', '', '', 0, $clerk_select_) . "</div>";
-						}
-						?>
-						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<label class="col-form-label" for="formGroupExampleInput">Date</label>
-							<input type="date" name="date" placeholder="" class="form-control" value="<?= date('Y-m-d') ?>">
 						</div>
-						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+
+
+						<div id='priority_detail' style="display:none;" class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<?= inp('priority', 'Priority', 'select', '', '', 0, [['name' => 'High', 'value' => 1], ['name' => 'Medium', 'value' => 2], ['name' => 'Low', 'value' => 3]]) ?>
 						</div>
-					</div>
-					<div class="row">
-						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<label class="col-form-label" for="formGroupExampleInput">Reading <span id="reading_lbl"></span></label>
-							<?= inp('reading_type', '', 'hidden') ?>
-							<input id="reading" type="text" name="reading" placeholder="Reading" class="form-control">
+						<div id='service_detail' style="display:none;" class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+							<?= inp('service_type', 'Service Type', 'select', '', '', 0, [['name' => 'A', 'value' => 'A'], ['name' => 'B', 'value' => 'B'], ['name' => 'C', 'value' => 'C'], ['name' => 'D', 'value' => 'D']]) ?>
 						</div>
-						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<label class="col-form-label" for="formGroupExampleInput">Site</label>
-							<input type="text" name="site" placeholder="site" class="form-control">
-						</div>
-						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+						<div id="breakdown_details" style="display:none" class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<label class="col-form-label" for="formGroupExampleInput">Select Fault Area</label>
 							<select class="form-control mb-3" id="fault_area" name="fault_area">
 								<option value="">Select Fault Area</option>
@@ -116,25 +151,27 @@
 						</div>
 					</div>
 					<hr>
-					<h2 class="card-title">Extras</h2><br>
-					<div class="row">
-						<?php
-						$get_safety_equipment = dbq("select * from safety_equipment");
-						if ($get_safety_equipment) {
-							if (dbr($get_safety_equipment) > 0) {
-								while ($equipment = dbf($get_safety_equipment)) {
-						?>
-									<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-										<div class="checkbox-custom checkbox-default">
-											<input type="checkbox" id="<?= $equipment['code'] ?>" name="<?= $equipment['code'] ?>">
-											<label for="<?= $equipment['code'] ?>"><?= $equipment['name'] ?></label>
+					<div id="extras_details" style="display:none">
+						<h2 class="card-title">Extras</h2><br>
+						<div class="row">
+							<?php
+							$get_safety_equipment = dbq("select * from safety_equipment");
+							if ($get_safety_equipment) {
+								if (dbr($get_safety_equipment) > 0) {
+									while ($equipment = dbf($get_safety_equipment)) {
+							?>
+										<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+											<div class="checkbox-custom checkbox-default">
+												<input type="checkbox" id="<?= $equipment['code'] ?>" name="<?= $equipment['code'] ?>">
+												<label for="<?= $equipment['code'] ?>"><?= $equipment['name'] ?></label>
+											</div>
 										</div>
-									</div>
-						<?php
+							<?php
+									}
 								}
 							}
-						}
-						?>
+							?>
+						</div>
 					</div>
 
 				</div>

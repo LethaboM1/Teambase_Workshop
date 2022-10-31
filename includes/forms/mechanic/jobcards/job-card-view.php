@@ -29,6 +29,7 @@ if (isset($_GET['id'])) {
 }
 
 
+
 if (isset($_POST['allocate_clerk'])) {
     if ($_POST['clerk_id'] > 0) {
         $update_jobcard = dbq("update jobcards set clerk_id={$_POST['clerk_id']} where job_id={$_GET['id']}");

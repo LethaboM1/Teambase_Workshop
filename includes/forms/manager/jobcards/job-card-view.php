@@ -6,16 +6,18 @@ if (isset($_GET['id'])) {
         if (dbr($get_jobcard) > 0) {
             $jobcard_ = dbf($get_jobcard);
             $get_plant = dbq("select * from plants_tbl where plant_id={$jobcard_['plant_id']}");
-            if ($get_plant) {
-                if (dbr($get_plant)) {
-                    $plant_ = dbf($get_plant);
+            if ($jobcard_['jobcard_type'] != 'sundry') {
+                if ($get_plant) {
+                    if (dbr($get_plant)) {
+                        $plant_ = dbf($get_plant);
+                    } else {
+                        error("invalid plant.");
+                        go('dashboard.php?page=open-job');
+                    }
                 } else {
-                    error("invalid plant.");
+                    sqlError();
                     go('dashboard.php?page=open-job');
                 }
-            } else {
-                sqlError();
-                go('dashboard.php?page=open-job');
             }
         } else {
             error("invalid job card.");

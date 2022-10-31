@@ -12,6 +12,7 @@
                         </header>
                         <form method="post">
                             <div class="card-body">
+                                <?= inp('jobcard_type', '', 'hidden', $jobcard['jobcard_type']) ?>
                                 <b>Logged by:</b>&nbsp;<?= $logged_by_['name'] ?><br>
                                 <b>Fault:</b><br><?= $jobcard['fault_description'] ?><br>
                                 <b>Extras</b><br>
@@ -52,10 +53,16 @@
                                             <label class="col-form-label" for="formGroupExampleInput">Job Number</label>
                                             <input type="text" name="jobnumber" value="" placeholder="Job card Number" class="form-control">
                                         </div>
-                                        <div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-                                            <label class="col-form-label" for="formGroupExampleInput">Allocated Hours</label>
-                                            <input type="number" name="allocated_hours" class="form-control">
-                                        </div>
+                                        <?php
+                                        if ($jobcard['jobcard_type'] != 'sundry') {
+                                        ?>
+                                            <div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+                                                <label class="col-form-label" for="formGroupExampleInput">Allocated Hours</label>
+                                                <input type="number" name="allocated_hours" class="form-control">
+                                            </div>
+                                        <?php
+                                        }
+                                        ?>
                                         <?= inp('job_id', '', 'hidden', $jobcard['job_id']) ?>
                                         <?= inp('mechanic', 'Select Mechanic', 'select', $jobcard['mechanic_id'], '', 0, $mechanic_select_) ?>
                                     </div>
@@ -75,7 +82,17 @@
                 <!-- Assign Job Card End -->
             </div>
             <a class="mb-1 mt-1 mr-1 modal-sizes" href="#modalassign_<?= $jobcard['job_id'] ?>">
-                <h2 class="card-title">Plant: <?= $plant_['plant_number'] ?></h2>
+                <?php
+                if ($jobcard['jobcard_type'] == 'sundry') {
+                ?>
+                    <h2 class="card-title">Sundry Jobcard</h2>
+                <?php
+                } else {
+                ?>
+                    <h2 class="card-title">Plant: <?= $plant_['plant_number'] ?></h2>
+                <?php
+                }
+                ?>
                 <p class="card-subtitle">Opened by: <?= $logged_by_['name'] ?></p>
             </a>
         </div>
