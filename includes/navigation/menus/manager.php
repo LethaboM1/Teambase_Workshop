@@ -2,15 +2,17 @@
 if ($_SESSION['user']['role'] == 'clerk') {
   $get_new_jobs_notify = dbq("select job_id from jobcards where status='logged' and clerk_id={$_SESSION['user']['user_id']}");
   $get_job_requests = dbq("select * from jobcard_requisitions where status='requested' and clerk_id={$_SESSION['user']['user_id']}");
+  $get_completed_jobs = dbq("select * from jobcards where status='completed' and clerk_id={$_SESSION['user']['user_id']} order by complete_datetime");
 } else {
   $get_new_jobs_notify = dbq("select job_id from jobcards where status='logged'");
   $get_job_requests = dbq("select * from jobcard_requisitions where status='requested'");
+  $get_completed_jobs = dbq("select * from jobcards where status='completed' order by complete_datetime");
 }
-
 $count_new_jobs = dbr($get_new_jobs_notify);
+$count_completed_jobs = dbr($get_completed_jobs);
 $count_new_requests = dbr($get_job_requests);
 
-$total_notifications = $count_new_jobs + $count_new_requests;
+$total_notifications = $count_new_jobs + $count_new_requests + $count_completed_jobs;
 ?>
 <li>
   <a href="#" class="dropdown-toggle notification-icon" data-bs-toggle="dropdown">
@@ -50,6 +52,20 @@ $total_notifications = $count_new_jobs + $count_new_requests;
               </div>
               <span class="title">New part requests</span>
               <span class="message"><?= $count_new_requests ?> requests</span>
+            </a>
+          </li>
+        <?php
+        }
+
+        if ($count_completed_jobs > 0) {
+        ?>
+          <li>
+            <a href="dashboard.php?page=completed-job" class="clearfix">
+              <div class="image">
+                <i class="fas fa-edit bg-danger text-light"></i>
+              </div>
+              <span class="title">Completed Job Cards</span>
+              <span class="message"><?= $count_completed_jobs ?> Completed Job cards</span>
             </a>
           </li>
         <?php
