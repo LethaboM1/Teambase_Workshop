@@ -31,6 +31,63 @@ if (isset($_GET['id'])) {
     go('dashboard.php?page=open-job');
 }
 
+
+if (isset($_POST['complete_jobcard'])) {
+    if (
+        strlen($_POST['compdate'] > 0)
+        && (strlen($_POST['reading']) > 0 && is_numeric($_POST['reading']) && $jobcard_['jobcard_type'] != 'sundry') || ($jobcard_['jobcard_type'] == 'sundry')
+    ) {
+        if (($_POST['reading'] >= $plant_[$plant_['reading_type'] . '_reading']) || ($jobcard_['jobcard_type'] == 'sundry')) {
+            $events = dbr(dbq("select event_id from jobcard_events where job_id={$_GET['id']}"));
+            if ($events == 0) {
+                error("There were no events for this job card.");
+            }
+
+            $requests = dbr(dbq("select request_id from jobcard_requisitions where job_id={$_GET['id']} and (status!='canceled' && status!='completed' && status!='denied')"));
+            if ($requests == 0) {
+                $update_jobcard = dbq("update jobcards set
+                                            status='completed',
+                                            complete_datetime='{$_POST['compdate']}'
+                                            where job_id={$_GET['id']}
+                                            ");
+                if (mysqli_affected_rows($db) > 0) {
+                    if ($jobcard_['jobcard_type'] == 'sundry') {
+                        msg("job card completed!");
+
+                        $job_id = $_GET['id'];
+                        $mechanic_id = $jobcard_['mechanic_id'];
+                        require_once "./includes/forms/mail.manager.job_completed.php";
+                        go('dashboard.php?page=open-job');
+                    } else {
+                        $update_plant = dbq("update plants_tbl set
+                                                    {$plant_['reading_type']}_reading={$_POST['reading']},
+                                                    where plant_id={$plant_['plant_id']}");
+                        if (mysqli_affected_rows($db) != -1) {
+                            msg("job card completed!");
+
+                            $job_id = $_GET['id'];
+                            $mechanic_id = $jobcard_['mechanic_id'];
+                            require_once "./includes/forms/mail.manager.job_completed.php";
+                            go('dashboard.php?page=open-job');
+                        } else {
+                            sqlError();
+                        }
+                    }
+                } else {
+                    sqlError();
+                }
+            } else {
+                error("There are unresolved part requests for this job card. Management must resolve this request before you can close the job card.");
+            }
+        } else {
+            error("reading must be higher or equal to last reading");
+        }
+    } else {
+        error('Must fill in a reading.');
+    }
+}
+
+
 if (isset($_POST['allocate_hours'])) {
     if ($_POST['allocated_hours'] > 0) {
         $update_jobcard = dbq("update jobcards set allocated_hours={$_POST['allocated_hours']} where job_id={$_GET['id']}");

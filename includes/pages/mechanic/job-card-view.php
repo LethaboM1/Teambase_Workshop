@@ -20,21 +20,27 @@
 							<input type="text" name="jobnumber" class="form-control" value="<?= $jobcard_['jobcard_number'] ?>" disabled>
 						</div>
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<label class="col-form-label" for="formGroupExampleInput">Plant Number</label>
-							<input type="text" name="plantNumber" class="form-control" value="<?= $plant_['plant_number'] ?>" disabled>
-						</div>
-						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<label class="col-form-label" for="formGroupExampleInput">Date/Time</label>
 							<input type="datetime-local" name="date" placeholder="" class="form-control" value="<?= $jobcard_['job_date'] ?>" disabled>
 						</div>
-						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<label class="col-form-label" for="formGroupExampleInput">(<?= strtoupper($plant_['reading_type']) ?>) Reading</label>
-							<input type="text" class="form-control" value="<?= $plant_[$plant_['reading_type'] . '_reading'] ?>" disabled>
-						</div>
-						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<label class="col-form-label" for="formGroupExampleInput">Site</label>
-							<input type="text" name="site" class="form-control" value="<?= $jobcard_['site'] ?>" disabled>
-						</div>
+						<?php
+						if ($jobcard_['jobcard_type'] != 'sundry') {
+						?>
+							<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+								<label class="col-form-label" for="formGroupExampleInput">Plant Number</label>
+								<input type="text" name="plantNumber" class="form-control" value="<?= $plant_['plant_number'] ?>" disabled>
+							</div>
+							<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+								<label class="col-form-label" for="formGroupExampleInput">(<?= strtoupper($plant_['reading_type']) ?>) Reading</label>
+								<input type="text" class="form-control" value="<?= $plant_[$plant_['reading_type'] . '_reading'] ?>" disabled>
+							</div>
+							<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+								<label class="col-form-label" for="formGroupExampleInput">Site</label>
+								<input type="text" name="site" class="form-control" value="<?= $jobcard_['site'] ?>" disabled>
+							</div>
+						<?php
+						}
+						?>
 					</div>
 
 					<!-- <div class="row">
@@ -48,43 +54,50 @@
 						</div>
 					</div>-->
 					<hr>
-					<h2 class="card-title">Extras</h2><br>
-					<div class="row">
-						<?php
-						if (strlen($jobcard_['safety_audit']) > 0) {
-							if (is_json($jobcard_['safety_audit'])) {
-								$safety_audit = json_decode($jobcard_['safety_audit'], true);
-							} else {
-								$safety_audit = json_decode(base64_decode($jobcard_['safety_audit']), true);
-							}
-						} else {
-							$safety_audit = [];
-						}
 
-						if (count($safety_audit) > 0) {
-							foreach ($safety_audit as $line) {
-						?>
-								<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-									<div class="checkbox-custom checkbox-default">
-										<input type="checkbox" <?php if ($line['answer'] == 'Yes') {
-																	echo "checked='checked'";
-																} ?> disabled>
-										<label for="checkboxExample1"><?= $line['name'] ?></label>
+					<?php
+					if ($jobcard_['jobcard_type'] != 'sundry') {
+					?>
+						<h2 class="card-title">Extras</h2><br>
+						<div class="row">
+							<?php
+							if (strlen($jobcard_['safety_audit']) > 0) {
+								if (is_json($jobcard_['safety_audit'])) {
+									$safety_audit = json_decode($jobcard_['safety_audit'], true);
+								} else {
+									$safety_audit = json_decode(base64_decode($jobcard_['safety_audit']), true);
+								}
+							} else {
+								$safety_audit = [];
+							}
+
+							if (count($safety_audit) > 0) {
+								foreach ($safety_audit as $line) {
+							?>
+									<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+										<div class="checkbox-custom checkbox-default">
+											<input type="checkbox" <?php if ($line['answer'] == 'Yes') {
+																		echo "checked='checked'";
+																	} ?> disabled>
+											<label for="checkboxExample1"><?= $line['name'] ?></label>
+										</div>
 									</div>
+								<?php
+								}
+							} else {
+								?>
+								<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+									Nothing to list
 								</div>
 							<?php
 							}
-						} else {
+
+
 							?>
-							<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-								Nothing to list
-							</div>
-						<?php
-						}
-
-
-						?>
-					</div>
+						</div>
+					<?php
+					}
+					?>
 				</div>
 				<footer class="card-footer text-end">
 
@@ -204,10 +217,17 @@
 									<?= inp('compdate', '', 'hidden', date("Y-m-d\TH:i:s")) ?>
 									<input type="datetime-local" name="compdate_" placeholder="Last Service Date" class="form-control" value="<?= date("Y-m-d\TH:i") ?>">
 								</div>
-								<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-									<label class="col-form-label" for="formGroupExampleInput">(<?= strtoupper($plant_['reading_type']) ?>) Reading</label>
-									<input type="text" name="reading" placeholder="Reading" class="form-control">
-								</div>
+
+								<?php
+								if ($jobcard_['jobcard_type'] != 'sundry') {
+								?>
+									<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+										<label class="col-form-label" for="formGroupExampleInput">(<?= strtoupper($plant_['reading_type']) ?>) Reading</label>
+										<input type="text" name="reading" placeholder="Reading" class="form-control">
+									</div>
+								<?php
+								}
+								?>
 							</div>
 						</div>
 					</div>
@@ -226,61 +246,67 @@
 
 
 
-	<!-- Modal view -->
-	<div id="modalrequestspare" class="modal-block modal-block-lg mfp-hide">
-		<form method="post">
-			<section class="card">
-				<header class="card-header">
-					<h2 class="card-title">Spares Requisition BO</h2>
-				</header>
-				<div class="card-body">
-					<div class="modal-wrapper">
-						<div class="modal-text">
-							<div class="row">
-								<div class="col-sm-12 col-md-4">
-									<label class="col-form-label">Date/Time</label>
-									<?php
-									$datetime = date("Y-m-d\TH:i:s");
-									echo inp('request_date', '', 'hidden', $datetime)
-									?>
-									<input type="datetime-local" name="date" class="form-control" value="<?= $datetime ?>" disabled>
+	<?php
+	if ($jobcard_['jobcard_type'] != 'sundry') {
+	?>
+		<!-- Modal view -->
+		<div id="modalrequestspare" class="modal-block modal-block-lg mfp-hide">
+			<form method="post">
+				<section class="card">
+					<header class="card-header">
+						<h2 class="card-title">Spares Requisition BO</h2>
+					</header>
+					<div class="card-body">
+						<div class="modal-wrapper">
+							<div class="modal-text">
+								<div class="row">
+									<div class="col-sm-12 col-md-4">
+										<label class="col-form-label">Date/Time</label>
+										<?php
+										$datetime = date("Y-m-d\TH:i:s");
+										echo inp('request_date', '', 'hidden', $datetime)
+										?>
+										<input type="datetime-local" name="date" class="form-control" value="<?= $datetime ?>" disabled>
+									</div>
 								</div>
-							</div>
-							<hr>
-							<div class="row">
-								<div class="col-sm-3 col-md-3">
-									<label class="col-form-label">Qty</label>
-									<input type="number" name="qty" placeholder="qty" min='1' value="1" class="form-control">
+								<hr>
+								<div class="row">
+									<div class="col-sm-3 col-md-3">
+										<label class="col-form-label">Qty</label>
+										<input type="number" name="qty" placeholder="qty" min='1' value="1" class="form-control">
+									</div>
+									<div class="col-sm-3 col-md-3">
+										<label class="col-form-label">Part Number</label>
+										<input type="text" name="part_number" placeholder="Part Number" class="form-control">
+									</div>
+									<div class="col-sm-6 col-md-6">
+										<label class="col-form-label">Description</label>
+										<input type="text" name="part_description" placeholder="Description" class="form-control">
+									</div>
 								</div>
-								<div class="col-sm-3 col-md-3">
-									<label class="col-form-label">Part Number</label>
-									<input type="text" name="part_number" placeholder="Part Number" class="form-control">
-								</div>
-								<div class="col-sm-6 col-md-6">
-									<label class="col-form-label">Description</label>
-									<input type="text" name="part_description" placeholder="Description" class="form-control">
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-sm-12 col-md-12">
-									<label class="col-form-label">Comment</label>
-									<textarea name="comment" class="form-control" rows="3" id="textareaDefault"></textarea>
+								<div class="row">
+									<div class="col-sm-12 col-md-12">
+										<label class="col-form-label">Comment</label>
+										<textarea name="comment" class="form-control" rows="3" id="textareaDefault"></textarea>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				<footer class="card-footer">
-					<div class="row">
-						<div class="col-md-12 text-right">
-							<button name='add_part' type="submit" class="btn btn-primary">Add Part</button>
-							&nbsp;<button class="btn btn-default modal-dismiss">Cancel</button>
+					<footer class="card-footer">
+						<div class="row">
+							<div class="col-md-12 text-right">
+								<button name='add_part' type="submit" class="btn btn-primary">Add Part</button>
+								&nbsp;<button class="btn btn-default modal-dismiss">Cancel</button>
+							</div>
 						</div>
-					</div>
-				</footer>
-			</section>
-		</form>
-	</div>
+					</footer>
+				</section>
+			</form>
+		</div>
+	<?php
+	}
+	?>
 	<!-- Modal view End -->
 	<div class="col-lg-12 mb-3">
 		<section class="card">
@@ -436,39 +462,42 @@
 			</div>
 		</section>
 
-		<section class="card">
-			<header class="card-header">
-				<h2 class="card-title">Spares Requisition BO</h2>
-			</header>
-			<div class="card-body">
-				<div class="header-right">
-					<a class="mb-1 mt-1 mr-1 modal-basic" href="#modalrequestspare"><button class="btn btn-primary">Request Spares</button></a>
-				</div>
-				<table class="table table-responsive-md mb-0">
-					<thead>
-						<tr>
-							<th>Date/Time</th>
-							<th>Part No.</th>
-							<th>Description</th>
-							<th>Qty</th>
-							<th>Comment</th>
-							<th>Status</th>
-							<th>Status:Comment</th>
-							<th></th>
-						</tr>
-					</thead>
-					<tbody>
-						<?php
-						$get_jobcard_requesitions = dbq("select * from jobcard_requisitions where job_id={$_GET['id']}");
-						if ($get_jobcard_requesitions) {
-							if (dbr($get_jobcard_requesitions) > 0) {
-								while ($row = dbf($get_jobcard_requesitions)) {
-									if ($row['status'] != 'requested') {
-										$comment_ = $row[$row['status'] . '_by_comment'];
-									} else {
-										$comment_ = '';
-									}
-									echo "<tr>
+		<?php
+		if ($jobcard_['jobcard_type'] != 'sundry') {
+		?>
+			<section class="card">
+				<header class="card-header">
+					<h2 class="card-title">Spares Requisition BO</h2>
+				</header>
+				<div class="card-body">
+					<div class="header-right">
+						<a class="mb-1 mt-1 mr-1 modal-basic" href="#modalrequestspare"><button class="btn btn-primary">Request Spares</button></a>
+					</div>
+					<table class="table table-responsive-md mb-0">
+						<thead>
+							<tr>
+								<th>Date/Time</th>
+								<th>Part No.</th>
+								<th>Description</th>
+								<th>Qty</th>
+								<th>Comment</th>
+								<th>Status</th>
+								<th>Status:Comment</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php
+							$get_jobcard_requesitions = dbq("select * from jobcard_requisitions where job_id={$_GET['id']}");
+							if ($get_jobcard_requesitions) {
+								if (dbr($get_jobcard_requesitions) > 0) {
+									while ($row = dbf($get_jobcard_requesitions)) {
+										if ($row['status'] != 'requested') {
+											$comment_ = $row[$row['status'] . '_by_comment'];
+										} else {
+											$comment_ = '';
+										}
+										echo "<tr>
 													<td>{$row['datetime']}</td>
 													<td>{$row['part_number']}</td>
 													<td>{$row['part_description']}</td>
@@ -485,7 +514,7 @@
 													</td>
 											</tr>";
 
-									$modal .= '<div id="modalDeleteRequest_' . $row['request_id'] . '" class="modal-block modal-header-color modal-block-danger mfp-hide">
+										$modal .= '<div id="modalDeleteRequest_' . $row['request_id'] . '" class="modal-block modal-header-color modal-block-danger mfp-hide">
 												<form method="post">
 													<section class="card">
 														<header class="card-header">
@@ -543,20 +572,23 @@
 												</section>
 											</div>
 											';
+									}
+								} else {
+									echo "<tr><td colspan='7'>Nothing to list...</td></tr>";
 								}
 							} else {
-								echo "<tr><td colspan='7'>Nothing to list...</td></tr>";
+								echo "<tr><td colspan='7'>Error: " . dbe() . "</td></tr>";
 							}
-						} else {
-							echo "<tr><td colspan='7'>Error: " . dbe() . "</td></tr>";
-						}
 
-						?>
-					</tbody>
-				</table>
-				<hr>
-			</div>
-		</section>
+							?>
+						</tbody>
+					</table>
+					<hr>
+				</div>
+			</section>
+		<?php
+		}
+		?>
 	</div>
 </div>
 <?php

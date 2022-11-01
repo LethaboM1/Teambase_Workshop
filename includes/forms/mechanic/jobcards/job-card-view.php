@@ -4,17 +4,19 @@ if (isset($_GET['id'])) {
     if ($get_jobcard) {
         if (dbr($get_jobcard) > 0) {
             $jobcard_ = dbf($get_jobcard);
-            $get_plant = dbq("select * from plants_tbl where plant_id={$jobcard_['plant_id']}");
-            if ($get_plant) {
-                if (dbr($get_plant)) {
-                    $plant_ = dbf($get_plant);
+            if ($jobcard_['jobcard_type'] != 'sundry') {
+                $get_plant = dbq("select * from plants_tbl where plant_id={$jobcard_['plant_id']}");
+                if ($get_plant) {
+                    if (dbr($get_plant)) {
+                        $plant_ = dbf($get_plant);
+                    } else {
+                        error("invalid plant.");
+                        go('dashboard.php?page=open-job');
+                    }
                 } else {
-                    error("invalid plant.");
+                    sqlError();
                     go('dashboard.php?page=open-job');
                 }
-            } else {
-                sqlError();
-                go('dashboard.php?page=open-job');
             }
         } else {
             error("invalid job card.");
@@ -46,10 +48,10 @@ if (isset($_POST['allocate_clerk'])) {
 
 if (isset($_POST['complete_jobcard'])) {
     if (
-        strlen($_POST['reading']) > 0
-        && is_numeric($_POST['reading'])
+        strlen($_POST['compdate'] > 0)
+        && (strlen($_POST['reading']) > 0 && is_numeric($_POST['reading']) && $jobcard_['jobcard_type'] != 'sundry') || ($jobcard_['jobcard_type'] == 'sundry')
     ) {
-        if ($_POST['reading'] >= $plant_[$plant_['reading_type'] . '_reading']) {
+        if (($_POST['reading'] >= $plant_[$plant_['reading_type'] . '_reading']) || ($jobcard_['jobcard_type'] == 'sundry')) {
             $events = dbr(dbq("select event_id from jobcard_events where job_id={$_GET['id']}"));
             if ($events == 0) {
                 error("There were no events for this job card.");
@@ -63,19 +65,28 @@ if (isset($_POST['complete_jobcard'])) {
                                             where job_id={$_GET['id']}
                                             ");
                 if (mysqli_affected_rows($db) > 0) {
-                    /*$update_plant = dbq("update plants_tbl set
-                                                {$plant_['reading_type']}_reading={$_POST['reading']},
-                                                where plant_id={$plant_['plant_id']}");
-                    if (mysqli_affected_rows($db) > 0) {*/
-                    msg("job card completed!");
+                    if ($jobcard_['jobcard_type'] == 'sundry') {
+                        msg("job card completed!");
 
-                    $job_id = $_GET['id'];
-                    $mechanic_id = $jobcard_['mechanic_id'];
-                    require_once "./includes/forms/mail.manager.job_completed.php";
-                    go('dashboard.php?page=open-job');
-                    /*} else {
-                        sqlError();
-                    }*/
+                        $job_id = $_GET['id'];
+                        $mechanic_id = $jobcard_['mechanic_id'];
+                        require_once "./includes/forms/mail.manager.job_completed.php";
+                        go('dashboard.php?page=open-job');
+                    } else {
+                        $update_plant = dbq("update plants_tbl set
+                                                    {$plant_['reading_type']}_reading={$_POST['reading']},
+                                                    where plant_id={$plant_['plant_id']}");
+                        if (mysqli_affected_rows($db) != -1) {
+                            msg("job card completed!");
+
+                            $job_id = $_GET['id'];
+                            $mechanic_id = $jobcard_['mechanic_id'];
+                            require_once "./includes/forms/mail.manager.job_completed.php";
+                            go('dashboard.php?page=open-job');
+                        } else {
+                            sqlError();
+                        }
+                    }
                 } else {
                     sqlError();
                 }
@@ -155,7 +166,7 @@ if (isset($_POST['add_part'])) {
 
 if (isset($_POST['add_event'])) {
     if (strlen($_POST['comment']) > 0) {
-        if ($_POST['event'] != '0') {
+        if (($_POST['event'] != '0') || ($jobcard_['jobcard_type'] == 'sundry')) {
             $add_event = dbq("insert into jobcard_events set
                                             job_id={$_GET['id']},
                                             start_datetime='" . date('Y-m-d H:i') . "',

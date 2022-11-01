@@ -9,27 +9,27 @@ if ($job_request['buyer_id'] > 0) {
 
 switch ($row['status']) {
 	case "requested":
-		$progess = 1;
+		$progress = 0;
 		$color = 'danger';
 		break;
 
 	case "approved":
-		$progess = 25;
+		$progress = 25;
 		$color = 'warning';
 		break;
 
 	case "ordered":
-		$progess = 50;
+		$progress = 50;
 		$color = 'warning';
 		break;
 
 	case "received":
-		$progess = 75;
+		$progress = 75;
 		$color = 'info';
 		break;
 
 	case "completed":
-		$progess = 100;
+		$progress = 100;
 		$color = 'success';
 		break;
 }
@@ -156,7 +156,15 @@ $request_status_select = [
 
 			</p>
 			<div class="progress progress-xl progress-half-rounded m-2">
-				<div class="progress-bar progress-bar-<?= $color ?>" role="progressbar" aria-valuenow="<?= $progess ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $progess ?>%;"><?= $progess ?>%</div>
+				<div class="progress-bar progress-bar-<?= $color ?>" role="progressbar" aria-valuenow="<?php if ($progress == 0) {
+																											echo 5;
+																										} else {
+																											echo $progress;
+																										} ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php if ($progress == 0) {
+																																										echo 5;
+																																									} else {
+																																										echo $progress;
+																																									} ?>%;"><?= $progress ?>%</div>
 			</div>
 		</div>
 	</section>

@@ -4,27 +4,29 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\SMTP;
 
-if (!isset($job_id)) {
-    $job_id = mysqli_insert_id($db);
-}
-$clerk_ = dbf(dbq("select * from users_tbl where user_id={$_POST['clerk_id']}"));
-if (strlen($clerk_['email']) > 0) {
+if (!$testserver) {
+
+    if (!isset($job_id)) {
+        $job_id = mysqli_insert_id($db);
+    }
+    $clerk_ = dbf(dbq("select * from users_tbl where user_id={$_POST['clerk_id']}"));
+    if (strlen($clerk_['email']) > 0) {
 
 
-    $jobcard_ = dbf(dbq("select * from jobcards where job_id={$job_id}"));
-    $mechanic_ = dbf(dbq("select * from users_tbl where user_id={$jobcard_['mechanic_id']}"));
-    $mail = new PHPMailer(true);
+        $jobcard_ = dbf(dbq("select * from jobcards where job_id={$job_id}"));
+        $mechanic_ = dbf(dbq("select * from users_tbl where user_id={$jobcard_['mechanic_id']}"));
+        $mail = new PHPMailer(true);
 
 
-    try {
-        $mail->addAddress($clerk_['email'], $clerk_['name'] . ' ' . $clerk_['last_name']);     //Add a recipient                    
-        //$mail->addReplyTo($_SESSION['user']['email'], $_SESSION['name'] . ' ' . $_SESSION['user']['last_name']);
-        $mail->addCC($_SESSION['settings']['requisition_mail']);
+        try {
+            $mail->addAddress($clerk_['email'], $clerk_['name'] . ' ' . $clerk_['last_name']);     //Add a recipient                    
+            //$mail->addReplyTo($_SESSION['user']['email'], $_SESSION['name'] . ' ' . $_SESSION['user']['last_name']);
+            $mail->addCC($_SESSION['settings']['requisition_mail']);
 
-        //Content
-        $mail->isHTML(true);                                  //Set email format to HTML
-        $mail->Subject = "#{$jobcard_['job_id']} - Job card requested";
-        $mail->Body    = "
+            //Content
+            $mail->isHTML(true);                                  //Set email format to HTML
+            $mail->Subject = "#{$jobcard_['job_id']} - Job card requested";
+            $mail->Body    = "
                                 <b>Job Card request</b><br>
                                 <p>
                                     <b>Date time.</b>&nbsp;" . date("Y-m-d H:i") . "<br>
@@ -37,7 +39,7 @@ if (strlen($clerk_['email']) > 0) {
                                 <b>{$_SESSION['user']['name']} {$_SESSION['user']['last_name']}</b><br>
                                 E-mail: {$_SESSION['user']['email']}
                                 ";
-        $mail->AltBody = "
+            $mail->AltBody = "
                                     Job Card request\n\r\n\r
                                     Date time. : " . date("Y-m-d H:i") . "\n\r
                                     Job ID. : {$jobcard_['jobcard_id']}\n\r
@@ -50,9 +52,10 @@ if (strlen($clerk_['email']) > 0) {
                                     E-mail: {$_SESSION['user']['email']}
                                     ";
 
-        $mail->send();
-        msg('Mail was send to clerk.');
-    } catch (Exception $e) {
-        error("Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
+            $mail->send();
+            msg('Mail was send to clerk.');
+        } catch (Exception $e) {
+            error("Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
+        }
     }
 }

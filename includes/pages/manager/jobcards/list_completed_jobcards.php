@@ -96,6 +96,47 @@ $progress = 100;
                                                 ?>
                                             </table>
                                         </div>
+                                        <?php
+                                        if ($row['jobcard_type'] != 'sundry') {
+                                        ?>
+                                            <div class="row">
+                                                <table class="table table-responsive">
+                                                    <thead>
+                                                        <tr>
+                                                            <th width="100">Date</th>
+                                                            <th width="100">Part No.</th>
+                                                            <th width="120">Description.</th>
+                                                            <th width="459">Qty</th>
+                                                            <th width="120">Completed</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <?php
+                                                    $get_jobrequests = dbq("select * from jobcard_requisitions where job_id={$row['job_id']}");
+                                                    if ($get_jobrequests) {
+                                                        if (dbr($get_jobrequests) > 0) {
+                                                            while ($jobrequest = dbf($get_jobrequests)) {
+                                                    ?><tr>
+                                                                    <td><?= $jobrequest['datetime'] ?></td>
+                                                                    <td><?= $jobrequest['part_number'] ?></td>
+                                                                    <td><?= $jobrequest['part_description'] ?></td>
+                                                                    <td><?= $jobrequest['qty'] ?></td>
+                                                                    <td class="actions">
+                                                                        <?= $jobrequest['completed_by_time'] ?>
+                                                                    </td>
+                                                                </tr>
+                                                    <?
+                                                            }
+                                                        } else {
+                                                            echo "<tr><td colspan='4'>No part requests</td></tr>";
+                                                        }
+                                                    }
+
+                                                    ?>
+                                                </table>
+                                            </div>
+                                        <?php
+                                        }
+                                        ?>
                                     </div>
                                 </div>
                             </div>
@@ -115,7 +156,18 @@ $progress = 100;
                     <!-- Modal view End -->
                     <!-- Job Card End -->
                 </div>
-                <h2 class="card-title">Job# <?= $row['jobcard_number'] ?>,&nbsp;Plant: <?= $plant_['plant_number'] ?></h2>
+                <?php
+                if ($row['jobcard_type'] == 'sundry') {
+                ?>
+                    <h2 class="card-title">Job# <?= $row['jobcard_number'] ?>,&nbsp;Sundry,&nbsp;<?= $mechanic_['name'] ?>,&nbsp;[<?= $row['complete_datetime'] ?>]</h2>
+                <?php
+                } else {
+                ?>
+
+                    <h2 class="card-title">Job# <?= $row['jobcard_number'] ?>,&nbsp;<?= ucfirst($row['jobcard_type']) ?>,&nbsp;Plant: <?= $plant_['plant_number'] ?></h2>
+                <?php
+                }
+                ?>
                 <p class="card-subtitle">Opened by: <?= $logged_by['name'] ?></p>
                 <div class="progress progress-xl progress-half-rounded m-2">
                     <div class="progress-bar progress-bar-<?= $color ?>" role="progressbar" aria-valuenow="<?= $progress ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $progress ?>%;"><?= $progress ?>%</div>

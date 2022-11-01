@@ -6,7 +6,7 @@ if (isset($_POST['allocate_mechanic'])) {
         && strlen($_POST['jobnumber']) > 0
         && (($_POST['jobcard_type'] != 'sundry' && $_POST['allocated_hours'] > 0) || ($_POST['jobcard_type'] == 'sundry'))
     ) {
-        $get_jobcard = dbq("select job_id, status from jobcards where job_id={$_POST['job_id']}");
+        $get_jobcard = dbq("select job_id,jobcard_type, status from jobcards where job_id={$_POST['job_id']}");
         if ($get_jobcard) {
             if (dbr($get_jobcard) > 0) {
                 $jobcard_ = dbf($get_jobcard);

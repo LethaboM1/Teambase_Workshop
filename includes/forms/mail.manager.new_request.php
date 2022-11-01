@@ -4,32 +4,34 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\SMTP;
 
-if (!isset($job_id)) {
-    $job_id = mysqli_insert_id($db);
-}
-$get_managers = dbq("select * from users_tbl where role='manager'");
-if ($get_managers) {
-    if (dbr($get_managers) > 0) {
 
-        $mail = new PHPMailer(true);
-        while ($manager = dbf($get_managers)) {
-            $mail->addAddress($manager['email'], $manager['name'] . ' ' . $manager['last_name']);
-        }
+if (!$testserver) {
+    if (!isset($job_id)) {
+        $job_id = mysqli_insert_id($db);
+    }
+    $get_managers = dbq("select * from users_tbl where role='manager'");
+    if ($get_managers) {
+        if (dbr($get_managers) > 0) {
 
-        $jobcard_ = dbf(dbq("select * from jobcards where job_id={$job_id}"));
-        $mechanic_ = dbf(dbq("select * from users_tbl where user_id={$mechanic_id}"));
-        $job_request_ = dbf(dbq("select * from jobcard_requisitions where request_id={$request_id}"));
+            $mail = new PHPMailer(true);
+            while ($manager = dbf($get_managers)) {
+                $mail->addAddress($manager['email'], $manager['name'] . ' ' . $manager['last_name']);
+            }
 
-        //$mail->addAddress($clerk_['email'], $clerk_['name'] . ' ' . $clerk_['last_name']);     //Add a recipient                    
-        //$mail->addReplyTo($_SESSION['user']['email'], $_SESSION['name'] . ' ' . $_SESSION['user']['last_name']);
-        if (strlen($_SESSION['settings']['requisition_mail']) > 0) {
-            $mail->addCC($_SESSION['settings']['requisition_mail']);
-        }
+            $jobcard_ = dbf(dbq("select * from jobcards where job_id={$job_id}"));
+            $mechanic_ = dbf(dbq("select * from users_tbl where user_id={$mechanic_id}"));
+            $job_request_ = dbf(dbq("select * from jobcard_requisitions where request_id={$request_id}"));
 
-        //Content
-        $mail->isHTML(true);                                  //Set email format to HTML
-        $mail->Subject = "#{$job_request_['request_id']} - Part requested";
-        $mail->Body    = "
+            //$mail->addAddress($clerk_['email'], $clerk_['name'] . ' ' . $clerk_['last_name']);     //Add a recipient                    
+            //$mail->addReplyTo($_SESSION['user']['email'], $_SESSION['name'] . ' ' . $_SESSION['user']['last_name']);
+            if (strlen($_SESSION['settings']['requisition_mail']) > 0) {
+                $mail->addCC($_SESSION['settings']['requisition_mail']);
+            }
+
+            //Content
+            $mail->isHTML(true);                                  //Set email format to HTML
+            $mail->Subject = "#{$job_request_['request_id']} - Part requested";
+            $mail->Body    = "
                                 <b>Part Request</b><br>
                                 <p>
                                     <b>Date time.</b>&nbsp;" . $job_request_['requested_by_time'] . "<br>
@@ -45,7 +47,7 @@ if ($get_managers) {
                                 <b>{$_SESSION['user']['name']} {$_SESSION['user']['last_name']}</b><br>
                                 E-mail: {$_SESSION['user']['email']}
                                 ";
-        $mail->AltBody = "
+            $mail->AltBody = "
                                     Job Card request\n\r\n\r
                                     Date time.: " . $job_request_['requested_by_time'] . "\n\r
                                     Job Number.: {$jobcard_['jobcard_number']}\n\r
@@ -61,15 +63,16 @@ if ($get_managers) {
                                     E-mail: {$_SESSION['user']['email']}
                                     ";
 
-        try {
-            $mail->send();
-            msg('Mail was send to buyer.');
-        } catch (Exception $e) {
-            error("Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
+            try {
+                $mail->send();
+                msg('Mail was send to buyer.');
+            } catch (Exception $e) {
+                error("Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
+            }
+        } else {
+            /* No Managers */
         }
     } else {
-        /* No Managers */
+        sqlError();
     }
-} else {
-    sqlError();
 }
