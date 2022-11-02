@@ -162,7 +162,7 @@
 				<div class="card-body">
 					<div class="row">
 						<div class="col-md-12 mb-4">
-							<?= inp('allocated_hours', 'Allocated Hours', 'number', $jobcard_['allocated_hours']) ?>
+							<?= inp('allocated_hours', 'Allocated Hours', 'number', $jobcard_['allocated_hours'], '', 0, '', ' step="0.5"') ?>
 						</div>
 						<div class='col-md-12'>
 							<?= inp('allocate_hours', '&nbsp', 'inline-submit', 'Allocate', 'btn-primary') ?>
@@ -188,7 +188,7 @@
 						<div class="row">
 							<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 								<label class="col-form-label" for="formGroupExampleInput">Hours Worked</label>
-								<input type="number" name="total_hours" class="form-control" value="1">
+								<input type="number" name="total_hours" step="0.5" class="form-control" value="1">
 							</div>
 							<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 								<label class="col-form-label" for="formGroupExampleInput">Select Event</label>
@@ -424,7 +424,7 @@
 													
 													<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">'
 											. inp('event_id', '', 'hidden', $event['event_id'])
-											. inp('total_hours', 'Hours Worked', 'number', $event['total_hours'])
+											. inp('total_hours', 'Hours Worked', 'number', $event['total_hours'], '', 0, '', ' step="0.5"')
 											. '
 														</div>
 														<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">';
