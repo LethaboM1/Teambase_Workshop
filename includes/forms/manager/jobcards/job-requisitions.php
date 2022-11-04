@@ -2,7 +2,7 @@
 
 
 if (isset($_POST['change_status'])) {
-    $the_request = dbf(dbq("select * from jobcard_requisition where request_id={$_POST['request_id']}"));
+    $the_request = dbf(dbq("select * from jobcard_requisitions where request_id={$_POST['request_id']}"));
     if (($_POST['status'] != 0) || ($_POST['buyer_id'] > 0)) {
         $query = "";
 
