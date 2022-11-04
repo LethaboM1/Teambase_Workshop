@@ -2,7 +2,7 @@
 
 
 if (isset($_POST['change_status'])) {
-    if (strlen($_POST['status']) > 0) {
+    if ($_POST['status'] != 0) {
         $query = "";
 
         switch ($_POST['status']) {
@@ -88,5 +88,7 @@ if (isset($_POST['change_status'])) {
         } else {
             sqlError('', '');
         }
+    } else {
+        error("you must choose a status.");
     }
 }
