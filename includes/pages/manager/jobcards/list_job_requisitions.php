@@ -113,6 +113,21 @@ $request_status_select = [
 														. inp('buyer_id', 'Buyer', 'select', '', '', 0, $buyer_select_)
 														. inp('status_comment', 'Comment', 'textarea');
 												} else {
+													if ($job_request['buyer_id'] == null || $job_request['buyer_id'] == 0) {
+
+														$get_buyers = dbq("select concat(name,' ',last_name) as name, user_id as value from users_tbl where active=1 and role='buyer'");
+														unset($buyer_select_);
+														$buyer_select_[] = ['name' => 'Choose buyer', 'value' => 0];
+														if ($get_buyers) {
+
+															if (dbr($get_buyers)) {
+																while ($buyer = dbf($get_buyers)) {
+																	$buyer_select_[] = $buyer;
+																}
+															}
+														}
+													}
+
 													$request_status_select = [
 														['name' => 'Choose', 'value' => '0'],
 														['name' => 'Ordered', 'value' => 'ordered'],
@@ -124,8 +139,13 @@ $request_status_select = [
 
 													echo inp('request_id', '', 'hidden', $job_request['request_id'])
 														. inp('comments', 'Mechanic Comment', 'textarea', $job_request['comment'], '', 0, '', 'disabled')
-														. inp('status', 'Status', 'select', $job_request['status'], '', 0, $request_status_select)
-														. inp('status_comment', 'Comment', 'textarea');
+														. inp('status', 'Status', 'select', $job_request['status'], '', 0, $request_status_select);
+
+													if ($_SESSION['user']['role'] == 'manager' || $_SESSION['user']['role'] == 'system') {
+														echo inp('buyer_id', 'Buyer', 'select', $job_request['buyer_id'], '', 0, $buyer_select_);
+													}
+
+													echo inp('status_comment', 'Comment', 'textarea');
 												}
 												?>
 											</div>
