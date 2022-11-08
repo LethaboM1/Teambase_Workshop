@@ -338,12 +338,12 @@
 						if ($get_job_events) {
 							if (dbr($get_job_events) > 0) {
 								while ($event = dbf($get_job_events)) {
-									$tmp_date = date_create($event['start_datetime']);
-									$event_date = date_format($tmp_date, 'Y-m-d');
+									$event_date = date_create($event['start_datetime']);
+									$event_date = date_format($event_date, 'Y-m-d');
 						?>
 									<tr>
-										<td><?= $event['start_datetime'] ?></td>
 										<td><?= $event_date ?></td>
+										<td><?= $event['event'] ?></td>
 										<td><?= $event['total_hours'] ?></td>
 										<td><?= $event['comment'] ?></td>
 										<td class="actions">
@@ -351,6 +351,7 @@
 										</td>
 									</tr>
 						<?php
+
 									$modal .= '
 											
 											<div id="modalEditEvent_' . $event['event_id'] . '" class="modal-block modal-block-lg mfp-hide">
@@ -363,6 +364,7 @@
 													
 													<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">'
 										. inp('event_id', '', 'hidden', $event['event_id'])
+										. inp('event_date', 'Event Date', 'date', $event_date)
 										. inp('total_hours', 'Hours Worked', 'number', $event['total_hours'], '', 0, '', ' step="0.5"')
 										. '
 														</div>
