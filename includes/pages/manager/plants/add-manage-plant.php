@@ -56,46 +56,46 @@
 					<div class="row">
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<label class="col-form-label" for="formGroupExampleInput">Plant No.</label>
-							<input type="text" name="plant_number" class="form-control">
+							<input type="text" name="plant_number" class="form-control" value="<?= $_POST['plant_number'] ?>">
 						</div>
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<label class="col-form-label" for="formGroupExampleInput">Vehicle Type</label>
-							<input type="text" name="vehicle_type" placeholder="Truck, TLB ..." class="form-control">
+							<input type="text" name="vehicle_type" placeholder="Truck, TLB ..." class="form-control" value="<?= $_POST['vehicle_type'] ?>">
 						</div>
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<label class="col-form-label" for="formGroupExampleInput">Make</label>
-							<input type="text" name="make" placeholder="Make" class="form-control">
+							<input type="text" name="make" placeholder="Make" class="form-control" value="<?= $_POST['make'] ?>">
 						</div>
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<label class="col-form-label" for="formGroupExampleInput">Model</label>
-							<input type="text" name="model" placeholder="Model" class="form-control">
+							<input type="text" name="model" placeholder="Model" class="form-control" value="<?= $_POST['model'] ?>">
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<label class="col-form-label" for="formGroupExampleInput">Registration Number</label>
-							<input type="text" name="reg_number" placeholder="AAA-456-L" class="form-control">
+							<input type="text" name="reg_number" placeholder="AAA-456-L" class="form-control" value="<?= $_POST['reg_number'] ?>">
 						</div>
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<label class="col-form-label" for="formGroupExampleInput">VIN Number</label>
-							<input type="text" name="vin_number" placeholder="VIN Number" class="form-control">
+							<input type="text" name="vin_number" placeholder="VIN Number" class="form-control" value="<?= $_POST['vin_number'] ?>">
 						</div>
 						<?php
 						$reading_types_select_ = [
 							['name' => 'KM - Kilometers', 'value' => 'km'],
 							['name' => 'HR - Hours', 'value' => 'hr'],
 						];
-						echo inp('reading_type', 'Type of reading', 'select', '', '', 0, $reading_types_select_);
+						echo inp('reading_type', 'Type of reading', 'select', $_POST['reading_type'], '', 0, $reading_types_select_);
 						?>
 					</div>
 					<div class="row">
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<label class="col-form-label" for="formGroupExampleInput">Reading</label>
-							<input type="text" name="reading" placeholder="Reading" class="form-control">
+							<input type="text" name="reading" placeholder="Reading" class="form-control" value="<?= $_POST['reading'] ?>">
 						</div>
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<label class="col-form-label" for="formGroupExampleInput">Next Service Reading</label>
-							<input type="number" name="next_service_reading" placeholder="Next Service Reading" class="form-control">
+							<input type="number" name="next_service_reading" placeholder="Next Service Reading" class="form-control" value="<?= $_POST['next_service_reading'] ?>">
 						</div>
 					</div>
 				</div>

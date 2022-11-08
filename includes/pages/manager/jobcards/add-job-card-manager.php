@@ -115,11 +115,11 @@
 							</div>
 							<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 								<label class="col-form-label" for="formGroupExampleInput">Allocated Hours</label>
-								<input type="number" name="allocated_hours" placeholder="Allocated Hours" class="form-control" value="1">
+								<input type="number" name="allocated_hours" placeholder="Allocated Hours" class="form-control" value="<?= $_POST['allocated_hours'] ?>">
 							</div>
 							<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 								<label class="col-form-label" for="formGroupExampleInput">Site</label>
-								<input type="text" name="site" placeholder="Site" class="form-control" value="">
+								<input type="text" name="site" placeholder="Site" class="form-control" value="<?= $_POST['site'] ?>">
 							</div>
 						</div> <!-- PLant Details -->
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
@@ -138,14 +138,14 @@
 									}
 								}
 							}
-							echo inp('mechanic_id', 'Select Mechanic', 'select', '', '', 0, $mechanic_select_list);
+							echo inp('mechanic_id', 'Select Mechanic', 'select', $_POST['mechanic_id'], '', 0, $mechanic_select_list);
 							?>
 						</div>
 						<div id='service_detail' style="display:none;" class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<?= inp('service_type', 'Service Type', 'select', '', '', 0, [['name' => 'A', 'value' => 'A'], ['name' => 'B', 'value' => 'B'], ['name' => 'C', 'value' => 'C'], ['name' => 'D', 'value' => 'D']]) ?>
+							<?= inp('service_type', 'Service Type', 'select', $_POST['service_type'], '', 0, [['name' => 'A', 'value' => 'A'], ['name' => 'B', 'value' => 'B'], ['name' => 'C', 'value' => 'C'], ['name' => 'D', 'value' => 'D']]) ?>
 						</div>
 						<div id="priority_detail" style="display:none;" class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<?= inp('priority', 'Priority', 'select', '', '', 0, [['name' => 'High', 'value' => 1], ['name' => 'Medium', 'value' => 2], ['name' => 'Low', 'value' => 3]]) ?>
+							<?= inp('priority', 'Priority', 'select', $_POST['priority'], '', 0, [['name' => 'High', 'value' => 1], ['name' => 'Medium', 'value' => 2], ['name' => 'Low', 'value' => 3]]) ?>
 						</div>
 					</div>
 				</div>
