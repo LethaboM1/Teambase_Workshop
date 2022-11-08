@@ -476,7 +476,7 @@
 								} else {
 									?>
 									<tr>
-										<td colspan='5'>No events to list</td>
+										<td colspan='5'>Nothing to list</td>
 									</tr>
 							<?php
 								}
