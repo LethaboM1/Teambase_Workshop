@@ -10,7 +10,7 @@
 					<div class="row">
 						<div class="col-sm-6 col-md-4 col-lg-4">
 							<label class="col-form-label" for="formGroupExampleInput">Date</label>
-							<input type="date" name="date" placeholder="" class="form-control" value="<?= date('Y-m-d') ?>" disabled>
+							<input type="datetime-local" name="datetime" placeholder="" class="form-control" value="<?= date('Y-m-d\TH:i') ?>">
 						</div>
 						<div class="col-sm-6 col-md-4 col-lg-4">
 							<label class="col-form-label" for="formGroupExampleInput">Job No.</label>

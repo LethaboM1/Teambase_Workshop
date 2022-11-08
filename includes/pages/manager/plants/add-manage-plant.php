@@ -94,10 +94,6 @@
 							<input type="text" name="reading" placeholder="Reading" class="form-control">
 						</div>
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<label class="col-form-label" for="formGroupExampleInput">Last Service Date</label>
-							<input type="date" name="last_service" placeholder="Last Service Date" class="form-control">
-						</div>
-						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<label class="col-form-label" for="formGroupExampleInput">Next Service Reading</label>
 							<input type="number" name="next_service_reading" placeholder="Next Service Reading" class="form-control">
 						</div>
@@ -125,7 +121,6 @@
 							<th width="200">Make</th>
 							<th width="200">Registration Number</th>
 							<th width="120">Reading</th>
-							<th width="150">Last Service Date</th>
 							<th width="150">Next Service</th>
 							<th width="25">Action</th>
 						</tr>

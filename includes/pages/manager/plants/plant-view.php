@@ -43,10 +43,6 @@ if ($_SESSION['user']['role'] != 'manager' && $_SESSION['user']['role'] != 'syst
 							<input type="text" name="km_reading" placeholder="KM Reading" class="form-control" value="<?= $plant_[$row['reading_type'] . '_reading'] ?>" disabled>
 						</div>
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<label class="col-form-label" for="formGroupExampleInput">Last Service Date</label>
-							<input type="date" name="last_service" placeholder="Last Service Date" class="form-control" value="<?= $plant_['last_service'] ?>" disabled>
-						</div>
-						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<label class="col-form-label" for="formGroupExampleInput">Next Service Reading</label>
 							<input type="number" name="next_service_reading" placeholder="Next Service Reading" class="form-control" value="<?= $plant_['next_service_reading'] ?>" disabled>
 						</div>

@@ -53,7 +53,6 @@ if (isset($_POST['save_plant'])) {
                                         vin_number='{$_POST['vin_number']}',
                                         reading_type='{$_POST['reading_type']}',
                                         {$query_reading}
-                                        last_service='{$_POST['last_service']}',
                                         next_service_reading='{$_POST['next_service_reading']}'
                                         where plant_id='{$_POST['plant_id']}'
                                         ");
@@ -116,7 +115,6 @@ if (isset($_POST['add_plant'])) {
                                                 vin_number='{$_POST['vin_number']}',
                                                 reading_type='{$_POST['reading_type']}',
                                                 {$query_reading}
-                                                last_service='{$_POST['last_service']}',
                                                 next_service_reading='{$_POST['next_service_reading']}',
                                                 status='ready'
                                             ");

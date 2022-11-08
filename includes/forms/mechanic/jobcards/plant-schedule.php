@@ -54,8 +54,7 @@ if (isset($_POST['complete_service'])) {
                 if ($_POST['next_service_reading'] > 0) {
                     $update_jobcard = dbq("update jobcards set
                                             status='completed',
-                                            complete_datetime='{$_POST['compdate']}',
-                                            last_service='{$_POST['compdate']}'
+                                            complete_datetime='{$_POST['compdate']}'
                                             where job_id={$_GET['id']}
                                             ");
                     if ($update_jobcard) {

@@ -13,7 +13,6 @@ echo "<tr>
         <td>{$row['vehicle_type']} {$row['make']}</td>
         <td>{$row['model']}</td>
         <td>{$reading} (" . strtoupper($row['reading_type']) . ")</td>
-        <td>{$row['last_service']}</td>
         <td>{$row['next_service_reading']} (" . strtoupper($row['reading_type']) . ")</td>
         <td class='actions'>
             <i onclick='edit_plant(`{$row['plant_id']}`)' class='fas fa-pencil-alt pointer'></i> 
