@@ -159,6 +159,10 @@
 					<h2 class="card-title">Events</h2><br>
 					<div class="row">
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+							<label class="col-form-label" for="formGroupExampleInput">Event Date</label>
+							<input type="date" name="event_date" class="form-control" value="<?= date('Y-m-d') ?>">
+						</div>
+						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<label class="col-form-label" for="formGroupExampleInput">Hours Worked</label>
 							<input type="number" name="total_hours" step="0.5" class="form-control" value="1">
 						</div>
@@ -318,13 +322,6 @@
 				<div class="header-right">
 					<a class="mb-1 mt-1 mr-1 modal-basic" href="#modalAddEvent"><button class="btn btn-primary">Add Event</button></a>
 				</div>
-				<!-- <form action="#" class="search nav-form">
-					<div class="input-group">
-						<input type="text" class="form-control" name="q" id="q" placeholder="Search Event...">
-						<button class="btn btn-default"><i class="bx bx-search"></i></button>
-					</div>
-				</form> -->
-
 				<table width="1047" class="table table-responsive-md mb-0">
 					<thead>
 						<tr>
@@ -337,56 +334,23 @@
 					</thead>
 					<tbody>
 						<?php
-						$get_job_events = dbq("select * from jobcard_events where job_id={$_GET['id']}");
+						$get_job_events = dbq("select * from jobcard_events where job_id={$_GET['id']} order by start_datetime");
 						if ($get_job_events) {
 							if (dbr($get_job_events) > 0) {
 								while ($event = dbf($get_job_events)) {
+									$tmp_date = date_create($event['start_datetime']);
+									$event_date = date_format($tmp_date, 'Y-m-d');
 						?>
 									<tr>
 										<td><?= $event['start_datetime'] ?></td>
-										<td><?= $event['event'] ?></td>
+										<td><?= $event_date ?></td>
 										<td><?= $event['total_hours'] ?></td>
 										<td><?= $event['comment'] ?></td>
 										<td class="actions">
 											<a class="mb-1 mt-1 mr-1 modal-basic" href="#modalEditEvent_<?= $event['event_id'] ?>"><i class="fas fa-pencil-alt"></i></a>
-											<!-- Modal Edit Event End -->
-											<!-- Modal Delete -->
-											<!--<a class="mb-1 mt-1 mr-1 modal-basic" href="#modalDeleteEvent_<?= $event['event_id'] ?>"><i class="far fa-trash-alt"></i></a>
-											 Modal Delete End -->
 										</td>
 									</tr>
 						<?php
-									/* 
-						<div id="modalDeleteEvent_' . $event['event_id'] . '" class="modal-block modal-header-color modal-block-danger mfp-hide">
-												<form method="post">
-													<section class="card">
-														<header class="card-header">
-															<h2 class="card-title">Are you sure?</h2>
-														</header>
-														<div class="card-body">
-															<div class="modal-wrapper">
-																<div class="modal-icon">
-																	<i class="fas fa-times-circle"></i>
-																</div>
-																<div class="modal-text">
-																	<h4>Danger</h4>
-																	' . inp('event_id', '', 'hidden', $event['event_id']) . '
-																	<p>Are you sure that you want to delete this event?</p>
-																</div>
-															</div>
-														</div>
-														<footer class="card-footer">
-															<div class="row">
-																<div class="col-md-12 text-right">
-																	<button name="delete_event" type="submit" class="btn btn-danger">Confirm</button>
-																	<button type="button" class="btn btn-danger modal-dismiss" data-bs-dismiss="modal">Cancel</button>
-																</div>
-															</div>
-														</footer>
-													</section>
-												</form>
-											</div>
-						*/
 									$modal .= '
 											
 											<div id="modalEditEvent_' . $event['event_id'] . '" class="modal-block modal-block-lg mfp-hide">
@@ -442,21 +406,6 @@
 							}
 						}
 						?>
-						<!--<tr>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td class="actions">
-								 Modal Edit Event 
-								<a class="mb-1 mt-1 mr-1 modal-basic" href="#modalviewevent"><i class="fas fa-pencil-alt"></i></a>-->
-						<!-- Modal Edit Event End -->
-						<!-- Modal Delete 
-								<a class="mb-1 mt-1 mr-1 modal-basic" href="#modalHeaderColorDanger"><i class="far fa-trash-alt"></i></a>-->
-						<!-- Modal Delete End 
-							</td>
-						</tr>-->
 					</tbody>
 				</table>
 			</div>
@@ -552,7 +501,7 @@
 													<div class="card-body">
 														<div class="modal-wrapper">
 															<div class="modal-text">
-																<b>Date/Time</b>&nbsp;' . $row['datetime'] . '<br>
+																<b>Date/Time</b>&nbsp;' .  $row['datetime'] . '<br>
 																<b>Part Number</b>&nbsp;' . $row['part_number'] . '<br>
 																<b>Part Description</b>&nbsp;' . $row['part_description'] . '<br>
 																<b>Qty</b>&nbsp;' . $row['qty'] . '<br>

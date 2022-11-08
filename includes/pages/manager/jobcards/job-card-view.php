@@ -187,6 +187,10 @@
 						<h2 class="card-title">Events</h2><br>
 						<div class="row">
 							<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+								<label class="col-form-label" for="formGroupExampleInput">Event Date</label>
+								<input type="date" name="event_date" class="form-control" value="<?= date('Y-m-d') ?>">
+							</div>
+							<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 								<label class="col-form-label" for="formGroupExampleInput">Hours Worked</label>
 								<input type="number" name="total_hours" step="0.5" class="form-control" value="1">
 							</div>
@@ -362,7 +366,7 @@
 						</thead>
 						<tbody>
 							<?php
-							$get_job_events = dbq("select * from jobcard_events where job_id={$_GET['id']}");
+							$get_job_events = dbq("select * from jobcard_events where job_id={$_GET['id']} order by start_datetime");
 							if ($get_job_events) {
 								if (dbr($get_job_events) > 0) {
 									while ($event = dbf($get_job_events)) {

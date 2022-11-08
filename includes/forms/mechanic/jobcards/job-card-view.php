@@ -169,7 +169,7 @@ if (isset($_POST['add_event'])) {
         if (($_POST['event'] != '0') || ($jobcard_['jobcard_type'] == 'sundry')) {
             $add_event = dbq("insert into jobcard_events set
                                             job_id={$_GET['id']},
-                                            start_datetime='" . date('Y-m-d H:i') . "',
+                                            start_datetime='" . $_POST['event_date'] . " 00:00:00',
                                             total_hours={$_POST['total_hours']},
                                             event='{$_POST['event']}',
                                             comment='" . htmlentities($_POST['comment'], ENT_QUOTES) . "'
@@ -192,6 +192,7 @@ if (isset($_POST['save_event'])) {
     if (strlen($_POST['comment']) > 0) {
         if ($_POST['event'] != '0' && $_POST['event_id'] > 0) {
             $add_event = dbq("update jobcard_events set
+                                            start_datetime='" . $_POST['event_date'] . " 00:00:00',
                                             total_hours={$_POST['total_hours']},
                                             event='{$_POST['event']}',
                                             comment='" . htmlentities($_POST['comment'], ENT_QUOTES) . "'
