@@ -386,7 +386,7 @@
 
 											</td>
 										</tr>
-							<?php
+									<?php
 										/* 
 						*/
 										$modal .= '
@@ -473,6 +473,12 @@
 											</div>
 											';
 									}
+								} else {
+									?>
+									<tr>
+										<td colspan='5'>No events to list</td>
+									</tr>
+							<?php
 								}
 							}
 							?>

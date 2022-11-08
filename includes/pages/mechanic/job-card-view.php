@@ -350,7 +350,7 @@
 											<a class="mb-1 mt-1 mr-1 modal-basic" href="#modalEditEvent_<?= $event['event_id'] ?>"><i class="fas fa-pencil-alt"></i></a>
 										</td>
 									</tr>
-						<?php
+								<?php
 
 									$modal .= '
 											
@@ -405,6 +405,12 @@
 											</div>
 											';
 								}
+							} else {
+								?>
+								<tr>
+									<td colspan='5'>No events to list</td>
+								</tr>
+						<?php
 							}
 						}
 						?>
