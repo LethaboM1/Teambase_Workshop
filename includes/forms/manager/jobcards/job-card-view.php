@@ -52,7 +52,7 @@ if (isset($_POST['complete_jobcard'])) {
                                             ");
                 if (mysqli_affected_rows($db) > 0) {
                     if ($jobcard_['jobcard_type'] == 'sundry') {
-                        msg("job card completed!");
+                        msg("job card completed.");
 
                         $job_id = $_GET['id'];
                         $mechanic_id = $jobcard_['mechanic_id'];
@@ -63,7 +63,7 @@ if (isset($_POST['complete_jobcard'])) {
                                                     {$plant_['reading_type']}_reading={$_POST['reading']},
                                                     where plant_id={$plant_['plant_id']}");
                         if (mysqli_affected_rows($db) != -1) {
-                            msg("job card completed!");
+                            msg("job card completed.");
 
                             $job_id = $_GET['id'];
                             $mechanic_id = $jobcard_['mechanic_id'];
@@ -92,7 +92,7 @@ if (isset($_POST['allocate_hours'])) {
     if ($_POST['allocated_hours'] > 0) {
         $update_jobcard = dbq("update jobcards set allocated_hours={$_POST['allocated_hours']} where job_id={$_GET['id']}");
         if (mysqli_affected_rows($db) != -1) {
-            msg("Allocated hours has been saved.");
+            msg("Hours have been allocated.");
             $jobcard_['allocated_hours'] = $_POST['allocated_hours'];
         } else {
             sqlError();
@@ -163,7 +163,7 @@ if (isset($_POST['save_event'])) {
                                             where event_id={$_POST['event_id']}
                                             ");
             if ($add_event) {
-                msg("Event added.");
+                msg("Event saved.");
                 go("dashboard.php?page=job-card-view&id={$_GET['id']}");
             } else {
                 sqlError('', '');
