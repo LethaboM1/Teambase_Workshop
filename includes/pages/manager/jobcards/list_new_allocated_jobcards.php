@@ -58,13 +58,9 @@
                                         ?>
                                             <div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
                                                 <label class="col-form-label" for="formGroupExampleInput">Allocated Hours</label>
-                                                <input type="number" name="allocated_hours" class="form-control">
+                                                <input type="number" name="allocated_hours" class="form-control" value="<?= $jobcard['allocated_hours'] ?>" disabled>
                                             </div>
                                         <?php
-                                        }
-
-                                        if ($jobcard['clerk_id'] == null || $jobcard['clerk_id'] == 0) {
-                                            echo inp('clerk_id', 'Select Clerk', 'select', $jobcard['clerk_id'], '', 0, $clerk_select_);
                                         }
                                         ?>
                                         <?= inp('job_id', '', 'hidden', $jobcard['job_id']) ?>
@@ -74,8 +70,8 @@
                                 <footer class="card-footer">
                                     <div class="row">
                                         <div class="col-md-12 text-right">
-                                            <button type="submit" name="allocate_mechanic" class="btn btn-primary">Allocate</button>
-                                            <button type="submit" name="delete_jobcard" class="btn btn-danger">Delete</button>
+                                            <button type="submit" name="allocate_jobcard" class="btn btn-primary">Allocate</button>
+                                            <!-- <button type="submit" name="delete_jobcard" class="btn btn-danger">Delete</button> -->
                                             <button class="btn btn-default modal-dismiss">Cancel</button>
                                         </div>
                                     </div>

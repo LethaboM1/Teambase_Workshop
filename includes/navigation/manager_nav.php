@@ -2,6 +2,7 @@
 $get_requisitions = dbq("select request_id from jobcard_requisitions where (status!='completed' && status!='denied'  && status!='canceled')");
 
 $get_new = dbq("select job_id from jobcards where status='logged'");
+$get_new_jobnumber = dbq("select job_id from jobcards where status='allocated'");
 $get_open = dbq("select job_id from jobcards where status='open'");
 $get_completed = dbq("select job_id from jobcards where status='completed'");
 
@@ -34,6 +35,7 @@ $get_completed = dbq("select job_id from jobcards where status='completed'");
 					<ul class="nav nav-children">
 						<li><a class="nav-link" href="dashboard.php?page=add-job">Create a New Job Card</a></li>
 						<li><a class="nav-link" href="dashboard.php?page=new-job">New Job Cards&nbsp;<span class='badge badge-danger'><?= dbr($get_new) ?></span></a></li>
+						<li><a class="nav-link" href="dashboard.php?page=new-job-allocate">New Job Cards - Job Number&nbsp;<span class='badge badge-danger'><?= dbr($get_new_jobnumber) ?></span></a></li>
 						<li><a class="nav-link" href="dashboard.php?page=job-requisitions">Job Requisitions&nbsp;<span class='badge badge-danger'><?= dbr($get_requisitions) ?></span></a></li>
 						<li><a class="nav-link" href="dashboard.php?page=open-job">Open Job Cards&nbsp;<span class='badge badge-danger'><?= dbr($get_open) ?></span></a></li>
 						<li><a class="nav-link" href="dashboard.php?page=completed-job">Completed Job Cards&nbsp;<span class='badge badge-danger'><?= dbr($get_completed) ?></span></a></li>

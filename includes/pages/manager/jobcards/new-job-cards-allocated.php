@@ -3,9 +3,9 @@
 		<?php
 
 		if ($_SESSION['user']['role'] == 'clerk') {
-			$get_jobcards = dbq("select * from jobcards where status='logged' and clerk_id={$_SESSION['user']['user_id']}");
+			$get_jobcards = dbq("select * from jobcards where status='allocated' and clerk_id={$_SESSION['user']['user_id']}");
 		} else {
-			$get_jobcards = dbq("select * from jobcards where status='logged'");
+			$get_jobcards = dbq("select * from jobcards where status='allocated'");
 		}
 
 		if ($get_jobcards) {
@@ -17,16 +17,6 @@
 					if (dbr($get_mechanics) > 0) {
 						while ($mechanic = dbf($get_mechanics)) {
 							$mechanic_select_[] = $mechanic;
-						}
-					}
-				}
-
-				$clerk_select_[] = ['name' => 'Choose Clerk', 'value' => '0'];
-				$get_clerks = dbq("select concat(name,' ',last_name) as name, user_id as value from users_tbl where role='clerk' and active=1");
-				if ($get_clerks) {
-					if (dbr($get_clerks) > 0) {
-						while ($clerk = dbf($get_clerks)) {
-							$clerk_select_[] = $clerk;
 						}
 					}
 				}
@@ -45,7 +35,7 @@
 							$status_color = "warning";
 							break;
 					}
-					require "./includes/pages/manager/jobcards/list_new_jobcards.php";
+					require "./includes/pages/manager/jobcards/list_new_allocated_jobcards.php";
 				}
 			} else {
 				echo "<h4>No new job cards.</h4>";

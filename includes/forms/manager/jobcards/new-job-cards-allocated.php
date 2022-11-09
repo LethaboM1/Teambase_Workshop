@@ -1,56 +1,38 @@
 <?php
 
-if (isset($_POST['allocate_mechanic'])) {
+if (isset($_POST['allocate_jobcard'])) {
     if (
-        $_POST['mechanic'] != '0'
-        && $_POST['clerk_id'] != '0'
-        && (($_POST['jobcard_type'] != 'sundry' && $_POST['allocated_hours'] > 0) || ($_POST['jobcard_type'] == 'sundry'))
+        strlen($_POST['jobnumber']) > 0
     ) {
         $get_jobcard = dbq("select job_id,jobcard_type, status from jobcards where job_id={$_POST['job_id']}");
         if ($get_jobcard) {
             if (dbr($get_jobcard) > 0) {
                 $jobcard_ = dbf($get_jobcard);
-                if ($jobcard_['status'] == 'logged') {
+                if ($jobcard_['status'] == 'allocated') {
                     $get_mechanic = dbq("select user_id, role from users_tbl where user_id={$_POST['mechanic']}");
                     if ($get_mechanic) {
                         if (dbr($get_mechanic) > 0) {
                             $mechanic_ = dbf($get_mechanic);
                             if ($mechanic_['role'] == 'mechanic') {
-
-                                if (strlen($_POST['jobnumber']) > 0) {
-                                    $jobcard_number = "jobcard_number='{$_POST['jobnumber']}',";
-                                    if ($jobcard_['jobcard_type'] == 'sundry') {
-                                        $status = "status='busy'";
-                                    } else {
-                                        $status = "status='open'";
-                                    }
+                                if ($jobcard_['jobcard_type'] == 'sundry') {
+                                    $status = "status='busy'";
                                 } else {
-                                    $jobcard_number = '';
-                                    $status = "status='allocated'";
-                                }
-
-                                if (!isset($_POST['allocated_hours'])) {
-                                    $_POST['allocated_hours'] = 0;
+                                    $status = "status='open'";
                                 }
 
                                 $update_jobcard = dbq("update jobcards set 
                                                             authorized_by={$_SESSION['user']['user_id']},
-                                                            {$jobcard_number}
-                                                            clerk_id={$_POST['clerk_id']},
+                                                            jobcard_number='{$_POST['jobnumber']}',
                                                             site='{$_POST['site']}',
                                                             mechanic_id={$_POST['mechanic']},
-                                                            allocated_hours={$_POST['allocated_hours']},
                                                             {$status}
                                                             where job_id={$_POST['job_id']}
                                                             ");
 
                                 if (mysqli_affected_rows($db) != -1) {
                                     msg("Mechanic allocated!");
-                                    unset($_POST);
-                                    if (strlen($_POST['jobnumber']) > 0) {
-                                        require_once "./includes/forms/sms.mechanic.allocated.php";
-                                    }
-                                    go('dashboard.php?page=new-job');
+                                    require_once "./includes/forms/sms.mechanic.allocated.php";
+                                    go('dashboard.php?page=new-job-allocate');
                                 } else {
                                     sqlError();
                                 }
@@ -73,7 +55,7 @@ if (isset($_POST['allocate_mechanic'])) {
             sqlError();
         }
     } else {
-        error("Allocate hours, clerk and mechanic.");
+        error("Type in the job card number and choose a mechanic.");
     }
 }
 
