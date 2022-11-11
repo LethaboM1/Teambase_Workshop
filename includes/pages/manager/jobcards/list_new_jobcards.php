@@ -14,6 +14,7 @@
                             <div class="card-body">
                                 <?= inp('jobcard_type', '', 'hidden', $jobcard['jobcard_type']) ?>
                                 <b>Logged by:</b>&nbsp;<?= $logged_by_['name'] ?><br>
+                                <b>Date Logged</b>&nbsp;<?= $jobcard['job_date'] ?><br>
                                 <b>Fault:</b><br><?= $jobcard['fault_description'] ?><br>
                                 <b>Extras</b><br>
                                 <div class="row">
