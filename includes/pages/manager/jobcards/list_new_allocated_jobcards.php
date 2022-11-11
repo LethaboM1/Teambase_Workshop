@@ -94,7 +94,7 @@
                 <?php
                 }
                 ?>
-                <p class="card-subtitle">Logged by: <?= $logged_by_['name'] ?><br><?= $jobcard['fault_description'] ?></p>
+                <p class="card-subtitle">Logged by: <?= $logged_by_['name'] ?><br><?= $jobcard['fault_description'] ?>, <b>Date Logged</b>&nbsp;<?= $jobcard['job_date'] ?><br></p>
             </a>
         </div>
     </section>
