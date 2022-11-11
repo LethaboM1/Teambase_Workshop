@@ -98,7 +98,7 @@
                 <?php
                 }
                 ?>
-                <p class="card-subtitle"><b>Date</b>&nbsp;<?= $jobcard['job_date'] ?><br><b>Logged by:</b><?= $logged_by_['name'] ?><br><?= $jobcard['fault_description'] ?></p>
+                <p class="card-subtitle"><b>Date</b>&nbsp;<?= date('Y-m-d', strtotime($jobcard['job_date'])) ?><br><b>Logged by:</b><?= $logged_by_['name'] ?><br><?= $jobcard['fault_description'] ?></p>
             </a>
         </div>
     </section>
