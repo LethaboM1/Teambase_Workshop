@@ -57,6 +57,7 @@ if (isset($_POST['request_jobcard'])) {
                                     fault_description='" . htmlentities($_POST['comment'], ENT_QUOTES) . "',
                                     safety_audit='{$safety_stuff}',
                                     {$query}
+                                    jobcard_type='{$_POST['jobcard_type']}',
                                     priority='{$_POST['priority']}'
                                     ");
             if ($add_jobcard) {

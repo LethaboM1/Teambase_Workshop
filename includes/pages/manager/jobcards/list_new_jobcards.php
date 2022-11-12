@@ -16,36 +16,38 @@
                                 <b>Logged by:</b>&nbsp;<?= $logged_by_['name'] ?><br>
                                 <b>Date Logged</b>&nbsp;<?= $jobcard['job_date'] ?><br>
                                 <b>Fault:</b><br><?= $jobcard['fault_description'] ?><br>
-                                <b>Extras</b><br>
-                                <div class="row">
-                                    <?php
-                                    if (strlen($jobcard['safety_audit']) > 0) {
-                                        $safety_audit = json_decode(base64_decode($jobcard['safety_audit']), true);
-                                    } else {
-                                        $safety_audit = [];
-                                    }
-
-                                    if (is_array($safety_audit)) {
-
-                                        if (count($safety_audit) > 0) {
-                                            foreach ($safety_audit as $line) {
-                                    ?>
-                                                <div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-                                                    <div class="checkbox-custom checkbox-default">
-                                                        <input type="checkbox" <?php if ($line['answer'] == 'Yes') {
-                                                                                    echo "checked='checked'";
-                                                                                } ?> disabled>
-                                                        <label for="checkboxExample1"><?= $line['name'] ?></label>
-                                                    </div>
-                                                </div>
-                                            <?php
-                                            }
+                                <?php if ($jobcard['jobcard_type'] == 'breakdown') { ?>
+                                    <b>Extras</b><br>
+                                    <div class="row">
+                                        <?php
+                                        if (strlen($jobcard['safety_audit']) > 0) {
+                                            $safety_audit = json_decode(base64_decode($jobcard['safety_audit']), true);
                                         } else {
-                                            ?>
-                                            <div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-                                                Nothing to list
-                                            </div>
+                                            $safety_audit = [];
+                                        }
+
+                                        if (is_array($safety_audit)) {
+
+                                            if (count($safety_audit) > 0) {
+                                                foreach ($safety_audit as $line) {
+                                        ?>
+                                                    <div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+                                                        <div class="checkbox-custom checkbox-default">
+                                                            <input type="checkbox" <?php if ($line['answer'] == 'Yes') {
+                                                                                        echo "checked='checked'";
+                                                                                    } ?> disabled>
+                                                            <label for="checkboxExample1"><?= $line['name'] ?></label>
+                                                        </div>
+                                                    </div>
+                                                <?php
+                                                }
+                                            } else {
+                                                ?>
+                                                <div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+                                                    Nothing to list
+                                                </div>
                                     <?php
+                                            }
                                         }
                                     }
                                     ?>
@@ -71,16 +73,16 @@
                                         <?= inp('job_id', '', 'hidden', $jobcard['job_id']) ?>
                                         <?= inp('mechanic', 'Select Mechanic', 'select', $jobcard['mechanic_id'], '', 0, $mechanic_select_) ?>
                                     </div>
-                                </div>
-                                <footer class="card-footer">
-                                    <div class="row">
-                                        <div class="col-md-12 text-right">
-                                            <button type="submit" name="allocate_mechanic" class="btn btn-primary">Allocate</button>
-                                            <button type="submit" name="delete_jobcard" class="btn btn-danger">Delete</button>
-                                            <button class="btn btn-default modal-dismiss">Cancel</button>
-                                        </div>
                                     </div>
-                                </footer>
+                                    <footer class="card-footer">
+                                        <div class="row">
+                                            <div class="col-md-12 text-right">
+                                                <button type="submit" name="allocate_mechanic" class="btn btn-primary">Allocate</button>
+                                                <button type="submit" name="delete_jobcard" class="btn btn-danger">Delete</button>
+                                                <button class="btn btn-default modal-dismiss">Cancel</button>
+                                            </div>
+                                        </div>
+                                    </footer>
                         </form>
                     </section>
                 </div>
