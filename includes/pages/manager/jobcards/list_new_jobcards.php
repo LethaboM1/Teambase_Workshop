@@ -66,7 +66,7 @@
                                         <?php
                                         }
 
-                                        if ($_SESSION['user']['role'] != 'manager' || $_SESSION['user']['role'] != 'system') {
+                                        if ($_SESSION['user']['role'] == 'manager' || $_SESSION['user']['role'] == 'system') {
                                             echo inp('clerk_id', 'Select Clerk', 'select', $jobcard['clerk_id'], '', 0, $clerk_select_);
                                         } else {
                                             echo inp('clerk_id', '', 'hidden', $jobcard['clerk_id']);
