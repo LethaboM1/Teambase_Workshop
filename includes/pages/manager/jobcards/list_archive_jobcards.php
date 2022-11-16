@@ -76,7 +76,7 @@ if ($row['allocated_hours'] > 0) {
                                                 </tr>
                                             </thead>
                                             <?php
-                                            $get_events = dbq("select * from job_event where job_id={$row['job_id']}");
+                                            $get_events = dbq("select * from jobcard_events where job_id={$row['job_id']}");
                                             if ($get_events) {
                                                 if (dbr($get_events) > 0) {
                                                     while ($row = dbf($get_events)) {
@@ -110,7 +110,7 @@ if ($row['allocated_hours'] > 0) {
                                                 </tr>
                                             </thead>
                                             <?php
-                                            $get_parts = dbq("select * from job_requisitions where job_id={$row['job_id']}");
+                                            $get_parts = dbq("select * from jobcard_requisitions where job_id={$row['job_id']}");
                                             if ($get_parts) {
                                                 if (dbr($get_parts) > 0) {
                                                     while ($row = dbf($get_parts)) {
