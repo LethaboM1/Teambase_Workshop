@@ -65,7 +65,7 @@ if ($row['allocated_hours'] > 0) {
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <h3>Events</h3>
+                                        <b>Events</b>
                                         <table class="table table-responsive">
                                             <thead>
                                                 <tr>
@@ -98,7 +98,7 @@ if ($row['allocated_hours'] > 0) {
                                         </table>
                                     </div>
                                     <div class="row">
-                                        <h3>Parts</h3>
+                                        <b>Parts</b>
                                         <table class="table table-responsive">
                                             <thead>
                                                 <tr>
