@@ -123,7 +123,7 @@ if ($row['allocated_hours'] > 0) {
                                                                     <td>{$parts['part_number']}{$parts['part_description']}</td>
                                                                     <td>{$parts['qty']}</td>
                                                                     <td>{$parts['status']}</td>
-                                                                    <td>{$parts[$parts['status'] . '_by']}</td>
+                                                                    <td>{$parts[$parts['status'] . '_by_time']}</td>
                                                                 </tr>";
                                                     }
                                                 } else {
