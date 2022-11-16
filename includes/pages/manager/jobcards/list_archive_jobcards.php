@@ -65,21 +65,67 @@ if ($row['allocated_hours'] > 0) {
                                         </div>
                                     </div>
                                     <div class="row">
+                                        <h3>Events</h3>
                                         <table class="table table-responsive">
                                             <thead>
                                                 <tr>
-                                                    <th>Start</th>
-                                                    <th>End</th>
+                                                    <th>Date</th>
                                                     <th>Note</th>
                                                     <th>Hrs</th>
+                                                    <th></th>
                                                 </tr>
                                             </thead>
                                             <?php
                                             $get_events = dbq("select * from job_event where job_id={$row['job_id']}");
                                             if ($get_events) {
                                                 if (dbr($get_events) > 0) {
+                                                    while ($row = dbf($get_events)) {
+                                                        $date = date_create($row['start_datetime']);
+                                                        $date = date_format($date, 'Y-m-d');
+                                                        echo "<tr>
+                                                                    <td>{$date}</td>
+                                                                    <td>{$row['comment']}</td>
+                                                                    <td>{$row['total_hours']}</td>
+                                                                    <td></td>
+                                                                </tr>";
+                                                    }
                                                 } else {
                                                     echo "<tr><td colspan='4'>No events</td></tr>";
+                                                }
+                                            }
+
+                                            ?>
+                                        </table>
+                                    </div>
+                                    <div class="row">
+                                        <h3>Parts</h3>
+                                        <table class="table table-responsive">
+                                            <thead>
+                                                <tr>
+                                                    <th>Requested</th>
+                                                    <th>Part</th>
+                                                    <th>Qty</th>
+                                                    <th>Status</th>
+                                                    <th>Status Date</th>
+                                                </tr>
+                                            </thead>
+                                            <?php
+                                            $get_parts = dbq("select * from job_requisitions where job_id={$row['job_id']}");
+                                            if ($get_parts) {
+                                                if (dbr($get_parts) > 0) {
+                                                    while ($row = dbf($get_parts)) {
+                                                        $date = date_create($row['datetime']);
+                                                        $date = date_format($date, 'Y-m-d');
+                                                        echo "<tr>
+                                                                    <td>{$date}</td>
+                                                                    <td>{$row['part_number']}{$row['part_description']}</td>
+                                                                    <td>{$row['qty']}</td>
+                                                                    <td>{$row['status']}</td>
+                                                                    <td>{$row[$row['status'] . '_by']}</td>
+                                                                </tr>";
+                                                    }
+                                                } else {
+                                                    echo "<tr><td colspan='5'>No Part</td></tr>";
                                                 }
                                             }
 
