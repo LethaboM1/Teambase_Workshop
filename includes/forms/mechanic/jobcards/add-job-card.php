@@ -41,7 +41,7 @@ if (isset($_POST['request_jobcard'])) {
                 $_POST['plant_id'] = 0;
                 $_POST['priority'] = 9999;
                 $_POST['allocated_hours'] = 0;
-                $query = "";
+                $query = "status='allocated',allocated_hours=0,";
             }
         } else {
             $query = "{$_POST['reading_type']}_reading={$_POST['reading']},";

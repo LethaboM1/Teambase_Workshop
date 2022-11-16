@@ -113,7 +113,7 @@ $request_status_select = [
 														. inp('buyer_id', 'Buyer', 'select', '', '', 0, $buyer_select_)
 														. inp('status_comment', 'Comment', 'textarea');
 												} else {
-													if ($job_request['buyer_id'] == null || $job_request['buyer_id'] == 0) {
+													if ($_SESSION['user']['role'] == 'manager' || $_SESSION['user']['role'] == 'system') {
 
 														$get_buyers = dbq("select concat(name,' ',last_name) as name, user_id as value from users_tbl where active=1 and role='buyer'");
 														unset($buyer_select_);
