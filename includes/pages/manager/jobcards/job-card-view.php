@@ -206,7 +206,7 @@
 									<option value="Brakes">Brakes</option>
 									<option value="Cab">Cab + Accessories</option>
 									<option value="Electrical">Electrical</option>
-									<option value="Hydrolics">Hydrolics</option>
+									<option value="Hydraulics ">Hydraulics </option>
 									<option value="Structure">Structure</option>
 								</select>
 							</div>
@@ -447,7 +447,7 @@
 											['name' => 'Brakes', 'value' => 'Brakes'],
 											['name' => 'Cab + Accessories', 'value' => 'Cab'],
 											['name' => 'Electrical', 'value' => 'Electrical'],
-											['name' => 'Hydrolics', 'value' => 'Hydrolics'],
+											['name' => 'Hydraulics ', 'value' => 'Hydraulics '],
 											['name' => 'Structure', 'value' => 'Structure']
 
 										];

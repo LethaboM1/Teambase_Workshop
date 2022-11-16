@@ -99,7 +99,7 @@
 								<option value="Brakes">Brakes</option>
 								<option value="Cab + Accessories">Cab + Accessories</option>
 								<option value="Electrical">Electrical</option>
-								<option value="Hydrolics">Hydrolics</option>
+								<option value="Hydraulics ">Hydraulics </option>
 								<option value="Structure">Structure</option>
 								<option value="Other">Other / Comment</option>
 							</select>
