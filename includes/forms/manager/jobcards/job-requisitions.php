@@ -111,6 +111,6 @@ if (isset($_POST['change_status'])) {
             sqlError('', '');
         }
     } else {
-        error("you must choose a status.");
+        error("you must choose a status and buyer.");
     }
 }

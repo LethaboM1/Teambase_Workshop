@@ -143,6 +143,8 @@ $request_status_select = [
 
 													if ($_SESSION['user']['role'] == 'manager' || $_SESSION['user']['role'] == 'system') {
 														echo inp('buyer_id', 'Buyer', 'select', $job_request['buyer_id'], '', 0, $buyer_select_);
+													} else {
+														echo inp('buyer_id', '', 'hidden', $job_request['buyer_id']);
 													}
 
 													echo inp('status_comment', 'Comment', 'textarea');
