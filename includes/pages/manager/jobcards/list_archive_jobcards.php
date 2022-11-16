@@ -112,7 +112,7 @@ if ($row['allocated_hours'] > 0) {
                                                 </tr>
                                             </thead>
                                             <?php
-                                            $get_parts = dbq("select * from jobcard_requisitions where job_id={$row['job_id']}");
+                                            $get_parts = dbq("select * from jobcard_requisitions where job_id={$row['job_id']} where status!='canceled'");
                                             if ($get_parts) {
                                                 if (dbr($get_parts) > 0) {
                                                     while ($parts = dbf($get_parts)) {
