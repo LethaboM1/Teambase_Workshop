@@ -1,5 +1,5 @@
 <?php
-$get_requisitions = dbq("select request_id from jobcard_requisitions where (status!='completed' && status!='denied'  && status!='canceled') and buyer_id={$_SESSION['user']['user_id']}");
+$get_requisitions = dbq("select request_id from jobcard_requisitions where (status!='completed' && status!='rejected'  && status!='canceled') and buyer_id={$_SESSION['user']['user_id']}");
 
 $total_jobs = dbr($get_requisitions);
 

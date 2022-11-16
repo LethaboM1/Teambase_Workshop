@@ -41,7 +41,7 @@ $request_status_select = [
 	['name' => 'Received', 'value' => 'received'],
 	['name' => 'Completed', 'value' => 'completed'],
 	['name' => 'Canceled', 'value' => 'canceled'],
-	['name' => 'Denied', 'value' => 'denied'],
+	['name' => 'Denied', 'value' => 'rejected'],
 ];
 
 ?>
@@ -92,7 +92,7 @@ $request_status_select = [
 													$request_status_select = [
 														['name' => 'Choose', 'value' => '0'],
 														['name' => 'Approved', 'value' => 'approved'],
-														['name' => 'Denied', 'value' => 'denied'],
+														['name' => 'Denied', 'value' => 'rejected'],
 													];
 
 													$get_buyers = dbq("select concat(name,' ',last_name) as name, user_id as value from users_tbl where active=1 and role='buyer'");
@@ -134,7 +134,7 @@ $request_status_select = [
 														['name' => 'Received', 'value' => 'received'],
 														['name' => 'Completed', 'value' => 'completed'],
 														['name' => 'Canceled', 'value' => 'canceled'],
-														['name' => 'Denied', 'value' => 'denied'],
+														['name' => 'Denied', 'value' => 'rejected'],
 													];
 
 													echo inp('request_id', '', 'hidden', $job_request['request_id'])

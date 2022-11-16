@@ -1,5 +1,5 @@
 <?php
-$query = "select * from jobcard_requisitions where buyer_id={$_SESSION['user']['user_id']} and (status!='denied' and status!='canceled' and status!='completed')";
+$query = "select * from jobcard_requisitions where buyer_id={$_SESSION['user']['user_id']} and (status!='rejected' and status!='canceled' and status!='completed')";
 
 $get_job_requests = dbq($query);
 

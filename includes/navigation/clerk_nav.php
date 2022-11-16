@@ -1,5 +1,5 @@
 <?php
-$get_requisitions = dbq("select request_id from jobcard_requisitions where (status!='completed' && status!='denied'  && status!='canceled') and clerk_id={$_SESSION['user']['user_id']}");
+$get_requisitions = dbq("select request_id from jobcard_requisitions where (status!='completed' && status!='rejected'  && status!='canceled') and clerk_id={$_SESSION['user']['user_id']}");
 $get_new = dbq("select job_id from jobcards where status='logged' and clerk_id={$_SESSION['user']['user_id']}");
 $get_new_jobnumber = dbq("select job_id from jobcards where status='allocated'");
 $get_open = dbq("select job_id from jobcards where status='open' and clerk_id={$_SESSION['user']['user_id']}");

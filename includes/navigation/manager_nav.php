@@ -1,5 +1,5 @@
 <?php
-$get_requisitions = dbq("select request_id from jobcard_requisitions where (status!='completed' && status!='denied'  && status!='canceled')");
+$get_requisitions = dbq("select request_id from jobcard_requisitions where (status!='completed' && status!='rejected'  && status!='canceled')");
 
 $get_new = dbq("select job_id from jobcards where status='logged'");
 $get_new_jobnumber = dbq("select job_id from jobcards where status='allocated'");

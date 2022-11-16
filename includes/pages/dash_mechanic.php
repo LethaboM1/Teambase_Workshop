@@ -75,7 +75,7 @@ if ($_SESSION['user']['role'] != 'mechanic') {
 													$color = 'danger';
 													break;
 
-												case "denied":
+												case "rejected":
 													echo "<span class='badge badge-danger'>" . ucfirst($row['status']) . "</span>";
 													$percentage = 100;
 													$color = 'danger';

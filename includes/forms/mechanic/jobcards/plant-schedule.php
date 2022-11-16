@@ -49,7 +49,7 @@ if (isset($_POST['complete_service'])) {
         }
 
         if (!is_error()) {
-            $requests = dbr(dbq("select request_id from jobcard_requisitions where job_id={$_GET['id']} and (status!='canceled' && status!='completed' && status!='denied')"));
+            $requests = dbr(dbq("select request_id from jobcard_requisitions where job_id={$_GET['id']} and (status!='canceled' && status!='completed' && status!='rejected')"));
             if ($requests == 0) {
                 if ($_POST['next_service_reading'] > 0) {
                     $update_jobcard = dbq("update jobcards set

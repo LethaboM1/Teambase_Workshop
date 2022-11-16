@@ -59,11 +59,11 @@ if (isset($_POST['change_status'])) {
                         ";
                 break;
 
-            case 'denied':
+            case 'rejected':
                 $query = "
-                        denied_by={$_SESSION['user']['user_id']},
-                        denied_by_time='" . date("Y-m-d\TH:i:s") . "',
-                        denied_by_comment='" . htmlentities($_POST['status_comment']) . "',
+                        rejected_by={$_SESSION['user']['user_id']},
+                        rejected_by_time='" . date("Y-m-d\TH:i:s") . "',
+                        rejected_by_comment='" . htmlentities($_POST['status_comment']) . "',
                         status='{$_POST['status']}'
                         ";
                 break;
