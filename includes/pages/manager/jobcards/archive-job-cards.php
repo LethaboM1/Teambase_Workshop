@@ -8,26 +8,45 @@
 		<input type="date" name="todate" placeholder="" class="form-control">
 	</div>
 	<div class="col-sm-6 col-md-4 pb-sm-3 pb-md-0">
-		<button class="btn btn-primary">Print Report</button>
+		<button class="btn btn-primary">Filter</button>
 	</div>
 </div>
 
 <div class="row">
-	<?php
-	if ($_SESSION['user']['role'] == 'clerk') {
-		$get_jobcards = dbq("select * from jobcards where status='closed' and clerk_id={$_SESSION['user']['user_id']}");
-	} else {
-		$get_jobcards = dbq("select * from jobcards where status='closed'");
-	}
-
-	if ($get_jobcards) {
-		if (dbr($get_jobcards) > 0) {
-			while ($row = dbf($get_jobcards)) {
-				require "./includes/pages/manager/jobcards/list_archive_jobcards.php";
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th>Date</th>
+				<th>Job No.</th>
+				<th>Mechanic</th>
+				<th>Hrs(Aloc)</th>
+				<th>Hrs(Worked)</th>
+				<th>Job Type</th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php
+			if ($_SESSION['user']['role'] == 'clerk') {
+				$get_jobcards = dbq("select * from jobcards where status='closed' and clerk_id={$_SESSION['user']['user_id']} order by complete_datetime DESC");
+			} else {
+				$get_jobcards = dbq("select * from jobcards where status='closed' order by complete_datetime DESC");
 			}
-		} else {
-			echo "<h4>No archive job cards.</h4>";
-		}
-	}
-	?>
+
+			if ($get_jobcards) {
+				if (dbr($get_jobcards) > 0) {
+					while ($row = dbf($get_jobcards)) {
+						require "./includes/pages/manager/jobcards/list_archive_jobcards.php";
+					}
+				} else {
+					echo "<h4>No archive job cards.</h4>";
+				}
+			}
+			?>
+		</tbody>
+	</table>
+
 </div>

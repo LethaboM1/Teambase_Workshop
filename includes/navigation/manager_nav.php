@@ -1,5 +1,6 @@
 <?php
-$get_requisitions = dbq("select request_id from jobcard_requisitions where (status!='completed' && status!='rejected'  && status!='canceled')");
+$get_new_requisitions = dbq("select request_id from jobcard_requisitions where status='requested'");
+$get_open_requisitions = dbq("select request_id from jobcard_requisitions where (status!='completed' && status!='rejected' && status!='canceled' && status!='requested')");
 
 $get_new = dbq("select job_id from jobcards where status='logged'");
 $get_new_jobnumber = dbq("select job_id from jobcards where status='allocated'");
@@ -30,16 +31,25 @@ $get_completed = dbq("select job_id from jobcards where status='completed'");
 				<li class="nav-parent">
 					<a class="nav-link" href="#">
 						<i class="bx bx-spreadsheet" aria-hidden="true"></i>
-						<span>Job Cards</span>
+						<span>Job Requisitions&nbsp;<span class='badge badge-danger'><?= dbr($get_new_requisitions) ?></span></span>
 					</a>
 					<ul class="nav nav-children">
-						<li><a class="nav-link" href="dashboard.php?page=add-job">Create a New Job Card</a></li>
-						<li><a class="nav-link" href="dashboard.php?page=new-job">New Job Cards&nbsp;<span class='badge badge-danger'><?= dbr($get_new) ?></span></a></li>
-						<li><a class="nav-link" href="dashboard.php?page=new-job-allocate">New Job Cards - Job Number&nbsp;<span class='badge badge-danger'><?= dbr($get_new_jobnumber) ?></span></a></li>
-						<li><a class="nav-link" href="dashboard.php?page=job-requisitions">Job Requisitions&nbsp;<span class='badge badge-danger'><?= dbr($get_requisitions) ?></span></a></li>
-						<li><a class="nav-link" href="dashboard.php?page=open-job">Open Job Cards&nbsp;<span class='badge badge-danger'><?= dbr($get_open) ?></span></a></li>
-						<li><a class="nav-link" href="dashboard.php?page=completed-job">Completed Job Cards&nbsp;<span class='badge badge-danger'><?= dbr($get_completed) ?></span></a></li>
-						<li><a class="nav-link" href="dashboard.php?page=arch-job">Archive Job Cards</a></li>
+						<li><a class="nav-link" href="dashboard.php?page=job-requisitions-new">New&nbsp;<span class='badge badge-danger float-end'><?= dbr($get_new_requisitions) ?></span></a></li>
+						<li><a class="nav-link" href="dashboard.php?page=job-requisitions-open">Open&nbsp;<span class='badge badge-danger float-end'><?= dbr($get_open_requisitions) ?></span></a></li>
+					</ul>
+				</li>
+				<li class="nav-parent">
+					<a class="nav-link" href="#">
+						<i class="bx bx-spreadsheet" aria-hidden="true"></i>
+						<span>Job Cards&nbsp;<span class='badge badge-danger'><?= dbr($get_new) + dbr($get_new_jobnumber) ?></span></span>
+					</a>
+					<ul class="nav nav-children">
+						<li><a class="nav-link" href="dashboard.php?page=add-job">Create</a></li>
+						<li><a class="nav-link" href="dashboard.php?page=new-job">New&nbsp;<span class='badge badge-danger float-end'><?= dbr($get_new) ?></span></a></li>
+						<li><a class="nav-link" href="dashboard.php?page=new-job-allocate">New - Require Job Number&nbsp;<span class='badge badge-danger float-end'><?= dbr($get_new_jobnumber) ?></span></a></li>
+						<li><a class="nav-link" href="dashboard.php?page=open-job">Open&nbsp;<span class='badge badge-danger float-end'><?= dbr($get_open) ?></span></a></li>
+						<li><a class="nav-link" href="dashboard.php?page=completed-job">Completed&nbsp;<span class='badge badge-danger float-end'><?= dbr($get_completed) ?></span></a></li>
+						<li><a class="nav-link" href="dashboard.php?page=arch-job">Archived</a></li>
 					</ul>
 				</li>
 				<li class="nav-parent">

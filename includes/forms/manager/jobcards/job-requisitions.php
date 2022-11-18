@@ -106,7 +106,7 @@ if (isset($_POST['change_status'])) {
                 require_once "./includes/forms/mail.buyer.request.php";
             }
 
-            go('dashboard.php?page=job-requisitions');
+            go('dashboard.php?page=' . $_GET['page']);
         } else {
             sqlError('', '');
         }

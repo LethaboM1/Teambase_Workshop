@@ -48,11 +48,11 @@
 	<div id="job_requisitions_list" class="col-xl-12">
 		<?php
 		if ($_SESSION['user']['role'] == 'clerk') {
-			$get_requisitions = dbq("select * from jobcard_requisitions where (status!='completed' && status!='canceled' && status!='rejected') and clerk_id={$_SESSION['user']['user_id']} order by datetime");
+			$get_requisitions = dbq("select * from jobcard_requisitions where (status!='requested' && status!='completed' && status!='canceled' && status!='rejected') and clerk_id={$_SESSION['user']['user_id']} order by datetime");
 		} else if ($_SESSION['user']['role'] == 'buyer') {
-			$get_requisitions = dbq("select * from jobcard_requisitions where (status!='completed' && status!='canceled' && status!='rejected') and buyer_id={$_SESSION['user']['user_id']} order by datetime");
+			$get_requisitions = dbq("select * from jobcard_requisitions where (status!='requested' && status!='completed' && status!='canceled' && status!='rejected') and buyer_id={$_SESSION['user']['user_id']} order by datetime");
 		} else {
-			$get_requisitions = dbq("select * from jobcard_requisitions where (status!='completed' && status!='canceled' && status!='rejected') order by datetime");
+			$get_requisitions = dbq("select * from jobcard_requisitions where (status!='requested' && status!='completed' && status!='canceled' && status!='rejected') order by datetime");
 		}
 
 		if ($get_requisitions) {

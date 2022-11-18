@@ -127,9 +127,15 @@ switch ($_GET['page']) {
         $page_name = 'manager/jobcards/archive-job-cards';
         break;
 
-    case "job-requisitions":
-        $page_title = 'Job Card Requisitions';
-        $page_name = 'manager/jobcards/job-requisitions';
+    case "job-requisitions-new":
+        $page_title = 'New Job Card Requisitions';
+        $page_name = 'manager/jobcards/job-requisitions-new';
+        include "./includes/forms/manager/jobcards/job-requisitions.php";
+        break;
+
+    case "job-requisitions-open":
+        $page_title = 'Open Job Card Requisitions';
+        $page_name = 'manager/jobcards/job-requisitions-open';
         include "./includes/forms/manager/jobcards/job-requisitions.php";
         break;
 
