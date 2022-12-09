@@ -52,7 +52,7 @@ $date = date_format($date, 'Y-m-d');
 <tr class="pointer" onclick="$('#link_<?= $row['job_id'] ?>').click();">
     <td><?= $row['job_date'] ?></td>
     <td><?= $row['jobcard_number'] ?></td>
-    <td><?= $row['fleet_number'] ?></td>
+    <td><?= $plant_['plant_number'] ?></td>
     <td><?= $mechanic_['name'] ?></td>
     <td><?= $row['allocated_hours'] ?></td>
     <td><?= $worked['hours'] ?></td>
