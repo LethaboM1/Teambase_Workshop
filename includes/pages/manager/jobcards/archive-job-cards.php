@@ -18,7 +18,7 @@
 			<tr>
 				<th>Date</th>
 				<th>Job No.</th>
-				<th>No.</th>
+				<th>PLant No.</th>
 				<th>Mechanic</th>
 				<th>Hrs(Aloc)</th>
 				<th>Hrs(Worked)</th>
