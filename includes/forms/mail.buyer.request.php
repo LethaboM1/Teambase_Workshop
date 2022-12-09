@@ -52,7 +52,7 @@ if (!$testserver) {
                                 E-mail: {$_SESSION['user']['email']}
                                 ";
             $mail->AltBody = "
-                                    Job Card request\n\r\n\r
+                                    Part Request\n\r\n\r
                                     Date time.: " . $job_request_['requested_by_time'] . "\n\r
                                     Job Number.: {$jobcard_['jobcard_number']}\n\r
                                     Plant No.:{$plant_['plant_number']}\n\r
@@ -71,7 +71,7 @@ if (!$testserver) {
 
             try {
                 $mail->send();
-                msg('Mail was send to manager.');
+                msg('Mail was send to buyer.');
             } catch (Exception $e) {
                 error("Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
             }
