@@ -37,6 +37,8 @@ if (!$testserver) {
                                     <b>Date time.</b>&nbsp;" . $job_request_['requested_by_time'] . "<br>
                                     <b>Job Number.</b>&nbsp;{$jobcard_['jobcard_number']}<br>
                                     <b>Request ID.</b>&nbsp;{$job_request_['request_id']}<br>
+                                    <b>Plant No.</b>&nbsp;{$plant_['plant_number']}<br>
+                                    <b>Fleet No.</b>&nbsp;{$plant_['fleet_number']}<br>
                                     <b>Mechanic.</b>&nbsp;{$mechanic_['name']} {$mechanic_['last_name']}<br>
                                     <b>Part no.</b>&nbsp;{$job_request_['part_number']}<br>
                                     <b>Description</b>&nbsp;{$job_request_['part_description']}<br>
@@ -48,9 +50,11 @@ if (!$testserver) {
                                 E-mail: {$_SESSION['user']['email']}
                                 ";
             $mail->AltBody = "
-                                    Job Card request\n\r\n\r
+                                    Part Request\n\r\n\r
                                     Date time.: " . $job_request_['requested_by_time'] . "\n\r
                                     Job Number.: {$jobcard_['jobcard_number']}\n\r
+                                    Plant No.:{$plant_['plant_number']}\n\r
+                                    Fleet No.:{$plant_['fleet_number']}\n\r
                                     Request ID.: {$job_request_['request_id']}\n\r
                                     Mechanic.: {$mechanic_['name']} {$mechanic_['last_name']}\n\r
                                     Part no.: {$job_request_['part_number']}\n\r
