@@ -26,11 +26,11 @@
 											url:'includes/ajax.php',
 											data: {
 												cmd:'search',
-												type: 'open-jobs',
+												type: 'completed-jobs',
 												search: $('#search').val()
 											},
 											success:function (result) {
-												$('#open_jobs_list').html(result);
+												$('#completed_jobs_list').html(result);
 											},
 											error: function (err) {}
 										});
@@ -42,7 +42,7 @@
 			</div>
 		</form>
 	</div>
-	<div id="open_jobs_list" class="col-xl-12">
+	<div id="completed_jobs_list" class="col-xl-12">
 		<?php
 		if ($_SESSION['user']['role'] == 'clerk') {
 			$get_jobs = dbq("select * from jobcards where status='completed' and clerk_id={$_SESSION['user']['user_id']} order by complete_datetime");

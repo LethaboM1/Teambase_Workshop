@@ -147,6 +147,7 @@ if (isset($_POST['add_part'])) {
                                                 qty={$_POST['qty']}
                                                 ");
             if ($add_part_request) {
+                unset($_POST);
                 msg("Part request send.");
                 $job_id = $_GET['id'];
                 $mechanic_id = $_SESSION['user']['user_id'];
@@ -175,6 +176,7 @@ if (isset($_POST['add_event'])) {
                                             comment='" . htmlentities($_POST['comment'], ENT_QUOTES) . "'
                                             ");
             if ($add_event) {
+                unset($_POST);
                 msg("Event added.");
                 go("dashboard.php?page=job-card-view&id={$_GET['id']}");
             } else {
@@ -199,6 +201,7 @@ if (isset($_POST['save_event'])) {
                                             where event_id={$_POST['event_id']}
                                             ");
             if ($add_event) {
+                unset($_POST);
                 msg("Event added.");
                 go("dashboard.php?page=job-card-view&id={$_GET['id']}");
             } else {

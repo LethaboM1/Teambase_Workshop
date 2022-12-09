@@ -76,7 +76,7 @@ switch ($_POST['cmd']) {
     case "search":
         switch ($_POST['type']) {
             case "open-jobs":
-                $get_users = dbq("select * from jobcards where (jobcard_number like '%{$_POST['search']}%' || fleet_number like '%{$_POST['search']}%')");
+                $get_users = dbq("select * from jobcards where (jobcard_number like '%{$_POST['search']}%' || fleet_number like '%{$_POST['search']}%') and status='completed'");
                 if ($get_users) {
                     if (dbr($get_users) > 0) {
                         while ($row = dbf($get_users)) {
@@ -105,6 +105,38 @@ switch ($_POST['cmd']) {
                 }
 
                 break;
+
+            case "completed-jobs":
+                $get_users = dbq("select * from jobcards where (jobcard_number like '%{$_POST['search']}%' || fleet_number like '%{$_POST['search']}%') and status='completed'");
+                if ($get_users) {
+                    if (dbr($get_users) > 0) {
+                        while ($row = dbf($get_users)) {
+                            $items_list[] = $row;
+                        }
+                    }
+                }
+
+                $get_users = dbq("select * from jobcards where status='completed' and logged_by in (select user_id as logged_by from users_tbl where (name like '#" . esc($_POST['search']) . "#' || name like '#" . esc($_POST['search']) . "#')");
+                if ($get_users) {
+                    if (dbr($get_users) > 0) {
+                        while ($row = dbf($get_users)) {
+                            $items_list[] = $row;
+                        }
+                    }
+                }
+
+                if (isset($items_list)) {
+                    if (count($items_list) > 0) {
+                        foreach ($items_list as $row) {
+                            require "pages/manager/jobcards/list_completed_jobcards.php";
+                        }
+                    } else {
+                        echo "<tr><td colspan='5'>Could not find '{$_POST['search']}'</td></tr>";
+                    }
+                }
+
+                break;
+
 
             case "users":
                 $get_users = dbq("select * from users_tbl where (name like '%{$_POST['search']}%' || last_name like '%{$_POST['search']}%' || email like '%{$_POST['search']}%') and role!='system'");
