@@ -14,7 +14,7 @@ switch ($_GET['page']) {
 
     case "job-requisitions":
         $page_title = 'Job Card Requisitions';
-        $page_name = 'manager/jobcards/job-requisitions';
+        $page_name = 'manager/jobcards/job-open';
         include "./includes/forms/manager/jobcards/job-requisitions.php";
         break;
 

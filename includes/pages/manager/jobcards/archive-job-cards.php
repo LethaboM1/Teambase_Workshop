@@ -18,7 +18,8 @@
 			<tr>
 				<th>Date</th>
 				<th>Job No.</th>
-				<th>PLant No.</th>
+				<th>Plant No.</th>
+				<th>Fleet No.</th>
 				<th>Mechanic</th>
 				<th>Hrs(Aloc)</th>
 				<th>Hrs(Worked)</th>

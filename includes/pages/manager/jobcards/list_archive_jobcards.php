@@ -53,6 +53,7 @@ $date = date_format($date, 'Y-m-d');
     <td><?= $row['job_date'] ?></td>
     <td><?= $row['jobcard_number'] ?></td>
     <td><?= $plant_['plant_number'] ?></td>
+    <td><?= $plant_['fleet_number'] ?></td>
     <td><?= $mechanic_['name'] ?></td>
     <td><?= $row['allocated_hours'] ?></td>
     <td><?= $worked['hours'] ?></td>
