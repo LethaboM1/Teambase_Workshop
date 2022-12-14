@@ -175,6 +175,7 @@ $request_status_select = [
 			<p class="card-subtitle">
 				Mechanic: <?= $mechanic_['name'] ?><br>
 				Plant: <?= $plant_['plant_number'] ?> <?= ', ' . $plant_['vehicle_type'] ?> <?= ', ' . $plant_['make'] ?> <?= ', ' . $plant_['model'] ?>
+				Part: <?= $job_request['part_number'] ?>&nbsp;-&nbsp;<?= $job_request['part_description'] ?><br>
 
 			</p>
 			<div class="progress progress-xl progress-half-rounded m-2">
