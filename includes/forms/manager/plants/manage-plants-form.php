@@ -83,9 +83,9 @@ if (isset($_POST['add_plant'])) {
 
     ) {
 
-        $chk_duplicate_reg = dbq("select * from plants_tbl where reg_number='{$_POST['reg_number']}'");
+        $chk_duplicate_reg = dbq("select * from plants_tbl where reg_number='{$_POST['reg_number']}' and reg_number!=''");
         if (dbr($chk_duplicate_reg) == 0) {
-            $chk_duplicate_reg = dbq("select * from plants_tbl where vin_number='{$_POST['vin_number']}'");
+            $chk_duplicate_reg = dbq("select * from plants_tbl where vin_number='{$_POST['vin_number']}' and vin_number!=''");
             if (dbr($chk_duplicate_reg) == 0) {
                 if (!is_numeric($_POST['next_service_reading'])) {
                     $_POST['next_service_reading'] = 0;
