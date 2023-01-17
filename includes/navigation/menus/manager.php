@@ -46,7 +46,7 @@ $total_notifications = $count_new_jobs + $count_new_requests + $count_completed_
         if ($count_new_requests > 0) {
         ?>
           <li>
-            <a href="dashboard.php?page=job-requisitions" class="clearfix">
+            <a href="dashboard.php?page=job-requisitions-new" class="clearfix">
               <div class="image">
                 <i class="fas fa-edit bg-danger text-light"></i>
               </div>
