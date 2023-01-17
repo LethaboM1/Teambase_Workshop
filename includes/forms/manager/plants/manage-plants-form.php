@@ -78,7 +78,7 @@ if (isset($_POST['add_plant'])) {
         strlen($_POST['vehicle_type']) > 0
         && strlen($_POST['make']) > 0
         && strlen($_POST['model']) > 0
-        && strlen($_POST['reg_number']) > 0
+        && strlen($_POST['plant_number']) > 0
         && $_POST['reading'] > 0
 
     ) {
@@ -132,6 +132,6 @@ if (isset($_POST['add_plant'])) {
             error("plant with registration number {$_POST['reg_number']} already exists.");
         }
     } else {
-        error("fill in name, email and passwords at least.");
+        error("Vehicle type, Make, Model, reading and plant number are required fields.");
     }
 }
