@@ -1,6 +1,12 @@
 <?php
 require_once "includes/check.php";
 
+if (isset($_SESSION['request_parts'])) {
+	if ($_GET['page'] != 'add-job-requisition') {
+		unset($_SESSION['request_parts']);
+	}
+}
+
 switch ($_SESSION['user']['role']) {
 	case "system":
 		$dashboard = 'admin';
@@ -54,7 +60,9 @@ include "includes/inc.header.php";
 	<?php include "includes/inc.alertmsg.php"; ?>
 	<!-- start: page -->
 	<?php
-	require_once("includes/pages/{$page_name}.php");
+	if (strlen($page_name) > 0) {
+		require_once("includes/pages/{$page_name}.php");
+	}
 	?>
 	<!-- end: page -->
 </section>

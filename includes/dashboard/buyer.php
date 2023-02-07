@@ -1,4 +1,3 @@
-
 <?php
 require_once "includes/check.php";
 if ($_SESSION['user']['role'] != 'manager' && $_SESSION['user']['role'] != 'system' && $_SESSION['user']['role'] != 'clerk' && $_SESSION['user']['role'] != 'buyer') {

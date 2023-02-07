@@ -1,8 +1,9 @@
 <?php
 
 if (file_exists('vendor/autoload.php')) {
-
 	require_once 'vendor/autoload.php';
+} else {
+	require_once '../vendor/autoload.php';
 }
 
 use Spipu\Html2Pdf\Html2Pdf;
@@ -1382,6 +1383,114 @@ function upload_images($type, $id, $id_2, $photos, $key)
 			error('No such type.');
 			return false;
 	}
+}
+
+function saveRequisition($request_id)
+{
+	$request_ = dbf(dbq("select * from jobcard_requisitions where request_id={$request_id}"));
+	$get_parts = dbq("select * from jobcard_requisition_parts where request_id={$request_id}");
+	$jobcard_ = dbf(dbq("select * from jobcards where job_id={$request_['job_id']}"));
+	$plant_ = dbf(dbq("select * from plants_tbl where plant_id={$jobcard_['plant_id']}"));
+	$mechanic_ = dbf(dbq("select * from users_tbl where user_id={$jobcard_['mechanic_id']}"));
+
+	while ($part = dbf($get_parts)) {
+		$parts[] = $part;
+	}
+
+	$html = "	<style>
+					td {
+						padding:3px;
+					}					
+				</style>
+				<table style='border-collapse:collapse;'>
+				<tr>
+					<td style='border-left: 2px solid black;border-top: 2px solid black; ' colspan='2'><h3>SPARES REQUISITION</h3></td>
+					<td style='border-top: 2px solid black;'></td>
+					<td style='border-right: 2px solid black;border-top: 2px solid black;'></td>
+				</tr>
+				<tr>
+					<td style='border-left: 2px solid black; width:80px;'><b>Plant #</b></td>
+					<td style='width:100px;'>{$plant_['plant_number']}</td>
+					<td style='width:300px;'><b>Date:</b>&nbsp;{$request_['datetime']}</td>
+					<td style='border-right: 2px solid black; width:200px;'></td>
+				</tr>
+				<tr>
+					<td style='border-left: 2px solid black;'><b>Site</b></td>
+					<td>{$jobcard_['site']}</td>
+					<td></td>
+					<td style='border-right: 2px solid black;'></td>
+				</tr>
+				<tr>
+					<td style='border-left: 2px solid black;'><b>" . strtoupper($plant_['reading_type']) . "</b></td>
+					<td>" . $plant_[$plant_['reading_type'] . '_reading'] . "</td>
+					<td><b>Job No. {$jobcard_['jobcard_number']}</b></td>
+					<td style='border-right: 2px solid black;'>BO {$request_['request_id']}</td>
+				</tr>
+				<tr>
+					<td style='border-left: 2px solid black;border-bottom:2px solid black; '>&nbsp;</td>
+					<td style='border-bottom:2px solid black;'>&nbsp;</td>
+					<td style='border-bottom:2px solid black;'>&nbsp;</td>
+					<td style='border-right: 2px solid black;border-bottom:2px solid black;'>&nbsp;</td>
+				</tr>
+				<tr>
+					<td style='border-right: 1px solid black;border-left: 2px solid black;border-bottom:2px solid black;'><b>Qty</b></td>
+					<td style='border-bottom:2px solid black;border-right: 1px solid black;'><b>Part Number</b></td>
+					<td style='border-bottom:2px solid black;border-right: 1px solid black;'><b>Description</b></td>
+					<td style='border-right: 2px solid black;border-bottom:2px solid black;'><b>Component</b></td>
+				</tr>";
+	$items = 40;
+	foreach ($parts as $part) {
+		$html .= "<tr>
+					<td style='border-right: 1px solid black;border-left: 2px solid black;'>{$part['qty']}</td>
+					<td style='border-right: 1px solid black;'>{$part['part_number']}</td>
+					<td style='border-right: 1px solid black;'>{$part['part_description']}</td>
+					<td style='border-right: 2px solid black;'></td>
+				</tr>";
+		$items--;
+	}
+
+	if ($items > 0) {
+		for ($a = 1; $a <= $items; $a++) {
+			if ($a == $items) {
+				$html .= "<tr>
+							<td style='border-right: 1px solid black;border-left: 2px solid black;border-bottom:2px solid black;'>&nbsp;</td>
+							<td style='border-bottom:2px solid black;border-right: 1px solid black;'>&nbsp;</td>
+							<td style='border-bottom:2px solid black;border-right: 1px solid black;'>&nbsp;</td>
+							<td style='border-right: 2px solid black;border-bottom:2px solid black;'>&nbsp;</td>
+						</tr>";
+			} else {
+				$html .= "<tr>
+							<td style='border-right: 1px solid black;border-left: 2px solid black;'>&nbsp;</td>
+							<td style='border-right: 1px solid black;'>&nbsp;</td>
+							<td style='border-right: 1px solid black;'>&nbsp;</td>
+							<td style='border-right: 2px solid black;'>&nbsp;</td>
+						</tr>";
+			}
+		}
+	}
+
+	$requested_by = dbf(dbq("select name, last_name from users_tbl where user_id={$request_['requested_by']}"));
+	if ($request_['approved_by'] > 0) {
+		$approved_by = dbf(dbq("select name, last_name from users_tbl where user_id={$request_['approved_by']}"));
+	} else {
+		$approved_by['name'] = '';
+		$approved_by['last_name'] = '';
+	}
+
+	$html .= "<tr>
+				<td style='text-align:right; border-right: 1px solid black;border-left: 2px solid black;' colspan='2'>REQUESTED BY: </td>
+				<td style='border-right: 1px solid black;'>{$requested_by['name']} {$requested_by['last_name']}</td>
+				<td style='border-right: 1px solid black;'>BS REQ#</td>
+			</tr>
+			<tr>
+				<td style='text-align:right; border-right: 1px solid black;border-left: 2px solid black;border-bottom:2px solid black;' colspan='2'>APPROVED BY: </td>
+				<td style='border-bottom:2px solid black;border-right: 1px solid black;'>{$approved_by['name']} {$approved_by['last_name']}</td>
+				<td style='border-right: 1px solid black;border-bottom:2px solid black;'>PL09 Rev02 190521</td>
+			</tr>";
+
+	$html .= "</table>";
+
+	printPDF($html, __DIR__ . "/../files/requisitions/{$request_id}_request", 1, 0, 'P');
 }
 
 function check_reading($plant_id, $reading, $thresh_hold = 3)

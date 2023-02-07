@@ -1,7 +1,157 @@
 <?php
 require_once "./check.php";
 
+switch ($_GET['cmd']) {
+    case "print_request":
+        if (isset($_GET['id'])) {
+            $request_file = 'files/requisitions/' . $_GET['id'] . '_request.pdf';
+            if (!file_exists('../' . $request_file)) {
+                saveRequisition($_GET['id']);
+            }
+
+            if (file_exists('../' . $request_file)) {
+                $json_['status'] = 'ok';
+                $json_['path'] = $request_file;
+            } else {
+                $json_['status'] = 'error';
+                $json_['message'] = 'Could not create / find file.' . __DIR__;
+            }
+        } else {
+            $json_['status'] = 'error';
+            $json_['message'] = '';
+        }
+
+        if (isset($json_)) {
+            echo json_encode($json_);
+        }
+        break;
+}
+
 switch ($_POST['cmd']) {
+    case "qty_ajust":
+        if (is_numeric($_POST['qty'])) {
+            if (
+                isset($_POST['id']) > 0
+                && isset($_POST['request_id']) > 0
+            ) {
+                $update = dbq("update jobcard_requisition_parts set
+                                    qty={$_POST['qty']}
+                                    where id={$_POST['id']} and request_id={$_POST['request_id']}");
+                if ($update) {
+                    $json_['status'] = 'ok';
+                } else {
+                    $json_['status'] = 'error';
+                    $json_['message'] = 'invalid id, request id.';
+                }
+            } else {
+                $json_['status'] = 'error';
+                $json_['message'] = 'invalid id, request id.';
+            }
+        } else {
+            $json_['status'] = 'error';
+            $json_['message'] = 'invalid qty.';
+        }
+
+        if (isset($json_)) {
+            echo json_encode($json_);
+        }
+
+        break;
+
+    case "remove_part":
+        if (isset($_POST['part_no'])) {
+            $key = array_search($_POST['part_no'], array_column($_SESSION['request_parts'], 'part_no'));
+            unset($_SESSION['request_parts'][$key]);
+            $html = '';
+            foreach ($_SESSION['request_parts'] as $part) {
+                $html .= "<tr>
+                        <td>{$part['part_no']}</td>
+                        <td>{$part['description']}</td>
+                        <td>{$part['qty']}</td>
+                        <td>{$part['comment']}</td>
+                        <td>
+                            <a onclick='remove_part(`{$part['part_no']}`);'>
+                                <i class='fa fa-trash'></i>
+                            </a>
+                        </td>
+                    </tr>";
+            }
+
+            $json_['parts'] = $html;
+            $json_['status'] = 'ok';
+            echo json_encode($json_);
+        } else {
+            $json_['status'] = 'ok';
+            $json_['message'] = 'no part no';
+            echo json_encode($json_);
+        }
+        break;
+
+    case "add_part":
+
+        $part = json_decode($_POST['part'], true);
+        if (!isset($part['part_no'])) {
+            $json_['status'] = 'error';
+            $json_['message'] = 'No part no';
+            return json_encode($json_);
+        }
+
+        if (!isset($part['description'])) {
+            $json_['status'] = 'error';
+            $json_['message'] = 'No description';
+            return json_encode($json_);
+        }
+
+        if (!is_numeric($part['qty'])) {
+            $json_['status'] = 'error';
+            $json_['message'] = 'invalid qty';
+            return json_encode($json_);
+        }
+
+        if (is_array($_SESSION['request_parts'])) {
+            if (in_array($part['part_no'], array_column($_SESSION['request_parts'], 'part_no'))) {
+                $key = array_search($part['part_no'], array_column($_SESSION['request_parts'], 'part_no'));
+                $_SESSION['request_parts'][$key]['qty'] += $part['qty'];
+                $html = '';
+                foreach ($_SESSION['request_parts'] as $part) {
+                    $html .= "<tr>
+                        <td>{$part['part_no']}</td>
+                        <td>{$part['description']}</td>
+                        <td>{$part['qty']}</td>
+                        <td>{$part['comment']}</td>
+                        <td>
+                            <a onclick='remove_part(`{$part['part_no']}`)'></a>
+                            <i class='fa fa-trash'></i>
+                        </td>
+                    </tr>";
+                }
+                $json_['parts'] = $html;
+                $json_['status'] = 'ok';
+                echo json_encode($json_);
+                return;
+            }
+        }
+
+        $_SESSION['request_parts'][] = $part;
+        $json_['status'] = 'ok';
+        $html = '';
+        foreach ($_SESSION['request_parts'] as $part) {
+            $html .= "<tr>
+                        <td>{$part['part_no']}</td>
+                        <td>{$part['description']}</td>
+                        <td>{$part['qty']}</td>
+                        <td>{$part['comment']}</td>
+                        <td>
+                            <a onclick='remove_part(`{$part['part_no']}`)'></a>
+                            <i class='fa fa-trash'></i>
+                        </td>
+                    </tr>";
+        }
+        $json_['parts'] = $html;
+        echo json_encode($json_);
+        return;
+        break;
+
     case "remove_image";
         unset($_SESSION['upload_images'][$_POST['key']]);
 
