@@ -37,6 +37,7 @@ if (!$testserver) {
             $mail->Subject = "#{$job_request_['request_id']} - Part requested";
 
             $request_file = '../../files/requisitions/' . $job_request_['request_id'] . '_request.pdf';
+
             if (!file_exists($request_file)) {
                 saveRequisition($job_request_['request_id']);
             }
