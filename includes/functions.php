@@ -1484,7 +1484,7 @@ function saveRequisition($request_id)
 			</tr>
 			<tr>
 				<td style='text-align:right; border-right: 1px solid black;border-left: 2px solid black;border-bottom:2px solid black;' colspan='2'><b>APPROVED BY:</b></td>
-				<td style='border-bottom:2px solid black;border-right: 1px solid black;'>{$approved_by['name']} {$approved_by['last_name']}, , {$request_['approved_by_time']}</td>
+				<td style='border-bottom:2px solid black;border-right: 1px solid black;'>{$approved_by['name']} {$approved_by['last_name']}, {$request_['approved_by_time']}</td>
 				<td style='border-right: 1px solid black;border-bottom:2px solid black;'>PL09 Rev02 190521</td>
 			</tr>";
 
