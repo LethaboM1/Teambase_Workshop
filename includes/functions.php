@@ -19,11 +19,11 @@ function validateDate($date, $format = 'Y-m-d')
 	return $d && $d->format($format) === $date;
 }
 
-function sms_($number, $message)
+function sms_($number, $message, $username = 'duncanm@digitalextreme.co.za', $password = 'dx0392781')
 {
 
 	$to = $number . "@e-mail2sms.co.za";     //Add a recipient                    
-	$subject = "#duncanm@digitalextreme.co.za,dx0392781#";
+	$subject = "#{$username},{$password}#";
 	$body = $message;
 	@mail($to, $subject, $body);
 }
