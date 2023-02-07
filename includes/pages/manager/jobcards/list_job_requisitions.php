@@ -63,11 +63,9 @@ $request_status_select = [
 									<div class="modal-text">
 										<div class="row">
 											<div class="col-md-6">
+												<h3><b>Request ID</b>&nbsp;<?= $job_request['request_id'] ?></h3>
 												<b>Job card no.</b>&nbsp;<?= $jobcard_['jobcard_number'] ?><br>
 												<b>Request Date.</b>&nbsp;<?= $job_request['datetime'] ?><br>
-												<b>Plant No.</b>&nbsp;<?= $plant_['plant_number'] ?><br>
-												<b>Plant Type.</b>&nbsp;<?= $plant_['vehicle_type'] ?><br>
-												<b>Plant Model.</b>&nbsp;<?= $plant_['model'] ?><br>
 												<b>Mechanic.</b>&nbsp;<?= $mechanic_['name'] ?><br>
 												<?php
 												if ($row['status'] != 'requested') {
@@ -78,14 +76,110 @@ $request_status_select = [
 												?>
 											</div>
 											<div class="col-md-6">
+												<button class="btn btn-lg btn-secondary" onclick="print_request(`<?= $job_request['request_id'] ?>`)" type="button">Print</button><br>
+												<?php
+												$jscript_function = "
+																		function print_request (request_id) {
+																			$.ajax({
+																				method:'get',
+																				url:'includes/ajax.php',
+																				data: {
+																					cmd:'print_request',
+																					id: request_id
+																				},
+																				success: function (result) {
+																					let data = JSON.parse(result);
+																					if (data.status=='ok') {
+																						window.open(data.path,`_blank`);
+																					} else if (data.status=='error') {
+																						console.log(`Error: `. data.message);
+																					} else {																						
+																						console.log(`Error: API error`);
+																					}
+																				}	
+																			});
+																		}
+																		";
+												?>
+												<b>Plant No.</b>&nbsp;<?= $plant_['plant_number'] ?><br>
+												<b>Plant Type.</b>&nbsp;<?= $plant_['vehicle_type'] ?><br>
+												<b>Plant Model.</b>&nbsp;<?= $plant_['model'] ?><br>
 												<b>Job card status</b>&nbsp;<?= ucfirst($jobcard_['status']) ?><br>
 												<b>Job card type</b>&nbsp;<?= ucfirst($jobcard_['jobcard_type']) ?><br>
-												<b>Part No</b>&nbsp;<?= $job_request['part_number'] ?><br>
-												<b>Part Description</b>&nbsp;<?= $job_request['part_description'] ?><br>
-												<b>Qty</b>&nbsp;<?= $job_request['qty'] ?><br>
+
 												<br>
 												<br>
 											</div>
+											<table class="table table-hover">
+												<thead>
+													<th>Part No.</th>
+													<th>Description</th>
+													<th style='width:85px;'>Qty</th>
+													<th style='width:25px;'></th>
+													<th>Comment</th>
+													<th></th>
+												</thead>
+												<tbody>
+													<?php
+													$get_parts = dbq("select * from jobcard_requisition_parts where request_id={$job_request['request_id']}");
+
+													if ($get_parts) {
+														if (dbr($get_parts) > 0) {
+															while ($part = dbf($get_parts)) {
+													?>
+																<tr>
+																	<td><?= $part['part_number'] ?></td>
+																	<td><?= $part['part_description'] ?></td>
+																	<td>
+																		<?php
+																		if ($_SESSION['user']['role'] == 'manager') {
+																			echo inp("{$part['id']}_part_qty", '', 'text', $part['qty'], '', 0, '', " style='width:80px;'");
+																		} else {
+																			echo $part['qty'];
+																		}
+
+
+																		?>
+																	</td>
+																	<td><span id="<?= $part['id'] ?>_div"></span></td>
+																	<td><?= $part['comment'] ?></td>
+																	<td></td>
+																</tr>
+													<?php
+																$jscript .= "
+																		$('#{$part['id']}_part_qty').change(function () {
+																			$.ajax({
+																				method:'post',
+																				url:'includes/ajax.php',
+																				data: {
+																					cmd:'qty_ajust',
+																					id: '{$part['id']}',
+																					request_id: '{$job_request['request_id']}',
+																					qty: $(this).val()
+																				},
+																				success: function (result) {
+																					let data = JSON.parse(result);
+
+																					if (data.status=='ok') {																						
+																						$('#{$part['id']}_div').html(`<i class='fa fa-check text-success'></i>`);
+																					} else {																						
+																						$('#{$part['id']}_div').html(`<i class='fa fa-times text-danger'></i>`);
+																					}
+																				},
+																				error: function () {}
+																			});
+																		});
+																		";
+															}
+														} else {
+															echo "<tr><td colspan='5'>Nothing</td></tr>";
+														}
+													} else {
+														echo "<tr><td colspan='5'>" . dbe() . "</td></tr>";
+													}
+													?>
+												</tbody>
+											</table>
 											<div class="col-md-12">
 												<?php
 												if ($row['status'] == 'requested') {

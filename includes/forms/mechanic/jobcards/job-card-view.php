@@ -128,7 +128,7 @@ if (isset($_POST['delete_request'])) {
         sqlError();
     }
 }
-
+/*
 if (isset($_POST['add_part'])) {
     if ($_POST['qty'] > 0) {
         if (
@@ -164,7 +164,7 @@ if (isset($_POST['add_part'])) {
         error("Qty cant be 0");
     }
 }
-
+*/
 if (isset($_POST['add_event'])) {
     if (strlen($_POST['comment']) > 0) {
         if (($_POST['event'] != '0') || ($jobcard_['jobcard_type'] == 'sundry')) {

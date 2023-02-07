@@ -1,5 +1,4 @@
 <?php
-
 require_once "includes/check.php";
 if ($_SESSION['user']['role'] != 'mechanic') {
     go('index.php');
@@ -46,6 +45,15 @@ switch ($_GET['page']) {
         require "./includes/forms/mechanic/jobcards/job-card-view.php";
         break;
 
+    case 'add-job-requisition':
+        $page_title = 'Add Requisition Job Card';
+        $page_name = 'mechanic/add-job-requisition';
+
+        $jobcard_ = dbf(dbq("select * from jobcards where job_id={$_GET['id']}"));
+        $plant_ = dbf(dbq("select * from plants_tbl where plant_id={$jobcard_['plant_id']}"));
+
+        require "./includes/forms/mechanic/jobcards/add-job-requisition.php";
+        break;
 
     default:
         //$page_title = 'Open Job Cards';

@@ -5,10 +5,7 @@ switch ($_GET['cmd']) {
     case "print_request":
         if (isset($_GET['id'])) {
             $request_file = 'files/requisitions/' . $_GET['id'] . '_request.pdf';
-            if (!file_exists('../' . $request_file)) {
-                saveRequisition($_GET['id']);
-            }
-
+            saveRequisition($_GET['id']);
             if (file_exists('../' . $request_file)) {
                 $json_['status'] = 'ok';
                 $json_['path'] = $request_file;

@@ -1424,7 +1424,7 @@ function saveRequisition($request_id)
 					<td style='border-left: 2px solid black;'><b>" . strtoupper($plant_['reading_type']) . "</b></td>
 					<td>" . $plant_[$plant_['reading_type'] . '_reading'] . "</td>
 					<td><b>Job No. {$jobcard_['jobcard_number']}</b></td>
-					<td style='border-right: 2px solid black;'>BO {$request_['request_id']}</td>
+					<td style='border-right: 2px solid black;'><b>BO</b>&nbsp;<span style='color:red; font-weight: bold; font-size:14px;'>{$request_['request_id']}</span></td>
 				</tr>
 				<tr>
 					<td style='border-left: 2px solid black;border-bottom:2px solid black; '>&nbsp;</td>
@@ -1478,13 +1478,13 @@ function saveRequisition($request_id)
 	}
 
 	$html .= "<tr>
-				<td style='text-align:right; border-right: 1px solid black;border-left: 2px solid black;' colspan='2'>REQUESTED BY: </td>
-				<td style='border-right: 1px solid black;'>{$requested_by['name']} {$requested_by['last_name']}</td>
+				<td style='text-align:right; border-right: 1px solid black;border-left: 2px solid black;' colspan='2'><b>REQUESTED BY:</b></td>
+				<td style='border-right: 1px solid black;'>{$requested_by['name']} {$requested_by['last_name']}, {$request_['requested_by_time']}</td>
 				<td style='border-right: 1px solid black;'>BS REQ#</td>
 			</tr>
 			<tr>
-				<td style='text-align:right; border-right: 1px solid black;border-left: 2px solid black;border-bottom:2px solid black;' colspan='2'>APPROVED BY: </td>
-				<td style='border-bottom:2px solid black;border-right: 1px solid black;'>{$approved_by['name']} {$approved_by['last_name']}</td>
+				<td style='text-align:right; border-right: 1px solid black;border-left: 2px solid black;border-bottom:2px solid black;' colspan='2'><b>APPROVED BY:</b></td>
+				<td style='border-bottom:2px solid black;border-right: 1px solid black;'>{$approved_by['name']} {$approved_by['last_name']}, , {$request_['approved_by_time']}</td>
 				<td style='border-right: 1px solid black;border-bottom:2px solid black;'>PL09 Rev02 190521</td>
 			</tr>";
 

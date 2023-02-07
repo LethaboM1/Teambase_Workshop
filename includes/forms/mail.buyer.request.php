@@ -4,6 +4,8 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\SMTP;
 
+
+
 if (!$testserver) {
     if (!isset($job_id)) {
         $job_id = mysqli_insert_id($db);
@@ -33,18 +35,24 @@ if (!$testserver) {
             //Content
             $mail->isHTML(true);                                  //Set email format to HTML
             $mail->Subject = "#{$job_request_['request_id']} - Part requested";
+
+            $request_file = '../../files/requisitions/' . $job_request_['request_id'] . '_request.pdf';
+            if (!file_exists($request_file)) {
+                saveRequisition($job_request_['request_id']);
+            }
+
+            if (file_exists($request_file)) {
+                $mail->addAttachment($request_file);
+            }
+
             $mail->Body    = "
                                 <b>Part Request</b><br>
                                 <p>
                                     <b>Date time.</b>&nbsp;" . $job_request_['requested_by_time'] . "<br>
                                     <b>Job Number.</b>&nbsp;{$jobcard_['jobcard_number']}<br>
                                     <b>Plant No.</b>&nbsp;{$plant_['plant_number']}<br>
-                                    <b>Fleet No.</b>&nbsp;{$plant_['fleet_number']}<br>
                                     <b>Request ID.</b>&nbsp;{$job_request_['request_id']}<br>
                                     <b>Mechanic.</b>&nbsp;{$mechanic_['name']} {$mechanic_['last_name']}<br>
-                                    <b>Part no.</b>&nbsp;{$job_request_['part_number']}<br>
-                                    <b>Description</b>&nbsp;{$job_request_['part_description']}<br>
-                                    <b>Qty</b>&nbsp;{$job_request_['qty']}<br>
                                     <b>Comment</b>&nbsp;{$job_request_['comment']}<br>
                                 </p>
                                 Kind Regards,<br>
@@ -56,12 +64,8 @@ if (!$testserver) {
                                     Date time.: " . $job_request_['requested_by_time'] . "\n\r
                                     Job Number.: {$jobcard_['jobcard_number']}\n\r
                                     Plant No.:{$plant_['plant_number']}\n\r
-                                    Fleet No.:{$plant_['fleet_number']}\n\r
                                     Request ID.: {$job_request_['request_id']}\n\r
                                     Mechanic.: {$mechanic_['name']} {$mechanic_['last_name']}\n\r
-                                    Part no.: {$job_request_['part_number']}\n\r
-                                    Description: {$job_request_['part_description']}\n\r
-                                    Qty: {$job_request_['qty']}\n\r
                                     Comment: {$job_request_['comment']}\n\r                            
                                     \n\r\n\r
                                     Kind Regards,\n\r
