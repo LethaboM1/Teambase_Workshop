@@ -510,16 +510,13 @@
 				</header>
 				<div class="card-body">
 					<div class="header-right">
-						<a class="mb-1 mt-1 mr-1 modal-basic" href="#modalrequestspare"><button class="btn btn-primary">Request Spares</button></a>
+						<a class="mb-1 mt-1 mr-1" href="dashboard.php?page=add-job-requisition&id=<?= $_GET['id'] ?>"><button class="btn btn-primary">Request Spares</button></a>
 					</div>
 					<table class="table table-responsive-md mb-0">
 						<thead>
 							<tr>
 								<th>Date/Time</th>
-								<th>Part No.</th>
-								<th>Description</th>
-								<th>Qty</th>
-								<th>Comment</th>
+								<th>Request ID.</th>
 								<th>Status</th>
 								<th>Status:Comment</th>
 								<th></th>
@@ -538,14 +535,12 @@
 										}
 										echo "<tr>
 													<td>{$row['datetime']}</td>
-													<td>{$row['part_number']}</td>
-													<td>{$row['part_description']}</td>
-													<td>{$row['qty']}</td>
+													<td>{$row['request_id']}</td>
 													<td>{$row['comment']}</td>
 													<td>" . ucfirst($row['status']) . "</td>
 													<td>{$comment_}</td>
 													<td class='actions'>
-														<a class='mb-1 mt-1 mr-1 modal-basic' href='#modalViewRequest_" . $row['request_id'] . "'><i class='fas fa-pencil-alt'></i></a>
+														<a class='mb-1 mt-1 mr-1 modal-basic' href='#modalViewRequest_" . $row['request_id'] . "'><i class='fa fa-eye'></i></a>
 														<!-- Modal Edit Event End -->
 														<!-- Modal Delete -->
 														<a class='mb-1 mt-1 mr-1 modal-basic' href='#modalDeleteRequest_" .  $row['request_id'] . "'><i class='far fa-trash-alt'></i></a>
@@ -591,13 +586,38 @@
 													<div class="card-body">
 														<div class="modal-wrapper">
 															<div class="modal-text">
-																<b>Date/Time</b>&nbsp;' . $row['datetime'] . '<br>
-																<b>Part Number</b>&nbsp;' . $row['part_number'] . '<br>
-																<b>Part Description</b>&nbsp;' . $row['part_description'] . '<br>
-																<b>Qty</b>&nbsp;' . $row['qty'] . '<br>
-																<b>Comment</b>&nbsp;' . $row['comment'] . '<br>
+																<b>Date/Time</b>&nbsp;' .  $row['datetime'] . '<br>		
+																<b>Request ID</b>&nbsp;' . $row['request_id'] . '<br>
 																<b>Status</b><br>' . $row['status'] . '<br>
 																<b>Status:Comment</b><br>' . $comment_ . '<br>
+																<table class="table table-hover">
+																	<thead>
+																		<th>Part No</th>
+																		<th>Description</th>
+																		<th>Qty</th>
+																		<th>Comment</th>
+																		<th></th>
+																	</thead>
+																	<tbody>';
+										$get_parts = dbq("select * from jobcard_requisition_parts where request_id={$row['request_id']}");
+										if ($get_parts) {
+											if (dbr($get_parts) > 0) {
+												while ($part = dbf($get_parts)) {
+													$modal .= "<tr>
+																<td>{$part['part_number']}</td>
+																<td>{$part['part_description']}</td>
+																<td>{$part['qty']}</td>
+																<td>{$part['comment']}</td>
+																<td>
+																	
+																</td>
+															</tr>";
+												}
+											}
+										}
+
+										$modal .= '						</tbody>
+																</table>
 															</div>
 														</div>
 													</div>
@@ -619,8 +639,7 @@
 								echo "<tr><td colspan='7'>Error: " . dbe() . "</td></tr>";
 							}
 
-							?>
-						</tbody>
+							?> </tbody>
 					</table>
 					<hr>
 				</div>

@@ -12,6 +12,16 @@ switch ($_GET['page']) {
         require "./includes/forms/manager/jobcards/job-card-view.php";
         break;
 
+    case 'add-job-requisition':
+        $page_title = 'Add Requisition Job Card';
+        $page_name = 'manager/jobcards/add-job-requisition';
+        if (!isset($_GET['id'])) go('dashboard.php');
+        $jobcard_ = dbf(dbq("select * from jobcards where job_id={$_GET['id']}"));
+        $plant_ = dbf(dbq("select * from plants_tbl where plant_id={$jobcard_['plant_id']}"));
+
+        require "./includes/forms/manager/jobcards/add-job-requisition.php";
+        break;
+
     case "profile":
         $page_title = 'Your Profile';
         $page_name = 'profile';

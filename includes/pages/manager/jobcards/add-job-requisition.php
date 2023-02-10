@@ -1,0 +1,142 @@
+<div class="row">
+	<div class="col-lg-12 mb-12">
+		<form method="post">
+			<section class="card">
+				<header class="card-header">
+					<h2 class="card-title">Add Requisition</h2>
+					<p class="card-subtitle">
+						Jobcard #<?= $jobcard_['jobcard_number'] ?><br>
+						Plant #<?= $plant_['plant_number'] ?>
+						<label class="col-form-label">Date/Time</label>
+						<?php
+						$datetime = date("Y-m-d\TH:i:s");
+						echo inp('request_date', '', 'hidden', $datetime)
+						?>
+						<input type="datetime-local" name="date" class="form-control" value="<?= $datetime ?>" disabled>
+					</p>
+				</header>
+				<div class="card-body">
+					<div class="row">
+						<div class="col-md-2"><?= inp('part_no', '', 'text', '', '', 0, '', "placeholder='Part No.'") ?></div>
+						<div class="col-md-2"><?= inp('description', '', 'text', '', '', 0, '', "placeholder='Description'") ?></div>
+						<div class="col-md-2"><?= inp('qty', '', 'number', '1', '', 0, '', " min=1 placeholder='Qty'") ?></div>
+						<div class="col-md-2"><?= inp('comment', '', 'text', '', '', 0, '', "placeholder='Comment'") ?></div>
+						<div class="col-md-2"><button id='add_part' type="button" class="btn btn-primary btn-sm">Add</button></div>
+					</div>
+					<?php
+					$jscript .= "
+									$('#add_part').click(function () {
+										let part_no = $('#part_no').val();
+										let description = $('#description').val();
+										let qty = $('#qty').val();
+										let comment = $('#comment').val();
+
+										if (
+											part_no.length == 0 
+											|| description.length ==0
+										) {
+											console.log(`No part no or description.`);
+										} else {										
+											let part = [];
+											part = {
+												'part_no':part_no,
+												'description':description,
+												'qty':qty,
+												'comment':comment
+											};
+
+											$.ajax({
+												method:'post',
+												url:'includes/ajax.php',
+												data: {
+													cmd:'add_part',
+													part: JSON.stringify(part)
+
+												},
+												success: function (result) {
+													let data = JSON.parse(result);
+													if (data.status=='ok') {
+														$('#parts_list').html(data.parts);
+														$('#part_no').val(``);
+														$('#description').val(``);
+														$('#qty').val(`1`);
+													}
+												},
+												error: function (error) {
+
+												}
+											});
+										}
+
+
+									});
+									";
+					?>
+					<table class="table table-hover">
+						<thead>
+							<th>Part No</th>
+							<th>Description</th>
+							<th>Qty</th>
+							<th>Comment</th>
+							<th></th>
+						</thead>
+						<tbody id='parts_list'>
+							<?php
+							if (is_array($_SESSION['request_parts']) && count($_SESSION['request_parts']) > 0) {
+								foreach ($_SESSION['request_parts'] as $part) {
+							?>
+									<tr>
+										<td><?= $part['part_no'] ?></td>
+										<td><?= $part['description'] ?></td>
+										<td><?= $part['qty'] ?></td>
+										<td><?= $part['comment'] ?></td>
+										<td>
+											<a onclick='remove_part(`<?= $part['part_no'] ?>`)'>
+												<i class="fa fa-trash"></i>
+											</a>
+										</td>
+									</tr>
+								<?php
+								}
+							} else {
+								?>
+								<tr>
+									<td colspan='5'>No parts</td>
+								</tr>
+							<?php
+							}
+
+							$jscript_function = "
+													function remove_part (part_no) {
+														$.ajax({
+															method:'post',
+															url:'includes/ajax.php',
+															data: {
+																cmd:'remove_part',
+																part_no: part_no
+															},
+															success: function (result) {
+																let data = JSON. parse(result);
+																if (data.status=='ok') {
+																	$('#parts_list').html(data.parts);
+																}
+															},
+															error: function (error) {},
+														});
+													}
+												";
+							?>
+						</tbody>
+					</table>
+					<div class="col-md-12">
+						<?= inp('request_comment', 'Comments', 'textarea') ?>
+					</div>
+				</div>
+				<footer class="card-footer text-end">
+					<button name="request_parts" type="submit" class="btn btn-primary">Process Requisition </button>
+					<button name="cancel" type="submit" class="btn btn-default">Cancel</button>
+				</footer>
+			</section>
+		</form>
+	</div>
+</div>
