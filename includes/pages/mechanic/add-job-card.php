@@ -149,6 +149,113 @@
 							<textarea class="form-control" rows="3" id="comment" name="comment"></textarea>
 							<br>
 						</div>
+						<div class="col-sm-12 col-md-12">
+							<section class="card">
+								<header class="card-header">
+									<h2 class="card-title">Plant Inspection / Job Instruction Report</h2>
+								</header>
+								<div class="card-body">
+									<div class="row">
+										<div class="col-sm-12 col-md-2 pb-sm-3 pb-md-0">
+											<label class="col-form-label">H.M.R</label>
+											<input type="text" name="hmr" placeholder="H.M.R" class="form-control">
+										</div>
+										<div class="col-sm-12 col-md-3 pb-sm-3 pb-md-0">
+											<label class="col-form-label">Component</label>
+											<select class="form-control mb-3" id="component" name="component">
+												<option value="">Select Component</option>
+												<option value="Engine">Engine</option>
+												<option value="Clutch">Clutch</option>
+												<option value="Gearbox/Drive Train">Gearbox/Drive Train</option>
+												<option value="Axel + Suspension Rear">Axel + Suspension Rear</option>
+												<option value="Axel + Suspension Front">Axel + Suspension Front</option>
+												<option value="Brakes">Brakes</option>
+												<option value="Cab + Accessories">Cab + Accessories</option>
+												<option value="Electrical">Electrical</option>
+												<option value="Hydraulics ">Hydraulics </option>
+												<option value="Structure">Structure</option>
+												<option value="Other">Other / Comment</option>
+											</select>
+
+										</div>
+										<div class="col-sm-12 col-md-3 pb-sm-3 pb-md-0">
+											<label class="col-form-label">Severity</label>
+											<select name="severity" class="form-control mb-3" id="roll">
+												<option value="">Select Severity</option>
+												<option value="low">Low</option>
+												<option value="Medium">Medium</option>
+												<option value="High">High</option>
+											</select>
+										</div>
+										<div class="col-sm-12 col-md-2 pb-sm-3 pb-md-0">
+											<label class="col-form-label">REQ HRS</label>
+											<input type="number" name="required_hrs" value="1" placeholder="Component" class="form-control">
+										</div>
+										<div class="col-sm-12 col-md-12 pb-sm-3 pb-md-0">
+											<label class="col-form-label">Details</label>
+											<textarea class="form-control" name="comment" id="comment"></textarea>
+										</div>
+										<div class="col-sm-12 col-md-2 pb-sm-3 pb-md-0">
+											<button type="button" id="add_insp" class="btn btn-primary mt-4">Add</button>
+										</div>
+									</div>
+								</div>
+
+								<?php
+
+								$jscript .= "
+												$('#add_insp').click(function () {
+													let hmr = $('#hmr').val();
+													let component = $('#component').val();
+													let severity = $('#severity').val();
+													let required_hrs = $('#required_hrs').val();
+
+													if (
+														part_no.length == 0 
+														|| description.length ==0
+													) {
+														console.log(`No part no or description.`);
+													} else {										
+														let part = [];
+														part = {
+															'hmr':hmr,
+															'component':component,
+															'severity':severity,
+															'required_hrs':required_hrs
+														};
+
+														$.ajax({
+															method:'post',
+															url:'includes/ajax.php',
+															data: {
+																cmd:'add_insp',
+																part: JSON.stringify(part)
+
+															},
+															success: function (result) {
+																let data = JSON.parse(result);
+																if (data.status=='ok') {
+																	$('#hmr').html(data.parts);
+																	$('#component').val(``);
+																	$('#severity').val(``);
+																	$('#required_hrs').val(`1`);
+																}
+															},
+															error: function (error) {
+
+															}
+														});
+													}
+
+
+												});
+												";
+								?>
+							</section>
+							<table class="table-hover">
+
+							</table>
+						</div>
 					</div>
 					<hr>
 					<div id="extras_details" style="display:none">

@@ -12,6 +12,14 @@ switch ($_GET['page']) {
         require "./includes/forms/mechanic/jobcards/add-job-card.php";
         break;
 
+
+    case 'plant-inspection':
+        $page_title = 'Request Mechanic';
+        $page_name = 'mechanic/plant-inspection';
+        //require "./includes/forms/mechanic/jobcards/add-job-card.php";
+        break;
+
+
     case 'open-job':
         $page_title = 'Open Job Cards';
         $page_name = 'mechanic/open-job-cards';
