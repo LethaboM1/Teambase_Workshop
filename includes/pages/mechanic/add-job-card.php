@@ -17,19 +17,16 @@
 												$('#service_detail').show();
 												$('#plant_details').show();
 												$('#priority_detail').hide();
-												$('#breakdown_details').hide();
 												$('#extras_details').show();
 											} else if ($(this).val() == 'sundry') {
 												$('#service_detail').hide();
 												$('#plant_details').hide();
 												$('#priority_detail').hide();
-												$('#breakdown_details').hide();
 												$('#extras_details').hide();
 											} else {
 												$('#service_detail').hide();
 												$('#plant_details').show();
 												$('#priority_detail').show();
-												$('#breakdown_details').show();
 												$('#extras_details').show();
 											}
 										});
@@ -127,157 +124,158 @@
 						<div id='service_detail' style="display:none;" class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 							<?= inp('service_type', 'Service Type', 'select', '', '', 0, [['name' => 'A', 'value' => 'A'], ['name' => 'B', 'value' => 'B'], ['name' => 'C', 'value' => 'C'], ['name' => 'D', 'value' => 'D']]) ?>
 						</div>
-						<div id="breakdown_details" style="display:none" class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<label class="col-form-label" for="formGroupExampleInput">Select Fault Area</label>
-							<select class="form-control mb-3" id="fault_area" name="fault_area">
-								<option value="">Select Fault Area</option>
-								<option value="Engine">Engine</option>
-								<option value="Clutch">Clutch</option>
-								<option value="Gearbox/Drive Train">Gearbox/Drive Train</option>
-								<option value="Axel + Suspension Rear">Axel + Suspension Rear</option>
-								<option value="Axel + Suspension Front">Axel + Suspension Front</option>
-								<option value="Brakes">Brakes</option>
-								<option value="Cab + Accessories">Cab + Accessories</option>
-								<option value="Electrical">Electrical</option>
-								<option value="Hydraulics ">Hydraulics </option>
-								<option value="Structure">Structure</option>
-								<option value="Other">Other / Comment</option>
-							</select>
-						</div>
 						<div class="col-sm-12 col-md-12">
 							<label class="col-form-label" for="formGroupExampleInput">Comments</label>
 							<textarea class="form-control" rows="3" id="comment" name="comment"></textarea>
 							<br>
 						</div>
-						<div class="col-sm-12 col-md-12">
-							<section class="card">
-								<header class="card-header">
-									<h2 class="card-title">Plant Inspection / Job Instruction Report</h2>
-								</header>
-								<div class="card-body">
-									<div class="row">
-										<div class="col-sm-12 col-md-2 pb-sm-3 pb-md-0">
-											<label class="col-form-label">H.M.R</label>
-											<input type="text" name="hmr" placeholder="H.M.R" class="form-control">
-										</div>
-										<div class="col-sm-12 col-md-3 pb-sm-3 pb-md-0">
-											<label class="col-form-label">Component</label>
-											<select class="form-control mb-3" id="component" name="component">
-												<option value="">Select Component</option>
-												<option value="Engine">Engine</option>
-												<option value="Clutch">Clutch</option>
-												<option value="Gearbox/Drive Train">Gearbox/Drive Train</option>
-												<option value="Axel + Suspension Rear">Axel + Suspension Rear</option>
-												<option value="Axel + Suspension Front">Axel + Suspension Front</option>
-												<option value="Brakes">Brakes</option>
-												<option value="Cab + Accessories">Cab + Accessories</option>
-												<option value="Electrical">Electrical</option>
-												<option value="Hydraulics ">Hydraulics </option>
-												<option value="Structure">Structure</option>
-												<option value="Other">Other / Comment</option>
-											</select>
-
-										</div>
-										<div class="col-sm-12 col-md-3 pb-sm-3 pb-md-0">
-											<label class="col-form-label">Severity</label>
-											<select name="severity" class="form-control mb-3" id="roll">
-												<option value="">Select Severity</option>
-												<option value="low">Low</option>
-												<option value="Medium">Medium</option>
-												<option value="High">High</option>
-											</select>
-										</div>
-										<div class="col-sm-12 col-md-2 pb-sm-3 pb-md-0">
-											<label class="col-form-label">REQ HRS</label>
-											<input type="number" name="required_hrs" value="1" placeholder="Component" class="form-control">
-										</div>
-										<div class="col-sm-12 col-md-12 pb-sm-3 pb-md-0">
-											<label class="col-form-label">Details</label>
-											<textarea class="form-control" name="comment" id="comment"></textarea>
-										</div>
-										<div class="col-sm-12 col-md-2 pb-sm-3 pb-md-0">
-											<button type="button" id="add_insp" class="btn btn-primary mt-4">Add</button>
-										</div>
-									</div>
-								</div>
-
+						<hr>
+						<div id="extras_details" style="display:none">
+							<h2 class="card-title">Extras</h2><br>
+							<div class="row">
 								<?php
-
-								$jscript .= "
-												$('#add_insp').click(function () {
-													let hmr = $('#hmr').val();
-													let component = $('#component').val();
-													let severity = $('#severity').val();
-													let required_hrs = $('#required_hrs').val();
-
-													if (
-														part_no.length == 0 
-														|| description.length ==0
-													) {
-														console.log(`No part no or description.`);
-													} else {										
-														let part = [];
-														part = {
-															'hmr':hmr,
-															'component':component,
-															'severity':severity,
-															'required_hrs':required_hrs
-														};
-
-														$.ajax({
-															method:'post',
-															url:'includes/ajax.php',
-															data: {
-																cmd:'add_insp',
-																part: JSON.stringify(part)
-
-															},
-															success: function (result) {
-																let data = JSON.parse(result);
-																if (data.status=='ok') {
-																	$('#hmr').html(data.parts);
-																	$('#component').val(``);
-																	$('#severity').val(``);
-																	$('#required_hrs').val(`1`);
-																}
-															},
-															error: function (error) {
-
-															}
-														});
-													}
-
-
-												});
-												";
+								$get_safety_equipment = dbq("select * from safety_equipment");
+								if ($get_safety_equipment) {
+									if (dbr($get_safety_equipment) > 0) {
+										while ($equipment = dbf($get_safety_equipment)) {
 								?>
-							</section>
-							<table class="table-hover">
-
-							</table>
-						</div>
-					</div>
-					<hr>
-					<div id="extras_details" style="display:none">
-						<h2 class="card-title">Extras</h2><br>
-						<div class="row">
-							<?php
-							$get_safety_equipment = dbq("select * from safety_equipment");
-							if ($get_safety_equipment) {
-								if (dbr($get_safety_equipment) > 0) {
-									while ($equipment = dbf($get_safety_equipment)) {
-							?>
-										<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-											<div class="checkbox-custom checkbox-default">
-												<input type="checkbox" id="<?= $equipment['code'] ?>" name="<?= $equipment['code'] ?>">
-												<label for="<?= $equipment['code'] ?>"><?= $equipment['name'] ?></label>
+											<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+												<div class="checkbox-custom checkbox-default">
+													<input type="checkbox" id="<?= $equipment['code'] ?>" name="<?= $equipment['code'] ?>">
+													<label for="<?= $equipment['code'] ?>"><?= $equipment['name'] ?></label>
+												</div>
 											</div>
-										</div>
-							<?php
+								<?php
+										}
 									}
 								}
-							}
+								?>
+							</div>
+						</div>
+						<div class="col-sm-12 col-md-12">
+							<div class="header-right">
+								<a class="mb-1 mt-1 mr-1 modal-basic" href="#modalAddInsp"><button class="btn btn-primary">Add Report</button></a>
+							</div>
+							<!-- Modal add event -->
+							<div id="modalAddInsp" class="modal-block modal-block-lg mfp-hide">
+								<form method="post">
+									<section class="card">
+										<header class="card-header">
+											<h2 class="card-title">Add Report</h2>
+										</header>
+										<div class="card-body">
+											<div class="row">
+												<div class="col-sm-12 col-md-3 pb-sm-3 pb-md-0">
+													<label class="col-form-label">Component</label>
+													<select class="form-control mb-3" id="component" name="component">
+														<option value="">Select Component</option>
+														<option value="Engine">Engine</option>
+														<option value="Clutch">Clutch</option>
+														<option value="Gearbox/Drive Train">Gearbox/Drive Train</option>
+														<option value="Axel + Suspension Rear">Axel + Suspension Rear</option>
+														<option value="Axel + Suspension Front">Axel + Suspension Front</option>
+														<option value="Brakes">Brakes</option>
+														<option value="Cab + Accessories">Cab + Accessories</option>
+														<option value="Electrical">Electrical</option>
+														<option value="Hydraulics ">Hydraulics </option>
+														<option value="Structure">Structure</option>
+														<option value="Other">Other / Comment</option>
+													</select>
+
+												</div>
+												<div class="col-sm-12 col-md-3 pb-sm-3 pb-md-0">
+													<label class="col-form-label">Severity</label>
+													<select name="severity" class="form-control mb-3" id="roll">
+														<option value="">Select Severity</option>
+														<option value="low">Low</option>
+														<option value="Medium">Medium</option>
+														<option value="High">High</option>
+													</select>
+												</div>
+												<div class="col-sm-12 col-md-2 pb-sm-3 pb-md-0">
+													<label class="col-form-label">REQ HRS</label>
+													<input type="number" name="required_hrs" value="1" placeholder="Component" class="form-control">
+												</div>
+												<div class="col-sm-12 col-md-12 pb-sm-3 pb-md-0">
+													<label class="col-form-label">Details</label>
+													<textarea class="form-control" name="report_comment" id="report_comment"></textarea>
+												</div>
+												<div class="col-sm-12 col-md-2 pb-sm-3 pb-md-0">
+
+												</div>
+											</div>
+										</div>
+										<footer class="card-footer">
+											<div class="row">
+												<div class="col-md-12 text-right">
+													<button type="button" id="add_insp" class="btn btn-primary mt-4">Add</button>&nbsp;<button class="btn btn-default modal-dismiss">Cancel</button>
+												</div>
+											</div>
+										</footer>
+									</section>
+								</form>
+							</div>
+							<!-- Modal view End -->
+
+							<?php
+
+							$jscript .= "
+										$('#add_insp').click(function () {
+											let component = $('#component').val();
+											let severity = $('#severity').val();
+											let required_hrs = $('#required_hrs').val();
+											let report_comment= $('#report_comment').val();
+									
+												report = {
+													'component':component,
+													'severity':severity,
+													'required_hrs':required_hrs,
+													'comment':report_comment,
+
+												};
+
+												$.ajax({
+													method:'post',
+													url:'includes/ajax.php',
+													data: {
+														cmd:'add_insp',
+														part: JSON.stringify(part)
+
+													},
+													success: function (result) {
+														let data = JSON.parse(result);
+														if (data.status=='ok') {
+															$('#component').val(``);
+															$('#severity').val(``);
+															$('#required_hrs').val(`1`);
+														}
+													},
+													error: function (error) {
+
+													}
+												});
+										});
+										";
 							?>
+
+							<h2 class="card-title">Plant Inspection / Job Instruction Report</h2>
+							<table class="table-hover">
+								<thead>
+									<tr>
+										<td>Component</td>
+										<td>Severity</td>
+										<td>Required Hrs.</td>
+										<td>Comment</td>
+										<td></td>
+									</tr>
+								</thead>
+								<tbody>
+									<?php
+									foreach ($_SESSION['fault_reports'] as $report) {
+									}
+									?>
+								</tbody>
+							</table>
 						</div>
 					</div>
 
