@@ -316,7 +316,7 @@ function inp($name, $label, $type = 'text', $value = '', $class = '', $required 
 			$form = "<datalist id='datalist_{$name}'>";
 			if (is_array($select_list)) {
 				foreach ($select_list as $option) {
-					$form .= "<option value='{$option['value']}'>{$option['name']}</option>";
+					$form .= "<option value='{$option['name']}' val='{$option['value']}'>{$option['name']}</option>";
 				}
 			}
 			$form .= "</datalist>";
@@ -340,7 +340,7 @@ function inp($name, $label, $type = 'text', $value = '', $class = '', $required 
 								hiddenInput = document.getElementById('{$name}');
 						
 							if (options.length > 0) {
-								hiddenInput.value = input.value;
+								hiddenInput.value = options[0].getAttribute('val');
 								$('#{$name}').trigger('change');
 								input.value = options[0].innerText;
 							}						
