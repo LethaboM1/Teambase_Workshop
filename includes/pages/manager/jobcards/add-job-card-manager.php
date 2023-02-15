@@ -16,7 +16,7 @@
 						if ($_SESSION['user']['role'] == 'clerk') {
 							echo inp('clerk_id', '', 'hidden', $_SESSION['user']['user_id']);
 						} else {
-							$get_clerks = dbq("select concat(name,' ',last_name) as name, user_id as value, out_of_office from users_tbl where role='clerk'");
+							$get_clerks = dbq("select concat(name,' ',last_name) as name, user_id as value, out_of_office from users_tbl where role='clerk' order by name");
 							if ($get_clerks) {
 								$clerk_select_[] = ['name' => 'Select One', 'value' => 0];
 								if (dbr($get_clerks)) {
