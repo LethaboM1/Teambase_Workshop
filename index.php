@@ -28,14 +28,15 @@ if (isset($_POST[$field_names['username']], $_POST[$field_names['password']])) {
 	if ($csrf->check_valid('post')) {
 
 		dbconn('127.0.0.1', $database_name, $database_user, $database_password);
-
-		$chk_user = dbq("select * from users_tbl where username='{$_POST[$field_names['username']]}'");
+		$query = "select * from users_tbl where username='{$_POST[$field_names['username']]}'";
+		$chk_user = dbq($query);
+		if (!$chk_user) error_log("SQL error: " . dbe() . ": {$query}");
 		if (dbr($chk_user) > 0) {
 			$user_ = dbf($chk_user);
 			if (password_verify($_POST[$field_names['password']], $user_['password'])) {
 				$user_['password'] = '********';
 				$_SESSION['user'] = $user_;
-				$get_settings = dbq("select * from settings");
+				$get_settings = dbq("select * from settings limit 1");
 				if ($get_settings) {
 					$_SESSION['settings'] = dbf($get_settings);
 				}
