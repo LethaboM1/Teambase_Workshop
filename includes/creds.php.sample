@@ -1,0 +1,7 @@
+<?php
+$testserver = true;
+$debug = true;
+$session_name = "TeamBase-Desktop-App";
+$database_name = "teambase";
+$database_user = "root";
+$database_password = "dx0392781";
