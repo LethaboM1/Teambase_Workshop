@@ -21,93 +21,103 @@ switch ($_GET['type']) {
 
                     $font = ""; //"font-family: 'Open Sans', sans-serif;";
                     $pdf = "
-                           <table style=\" border-collapse: collapse; table-layout: fixed;\">
-                                    <tr>
-                                        <th style=\"width: 350px; {$font} font-weight: bold; font-size: 20px; text-align: left; border: none;\">Job Card # {$jobcard_['jobcard_number']}</th>
-                                        <th style=\"width: 350px; {$font} font-weight: bold; font-size: 20px; text-align: left; border: none;\">Plant # {$plant_['plant_number']}</th>
-                                    </tr>
+                            <table style=\"width: 700px; border-collapse: collapse; table-layout: fixed;\"> 
+                                <tr>
+                                    <th style=\"width: 50%; font-weight: bold; font-size: 20px; text-align: left; border: none;\">Job Card # {$jobcard_['jobcard_number']}</th>
+                                    <th style=\"width: 50%; font-weight: bold; font-size: 20px; text-align: left; border: none;\">Plant # {$plant_['plant_number']}</th>
+                                </tr> 
                             </table>
                             <br>
                             <table style=\"width: 700px; border-collapse: collapse; table-layout: fixed;\">
                                 <tr>
-                                    <td style=\"width: 350px; {$font} font-weight: normal; font-size: 15px; text-align: left; border: 2px solid rgb(39, 39, 39); border-bottom: none; \"><strong>Status:</strong> " . ucfirst($jobcard_['status']) . "</td>
-                                    <td style=\"width: 350px; {$font} font-weight: normal; font-size: 15px; text-align: left; border: 2px solid rgb(39, 39, 39); border-left: none; border-bottom: none; \"><strong>Type:</strong> " . ucfirst($jobcard_['jobcard_type']) . "</td>
+                                    <td style=\"width: 50%; font-weight: normal; font-size: 13px; text-align: left; border: 1.5px solid rgb(39, 39, 39); border-bottom: none; padding-left: 5px; padding-top: 5px;\"><strong>Status:</strong> " . ucfirst($jobcard_['status']) . "</td>
+                                    <td style=\"width: 50%; font-weight: normal; font-size: 13px; text-align: left; border: 1.5px solid rgb(39, 39, 39); border-left: none; border-bottom: none; padding-left: 5px; padding-top: 5px;\"><strong>Type:</strong> " . ucfirst($jobcard_['jobcard_type']) . "</td>
                                 </tr>
                                 <tr>
-                                    <td style=\"width: 350px; {$font} font-weight: normal; font-size: 15px; text-align: left; border: 2px solid rgb(39, 39, 39); border-bottom: none; border-top: none;\"><strong>Date:</strong> " . date('Y-m-d', strtotime($jobcard_['job_date'])) . "</td>
-                                    <td style=\"width: 350px; {$font} font-weight: normal; font-size: 15px; text-align: left; border: 2px solid rgb(39, 39, 39); border-left: none; border-bottom: none; border-top: none;\"><strong>Logged By:</strong> {$logged_by['name']} {$logged_by['last_name']}</td>
+                                    <td style=\"width: 50%;  font-weight: normal; font-size: 13px; text-align: left; border: 1.5px solid rgb(39, 39, 39); border-bottom: none; border-top: none; padding-left: 5px;\"><strong>Date:</strong> " . date('Y-m-d', strtotime($jobcard_['job_date'])) . "</td>
+                                    <td style=\"width: 50%;  font-weight: normal; font-size: 13px; text-align: left; border: 1.5px solid rgb(39, 39, 39); border-left: none; border-bottom: none; border-top: none; padding-left: 5px;\"><strong>Logged By:</strong>  {$logged_by['name']} {$logged_by['last_name']}</td>
                                 </tr>
                                 <tr>
-                                    <td style=\"width: 350px; {$font} font-weight: normal; font-size: 15px; text-align: left; border: 2px solid rgb(39, 39, 39);  border-top: none;\"><strong>Site:</strong> {$jobcard_['site']}</td>
-                                    <td style=\"width: 350px; {$font} font-weight: normal; font-size: 15px; text-align: left; border: 2px solid rgb(39, 39, 39); border-left: none;  border-top: none;\"><strong>Authorized By:</strong> {$authorized_by['name']} {$authorized_by['last_name']}</td>
+                                    <td style=\"width: 50%;  font-weight: normal; font-size: 13px; text-align: left; border: 1.5px solid rgb(39, 39, 39); border-top: none; padding-left: 5px; padding-bottom: 5px;\"><strong>Site: {$jobcard_['site']}</strong> </td>
+                                    <td style=\"width: 50%;  font-weight: normal; font-size: 13px; text-align: left; border: 1.5px solid rgb(39, 39, 39); border-left: none; border-top: none; padding-left: 5px; padding-bottom: 5px;\"><strong>Authorized By:</strong> {$authorized_by['name']} {$authorized_by['last_name']}</td>
                                 </tr>
                             </table>
                             <br>";
 
                     if (is_array($extras) && count($extras) > 0) {
 
-                        $pdf .= "<table style=\"width: 700px; border-collapse: collapse; table-layout: fixed; background-color: rgb(241, 241, 241);\">
+                        $pdf .= "<table style=\"width: 700px; border-collapse: collapse; table-layout: fixed; background-color: rgb(231, 231, 231);\">
                                     <thead>
                                         <tr>
-                                            <th style=\"{$font} font-weight: bold; font-size: 18px; text-align: left; padding: 10px;\">Extras</th>
+                                            <th style=\"font-weight: bold; font-size: 16; text-align: left; padding: 10px;\">Extras</th>
+                                            <th style=\"text-align: left; padding: 10px;\"></th>
+                                            <th style=\"text-align: left; padding: 10px;\"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td style=\"width: 33%; {$font} font-weight: normal; font-size: 15px; text-align: left; padding-left: 10px;\"><strong>{$extras[0]['name']}:</strong> {$extras[0]['answer']}</td>
-                                            <td style=\"width: 33%; {$font} font-weight: normal; font-size: 15px; text-align: left; padding-left: 10px;\"><strong>{$extras[1]['name']}:</strong> {$extras[1]['answer']}</td>
-                                            <td style=\"width: 33%; {$font} font-weight: normal; font-size: 15px; text-align: left; padding-left: 10px;\"><strong>{$extras[2]['name']}:</strong> {$extras[2]['answer']}</td>
+                                            <td style=\"width: 33%; font-weight: normal; font-size: 13px; text-align: left; padding-left: 10px;\"><strong>{$extras[0]['name']}:</strong> {$extras[0]['answer']}</td>
+                                            <td style=\"width: 33%; font-weight: normal; font-size: 13px; text-align: left; padding-left: 10px;\"><strong>{$extras[1]['name']}:</strong> {$extras[1]['answer']}</td>
+                                            <td style=\"width: 33%; font-weight: normal; font-size: 13px; text-align: left; padding-left: 10px;\"><strong>{$extras[2]['name']}:</strong> {$extras[2]['answer']}</td>
                                         </tr> 
                                         <tr>
-                                            <td style=\"width: 33%; {$font} font-weight: normal; font-size: 15px; text-align: left; padding-left: 10px;\"><strong>{$extras[3]['name']}:</strong> {$extras[3]['answer']}</td>
-                                            <td style=\"width: 33%; {$font} font-weight: normal; font-size: 15px; text-align: left; padding-left: 10px;\"><strong>{$extras[4]['name']}:</strong> {$extras[4]['answer']}</td>
-                                            <td style=\"width: 33%; {$font} font-weight: normal; font-size: 15px; text-align: left; padding-left: 10px;\"><strong>{$extras[5]['name']}:</strong> {$extras[5]['answer']}</td>
+                                            <td style=\"width: 33%; font-weight: normal; font-size: 13px; text-align: left; padding-left: 10px;\"><strong>{$extras[3]['name']}:</strong> {$extras[3]['answer']}</td>
+                                            <td style=\"width: 33%; font-weight: normal; font-size: 13px; text-align: left; padding-left: 10px;\"><strong>{$extras[4]['name']}:</strong> {$extras[4]['answer']}</td>
+                                            <td style=\"width: 33%; font-weight: normal; font-size: 13px; text-align: left; padding-left: 10px;\"><strong>{$extras[5]['name']}:</strong> {$extras[5]['answer']}</td>
                                         </tr>
                                         <tr>
-                                            <td style=\"width: 33%; {$font} font-weight: normal; font-size: 15px; text-align: left; padding-left: 10px; padding-bottom: 10px;\"><strong>{$extras[6]['name']}:</strong> {$extras[6]['answer']}</td>
-                                            <td style=\"width: 33%; {$font} font-weight: normal; font-size: 15px; text-align: left; padding-left: 10px; padding-bottom: 10px;\"><strong>{$extras[7]['name']}:</strong> {$extras[7]['answer']}</td>
-                                            <td style=\"width: 33%; {$font} font-weight: normal; font-size: 15px; text-align: left; padding-left: 10px; padding-bottom: 10px;\"></td>
+                                            <td style=\"width: 33%; font-weight: normal; font-size: 13px; text-align: left; padding-left: 10px; padding-bottom: 10px;\"><strong>{$extras[6]['name']}:</strong> {$extras[6]['answer']}</td>
+                                            <td style=\"width: 33%; font-weight: normal; font-size: 13px; text-align: left; padding-left: 10px; padding-bottom: 10px;\"><strong>{$extras[7]['name']}:</strong> {$extras[7]['answer']}</td>
+                                            <td style=\"width: 33%; font-weight: normal; font-size: 13px; text-align: left; padding-left: 10px; padding-bottom: 10px;\"></td>
                                         </tr>
                                     </tbody>
                                 </table>
                                 <br>";
                     }
 
-                    $pdf .= "<table style=\"border-collapse: collapse; table-layout: fixed;\">
+                    $pdf .= "<table style=\"width: 700px; border-collapse: collapse; table-layout: fixed;\">
                                 <thead>
                                     <tr>
-                                        <th style=\"width: 700px; {$font} font-weight: bold; font-size: 18px; text-align: left; padding: 10px;\">Fault Description</th>
+                                        <th style=\" font-weight: bold; font-size: 16px; text-align: left; padding: 10px;\">Fault Description</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td style=\"width: 100%; {$font} font-weight: normal; font-size: 15px; text-align: left; padding: 10px;\">{$jobcard_['fault_description']}</td>
+                                        <td style=\"width: 100%;  font-weight: normal; font-size: 13px; text-align: left; padding: 10px;\">{$jobcard_['fault_description']}</td>
                                     </tr>
                                 </tbody>
                             </table>
+                 
                             <br>
                             <table style=\"border-collapse: collapse; table-layout: fixed;\">
+                                <thead>
                                     <tr>
-                                        <th colspan=\"4\" style=\"width:700px;{$font} font-weight: bold; font-size: 18px; text-align: left; padding: 10px;\">Events</th>
+                                        <th style=\"width: 12%; font-weight: bold; font-size: 16px; text-align: left; padding: 10px;\">Events</th>
+                                        <th style=\"width: 40%; font-weight: bold; font-size: 16px; text-align: left; padding: 10px;\"></th>
+                                        <th style=\"width: 10%; font-weight: bold; font-size: 16px; text-align: left; padding: 10px;\"></th>
+                                        <th style=\"width: 38%; font-weight: bold; font-size: 16px; text-align: left; padding: 10px;\"></th>
                                     </tr>
-                                    <tr>
-                                        <th style=\"width: 70px; {$font} font-weight: bold; font-size: 15px; color: #FFFFFF; text-align: left; padding: 10px; background-color: rgb(85, 85, 85);\">Date</th>
-                                        <th style=\"width: 200px; {$font} font-weight: bold; font-size: 15px; color: #FFFFFF; text-align: left; padding: 10px; background-color: rgb(85, 85, 85);\">Event</th>
-                                        <th style=\"width: 60px; {$font} font-weight: bold; font-size: 15px; color: #FFFFFF; text-align: left; padding: 10px; background-color: rgb(85, 85, 85);\">Hours</th>
-                                        <th style=\"width: 230px; {$font} font-weight: bold; font-size: 15px; color: #FFFFFF; text-align: left; padding: 10px; background-color: rgb(85, 85, 85);\">Comment</th>
+                                    <tr style=\"background-color: rgb(85, 85, 85);\">
+                                        <th style=\"font-weight: bold; font-size: 13px; color: #FFFFFF; text-align: left; padding: 10px;\">Date</th>
+                                        <th style=\"font-weight: bold; font-size: 13px; color: #FFFFFF; text-align: left; padding: 10px;\">Event</th>
+                                        <th style=\"font-weight: bold; font-size: 13px; color: #FFFFFF; text-align: left; padding: 10px;\">Hours</th>
+                                        <th style=\"font-weight: bold; font-size: 13px; color: #FFFFFF; text-align: left; padding: 10px;\">Comment</th>
                                     </tr>
+                                </thead>
                                 <tbody>";
 
                     $get_events = dbq("select * from jobcard_events where job_id={$jobcard_['job_id']} order by start_datetime");
                     if ($get_events) {
                         if (dbr($get_events) > 0) {
+                            $stripe = false;
                             while ($event = dbf($get_events)) {
-                                $pdf .= "<tr>
-                                                            <td style=\"width: 70px; {$font} font-weight: normal; font-size: 15px; text-align: left; padding: 10px;\">" . date('Y-m-d', strtotime($event['start_datetime'])) . "</td>
-                                                            <td style=\"width: 200px; {$font} font-weight: normal; font-size: 15px; text-align: left; padding: 10px;\">{$event['event']}</td>
-                                                            <td style=\"width: 60px; {$font} font-weight: normal; font-size: 15px; text-align: left; padding: 10px;\">{$event['total_hours']}</td>
-                                                            <td style=\"width: 230px; {$font} font-weight: normal; font-size: 15px; text-align: left; padding: 10px;\">{$event['comment']}</td>
-                                                        </tr>";
+                                $pdf .= "<tr " . ($stripe ? "style=\"background-color: #f1f1f1;\"" : "") . ">
+                                            <td style=\"font-weight: normal; font-size: 13px; text-align: left; padding: 10px;\">" . date('Y-m-d', strtotime($event['start_datetime'])) . "</td>
+                                            <td style=\"font-weight: normal; font-size: 13px; text-align: left; padding: 10px;\">{$event['event']}</td>
+                                            <td style=\"font-weight: normal; font-size: 13px; text-align: left; padding: 10px;\">{$event['total_hours']}</td>
+                                            <td style=\"font-weight: normal; font-size: 13px; text-align: left; padding: 10px;\">{$event['comment']}</td>
+                                        </tr>";
+                                $stripe = !$stripe;
                             }
                         } else {
                             $pdf .= "<tr>
