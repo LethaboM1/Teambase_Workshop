@@ -1,18 +1,16 @@
 <?php
 require_once "includes/check.php";
 
-$get_assessment = dbq("select * from jobcards where risk_assessment is not null");
+$get_assessment = dbq("select * from jobcard_risk_assessments where note is null");
 
 if ($get_assessment) {
     if (dbr($get_assessment) > 0) {
         while ($assessment = dbf($get_assessment)) {
-            $add = dbq("insert into jobcard_risk_assessments set job_id={$assessment['job_id']}, results='" . $assessment['risk_assessment'] . "'");
-            if ($add) {
-                $update_jobcard = dbq("update jobcards set
-                                            risk_assessment=null
-                                            where job_id={$assessment['job_id']}");
-                if (!$update_jobcard) error_log('SQL error: ' . dbe());
-            }
+            $jobcard_ = dbf(dbq("select * from jobcards where job_id={$assessment['job_id']}"));
+            $update_ = dbq("update jobcard_risk_assessments set
+                                date_time='{$jobcard_['job_date']}',
+                                note='Initial Assessment.'
+                                where id={$assessment['id']}");
         }
     }
 }
