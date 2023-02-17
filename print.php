@@ -46,7 +46,7 @@ switch ($_GET['type']) {
 
                     if (is_array($extras) && count($extras) > 0) {
 
-                        $pdf .= "<table style=\"width: 800px; border-collapse: collapse; table-layout: fixed; background-color: rgb(231, 231, 231);\">
+                        $pdf .= "<table style=\"width: 780px; border-collapse: collapse; table-layout: fixed; background-color: rgb(231, 231, 231);\">
                                     <thead>
                                         <tr>
                                             <th style=\"font-weight: bold; font-size: 16; text-align: left; padding: 10px;\">Extras</th>
