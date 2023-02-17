@@ -28,7 +28,7 @@ switch ($_GET['type']) {
                                 </tr> 
                             </table>
                             <br>
-                            <table style=\"width: 760px; border-collapse: collapse; table-layout: fixed;\">
+                            <table style=\"width: 750px; border-collapse: collapse; table-layout: fixed;\">
                                 <tr>
                                     <td style=\"width: 50%; font-weight: normal; font-size: 13px; text-align: left; border: 1.5px solid rgb(39, 39, 39); border-bottom: none; padding-left: 5px; padding-top: 5px;\"><strong>Status:</strong> " . ucfirst($jobcard_['status']) . "</td>
                                     <td style=\"width: 50%; font-weight: normal; font-size: 13px; text-align: left; border: 1.5px solid rgb(39, 39, 39); border-left: none; border-bottom: none; padding-left: 5px; padding-top: 5px;\"><strong>Type:</strong> " . ucfirst($jobcard_['jobcard_type']) . "</td>
