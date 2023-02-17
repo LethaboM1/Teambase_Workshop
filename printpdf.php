@@ -9,13 +9,12 @@ include "includes/inc.header.php";
         <div class="col-md-2"></div>
         <div class="col-md-8">
             <h2>HTML to PDF</h2>
-            <form target="_blank" action="print.php" method="post">
-                <?= inp('html_code', 'HTML', 'textarea', $_POST['html_code']) ?>
+            <form target="_blank" action="printpdf_.php" method="post">
+                <?= inp('html_code', 'HTML', 'textarea', $_POST['html_code'], '', 0, '', 'style="font-size: 12px;"') ?>
                 <?= inp('print', '', 'submit', 'Print', 'btn-primary') ?>
             </form>
         </div>
         <div class="col-md-2"></div>
-
     </div>
 </div>
 <?php
