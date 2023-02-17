@@ -93,9 +93,9 @@ switch ($_GET['type']) {
                                 <thead>
                                     <tr>
                                         <th style=\"width: 12%; font-weight: bold; font-size: 16px; text-align: left; padding: 10px;\">Events</th>
-                                        <th style=\"width: 40%; font-weight: bold; font-size: 16px; text-align: left; padding: 10px;\"></th>
+                                        <th style=\"width: 30%; font-weight: bold; font-size: 16px; text-align: left; padding: 10px;\"></th>
                                         <th style=\"width: 10%; font-weight: bold; font-size: 16px; text-align: left; padding: 10px;\"></th>
-                                        <th style=\"width: 38%; font-weight: bold; font-size: 16px; text-align: left; padding: 10px;\"></th>
+                                        <th style=\"width: 48%; font-weight: bold; font-size: 16px; text-align: left; padding: 10px;\"></th>
                                     </tr>
                                     <tr style=\"background-color: rgb(85, 85, 85);\">
                                         <th style=\"font-weight: bold; font-size: 13px; color: #FFFFFF; text-align: left; padding: 10px;\">Date</th>
