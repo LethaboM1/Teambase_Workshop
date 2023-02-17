@@ -21,14 +21,14 @@ switch ($_GET['type']) {
 
                     $font = ""; //"font-family: 'Open Sans', sans-serif;";
                     $pdf = "
-                            <table style=\"width: 800px; border-collapse: collapse; table-layout: fixed;\"> 
+                            <table style=\"width: 760px; border-collapse: collapse; table-layout: fixed;\"> 
                                 <tr>
                                     <th style=\"width: 50%; font-weight: bold; font-size: 20px; text-align: left; border: none;\">Job Card # {$jobcard_['jobcard_number']}</th>
                                     <th style=\"width: 50%; font-weight: bold; font-size: 20px; text-align: left; border: none;\">Plant # {$plant_['plant_number']}</th>
                                 </tr> 
                             </table>
                             <br>
-                            <table style=\"width: 700px; border-collapse: collapse; table-layout: fixed;\">
+                            <table style=\"width: 760px; border-collapse: collapse; table-layout: fixed;\">
                                 <tr>
                                     <td style=\"width: 50%; font-weight: normal; font-size: 13px; text-align: left; border: 1.5px solid rgb(39, 39, 39); border-bottom: none; padding-left: 5px; padding-top: 5px;\"><strong>Status:</strong> " . ucfirst($jobcard_['status']) . "</td>
                                     <td style=\"width: 50%; font-weight: normal; font-size: 13px; text-align: left; border: 1.5px solid rgb(39, 39, 39); border-left: none; border-bottom: none; padding-left: 5px; padding-top: 5px;\"><strong>Type:</strong> " . ucfirst($jobcard_['jobcard_type']) . "</td>
@@ -46,7 +46,7 @@ switch ($_GET['type']) {
 
                     if (is_array($extras) && count($extras) > 0) {
 
-                        $pdf .= "<table style=\"width: 750px; border-collapse: collapse; table-layout: fixed; background-color: rgb(231, 231, 231);\">
+                        $pdf .= "<table style=\"width: 760px; border-collapse: collapse; table-layout: fixed; background-color: rgb(231, 231, 231);\">
                                     <thead>
                                         <tr>
                                             <th style=\"font-weight: bold; font-size: 16; text-align: left; padding: 10px;\">Extras</th>
