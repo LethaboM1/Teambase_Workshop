@@ -58,6 +58,29 @@
 				echo "<h4>No completed job cards.</h4>";
 			}
 		}
+
+		$jscript_function .= "
+							function print_request (request_id) {
+								$.ajax({
+									method:'get',
+									url:'includes/ajax.php',
+									data: {
+										cmd:'print_request',
+										id: request_id
+									},
+									success: function (result) {
+										let data = JSON.parse(result);
+										if (data.status=='ok') {
+											window.open(data.path,`_blank`);
+										} else if (data.status=='error') {
+											console.log(`Error: `. data.message);
+										} else {																						
+											console.log(`Error: API error`);
+										}
+									}	
+								});
+							}
+							";
 		?>
 	</div>
 </div>

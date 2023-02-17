@@ -50,6 +50,76 @@
                                     }
                                     ?>
                                     <div class="row">
+                                        <div class="col-sm-12">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Component</th>
+                                                        <th>severity</th>
+                                                        <th style='width:85px;'>Hours</th>
+                                                        <th style='width:25px;'></th>
+                                                        <th>Comment</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php
+                                                    $get_reports = dbq("select * from jobcard_reports where job_id={$jobcard['job_id']}");
+                                                    $allocated_hours = 0;
+                                                    if ($get_reports) {
+                                                        if (dbr($get_reports) > 0) {
+                                                            while ($report = dbf($get_reports)) {
+                                                    ?>
+                                                                <tr>
+                                                                    <td><?= $report['component'] ?></td>
+                                                                    <td><?= $report['severity'] ?></td>
+                                                                    <td><?= $report['hours'] ?></td>
+                                                                    <td><span id="<?= $report['id'] ?>_div"></span></td>
+                                                                    <td><?= $report['comment'] ?></td>
+                                                                </tr>
+                                                            <?php
+
+                                                                $jscript .= "
+                                                                            $('#{$report['id']}_report_hours').change(function () {
+                                                                                $.ajax({
+                                                                                    method:'post',
+                                                                                    url:'includes/ajax.php',
+                                                                                    data: {
+                                                                                        cmd:'report_hours_ajust',
+                                                                                        id: '{$report['id']}',
+                                                                                        job_id: '{$jobcard['job_id']}',
+                                                                                        hours: $(this).val()
+                                                                                    },
+                                                                                    success: function (result) {
+                                                                                        let data = JSON.parse(result);
+
+                                                                                        if (data.status=='ok') {																						
+                                                                                            $('#{$report['id']}_div').html(`<i class='fa fa-check text-success'></i>`);
+                                                                                            $('#{$jobcard['id']}_allocated_hours').val(data.hours);
+                                                                                        } else {																						
+                                                                                            $('#{$report['id']}_div').html(`<i class='fa fa-times text-danger'></i>`);
+                                                                                        }
+                                                                                    },
+                                                                                    error: function () {}
+                                                                                });
+                                                                            });
+                                                                            ";
+                                                            }
+                                                        } else {
+                                                            ?>
+
+                                                            <tr>
+                                                                <td colspan="5">No fault / inspections reports</td>
+                                                            </tr>
+                                                    <?php
+
+                                                        }
+                                                    }
+                                                    ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
                                             <label class="col-form-label" for="formGroupExampleInput">Job Number</label>
                                             <input type="text" name="jobnumber" value="" placeholder="Job card Number" class="form-control">
@@ -58,8 +128,8 @@
                                         if ($jobcard['jobcard_type'] != 'sundry') {
                                         ?>
                                             <div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-                                                <label class="col-form-label" for="formGroupExampleInput">Allocated Hours</label>
-                                                <input type="number" name="allocated_hours" class="form-control" value="<?= $jobcard['allocated_hours'] ?>" disabled>
+                                                <label class="col-form-label" for="formGroupExampleInput">Allocated Hours </label>
+                                                <input class="form-control" type="number" step="0.5" id='<?= $jobcard['id'] ?>_allocated_hours' name='allocated_hours' value="<?= round($jobcard['allocated_hours'], 2) ?>" disabled>
                                             </div>
                                         <?php
                                         }
@@ -88,80 +158,21 @@
                 ?>
                     <h2 class="card-title">Sundry Jobcard</h2>
                 <?php
+                } else if ($jobcard['jobcard_type'] == 'service') {
+                ?>
+                    <h2 class="card-title">Plant: <?= $plant_['plant_number'] ?>, <?= ucfirst($jobcard['jobcard_type']) ?>, Type: <?= $jobcard['service_type'] ?>,&nbsp;[<?= date('Y-m-d', strtotime($jobcard['job_date']))  ?>] </h2>
+                <?php
+
                 } else {
                 ?>
-                    <h2 class="card-title">Plant: <?= $plant_['plant_number'] ?></h2>
+                    <h2 class="card-title">Plant: <?= $plant_['plant_number'] ?>, <?= ucfirst($jobcard['jobcard_type']) ?>,&nbsp;[<?= date('Y-m-d', strtotime($jobcard['job_date']))  ?>]</h2>
                 <?php
                 }
                 ?>
-                <p class="card-subtitle"><b>Date</b>&nbsp;<?= date('Y-m-d', strtotime($jobcard['job_date'])) ?><br><b>Logged by:</b><?= $logged_by_['name'] ?><br><?= $jobcard['fault_description'] ?><br></p>
+                <p class="card-subtitle"><b>Logged by:</b><?= $logged_by_['name'] ?><br><?= $jobcard['fault_description'] ?><br></p>
             </a>
         </div>
     </section>
 </div>
 
 <?php
-
-/*
-<!-- Job Card Good -->
-                <a class="mb-1 mt-1 mr-1 modal-sizes" href="#modalviewjob_<?= $jobcard['job_id'] ?>"><i class="fa-solid fa-eye fa-2x"></i></a>
-                <!-- Modal view -->
-                <div id="modalviewjob_<?= $jobcard['job_id'] ?>" class="modal-block modal-block-lg mfp-hide">
-                    <section class="card">
-                        <header class="card-header">
-                            <h2 class="card-title">View Job Card</h2>
-                        </header>
-                        <div class="card-body">
-                            <div class="modal-wrapper">
-                                <div class="modal-text">
-                                    <b>Logged by:</b>&nbsp;<?= $logged_by_['name'] ?><br>
-                                    <b>Fault:</b><br><?= $jobcard['fault_description'] ?><br>
-                                    <b>Extras</b><br>
-                                    <div class="row">
-                                        <?php
-                                        if (strlen($jobcard['safety_audit']) > 0) {
-                                            $safety_audit = json_decode(base64_decode($jobcard['safety_audit']), true);
-                                        } else {
-                                            $safety_audit = [];
-                                        }
-
-                                        if (is_array($safety_audit)) {
-
-                                            if (count($safety_audit) > 0) {
-                                                foreach ($safety_audit as $line) {
-                                        ?>
-                                                    <div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-                                                        <div class="checkbox-custom checkbox-default">
-                                                            <input type="checkbox" <?php if ($line['answer'] == 'Yes') {
-                                                                                        echo "checked='checked'";
-                                                                                    } ?> disabled>
-                                                            <label for="checkboxExample1"><?= $line['name'] ?></label>
-                                                        </div>
-                                                    </div>
-                                                <?php
-                                                }
-                                            } else {
-                                                ?>
-                                                <div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-                                                    Nothing to list
-                                                </div>
-                                        <?php
-                                            }
-                                        }
-                                        ?>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <footer class="card-footer">
-                            <div class="row">
-                                <div class="col-md-12 text-right">
-                                    <button class="btn btn-default modal-dismiss">Cancel</button>
-                                </div>
-                            </div>
-                        </footer>
-                    </section>
-                </div>
-                <!-- Modal view End -->
-                <!-- Job Card End -->
-*/

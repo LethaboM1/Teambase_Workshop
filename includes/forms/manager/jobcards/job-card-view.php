@@ -77,7 +77,7 @@ if (isset($_POST['complete_jobcard'])) {
                     sqlError();
                 }
             } else {
-                error("There are unresolved part requests for this job card. Management must resolve this request before you can close the job card.");
+                error("There are unresolved requisition(s) for this job card. Management must resolve before you can close the job card.");
             }
         } else {
             error("reading must be higher or equal to last reading");

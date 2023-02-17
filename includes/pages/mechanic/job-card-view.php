@@ -42,17 +42,6 @@
 						}
 						?>
 					</div>
-
-					<!-- <div class="row">
-						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<label class="col-form-label" for="formGroupExampleInput">Time In</label>
-							<input type="text" name="timeIn" placeholder="Time In" class="form-control">
-						</div>
-						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<label class="col-form-label" for="formGroupExampleInput">Travel Time</label>
-							<input type="text" name="travelTime" placeholder="Travel Time" class="form-control">
-						</div>
-					</div>-->
 					<hr>
 
 					<?php
@@ -105,6 +94,7 @@
 			</section>
 		</form>
 	</div>
+
 	<?php
 	if ($jobcard_['status'] == 'logged' || is_null($jobcard_['clerk_id']) || $jobcard_['clerk_id'] == 0) {
 	?><div class="col-lg-6 mb-3">
@@ -148,151 +138,69 @@
 		</div>
 	<?php } ?>
 
-	<!-- Modal add event -->
-	<div id="modalAddEvent" class="modal-block modal-block-lg mfp-hide">
-		<form method="post">
-			<section class="card">
-				<header class="card-header">
-					<h2 class="card-title">Add Event</h2>
-				</header>
-				<div class="card-body">
-					<h2 class="card-title">Events</h2><br>
-					<div class="row">
-						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<label class="col-form-label" for="formGroupExampleInput">Event Date</label>
-							<input type="date" name="event_date" class="form-control" value="<?= date('Y-m-d') ?>">
-						</div>
-						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<label class="col-form-label" for="formGroupExampleInput">Hours Worked</label>
-							<input type="number" name="total_hours" step="0.5" class="form-control" value="1">
-						</div>
-						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<label class="col-form-label" for="formGroupExampleInput">Select Event</label>
-							<select class="form-control mb-3" name="event" id="event">
-								<option value="0">Select a Event</option>
-								<option value="Engine">Engine</option>
-								<option value="Clutch">Clutch</option>
-								<option value="Gearbox">Gearbox/Drive Train</option>
-								<option value="Axlerear">Axel + Suspension Rear</option>
-								<option value="Axlefront">Axel + Suspension Front</option>
-								<option value="Brakes">Brakes</option>
-								<option value="Cab">Cab + Accessories</option>
-								<option value="Electrical">Electrical</option>
-								<option value="Hydraulics ">Hydraulics </option>
-								<option value="Structure">Structure</option>
-							</select>
-						</div>
-						<div class="col-sm-12 col-md-8 pb-sm-9 pb-md-0">
-							<label class="col-lg-3 control-label" for="Comment">Comment</label>
-							<div class="col-lg-12">
-								<textarea name="comment" class="form-control" rows="3" id="Comment"></textarea>
-							</div>
-						</div>
-						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-
-						</div>
-					</div>
-				</div>
-				<footer class="card-footer">
-					<div class="row">
-						<div class="col-md-12 text-right">
-							<button type="submit" name="add_event" class="btn btn-primary">Add Event</button>&nbsp;<button class="btn btn-default modal-dismiss">Cancel</button>
-						</div>
-					</div>
-				</footer>
-			</section>
-		</form>
-	</div>
-	<!-- Modal view End -->
-
-	<!-- Modal Close Jobcard -->
-	<div id="modalCloseJob" class="modal-block modal-block-lg mfp-hide">
-		<form method="post">
-			<section class="card">
-				<header class="card-header">
-					<h2 class="card-title">Complete Job Card</h2>
-				</header>
-				<div class="card-body">
-					<div class="modal-wrapper">
-						<div class="modal-text">
-							<div class="row">
-								<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-									<label class="col-form-label" for="formGroupExampleInput">Date Completed</label>
-									<?= inp('compdate', '', 'hidden', date("Y-m-d\TH:i:s")) ?>
-									<input type="datetime-local" name="compdate_" placeholder="Last Service Date" class="form-control" value="<?= date("Y-m-d\TH:i") ?>">
-								</div>
-
-								<?php
-								if ($jobcard_['jobcard_type'] != 'sundry') {
-								?>
-									<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-										<label class="col-form-label" for="formGroupExampleInput">(<?= strtoupper($plant_['reading_type']) ?>) Reading</label>
-										<input type="text" name="reading" placeholder="Reading" class="form-control">
-									</div>
-								<?php
-								}
-								?>
-							</div>
-						</div>
-					</div>
-				</div>
-				<footer class="card-footer">
-					<div class="row">
-						<div class="col-md-12 text-right">
-							<button type="submit" name="complete_jobcard" class="btn btn-primary">Completed</button>&nbsp;<button class="btn btn-default modal-dismiss">Cancel</button>
-						</div>
-					</div>
-				</footer>
-			</section>
-		</form>
-	</div>
-	<!-- Modal view End -->
 
 
-
-	<?php
-	if ($jobcard_['jobcard_type'] != 'sundry') {
-	?>
-		<!-- Modal view -->
-		<div id="modalrequestspare" class="modal-block modal-block-lg mfp-hide">
+	<?php if ($_SESSION['user']['role'] == 'manager' && $_SESSION['user']['role'] == 'system' && $_SESSION['user']['role'] == 'clerk') { ?>
+		<div class="col-lg-6 mb-3">
 			<form method="post">
 				<section class="card">
 					<header class="card-header">
-						<h2 class="card-title">Spares Requisition BO</h2>
+						<div class="row">
+							<div class="col-md-9">
+								<h2 class="card-title">Allocated Hours</h2>
+								<p class="card-subtitle">Allocated Hours</p>
+							</div>
+						</div>
+					</header>
+					<div class="card-body">
+						<div class="row">
+							<div class="col-md-12 mb-4">
+								<?= inp('allocated_hours', 'Allocated Hours', 'number', $jobcard_['allocated_hours'], '', 0, '', ' step="0.5"') ?>
+							</div>
+							<div class='col-md-12'>
+								<?= inp('allocate_hours', '&nbsp', 'inline-submit', 'Allocate', 'btn-primary') ?>
+							</div>
+						</div>
+					</div>
+					<footer class="card-footer text-end">
+
+					</footer>
+				</section>
+			</form>
+		</div>
+	<?php } else { ?>
+		<h3>Allocated Hours: <?= $jobcard_['allocated_hours'] ?></h3>
+	<?php } ?>
+
+
+	<?php if ($jobcard_['type'] != 'service') { ?>
+		<!-- Modal Close Jobcard -->
+		<div id="modalCloseJob" class="modal-block modal-block-lg mfp-hide">
+			<form method="post">
+				<section class="card">
+					<header class="card-header">
+						<h2 class="card-title">Complete Job Card</h2>
 					</header>
 					<div class="card-body">
 						<div class="modal-wrapper">
 							<div class="modal-text">
 								<div class="row">
-									<div class="col-sm-12 col-md-4">
-										<label class="col-form-label">Date/Time</label>
-										<?php
-										$datetime = date("Y-m-d\TH:i:s");
-										echo inp('request_date', '', 'hidden', $datetime)
-										?>
-										<input type="datetime-local" name="date" class="form-control" value="<?= $datetime ?>" disabled>
+									<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+										<label class="col-form-label" for="formGroupExampleInput">Date Completed</label>
+										<?= inp('compdate', '', 'hidden', date("Y-m-d\TH:i:s")) ?>
+										<input type="datetime-local" name="compdate_" placeholder="Last Service Date" class="form-control" value="<?= date("Y-m-d\TH:i") ?>">
 									</div>
-								</div>
-								<hr>
-								<div class="row">
-									<div class="col-sm-3 col-md-3">
-										<label class="col-form-label">Qty</label>
-										<input type="number" name="qty" placeholder="qty" min='1' value="1" class="form-control">
-									</div>
-									<div class="col-sm-3 col-md-3">
-										<label class="col-form-label">Part Number</label>
-										<input type="text" name="part_number" placeholder="Part Number" class="form-control">
-									</div>
-									<div class="col-sm-6 col-md-6">
-										<label class="col-form-label">Description</label>
-										<input type="text" name="part_description" placeholder="Description" class="form-control">
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-sm-12 col-md-12">
-										<label class="col-form-label">Comment</label>
-										<textarea name="comment" class="form-control" rows="3" id="textareaDefault"></textarea>
-									</div>
+
+									<?php
+									if ($jobcard_['jobcard_type'] != 'sundry') {
+									?>
+										<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+											<label class="col-form-label" for="formGroupExampleInput">(<?= strtoupper($plant_['reading_type']) ?>) Reading</label>
+											<input type="text" name="reading" placeholder="Reading" class="form-control">
+										</div>
+									<?php
+									}
+									?>
 								</div>
 							</div>
 						</div>
@@ -300,273 +208,51 @@
 					<footer class="card-footer">
 						<div class="row">
 							<div class="col-md-12 text-right">
-								<button name='add_part' type="submit" class="btn btn-primary">Add Part</button>
-								&nbsp;<button class="btn btn-default modal-dismiss">Cancel</button>
+								<button type="submit" name="complete_jobcard" class="btn btn-primary">Completed</button>&nbsp;<button class="btn btn-default modal-dismiss">Cancel</button>
 							</div>
 						</div>
 					</footer>
 				</section>
 			</form>
 		</div>
-	<?php
-	}
-	?>
-	<!-- Modal view End -->
+		<!-- Modal view End -->
+	<?php } ?>
+
 	<div class="col-lg-12 mb-3">
-		<section class="card">
-			<header class="card-header">
-				<h2 class="card-title">Events</h2>
-			</header>
-
-			<div class="card-body">
-				<div class="header-right">
-					<a class="mb-1 mt-1 mr-1 modal-basic" href="#modalAddEvent"><button class="btn btn-primary">Add Event</button></a>
-				</div>
-				<table width="1047" class="table table-responsive-md mb-0">
-					<thead>
-						<tr>
-							<th width="100">Date</th>
-							<th width="100">Type</th>
-							<th width="120">Time Worked</th>
-							<th width="459">Comments</th>
-							<th width="120">Action</th>
-						</tr>
-					</thead>
-					<tbody>
-						<?php
-						$get_job_events = dbq("select * from jobcard_events where job_id={$_GET['id']} order by start_datetime");
-						if ($get_job_events) {
-							if (dbr($get_job_events) > 0) {
-								while ($event = dbf($get_job_events)) {
-									$event_date = date_create($event['start_datetime']);
-									$event_date = date_format($event_date, 'Y-m-d');
-						?>
-									<tr>
-										<td><?= $event_date ?></td>
-										<td><?= $event['event'] ?></td>
-										<td><?= $event['total_hours'] ?></td>
-										<td><?= $event['comment'] ?></td>
-										<td class="actions">
-											<a class="mb-1 mt-1 mr-1 modal-basic" href="#modalEditEvent_<?= $event['event_id'] ?>"><i class="fas fa-pencil-alt"></i></a>
-										</td>
-									</tr>
-								<?php
-
-									$modal .= '
-											
-											<div id="modalEditEvent_' . $event['event_id'] . '" class="modal-block modal-block-lg mfp-hide">
-												<section class="card">
-													<form method="post">
-													<header class="card-header">
-														<h2 class="card-title">View Event</h2>
-													</header>
-													<div class="card-body">
-													
-													<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">'
-										. inp('event_id', '', 'hidden', $event['event_id'])
-										. inp('event_date', 'Event Date', 'date', $event_date)
-										. inp('total_hours', 'Hours Worked', 'number', $event['total_hours'], '', 0, '', ' step="0.5"')
-										. '
-														</div>
-														<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">';
-									$select_event_ = [
-										['name' => 'Select Event', 'value' => '0'],
-										['name' => 'Engine', 'value' => 'Engine'],
-										['name' => 'Clutch', 'value' => 'Clutch'],
-										['name' => 'Gearbox/Drive Train', 'value' => 'Gearbox'],
-										['name' => 'Axel + Suspension Rear', 'value' => 'Axlerear'],
-										['name' => 'Axel + Suspension Front', 'value' => 'Axlefront'],
-										['name' => 'Brakes', 'value' => 'Brakes'],
-										['name' => 'Cab + Accessories', 'value' => 'Cab'],
-										['name' => 'Electrical', 'value' => 'Electrical'],
-										['name' => 'Hydraulics ', 'value' => 'Hydraulics '],
-										['name' => 'Structure', 'value' => 'Structure']
-
-									];
-
-									$modal .=					inp('event', 'Select Event', 'select', $event['event'], '', 0, $select_event_)
-										. '															
-														</div>
-														<div class="col-sm-12 col-md-8 pb-sm-9 pb-md-0">'
-										. inp('comment', 'Comment', 'textarea', $event['comment'])
-										. '
-														</div>
-													</div>
-													<footer class="card-footer">
-														<div class="row">
-															<div class="col-md-12 text-right">															
-																<button type="submit" value="save" name="save_event" class="btn btn-primary">Save</button>
-																<button class="btn btn-default modal-dismiss">Cancel</button>
-															</div>
-														</div>
-													</footer>
-													</form>
-												</section>
-											</div>
-											';
-								}
-							} else {
-								?>
-								<tr>
-									<td colspan='5'>Nothing to list</td>
-								</tr>
-						<?php
-							}
-						}
-						?>
-					</tbody>
-				</table>
-			</div>
-		</section>
-
-		<?php
-		if ($jobcard_['jobcard_type'] != 'sundry') {
-		?>
-			<section class="card">
-				<header class="card-header">
-					<h2 class="card-title">Spares Requisition BO</h2>
-				</header>
-				<div class="card-body">
-					<div class="header-right">
-						<a class="mb-1 mt-1 mr-1" href="dashboard.php?page=add-job-requisition&id=<?= $_GET['id'] ?>"><button class="btn btn-primary">Request Spares</button></a>
-					</div>
-					<table class="table table-responsive-md mb-0">
-						<thead>
-							<tr>
-								<th>Date/Time</th>
-								<th>Request ID.</th>
-								<th>Status</th>
-								<th>Status:Comment</th>
-								<th></th>
-							</tr>
-						</thead>
-						<tbody>
-							<?php
-							$get_jobcard_requesitions = dbq("select * from jobcard_requisitions where job_id={$_GET['id']}");
-							if ($get_jobcard_requesitions) {
-								if (dbr($get_jobcard_requesitions) > 0) {
-									while ($row = dbf($get_jobcard_requesitions)) {
-										if ($row['status'] != 'requested') {
-											$comment_ = $row[$row['status'] . '_by_comment'];
-										} else {
-											$comment_ = '';
-										}
-										echo "<tr>
-													<td>{$row['datetime']}</td>
-													<td>{$row['request_id']}</td>
-													<td>{$row['comment']}</td>
-													<td>" . ucfirst($row['status']) . "</td>
-													<td>{$comment_}</td>
-													<td class='actions'>
-														<a class='mb-1 mt-1 mr-1 modal-basic' href='#modalViewRequest_" . $row['request_id'] . "'><i class='fa fa-eye'></i></a>
-														<!-- Modal Edit Event End -->
-														<!-- Modal Delete -->
-														<a class='mb-1 mt-1 mr-1 modal-basic' href='#modalDeleteRequest_" .  $row['request_id'] . "'><i class='far fa-trash-alt'></i></a>
-														<!-- Modal Delete End -->
-													</td>
-											</tr>";
-
-										$modal .= '<div id="modalDeleteRequest_' . $row['request_id'] . '" class="modal-block modal-header-color modal-block-danger mfp-hide">
-												<form method="post">
-													<section class="card">
-														<header class="card-header">
-															<h2 class="card-title">Are you sure?</h2>
-														</header>
-														<div class="card-body">
-															<div class="modal-wrapper">
-																<div class="modal-icon">
-																	<i class="fas fa-times-circle"></i>
-																</div>
-																<div class="modal-text">
-																	<h4>Danger</h4>
-																	' . inp('request_id', '', 'hidden', $row['request_id']) . '
-																	<p>Are you sure that you want to delete this part request?</p>
-																</div>
-															</div>
-														</div>
-														<footer class="card-footer">
-															<div class="row">
-																<div class="col-md-12 text-right">
-																	<button name="delete_request" type="submit" class="btn btn-danger">Confirm</button>
-																	<button type="button" class="btn btn-danger modal-dismiss" data-bs-dismiss="modal">Cancel</button>
-																</div>
-															</div>
-														</footer>
-													</section>
-												</form>
-											</div>
-											
-											<div id="modalViewRequest_' . $row['request_id'] . '" class="modal-block modal-block-lg mfp-hide">
-												<section class="card">
-													<header class="card-header">
-														<h2 class="card-title">View Request</h2>
-													</header>
-													<div class="card-body">
-														<div class="modal-wrapper">
-															<div class="modal-text">
-																<b>Date/Time</b>&nbsp;' .  $row['datetime'] . '<br>		
-																<b>Request ID</b>&nbsp;' . $row['request_id'] . '<br>
-																<b>Status</b><br>' . $row['status'] . '<br>
-																<b>Status:Comment</b><br>' . $comment_ . '<br>
-																<table class="table table-hover">
-																	<thead>
-																		<th>Part No</th>
-																		<th>Description</th>
-																		<th>Qty</th>
-																		<th>Comment</th>
-																		<th></th>
-																	</thead>
-																	<tbody>';
-										$get_parts = dbq("select * from jobcard_requisition_parts where request_id={$row['request_id']}");
-										if ($get_parts) {
-											if (dbr($get_parts) > 0) {
-												while ($part = dbf($get_parts)) {
-													$modal .= "<tr>
-																<td>{$part['part_number']}</td>
-																<td>{$part['part_description']}</td>
-																<td>{$part['qty']}</td>
-																<td>{$part['comment']}</td>
-																<td>
-																	
-																</td>
-															</tr>";
-												}
-											}
-										}
-
-										$modal .= '						</tbody>
-																</table>
-															</div>
-														</div>
-													</div>
-													<footer class="card-footer">
-														<div class="row">
-															<div class="col-md-12 text-right">
-																<button class="btn btn-default modal-dismiss">Cancel</button>
-															</div>
-														</div>
-													</footer>
-												</section>
-											</div>
-											';
-									}
-								} else {
-									echo "<tr><td colspan='7'>Nothing to list...</td></tr>";
-								}
-							} else {
-								echo "<tr><td colspan='7'>Error: " . dbe() . "</td></tr>";
-							}
-
-							?>
-						</tbody>
-					</table>
-					<hr>
-				</div>
-			</section>
-		<?php
+		<?php if ($jobcard_['jobcard_type'] != 'service') {
+			require_once "inc.evt.php";
 		}
-		?>
+
+		if ($jobcard_['jobcard_type'] != 'sundry') {
+			require_once "inc.sr.php";
+		}
+
+		require_once "inc.ra.php";
+		require_once "inc.tr.php"; ?>
 	</div>
 </div>
 <?php
 echo $modal;
+$jscript_function = "
+					function print_request (request_id) {
+						$.ajax({
+							method:'get',
+							url:'includes/ajax.php',
+							data: {
+								cmd:'print_request',
+								id: request_id
+							},
+							success: function (result) {
+								let data = JSON.parse(result);
+								if (data.status=='ok') {
+									window.open(data.path,`_blank`);
+								} else if (data.status=='error') {
+									console.log(`Error: `. data.message);
+								} else {																						
+									console.log(`Error: API error`);
+								}
+							}	
+						});
+					}
+					";
+?>

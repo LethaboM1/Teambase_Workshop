@@ -111,7 +111,6 @@ if ($_SESSION['user']['role'] != 'mechanic') {
 		</section>
 	</div>
 </div>
-
 <?php
 
 /* 

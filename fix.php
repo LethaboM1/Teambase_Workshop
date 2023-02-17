@@ -1,6 +1,23 @@
 <?php
 require_once "includes/check.php";
 
+$get_assessment = dbq("select * from jobcards where risk_assessment is not null");
+
+if ($get_assessment) {
+    if (dbr($get_assessment) > 0) {
+        while ($assessment = dbf($get_assessment)) {
+            $add = dbq("insert into jobcard_risk_assessments set job_id={$assessment['job_id']}, results='" . $assessment['risk_assessment'] . "'");
+            if ($add) {
+                $update_jobcard = dbq("update jobcards set
+                                            risk_assessment=null
+                                            where job_id={$assessment['job_id']}");
+                if (!$update_jobcard) error_log('SQL error: ' . dbe());
+            }
+        }
+    }
+}
+
+/*
 $get_requisitions = dbq("select * from jobcard_requisitions where part_number is not NULL and (status!='completed' && status!='canceled' && status!='rejected') order by datetime");
 if ($get_requisitions) {
     if (dbr($get_requisitions) > 0) {
@@ -39,3 +56,4 @@ if ($get_requisitions) {
 if (isset($json_)) {
     echo json_encode($json_);
 }
+*/

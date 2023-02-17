@@ -77,7 +77,7 @@ if (isset($_POST['complete_jobcard'])) {
                         go('dashboard.php?page=open-job');
                     } else {
                         $update_plant = dbq("update plants_tbl set
-                                                    {$plant_['reading_type']}_reading={$_POST['reading']},
+                                                    {$plant_['reading_type']}_reading={$_POST['reading']}
                                                     where plant_id={$plant_['plant_id']}");
                         if (mysqli_affected_rows($db) != -1) {
                             msg("job card completed!");
@@ -94,7 +94,7 @@ if (isset($_POST['complete_jobcard'])) {
                     sqlError();
                 }
             } else {
-                error("There are unresolved part requests for this job card. Management must resolve this request before you can close the job card.");
+                error("There are unresolved requisition(s) for this job card. Management must resolve this before you can close the job card.");
             }
         } else {
             error("reading must be higher or equal to last reading");
@@ -113,7 +113,8 @@ if (isset($_POST['delete_request'])) {
                 $update_request = dbq("update jobcard_requisitions set 
                                             status='canceled', 
                                             canceled_by_comment='Canceled by mechanic before being approved.',
-                                            canceled_by={$_SESSION['user']['user_id']} 
+                                            canceled_by={$_SESSION['user']['user_id']},
+                                            canceled_by_time='" . date("Y-m-d\TH:i:s") . "'  
                                             where request_id={$_POST['request_id']}");
                 if ($update_request) {
                     msg("Request has been canceled.");
@@ -131,43 +132,7 @@ if (isset($_POST['delete_request'])) {
         sqlError();
     }
 }
-/*
-if (isset($_POST['add_part'])) {
-    if ($_POST['qty'] > 0) {
-        if (
-            strlen($_POST['part_number'])
-            && strlen($_POST['part_description']) > 0
-        ) {
-            $add_part_request = dbq("insert into jobcard_requisitions set
-                                                datetime='" . $_POST['request_date'] . "',
-                                                job_id='{$_GET['id']}',
-                                                plant_id='{$plant_['plant_id']}',
-                                                requested_by={$_SESSION['user']['user_id']},
-                                                comment='" . htmlentities($_POST['comment'], ENT_QUOTES) . "',
-                                                requested_by_time='" . date("Y-m-d\TH:i:s") . "',
-                                                part_number='{$_POST['part_number']}',
-                                                part_description='{$_POST['part_description']}',
-                                                qty={$_POST['qty']}
-                                                ");
-            if ($add_part_request) {
-                unset($_POST);
-                msg("Part request send.");
-                $job_id = $_GET['id'];
-                $mechanic_id = $_SESSION['user']['user_id'];
-                $request_id = mysqli_insert_id($db);
-                require_once "./includes/forms/mail.manager.new_request.php";
-                go("dashboard.php?page=job-card-view&id={$_GET['id']}");
-            } else {
-                sqlError('', "date: {$_POST['request_date']}");
-            }
-        } else {
-            error("You must type in a part number and description.");
-        }
-    } else {
-        error("Qty cant be 0");
-    }
-}
-*/
+
 if (isset($_POST['add_event'])) {
     if (strlen($_POST['comment']) > 0) {
         if (($_POST['event'] != '0') || ($jobcard_['jobcard_type'] == 'sundry')) {

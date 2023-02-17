@@ -64,7 +64,14 @@ $date = date_format($date, 'Y-m-d');
         <div id="modalviewjob_<?= $row['job_id'] ?>" class="modal-block modal-block-lg mfp-hide">
             <section class="card">
                 <header class="card-header">
-                    <h2 class="card-title">View Job Card</h2>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h2 class="card-title">View Job Card</h2>
+                        </div>
+                        <div class="col-md-6">
+                            <button onclick="window.open(`print.php?type=job-card&id=<?= $row['job_id'] ?>`,`_blank`);" class="btn btn-warning float-right">Print</button>
+                        </div>
+                    </div>
                 </header>
                 <div class="card-body">
                     <div class="modal-wrapper">
@@ -94,75 +101,16 @@ $date = date_format($date, 'Y-m-d');
                                     </p>
                                 </div>
                             </div>
+                            <?php
+                            require "inc.evts.php";
+                            if ($row['jobcard_type'] != 'sundry') {
+                                require "inc.req.php";
+                            }
+                            require "inc.ra.php";
+                            require "inc.tr.php";
+                            ?>
                             <div class="row">
-                                <hr>
-                                <b>Events</b>
-                                <table class="table table-responsive">
-                                    <thead>
-                                        <tr>
-                                            <th>Date</th>
-                                            <th>Note</th>
-                                            <th>Hrs</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <?php
-                                    $get_events = dbq("select * from jobcard_events where job_id={$row['job_id']}");
-                                    if ($get_events) {
-                                        if (dbr($get_events) > 0) {
-                                            while ($events = dbf($get_events)) {
-                                                $date = date_create($events['start_datetime']);
-                                                $date = date_format($date, 'Y-m-d');
-                                                echo "<tr>
-                                                                    <td>{$date}</td>
-                                                                    <td>{$events['comment']}</td>
-                                                                    <td>{$events['total_hours']}</td>
-                                                                    <td></td>
-                                                                </tr>";
-                                            }
-                                        } else {
-                                            echo "<tr><td colspan='4'>No events</td></tr>";
-                                        }
-                                    }
 
-                                    ?>
-                                </table>
-                            </div>
-                            <div class="row">
-                                <hr>
-                                <b>Parts</b>
-                                <table class="table table-responsive">
-                                    <thead>
-                                        <tr>
-                                            <th>Requested</th>
-                                            <th>Part</th>
-                                            <th>Qty</th>
-                                            <th>Status</th>
-                                            <th>Status Date</th>
-                                        </tr>
-                                    </thead>
-                                    <?php
-                                    $get_parts = dbq("select * from jobcard_requisitions where job_id={$row['job_id']} and status!='canceled'");
-                                    if ($get_parts) {
-                                        if (dbr($get_parts) > 0) {
-                                            while ($parts = dbf($get_parts)) {
-                                                $date = date_create($parts['datetime']);
-                                                $date = date_format($date, 'Y-m-d');
-                                                echo "<tr>
-                                                                    <td>{$date}</td>
-                                                                    <td>{$parts['part_number']}{$parts['part_description']}</td>
-                                                                    <td>{$parts['qty']}</td>
-                                                                    <td>{$parts['status']}</td>
-                                                                    <td>{$parts[$parts['status'] . '_by_time']}</td>
-                                                                </tr>";
-                                            }
-                                        } else {
-                                            echo "<tr><td colspan='5'>No Part</td></tr>";
-                                        }
-                                    }
-
-                                    ?>
-                                </table>
                             </div>
                         </div>
                     </div>

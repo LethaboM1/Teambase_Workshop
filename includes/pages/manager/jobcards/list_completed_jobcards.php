@@ -32,7 +32,14 @@ $progress = 100;
                     <div id="modalviewjob_<?= $row['job_id'] ?>" class="modal-block modal-block-lg mfp-hide">
                         <section class="card">
                             <header class="card-header">
-                                <h2 class="card-title">View Job Card</h2>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h2 class="card-title">View Job Card</h2>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button onclick="window.open(`print.php?type=job-card&id=<?= $row['job_id'] ?>`,`_blank`);" class="btn btn-warning float-right">Print</button>
+                                    </div>
+                                </div>
                             </header>
                             <div class="card-body">
                                 <div class="modal-wrapper">
@@ -57,85 +64,13 @@ $progress = 100;
 
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <table class="table table-responsive">
-                                                <thead>
-                                                    <tr>
-                                                        <th width="100">Date</th>
-                                                        <th width="100">Type</th>
-                                                        <th width="120">Time Worked</th>
-                                                        <th width="459">Comments</th>
-                                                        <th width="120">Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <?php
-                                                $get_events = dbq("select * from jobcard_events where job_id={$row['job_id']}");
-                                                if ($get_events) {
-                                                    if (dbr($get_events) > 0) {
-                                                        while ($event = dbf($get_events)) {
-                                                ?><tr>
-                                                                <td><?= $event['start_datetime'] ?></td>
-                                                                <td><?= $event['event'] ?></td>
-                                                                <td><?= $event['total_hours'] ?></td>
-                                                                <td><?= $event['comment'] ?></td>
-                                                                <td class="actions">
-                                                                    <!--<a class="mb-1 mt-1 mr-1 modal-basic" href="#modalViewEvent_<?= $event['event_id'] ?>"><i class="fas fa-pencil-alt"></i></a>
-                                                                    Modal Edit Event End -->
-                                                                    <!-- Modal Delete 
-                                                                    <a class="mb-1 mt-1 mr-1 modal-basic" href="#modalDeleteEvent_<?= $event['event_id'] ?>"><i class="far fa-trash-alt"></i></a>-->
-                                                                    <!-- Modal Delete End -->
-                                                                </td>
-                                                            </tr>
-                                                <?
-                                                        }
-                                                    } else {
-                                                        echo "<tr><td colspan='4'>No events</td></tr>";
-                                                    }
-                                                }
-
-                                                ?>
-                                            </table>
-                                        </div>
                                         <?php
+                                        require "inc.evts.php";
                                         if ($row['jobcard_type'] != 'sundry') {
-                                        ?>
-                                            <div class="row">
-                                                <table class="table table-responsive">
-                                                    <thead>
-                                                        <tr>
-                                                            <th width="100">Date</th>
-                                                            <th width="100">Part No.</th>
-                                                            <th width="120">Description.</th>
-                                                            <th width="459">Qty</th>
-                                                            <th width="120">Completed</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <?php
-                                                    $get_jobrequests = dbq("select * from jobcard_requisitions where job_id={$row['job_id']}");
-                                                    if ($get_jobrequests) {
-                                                        if (dbr($get_jobrequests) > 0) {
-                                                            while ($jobrequest = dbf($get_jobrequests)) {
-                                                    ?><tr>
-                                                                    <td><?= $jobrequest['datetime'] ?></td>
-                                                                    <td><?= $jobrequest['part_number'] ?></td>
-                                                                    <td><?= $jobrequest['part_description'] ?></td>
-                                                                    <td><?= $jobrequest['qty'] ?></td>
-                                                                    <td class="actions">
-                                                                        <?= $jobrequest['completed_by_time'] ?>
-                                                                    </td>
-                                                                </tr>
-                                                    <?
-                                                            }
-                                                        } else {
-                                                            echo "<tr><td colspan='4'>No part requests</td></tr>";
-                                                        }
-                                                    }
-
-                                                    ?>
-                                                </table>
-                                            </div>
-                                        <?php
+                                            require "inc.req.php";
                                         }
+                                        require "inc.ra.php";
+                                        require "inc.tr.php";
                                         ?>
                                     </div>
                                 </div>
@@ -179,92 +114,3 @@ $progress = 100;
 <!-- Job Card Good End -->
 
 <?php
-
-/* 
-
-
-		<!-- Job Card Causion -->
-		<div class="col-md-12">
-			<section class="card card-featured-left card-featured-warning mb-4">
-				<div class="card-body">
-					<div class="card-actions">
-						<!-- View Job Card -->
-						<a class="mb-1 mt-1 mr-1 modal-sizes" href="#modalviewjob2"><i class="fa-solid fa-eye"></i></a>
-						<!-- Modal View -->
-						<div id="modalviewjob2" class="modal-block modal-block-lg mfp-hide">
-							<section class="card">
-								<header class="card-header">
-									<h2 class="card-title">View Job Card</h2>
-								</header>
-								<div class="card-body">
-									<div class="modal-wrapper">
-										<div class="modal-text">
-											<p>Job Card info here...</p>
-
-										</div>
-									</div>
-								</div>
-								<footer class="card-footer">
-									<div class="row">
-										<div class="col-md-12 text-right">
-											<button class="btn btn-default modal-dismiss">Cancel</button>
-										</div>
-									</div>
-								</footer>
-							</section>
-						</div>
-						<!-- Modal View End -->
-						<!-- View Job Card End -->
-					</div>
-					<h2 class="card-title">Plant: HP56521</h2>
-					<p class="card-subtitle">Opend by: Name</p>
-					<div class="progress progress-xl progress-half-rounded m-2">
-						<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%;">20%</div>
-					</div>
-				</div>
-			</section>
-		</div>
-		<!-- Job Card causion -->
-		<!-- Job Card Danger -->
-		<div class="col-md-12">
-			<section class="card card-featured-left card-featured-danger mb-4">
-				<div class="card-body">
-					<div class="card-actions">
-						<!-- View Job Card -->
-						<a class="mb-1 mt-1 mr-1 modal-sizes" href="#modalviewjob3"><i class="fa-solid fa-eye"></i></a>
-						<!-- Modal View -->
-						<div id="modalviewjob3" class="modal-block modal-block-lg mfp-hide">
-							<section class="card">
-								<header class="card-header">
-									<h2 class="card-title">View Job Card</h2>
-								</header>
-								<div class="card-body">
-									<div class="modal-wrapper">
-										<div class="modal-text">
-											<p>Job Card info here...</p>
-
-										</div>
-									</div>
-								</div>
-								<footer class="card-footer">
-									<div class="row">
-										<div class="col-md-12 text-right">
-											<button class="btn btn-default modal-dismiss">Cancel</button>
-										</div>
-									</div>
-								</footer>
-							</section>
-						</div>
-						<!-- Modal View End -->
-						<!-- View Job Card End -->
-					</div>
-					<h2 class="card-title">Plant: HP56521</h2>
-					<p class="card-subtitle">Opend by: Name</p>
-					<div class="progress progress-xl progress-half-rounded m-2">
-						<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%;">80%</div>
-					</div>
-				</div>
-			</section>
-		</div>
-		<!-- Job Card Danger -->
-*/

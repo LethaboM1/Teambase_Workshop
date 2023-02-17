@@ -25,6 +25,19 @@ switch ($_GET['page']) {
         $page_name = 'mechanic/open-job-cards';
         break;
 
+    case 'tyre-action-report':
+        $page_title = 'Tyre Action Report';
+        $page_name = 'mechanic/tyre-action-report';
+        require "./includes/forms/mechanic/jobcards/tyre-action-report.php";
+        break;
+
+    case 'daily-pre-task-mini-view':
+        $page_title = 'View Daily Pre-Task Mini Risk Assessment';
+        $page_name = 'mechanic/daily-pre-task-mini-view';
+        require "./includes/forms/mechanic/jobcards/daily-pre-task-mini-view.php";
+
+        break;
+
     case 'daily-pre-task-mini':
         $page_title = 'Daily Pre-Task Mini Risk Assessment';
         $page_name = 'mechanic/daily-pre-task-mini';
@@ -56,10 +69,6 @@ switch ($_GET['page']) {
     case 'add-job-requisition':
         $page_title = 'Add Requisition Job Card';
         $page_name = 'mechanic/add-job-requisition';
-
-        $jobcard_ = dbf(dbq("select * from jobcards where job_id={$_GET['id']}"));
-        $plant_ = dbf(dbq("select * from plants_tbl where plant_id={$jobcard_['plant_id']}"));
-
         require "./includes/forms/mechanic/jobcards/add-job-requisition.php";
         break;
 

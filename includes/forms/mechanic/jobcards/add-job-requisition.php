@@ -1,5 +1,9 @@
 <?php
 
+
+$jobcard_ = dbf(dbq("select * from jobcards where job_id={$_GET['id']}"));
+$plant_ = dbf(dbq("select * from plants_tbl where plant_id={$jobcard_['plant_id']}"));
+
 if (isset($_POST['cancel'])) {
     unset($_SESSION['request_parts']);
     go('dashboard.php?page=job-card-view&id=' . $_GET['id']);
@@ -39,7 +43,11 @@ if (isset($_POST['request_parts'])) {
 
             if (!isset($error)) {
                 saveRequisition($request_id);
-                go('dashboard.php?page=job-card-view&id=' . $_GET['id']);
+                if ($jobcard['jobcard_type'] == 'service') {
+                    go('dashboard.php?page=plant-schedule&id=' . $_GET['id']);
+                } else {
+                    go('dashboard.php?page=job-card-view&id=' . $_GET['id']);
+                }
             }
         } else {
             $error[] = "Error adding requisition: " . dbe();

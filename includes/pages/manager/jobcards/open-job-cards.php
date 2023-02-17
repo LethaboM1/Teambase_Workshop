@@ -59,8 +59,9 @@
 					} else {
 						$chk_event['start_datetime'] = '';
 					}
-					$row['last_evt_date'] = $chk_event['start_datetime'];
 
+					$row['last_evt_date'] = $chk_event['start_datetime'];
+					if (strlen($row['last_evt_date']) > 0) $row['last_evt_date'] = date('Y-m-d', strtotime($row['last_evt_date']));
 					$jobcards_list[] = $row;
 					//require "./includes/pages/manager/jobcards/list_open_jobcards.php";
 				}

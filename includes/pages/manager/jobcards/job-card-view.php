@@ -19,6 +19,10 @@
 							<label class="col-form-label" for="formGroupExampleInput">Job Number</label>
 							<input type="text" name="jobnumber" class="form-control" value="<?= $jobcard_['jobcard_number'] ?>" disabled>
 						</div>
+						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+							<label class="col-form-label" for="formGroupExampleInput">Date/Time</label>
+							<input type="datetime-local" name="date" placeholder="" class="form-control" value="<?= $jobcard_['job_date'] ?>" disabled>
+						</div>
 						<?php
 						if ($jobcard_['jobcard_type'] != 'sundry') {
 						?>
@@ -37,22 +41,7 @@
 						<?php
 						}
 						?>
-						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<label class="col-form-label" for="formGroupExampleInput">Date/Time</label>
-							<input type="datetime-local" name="date" placeholder="" class="form-control" value="<?= $jobcard_['job_date'] ?>" disabled>
-						</div>
 					</div>
-
-					<!-- <div class="row">
-						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<label class="col-form-label" for="formGroupExampleInput">Time In</label>
-							<input type="text" name="timeIn" placeholder="Time In" class="form-control">
-						</div>
-						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<label class="col-form-label" for="formGroupExampleInput">Travel Time</label>
-							<input type="text" name="travelTime" placeholder="Travel Time" class="form-control">
-						</div>
-					</div>-->
 					<hr>
 
 					<?php
@@ -148,6 +137,8 @@
 			</section>
 		</div>
 	<?php } ?>
+
+
 	<div class="col-lg-6 mb-3">
 		<form method="post">
 			<section class="card">
@@ -336,316 +327,15 @@
 	</div>
 	<!-- Modal view End -->
 
-	<?php if ($jobcard_['jobcard_type'] != 'service') { ?>
-		<div class="col-lg-12 mb-3">
-			<section class="card">
-				<header class="card-header">
-					<h2 class="card-title">Events</h2>
-				</header>
+	<div class="col-lg-12 mb-3">
+		<?php if ($jobcard_['jobcard_type'] != 'service') {
+			require_once "inc.evt.php";
+		} ?>
 
-				<div class="card-body">
-					<div class="header-right">
-						<a class="mb-1 mt-1 mr-1 modal-basic" href="#modalAddEvent"><button class="btn btn-primary">Add Event</button></a>
-					</div>
-					<!-- <form action="#" class="search nav-form">
-					<div class="input-group">
-						<input type="text" class="form-control" name="q" id="q" placeholder="Search Event...">
-						<button class="btn btn-default"><i class="bx bx-search"></i></button>
-					</div>
-				</form> -->
-
-					<table width="1047" class="table table-responsive-md mb-0">
-						<thead>
-							<tr>
-								<th width="100">Date</th>
-								<th width="100">Type</th>
-								<th width="120">Time Worked</th>
-								<th width="459">Comments</th>
-								<th width="120">Action</th>
-							</tr>
-						</thead>
-						<tbody>
-							<?php
-							$get_job_events = dbq("select * from jobcard_events where job_id={$_GET['id']} order by start_datetime");
-							if ($get_job_events) {
-								if (dbr($get_job_events) > 0) {
-									while ($event = dbf($get_job_events)) {
-										$event_date = date_create($event['start_datetime']);
-										$event_date = date_format($event_date, 'Y-m-d');
-							?>
-										<tr>
-											<td><?= $event_date ?></td>
-											<td><?= $event['event'] ?></td>
-											<td><?= $event['total_hours'] ?></td>
-											<td><?= $event['comment'] ?></td>
-											<td class="actions">
-												<a class="mb-1 mt-1 mr-1 modal-basic" href="#modalEditEvent_<?= $event['event_id'] ?>"><i class="fas fa-pencil-alt"></i></a>
-												<!-- Modal Edit Event End -->
-												<!-- Modal Delete -->
-												<a class="mb-1 mt-1 mr-1 modal-basic" href="#modalDeleteEvent_<?= $event['event_id'] ?>"><i class="far fa-trash-alt"></i></a>
-
-											</td>
-										</tr>
-									<?php
-										/* 
-						*/
-										$modal .= '
-						<div id="modalDeleteEvent_' . $event['event_id'] . '" class="modal-block modal-header-color modal-block-danger mfp-hide">
-												<form method="post">
-													<section class="card">
-														<header class="card-header">
-															<h2 class="card-title">Are you sure?</h2>
-														</header>
-														<div class="card-body">
-															<div class="modal-wrapper">
-																<div class="modal-icon">
-																	<i class="fas fa-times-circle"></i>
-																</div>
-																<div class="modal-text">
-																	<h4>Danger</h4>
-																	' . inp('event_id', '', 'hidden', $event['event_id']) . '
-																	<p>Are you sure that you want to delete this event?</p>
-																</div>
-															</div>
-														</div>
-														<footer class="card-footer">
-															<div class="row">
-																<div class="col-md-12 text-right">
-																	<button name="delete_event" type="submit" class="btn btn-danger">Confirm</button>
-																	<button type="button" class="btn btn-danger modal-dismiss" data-bs-dismiss="modal">Cancel</button>
-																</div>
-															</div>
-														</footer>
-													</section>
-												</form>
-											</div>
-											
-											<div id="modalEditEvent_' . $event['event_id'] . '" class="modal-block modal-block-lg mfp-hide">
-												<section class="card">
-												<form method="post">
-													<header class="card-header">
-														<h2 class="card-title">Edit Event</h2>
-													</header>
-													<div class="card-body">
-													
-													<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">';
-
-
-										$modal .= inp('event_id', '', 'hidden', $event['event_id'])
-											. inp('event_date', 'Event Date', 'date', $event_date)
-											. inp('total_hours', 'Hours Worked', 'number', $event['total_hours'], '', 0, '', ' step="0.5"')
-											. '
-														</div>
-														<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">';
-										$select_event_ = [
-											['name' => 'Select Event', 'value' => '0'],
-											['name' => 'Engine', 'value' => 'Engine'],
-											['name' => 'Clutch', 'value' => 'Clutch'],
-											['name' => 'Gearbox/Drive Train', 'value' => 'Gearbox'],
-											['name' => 'Axel + Suspension Rear', 'value' => 'Axlerear'],
-											['name' => 'Axel + Suspension Front', 'value' => 'Axlefront'],
-											['name' => 'Brakes', 'value' => 'Brakes'],
-											['name' => 'Cab + Accessories', 'value' => 'Cab'],
-											['name' => 'Electrical', 'value' => 'Electrical'],
-											['name' => 'Hydraulics ', 'value' => 'Hydraulics '],
-											['name' => 'Structure', 'value' => 'Structure']
-
-										];
-
-										$modal .=					inp('event', 'Select Event', 'select', $event['event'], '', 0, $select_event_)
-											. '															
-														</div>
-														<div class="col-sm-12 col-md-8 pb-sm-9 pb-md-0">'
-											. inp('comment', 'Comment', 'textarea', $event['comment'])
-											. '
-														</div>
-													</div>
-													<footer class="card-footer">
-														<div class="row">
-															<div class="col-md-12 text-right">															
-															<button type="submit" value="save" name="save_event" class="btn btn-primary">Save</button>
-																<button class="btn btn-default modal-dismiss">Cancel</button>
-															</div>
-														</div>
-													</footer>
-													</form>
-												</section>
-											</div>
-											';
-									}
-								} else {
-									?>
-									<tr>
-										<td colspan='5'>Nothing to list</td>
-									</tr>
-							<?php
-								}
-							}
-							?>
-							<!--<tr>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td class="actions">
-								 Modal Edit Event 
-								<a class="mb-1 mt-1 mr-1 modal-basic" href="#modalviewevent"><i class="fas fa-pencil-alt"></i></a>-->
-							<!-- Modal Edit Event End -->
-							<!-- Modal Delete 
-								<a class="mb-1 mt-1 mr-1 modal-basic" href="#modalHeaderColorDanger"><i class="far fa-trash-alt"></i></a>-->
-							<!-- Modal Delete End 
-							</td>
-						</tr>-->
-						</tbody>
-					</table>
-				</div>
-			</section>
-		<?php } ?>
-
-		<?php if ($jobcard_['jobcard_type'] != 'sundry') { ?>
-			<section class="card">
-				<header class="card-header">
-					<h2 class="card-title">Spares Requisition BO</h2>
-				</header>
-				<div class="card-body">
-					<div class="header-right">
-						<a class="mb-1 mt-1 mr-1" href="dashboard.php?page=add-job-requisition&id=<?= $_GET['id'] ?>"><button class="btn btn-primary">Request Spares</button></a>
-					</div>
-					<table class="table table-responsive-md mb-0">
-						<thead>
-							<tr>
-								<th>Date/Time</th>
-								<th>Request ID.</th>
-								<th>Status</th>
-								<th>Status:Comment</th>
-								<th></th>
-							</tr>
-						</thead>
-						<tbody>
-							<?php
-							$get_jobcard_requesitions = dbq("select * from jobcard_requisitions where job_id={$_GET['id']}");
-							if ($get_jobcard_requesitions) {
-								if (dbr($get_jobcard_requesitions) > 0) {
-									while ($row = dbf($get_jobcard_requesitions)) {
-										if ($row['status'] != 'requested') {
-											$comment_ = $row[$row['status'] . '_by_comment'];
-										} else {
-											$comment_ = '';
-										}
-										echo "<tr>
-													<td>{$row['datetime']}</td>
-													<td>{$row['request_id']}</td>
-													<td>{$row['comment']}</td>
-													<td>" . ucfirst($row['status']) . "</td>
-													<td>{$comment_}</td>
-													<td class='actions'>
-														<a class='mb-1 mt-1 mr-1 modal-basic' href='#modalViewRequest_" . $row['request_id'] . "'><i class='fa fa-eye'></i></a>
-														<!-- Modal Edit Event End -->
-														<!-- Modal Delete -->
-														<a class='mb-1 mt-1 mr-1 modal-basic' href='#modalDeleteRequest_" .  $row['request_id'] . "'><i class='far fa-trash-alt'></i></a>
-														<!-- Modal Delete End -->
-													</td>
-											</tr>";
-
-										$modal .= '<div id="modalDeleteRequest_' . $row['request_id'] . '" class="modal-block modal-header-color modal-block-danger mfp-hide">
-												<form method="post">
-													<section class="card">
-														<header class="card-header">
-															<h2 class="card-title">Are you sure?</h2>
-														</header>
-														<div class="card-body">
-															<div class="modal-wrapper">
-																<div class="modal-icon">
-																	<i class="fas fa-times-circle"></i>
-																</div>
-																<div class="modal-text">
-																	<h4>Danger</h4>
-																	' . inp('request_id', '', 'hidden', $row['request_id']) . '
-																	<p>Are you sure that you want to delete this part request?</p>
-																</div>
-															</div>
-														</div>
-														<footer class="card-footer">
-															<div class="row">
-																<div class="col-md-12 text-right">
-																	<button name="delete_request" type="submit" class="btn btn-danger">Confirm</button>
-																	<button type="button" class="btn btn-danger modal-dismiss" data-bs-dismiss="modal">Cancel</button>
-																</div>
-															</div>
-														</footer>
-													</section>
-												</form>
-											</div>
-											
-											<div id="modalViewRequest_' . $row['request_id'] . '" class="modal-block modal-block-lg mfp-hide">
-												<section class="card">
-													<header class="card-header">
-														<h2 class="card-title">View Request</h2>
-													</header>
-													<div class="card-body">
-														<div class="modal-wrapper">
-															<div class="modal-text">
-																<b>Date/Time</b>&nbsp;' .  $row['datetime'] . '<br>		
-																<b>Request ID</b>&nbsp;' . $row['request_id'] . '<br>
-																<b>Status</b><br>' . $row['status'] . '<br>
-																<b>Status:Comment</b><br>' . $comment_ . '<br>
-																<table class="table table-hover">
-																	<thead>
-																		<th>Part No</th>
-																		<th>Description</th>
-																		<th>Qty</th>
-																		<th>Comment</th>
-																		<th></th>
-																	</thead>
-																	<tbody>';
-										$get_parts = dbq("select * from jobcard_requisition_parts where request_id={$row['request_id']}");
-										if ($get_parts) {
-											if (dbr($get_parts) > 0) {
-												while ($part = dbf($get_parts)) {
-													$modal .= "<tr>
-																<td>{$part['part_number']}</td>
-																<td>{$part['part_description']}</td>
-																<td>{$part['qty']}</td>
-																<td>{$part['comment']}</td>
-																<td>
-																	
-																</td>
-															</tr>";
-												}
-											}
-										}
-
-										$modal .= '						</tbody>
-																</table>
-															</div>
-														</div>
-													</div>
-													<footer class="card-footer">
-														<div class="row">
-															<div class="col-md-12 text-right">
-																<button class="btn btn-default modal-dismiss">Cancel</button>
-															</div>
-														</div>
-													</footer>
-												</section>
-											</div>
-											';
-									}
-								} else {
-									echo "<tr><td colspan='7'>Nothing to list...</td></tr>";
-								}
-							} else {
-								echo "<tr><td colspan='7'>Error: " . dbe() . "</td></tr>";
-							}
-
-							?> </tbody>
-					</table>
-					<hr>
-				</div>
-			</section>
-		<?php } ?>
-		</div>
+		<?php if ($jobcard_['jobcard_type'] != 'sundry') {
+			require_once "inc.sr.php";
+		} ?>
+	</div>
 </div>
 <?php
 echo $modal;

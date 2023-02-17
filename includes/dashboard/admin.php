@@ -8,8 +8,17 @@ switch ($_GET['page']) {
 
     case 'job-card-view':
         $page_title = 'View Job Card';
-        $page_name = 'manager/jobcards/job-card-view';
+        // $page_name = 'manager/jobcards/job-card-view';
+        $page_name = 'mechanic/job-card-view';
         require "./includes/forms/manager/jobcards/job-card-view.php";
+        break;
+
+
+    case 'daily-pre-task-mini-view':
+        $page_title = 'View Daily Pre-Task Mini Risk Assessment';
+        $page_name = 'mechanic/daily-pre-task-mini-view';
+        require "./includes/forms/mechanic/jobcards/daily-pre-task-mini-view.php";
+
         break;
 
     case 'add-job-requisition':
@@ -146,6 +155,12 @@ switch ($_GET['page']) {
         $page_title = 'Open Job Card Requisitions';
         $page_name = 'manager/jobcards/job-requisitions-open';
         include "./includes/forms/manager/jobcards/job-requisitions.php";
+        break;
+
+    case 'tyre-reports-new':
+        $page_title = 'Tyre Reports';
+        $page_name = 'manager/jobcards/tyre-reports-new';
+        require "./includes/forms/manager/jobcards/tyre-reports-new.php";
         break;
 
     default:

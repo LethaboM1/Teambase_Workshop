@@ -2,6 +2,7 @@
 require_once "./check.php";
 
 switch ($_GET['cmd']) {
+
     case "print_request":
         if (isset($_GET['id'])) {
             $request_file = 'files/requisitions/' . $_GET['id'] . '_request.pdf';
@@ -25,6 +26,158 @@ switch ($_GET['cmd']) {
 }
 
 switch ($_POST['cmd']) {
+
+    case "remove_insp":
+        if (isset($_POST['component'])) {
+
+            $key = array_search($_POST['component'], array_column($_SESSION['fault_reports'], 'component'));
+            error_log("key = {$key}," . print_r($_SESSION['fault_reports'][$key], true));
+            unset($_SESSION['fault_reports'][$key]);
+
+            $html = '';
+            foreach ($_SESSION['fault_reports'] as $report) {
+                $html .= "<tr>
+                            <td>{$report['component']}</td>
+                            <td>{$report['severity']}</td>
+                            <td>{$report['hours']}</td>
+                            <td>{$report['comment']}</td>
+                            <td>
+                                <a onclick='remove_insp(`{$report['component']}`)'><i class='fa fa-trash'></i></a>                                                            
+                            </td>
+                        </tr>";
+            }
+
+            if (strlen($html) == 0) {
+                $html .= "<tr>
+                            <td colspan='5'>No fault / inspections reports</td>
+                        </tr>";
+            }
+
+            $json_['reports'] = $html;
+            $json_['status'] = 'ok';
+            echo json_encode($json_);
+        } else {
+            $json_['status'] = 'ok';
+            $json_['message'] = 'no part no';
+            echo json_encode($json_);
+        }
+        break;
+
+    case "add_insp":
+
+        $report = json_decode($_POST['insp'], true);
+
+        if (!isset($report['hours'])) {
+            $json_['status'] = 'error';
+            $json_['message'] = 'No hours';
+            echo json_encode($json_);
+            return;
+        }
+
+        if (strlen($report['component']) == 0) {
+            $json_['status'] = 'error';
+            $json_['message'] = 'No component';
+            echo json_encode($json_);
+            return;
+        }
+
+        if (strlen($report['severity']) == 0) {
+            $json_['status'] = 'error';
+            $json_['message'] = 'No severity';
+            echo json_encode($json_);
+            return;
+        }
+
+        if (!is_numeric($report['hours'])) {
+            $json_['status'] = 'error';
+            $json_['message'] = 'invalid hours';
+            echo json_encode($json_);
+            return;
+        }
+
+        if (is_array($_SESSION['fault_reports'])) {
+            if (in_array($report['component'], array_column($_SESSION['fault_reports'], 'component'))) {
+                $key = array_search($report['component'], array_column($_SESSION['fault_reports'], 'component'));
+                $_SESSION['fault_reports'][$key]['hours'] += $report['hours'];
+                $_SESSION['fault_reports'][$key]['severity'] = $report['severity'];
+                $_SESSION['fault_reports'][$key]['comment'] .= '. ' . $report['comment'];
+
+                $html = '';
+                foreach ($_SESSION['fault_reports'] as $report) {
+                    $html .= "<tr>
+                                <td>{$report['component']}</td>
+                                <td>{$report['severity']}</td>
+                                <td>{$report['hours']}</td>
+                                <td>{$report['comment']}</td>
+                                <td>
+                                    <a onclick='remove_insp(`{$report['component']}`)'><i class='fa fa-trash'></i></a>                                                            
+                                </td>
+                            </tr>";
+                }
+                $json_['reports'] = $html;
+                $json_['status'] = 'ok';
+                echo json_encode($json_);
+                return;
+            }
+        }
+
+        $_SESSION['fault_reports'][] = $report;
+        $json_['status'] = 'ok';
+        $html = '';
+        foreach ($_SESSION['fault_reports'] as $report) {
+            $html .= "<tr>
+                        <td>{$report['component']}</td>
+                        <td>{$report['severity']}</td>
+                        <td>{$report['hours']}</td>
+                        <td>{$report['comment']}</td>
+                        <td>
+                            <a onclick='remove_insp(`{$report['component']}`)'><i class='fa fa-trash'></i></a>                                                            
+                        </td>
+                    </tr>";
+        }
+        $json_['reports'] = $html;
+        echo json_encode($json_);
+        return;
+        break;
+
+    case 'report_hours_ajust':
+        if (is_numeric($_POST['hours'])) {
+            if (
+                isset($_POST['id']) > 0
+                && isset($_POST['job_id']) > 0
+            ) {
+                $update = dbq("update jobcard_reports set
+                                    hours={$_POST['hours']}
+                                    where id={$_POST['id']} and job_id={$_POST['job_id']}");
+                if ($update) {
+                    $hours = dbf(dbq("select sum(hours) as hours from jobcard_reports where job_id={$_POST['job_id']}"));
+                    if (!is_numeric($hours['hours'])) {
+                        $hours['hours'] = 0;
+                    }
+
+                    $update_ = dbq("update jobcards set allocated_hours={$hours['hours']} where job_id={$_POST['job_id']}");
+                    if (!$update_) error_log("SQL Error: " . dbe());
+
+                    $json_['status'] = 'ok';
+                    $json_['hours'] = $hours['hours'];
+                } else {
+                    $json_['status'] = 'error';
+                    $json_['message'] = 'invalid id, request id.';
+                }
+            } else {
+                $json_['status'] = 'error';
+                $json_['message'] = 'invalid id, request id.';
+            }
+        } else {
+            $json_['status'] = 'error';
+            $json_['message'] = 'invalid qty.';
+        }
+
+        if (isset($json_)) {
+            echo json_encode($json_);
+        }
+        break;
+
     case "qty_ajust":
         if (is_numeric($_POST['qty'])) {
             if (

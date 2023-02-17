@@ -1,6 +1,7 @@
 <?php
 $get_new_requisitions = dbq("select request_id from jobcard_requisitions where status='requested'");
 $get_open_requisitions = dbq("select request_id from jobcard_requisitions where (status!='completed' && status!='rejected' && status!='canceled' && status!='requested')");
+$get_tyre_reports = dbq("select id from jobcard_tyre_reports where checked_by=0");
 
 $get_new = dbq("select job_id from jobcards where status='logged'");
 $get_new_jobnumber = dbq("select job_id from jobcards where status='allocated'");
@@ -26,6 +27,15 @@ $get_completed = dbq("select job_id from jobcards where status='completed'");
 					<ul class="nav nav-children">
 						<li><a class="nav-link" href="dashboard.php?page=add-user">Add/Manage Users</a></li>
 						<li><a class="nav-link" href="dashboard.php?page=add-plant">Add/Manage Plants</a></li>
+					</ul>
+				</li>
+				<li class="nav-parent">
+					<a class="nav-link" href="#">
+						<i class="bx bx-spreadsheet" aria-hidden="true"></i>
+						<span>Tyre Reports&nbsp;<span class='badge badge-danger'><?= dbr($get_tyre_reports) ?></span></span>
+					</a>
+					<ul class="nav nav-children">
+						<li><a class="nav-link" href="dashboard.php?page=tyre-reports-new">New&nbsp;<span class='badge badge-danger float-end'><?= dbr($get_tyre_reports) ?></span></a></li>
 					</ul>
 				</li>
 				<li class="nav-parent">

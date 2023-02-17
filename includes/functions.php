@@ -330,7 +330,7 @@ function inp($name, $label, $type = 'text', $value = '', $class = '', $required 
 				$form .=  "required";
 				$extra .= ' required';
 			}
-			$form .=  "' name='datalist_" . $name . "_input' id ='datalist_" . $name . "_input' value='" . $value . "' " . $extra . ">";
+			$form .=  "' name='datalist_" . $name . "_input' id ='datalist_" . $name . "_input' value='' " . $extra . ">";
 			$jscript = "
 					<script>
 						document.querySelector('#datalist_{$name}_input').addEventListener('input', function(e) {
@@ -344,10 +344,12 @@ function inp($name, $label, $type = 'text', $value = '', $class = '', $required 
 								$('#{$name}').trigger('change');
 								input.value = options[0].innerText;
 							}						
-						});
-					</script>
+						});"
+				. (strlen($value) > 0 ? "setTimeout(function () { $('#{$name}').trigger('change'); },500);" : "")
+				. "</script>
 			";
-			$form .= "<input type='hidden' name='{$name}' id='{$name}'>";
+			$form .= "<input type='hidden' name='{$name}' id='{$name}' value='{$value}'>";
+
 
 			return $form . $jscript;
 			break;
@@ -711,7 +713,7 @@ function inp($name, $label, $type = 'text', $value = '', $class = '', $required 
 			$form = '';
 			$form .= "<div class='form-group'>
 		 <label>" . $label . "</label>
-		 <textarea class='form-control ";
+		 <textarea class='form-control {$class}";
 			if ($required) {
 				$form .= "required";
 			}
@@ -1392,6 +1394,24 @@ function saveRequisition($request_id)
 	$jobcard_ = dbf(dbq("select * from jobcards where job_id={$request_['job_id']}"));
 	$plant_ = dbf(dbq("select * from plants_tbl where plant_id={$jobcard_['plant_id']}"));
 	$mechanic_ = dbf(dbq("select * from users_tbl where user_id={$jobcard_['mechanic_id']}"));
+	switch ($request_['status']) {
+		case 'canceled':
+			$user_ = dbf(dbq("select name, last_name from users_tbl where user_id={$request_['canceled_by']}"));
+			$signed_by = "{$user_['name']} {$user_['last_name']}, {$request_['canceled_by_time']}";
+			break;
+		case 'rejected':
+			$user_ = dbf(dbq("select name, last_name from users_tbl where user_id={$request_['rejected_by']}"));
+			$signed_by = "{$user_['name']} {$user_['last_name']}, {$request_['rejected_by_time']}";
+			break;
+
+		default:
+			if ($request_['approved_by'] > 0) {
+				$user_ = dbf(dbq("select name, last_name from users_tbl where user_id={$request_['approved_by']}"));
+				$signed_by = "{$user_['name']} {$user_['last_name']}, {$request_['approved_by_time']}";
+			} else {
+				$signed_by = "";
+			}
+	}
 
 	while ($part = dbf($get_parts)) {
 		$parts[] = $part;
@@ -1405,7 +1425,7 @@ function saveRequisition($request_id)
 				<table style='border-collapse:collapse;'>
 				<tr>
 					<td style='border-left: 2px solid black;border-top: 2px solid black; ' colspan='2'><h3>SPARES REQUISITION</h3></td>
-					<td style='border-top: 2px solid black;'></td>
+					<td style='border-top: 2px solid black;'><h3>" . ($request_['status'] == 'canceled' ? " - <span style='color:red;'>CANCELED</span>" : ($request_['status'] == 'rejected' ? " - <span style='color:red;'>REJECTED</span>" : "")) . "</h3></td>
 					<td style='border-right: 2px solid black;border-top: 2px solid black;'></td>
 				</tr>
 				<tr>
@@ -1427,10 +1447,7 @@ function saveRequisition($request_id)
 					<td style='border-right: 2px solid black;'><b>BO</b>&nbsp;<span style='color:red; font-weight: bold; font-size:14px;'>{$request_['request_id']}</span></td>
 				</tr>
 				<tr>
-					<td style='border-left: 2px solid black;border-bottom:2px solid black; '>&nbsp;</td>
-					<td style='border-bottom:2px solid black;'>&nbsp;</td>
-					<td style='border-bottom:2px solid black;'>&nbsp;</td>
-					<td style='border-right: 2px solid black;border-bottom:2px solid black;'>&nbsp;</td>
+					<td style='border-left: 2px solid black;border-bottom:2px solid black; border-right: 2px solid black;'colspan='4'>" . ($request_['status'] == 'rejected' && strlen($request_['rejected_by_comment']) > 0 ? "REJECTED REASON: {$request_['rejected_by_comment']}</span>" : "") . "</td>
 				</tr>
 				<tr>
 					<td style='border-right: 1px solid black;border-left: 2px solid black;border-bottom:2px solid black;'><b>Qty</b></td>
@@ -1470,12 +1487,7 @@ function saveRequisition($request_id)
 	}
 
 	$requested_by = dbf(dbq("select name, last_name from users_tbl where user_id={$request_['requested_by']}"));
-	if ($request_['approved_by'] > 0) {
-		$approved_by = dbf(dbq("select name, last_name from users_tbl where user_id={$request_['approved_by']}"));
-	} else {
-		$approved_by['name'] = '';
-		$approved_by['last_name'] = '';
-	}
+
 
 	$html .= "<tr>
 				<td style='text-align:right; border-right: 1px solid black;border-left: 2px solid black;' colspan='2'><b>REQUESTED BY:</b></td>
@@ -1483,8 +1495,8 @@ function saveRequisition($request_id)
 				<td style='border-right: 1px solid black;'>BS REQ#</td>
 			</tr>
 			<tr>
-				<td style='text-align:right; border-right: 1px solid black;border-left: 2px solid black;border-bottom:2px solid black;' colspan='2'><b>APPROVED BY:</b></td>
-				<td style='border-bottom:2px solid black;border-right: 1px solid black;'>{$approved_by['name']} {$approved_by['last_name']}, {$request_['approved_by_time']}</td>
+				<td style='text-align:right; border-right: 1px solid black;border-left: 2px solid black;border-bottom:2px solid black;' colspan='2'><b>" . ($request_['status'] == 'canceled' ? "CANCELED BY" : ($request_['status'] == 'rejected' ? "REJECTED BY" : "APPROVED BY")) . ":</b></td>
+				<td style='border-bottom:2px solid black;border-right: 1px solid black;'>" . $signed_by . "</td>
 				<td style='border-right: 1px solid black;border-bottom:2px solid black;'>PL09 Rev02 190521</td>
 			</tr>";
 

@@ -7,7 +7,10 @@ if ($_SESSION['user']['role'] == 'clerk') {
   $get_new_jobs_notify = dbq("select job_id from jobcards where status='logged'");
   $get_job_requests = dbq("select * from jobcard_requisitions where status='requested'");
   $get_completed_jobs = dbq("select * from jobcards where status='completed' order by complete_datetime");
+  $get_job_tyre_reports = dbq("select * from  jobcard_tyre_reports where checked_by=0");
+  $count_job_tyre_reports = dbr($get_job_tyre_reports);
 }
+
 $count_new_jobs = dbr($get_new_jobs_notify);
 $count_completed_jobs = dbr($get_completed_jobs);
 $count_new_requests = dbr($get_job_requests);
@@ -28,9 +31,24 @@ $total_notifications = $count_new_jobs + $count_new_requests + $count_completed_
     <div class="content">
       <ul>
         <?php
+        if (isset($count_job_tyre_reports)) {
+          if ($count_job_tyre_reports > 0) {
+        ?>
+            <li>
+              <a href="dashboard.php?page=tyre-reports-new" class="clearfix">
+                <div class="image">
+                  <i class="fas fa-edit bg-warning text-light"></i>
+                </div>
+                <span class="title">New Tyre Reports</span>
+                <span class="message"><?= $count_job_tyre_reports ?> new tyre reports</span>
+              </a>
+            </li>
+          <?php
+          }
+        }
 
         if ($count_new_jobs > 0) {
-        ?>
+          ?>
           <li>
             <a href="dashboard.php?page=new-job" class="clearfix">
               <div class="image">

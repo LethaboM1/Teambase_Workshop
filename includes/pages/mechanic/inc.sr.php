@@ -6,7 +6,7 @@
 		<div class="header-right">
 			<a class="mb-1 mt-1 mr-1" href="dashboard.php?page=add-job-requisition&id=<?= $_GET['id'] ?>"><button class="btn btn-primary">Request Spares</button></a>
 		</div>
-		<table class="table table-responsive-md mb-0">
+		<table class="table table-hover table-responsive-md mb-0">
 			<thead>
 				<tr>
 					<th>Date/Time</th>
@@ -27,13 +27,13 @@
 							} else {
 								$comment_ = '';
 							}
-							echo "<tr>
-													<td>{$row['datetime']}</td>
-													<td>{$row['request_id']}</td>
-													<td>{$row['comment']}</td>
-													<td>" . ucfirst($row['status']) . "</td>
-													<td>{$comment_}</td>
-													<td class='actions'>
+							echo "<tr class='pointer'>
+													<td class='mb-1 mt-1 mr-1 modal-basic' href='#modalViewRequest_" . $row['request_id'] . "'>{$row['datetime']}</td>
+													<td class='mb-1 mt-1 mr-1 modal-basic' href='#modalViewRequest_" . $row['request_id'] . "'>{$row['request_id']}</td>
+													<td class='mb-1 mt-1 mr-1 modal-basic' href='#modalViewRequest_" . $row['request_id'] . "'>{$row['comment']}</td>
+													<td class='mb-1 mt-1 mr-1 modal-basic' href='#modalViewRequest_" . $row['request_id'] . "'>" . ucfirst($row['status']) . "</td>
+													<td class='mb-1 mt-1 mr-1 modal-basic' href='#modalViewRequest_" . $row['request_id'] . "'>{$comment_}</td>
+													<td class='actions' style='width:60px;'>
 														<a class='mb-1 mt-1 mr-1 modal-basic' href='#modalViewRequest_" . $row['request_id'] . "'><i class='fa fa-eye'></i></a>
 														<!-- Modal Edit Event End -->
 														<!-- Modal Delete -->
@@ -75,7 +75,15 @@
 											<div id="modalViewRequest_' . $row['request_id'] . '" class="modal-block modal-block-lg mfp-hide">
 												<section class="card">
 													<header class="card-header">
-														<h2 class="card-title">View Request</h2>
+														<div class="row">
+															<div class="col-md-6">
+																<h2 class="card-title">View Requisition</h2>
+															</div>
+															<div class="col-md-6">
+																<button class="btn btn-lg btn-secondary" onclick="print_request(`' . $row['request_id'] . '`)" type="button">Print</button><br>
+															</div>
+														</div>
+
 													</header>
 													<div class="card-body">
 														<div class="modal-wrapper">

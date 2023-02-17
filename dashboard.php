@@ -7,6 +7,13 @@ if (isset($_SESSION['request_parts'])) {
 	}
 }
 
+
+if (isset($_SESSION['fault_reports'])) {
+	if ($_GET['page'] != 'add-job') {
+		unset($_SESSION['fault_reports']);
+	}
+}
+
 switch ($_SESSION['user']['role']) {
 	case "system":
 		$dashboard = 'admin';

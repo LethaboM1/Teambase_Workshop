@@ -4,6 +4,11 @@
 			<section class="card">
 				<header class="card-header">
 					<h2 class="card-title">Daily Pre-Task Mini Risk Assessment</h2>
+					<?php if ($jobcard_['status'] != 'open') { ?>
+						<div class="text-end">
+							<a href="dashboard.php?page=job-card-view&id=<?= $_GET['jobid'] ?>" class="btn btn-primary">Back to Job Card</a>
+						</div>
+					<?php } ?>
 				</header>
 				<div class="card-body">
 					<!-- This section info pulls from Job Card -->
@@ -20,6 +25,14 @@
 							<label class="col-form-label" for="formGroupExampleInput">Plant No.</label>
 							<input type="text" name="plantnumber" placeholder="Plant No." class="form-control" value="<?= $plant_['plant_number'] . ' ' . $plant_['reg_number'] . ' ' . $plant_['make'] . ' ' . $plant_['model'] ?>" disabled>
 						</div>
+						<?php if ($jobcard_['status'] == 'open') {
+							echo inp('note', '', 'hidden', 'Initial Risk Assessment.');
+						} else { ?>
+							<div class="col-sm-6 col-md-4 col-lg-4">
+								<label class="col-form-label" for="formGroupExampleInput">Note - (Why this assessment?)</label>
+								<textarea name="note" class="form-control"></textarea>
+							</div>
+						<?php } ?>
 					</div>
 					<hr>
 					<!-- End Job Card info -->
@@ -83,7 +96,7 @@
 					<hr>
 					<div class="row">
 						<h3>Team members performing task</h3>
-						<p>I, the undersigned, confirm and acknowledge that I haave been involved with the HIRA and am aware of all hazards and risks associated with the task and undertake to follow the Safe Work Procedure, I aslo understand that my Safty is my own responsibility and that I must at all times report unsafe conditions.</p>
+						<p>I, the undersigned, confirm and acknowledge that I have been involved with the HIRA and am aware of all hazards and risks associated with the task and undertake to follow the Safe Work Procedure, I aslo understand that my Safty is my own responsibility and that I must at all times report unsafe conditions.</p>
 					</div>
 					<div class="row">
 						<div class="col-sm-5 col-md-5 col-lg-5">

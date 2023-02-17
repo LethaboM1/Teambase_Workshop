@@ -31,7 +31,7 @@ if (isset($_POST['request_jobcard'])) {
             $safety_stuff = '';
         }
 
-
+        $query = '';
         if ($_POST['jobcard_type'] == 'sundry') {
             $chk_sundry_jobcard = dbq("select * from jobcards where status='open' and jobcard_type='sundry' and mechanic_id={$_SESSION['user']['user_id']}");
             if (dbr($chk_sundry_jobcard) > 0) {
@@ -41,11 +41,14 @@ if (isset($_POST['request_jobcard'])) {
                 $_POST['plant_id'] = 0;
                 $_POST['priority'] = 9999;
                 $_POST['allocated_hours'] = 0;
-                $query = "status='allocated',allocated_hours=0,";
+                $query .= "status='allocated',allocated_hours=0,";
             }
-        } else {
-            $query = "{$_POST['reading_type']}_reading={$_POST['reading']},";
+        } else if ($_POST['jobcard_type'] == 'service') {
+            $query .= "service_type='{$_POST['service_type']}',";
         }
+
+        $query .= "{$_POST['reading_type']}_reading={$_POST['reading']},";
+
 
         if ($create_jobcard) {
             $add_jobcard = dbq("insert into jobcards set
@@ -54,6 +57,7 @@ if (isset($_POST['request_jobcard'])) {
                                     clerk_id={$_POST['clerk_id']},
                                     mechanic_id={$_SESSION['user']['user_id']},
                                     logged_by='{$_SESSION['user']['user_id']}',
+                                    site='" . esc($_POST['site']) . "',
                                     fault_description='" . htmlentities($_POST['comment'], ENT_QUOTES) . "',
                                     safety_audit='{$safety_stuff}',
                                     {$query}
@@ -61,6 +65,36 @@ if (isset($_POST['request_jobcard'])) {
                                     priority='{$_POST['priority']}'
                                     ");
             if ($add_jobcard) {
+                $job_id = mysqli_insert_id($db);
+
+                if ($_POST['jobcard_type'] == 'service' && $_SESSION['settings']["jobcard_service_" . strtolower($_POST['service_type']) . "_hours"] > 0) {
+                    $add_service = dbq("insert into jobcard_reports set
+                                            job_id={$job_id},
+                                            component='service',
+                                            severity='Medium',
+                                            hours='{$_SESSION['settings']["jobcard_service_" . strtolower($_POST['service_type']) . "_hours"]}',
+                                            comment='Type " . strtoupper($_POST['service_type']) . " service.'
+                                            ");
+                    if (!$add_service)  error_log("Error adding service to report: " . dbe());
+                }
+
+                if (is_array($_SESSION['fault_reports'])) {
+                    if (count($_SESSION['fault_reports']) > 0) {
+                        foreach ($_SESSION['fault_reports'] as $report) {
+                            $insert_report = dbq("insert into jobcard_reports set
+                                                    job_id={$job_id},
+                                                    component='{$report['component']}',
+                                                    severity='{$report['severity']}',
+                                                    hours='{$report['hours']}',
+                                                    comment='" . htmlentities($report['comment']) . "'
+                                                    ");
+                            if (!$insert_report) {
+                                error_log("Error adding report: job={$job_id}:" . dbe());
+                            }
+                        }
+                        unset($_SESSION['fault_reports']);
+                    }
+                }
                 msg("Job card added.");
                 require_once "./includes/forms/mail.clerk.new_job.php";
                 go('dashboard.php');
@@ -69,6 +103,6 @@ if (isset($_POST['request_jobcard'])) {
             }
         }
     } else {
-        error("You must choose a plant. Site is required field.");
+        error("Required filed missing: Plant, Site and clerk");
     }
 }

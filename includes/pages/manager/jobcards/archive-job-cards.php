@@ -32,23 +32,102 @@
 		</thead>
 		<tbody>
 			<?php
-			if ($_SESSION['user']['role'] == 'clerk') {
-				$get_jobcards = dbq("select * from jobcards where status='closed' and clerk_id={$_SESSION['user']['user_id']} order by complete_datetime DESC");
-			} else {
-				$get_jobcards = dbq("select * from jobcards where status='closed' order by complete_datetime DESC");
+			//connectDb("{$_SESSION['account']['account_key']}_db");
+			$lines = 13;
+			$pagination_pages = 15;
+
+			if (!isset($_GET['pg']) || $_GET['pg'] < 1) {
+				$_GET['pg'] = 1;
 			}
 
-			if ($get_jobcards) {
-				if (dbr($get_jobcards) > 0) {
-					while ($row = dbf($get_jobcards)) {
-						require "./includes/pages/manager/jobcards/list_archive_jobcards.php";
-					}
-				} else {
-					echo "<h4>No archive job cards.</h4>";
+			if ($_SESSION['user']['role'] == 'clerk') {
+				$get_jobcards = dbq("select * from jobcards where status='closed' and clerk_id={$_SESSION['user']['user_id']}");
+			} else {
+				$get_jobcards = dbq("select * from jobcards where status='closed'");
+			}
+
+			$total_lines = dbr($get_jobcards);
+
+			$pages = ceil($total_lines / $lines);
+
+			if ($_GET['pg'] > $pages) {
+				$_GET['pg'] = $pages;
+			}
+
+			$pagination = ceil($_GET['pg'] / $pagination_pages);
+
+			$start_page = $pagination * $pagination_pages - $pagination_pages + 1;
+
+			$end_page = $start_page + $pagination_pages;
+			if ($end_page > $pages) {
+				$end_page = $pages;
+			}
+
+
+
+			$start = ($_GET['pg'] * $lines) - $lines;
+
+
+			if ($_SESSION['user']['role'] == 'clerk') {
+				$get_jobcards = dbq("select * from jobcards where status='closed' and clerk_id={$_SESSION['user']['user_id']} order by complete_datetime DESC limit {$start},$lines");
+			} else {
+				$get_jobcards = dbq("select * from jobcards where status='closed' order by complete_datetime DESC limit {$start},$lines");
+			}
+
+
+			if (dbr($get_jobcards) > 0) {
+				while ($row = dbf($get_jobcards)) {
+					require "./includes/pages/manager/jobcards/list_archive_jobcards.php";
 				}
 			}
+
 			?>
 		</tbody>
 	</table>
+	<nav aria-label="Page navigation example">
+		<ul class="pagination" id="pageination">
+			<li class="page-item"><a class="page-link" href="dashboard.php?page=arch-job&pg=1"><?= "<<" ?></a>
+			</li>
+			<li class="page-item"><a class="page-link" href="dashboard.php?page=arch-job&pg=<?php echo $start_page - 1 ?>">Previous</a></li>
+			<?php
 
+			for ($a = $start_page; $a <= $end_page; $a++) {
+				echo "<li class='page-item'><a class='page-link' href='dashboard.php?page=arch-job&pg={$a}'>";
+				if ($_GET['page'] == $a) {
+					echo "<b>{$a}</b>";
+				} else {
+					echo $a;
+				}
+				echo "</a></li>";
+			}
+			?>
+			<li class="page-item"><a class="page-link" href="dashboard.php?page=arch-job&pg=<?php echo $pagination * $pagination_pages + 1 ?>">Next</a></li>
+			<li class="page-item"><a class="page-link" href="dashboard.php?page=arch-job&pg=<?php echo $pages ?>">>></a></li>
+		</ul>
+	</nav>
+	<?php
+
+	$jscript_function .= "
+	function print_request (request_id) {
+		$.ajax({
+			method:'get',
+			url:'includes/ajax.php',
+			data: {
+				cmd:'print_request',
+				id: request_id
+			},
+			success: function (result) {
+				let data = JSON.parse(result);
+				if (data.status=='ok') {
+					window.open(data.path,`_blank`);
+				} else if (data.status=='error') {
+					console.log(`Error: `. data.message);
+				} else {																						
+					console.log(`Error: API error`);
+				}
+			}	
+		});
+	}
+	";
+	?>
 </div>

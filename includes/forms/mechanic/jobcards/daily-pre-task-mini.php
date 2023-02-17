@@ -53,21 +53,27 @@ if (isset($_POST['add_job_checklist'])) {
         if (!is_error()) {
             if (isset($job_check_list)) {
                 $job_check_list = base64_encode(json_encode($job_check_list));
-                $update_jobcard = dbq("update jobcards set
-                                                job_date='{$_POST['datetime']}',
-                                                status='busy',
-                                                risk_assessment='" . esc($job_check_list) . "'
-                                                where job_id={$_GET['id']}");
-                if ($update_jobcard) {
-                    msg("Job assessment done.");
-                    switch ($jobcard_['jobcard_type']) {
-                        case "breakdown":
-                            go("dashboard.php?page=job-card-view&id={$_GET['id']}");
-                            break;
+                $add_assessment = dbq("insert into jobcard_risk_assessments set
+                                                job_id={$_GET['id']},
+                                                date_time='" . date('Y-m-d H:i') . "',
+                                                note='" . htmlentities($_POST['note'], ENT_QUOTES) . "',
+                                                results='" . esc($job_check_list) . "'
+                                                ");
+                if ($add_assessment) {
+                    $update_jobcard = dbq("update jobcards set status='busy' where job_id={$_GET['id']}");
+                    if ($update_jobcard) {
+                        msg("Job assessment done.");
+                        switch ($jobcard_['jobcard_type']) {
+                            case "breakdown":
+                                go("dashboard.php?page=job-card-view&id={$_GET['id']}");
+                                break;
 
-                        case "service":
-                            go("dashboard.php?page=plant-schedule&id={$_GET['id']}");
-                            break;
+                            case "service":
+                                go("dashboard.php?page=plant-schedule&id={$_GET['id']}");
+                                break;
+                        }
+                    } else {
+                        sqlError();
                     }
                 } else {
                     sqlError();
