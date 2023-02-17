@@ -75,7 +75,7 @@ switch ($_GET['type']) {
                                 <br>";
                     }
 
-                    $pdf .= "<table style=\"width: 700px; border-collapse: collapse; table-layout: fixed;\">
+                    $pdf .= "<table style=\"width: 760px; border-collapse: collapse; table-layout: fixed;\">
                                 <thead>
                                     <tr>
                                         <th style=\" font-weight: bold; font-size: 16px; text-align: left; padding: 10px;\">Fault Description</th>
@@ -161,36 +161,49 @@ switch ($_GET['type']) {
                     $mechanic_ = dbf(dbq("select name, last_name,employee_number from users_tbl where user_id={$jobcard_['mechanic_id']}"));
 
                     $get_items = json_decode(base64_decode($risk_assessment['results']), true);
-                    $pdf = "
-                                <div style='margin:15px;>
-                                    <h3>Risk Assessment</h3>                                     
-                                    <b>Job#</b> {$jobcard_['jobcard_number']}<br>                                            
-                                    <b>Plant#</b> {$plant_['plant_number']}<br>
-                                    <b>Make:</b> {$plant_['make']}<br>
-                                    <b>Model:</b> {$plant_['model']}<br><br>"
-                        . (strlen($risk_assessment['note']) ? "<p>" . $risk_assessment['note'] . "</p>" : "")
-                        . "
-                                    <table style='; border-collapse:collapse'>
-                                        <thead>
-                                            <tr>
-                                                <th style='border:1px solid black; padding:3px;'>#</th>
-                                                <th style='border:1px solid black; padding:3px;'>Question</th>
-                                                <th style='border:1px solid black; padding:3px;'>Ans.</th>
-                                                <th style='border:1px solid black; padding:3px;'>Comment</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>";
+                    $pdf = "<table style=\"width: 700px; border-collapse: collapse; table-layout: fixed;\">   
+                                <tr>
+                                    <th style=\"font-weight: bold; font-size: 20px; text-align: left; border: none;\">Risk Assessment</th>
+                                </tr>   
+                            </table>
+                            <br>
+                            <table style=\"width: 700px; border-collapse: collapse; table-layout: fixed;\">
+                                <tr>
+                                    <td style=\"font-weight: normal; font-size: 13px; text-align: left;\"><strong>Job #:</strong> {$jobcard_['jobcard_number']}</td>
+                                </tr>
+                                <tr>  
+                                    <td style=\"font-weight: normal; font-size: 13px; text-align: left;\"><strong>Plant #:</strong> {$plant_['plant_number']}</td>
+                                </tr>
+                                <tr>
+                                    <td style=\"font-weight: normal; font-size: 13px; text-align: left;\"><strong>Make:</strong> {$plant_['make']}</td> 
+                                </tr>
+                                <tr>  
+                                    <td style=\"font-weight: normal; font-size: 13px; text-align: left;\"><strong>Model:</strong> {$plant_['model']}</td>
+                                </tr>
+                            </table>"
+                        . (strlen($risk_assessment['note']) ? "<p style=\"font-weight: normal; font-size: 13px; text-align: left;\">{$risk_assessment['note']}</p>" : "<p>&nbsp;</p>")
+                        . "<table style=\"width: 700px; border-collapse: collapse; table-layout: fixed;\">
+                            <thead>
+                                <tr>
+                                    <th style=\"width: 5%; font-weight: bold; font-size: 13px; text-align: left; padding: 5px; border: 1px solid rgb(39, 39, 39);\">#</th>
+                                    <th style=\"width: 45%; font-weight: bold; font-size: 13px; text-align: left; padding: 5px; border: 1px solid rgb(39, 39, 39);\">Question</th>
+                                    <th style=\"width: 7%; font-weight: bold; font-size: 13px; text-align: left; padding: 5px; border: 1px solid rgb(39, 39, 39);\">Ans.</th>
+                                    <th style=\"width: 43%; font-weight: bold; font-size: 13px; text-align: left; padding: 5px; border: 1px solid rgb(39, 39, 39);\">Comment</th>
+                                </tr>
+                            </thead>
+                            <tbody>";
                     if (is_array($get_items)) {
 
                         if (count($get_items) > 0) {
                             $count = 1;
                             foreach ($get_items as $item) {
                                 $pdf .= "<tr>
-                                            <td style='border:1px solid black; padding:3px;width:45px;'>#{$count}</td>
-                                            <td style='border:1px solid black; padding:3px;width:300px;'>{$item['question']}</td>
-                                            <td style='border:1px solid black; padding:3px;width:35px;'>{$item['answer']}</td>
-                                            <td style='border:1px solid black; padding:3px;width:300px;'>" . ucfirst($item['comment']) . "</td>                               
+                                            <td style=\"width: 5%; font-weight: normal; font-size: 13px; text-align: left; padding: 5px; border: 1px solid rgb(39, 39, 39);\">{$count}</td>
+                                            <td style=\"width: 45%; word-wrap: break-word; font-weight: normal; font-size: 13px; text-align: left; padding: 5px; border: 1px solid rgb(39, 39, 39);\">{$item['question']}</td>
+                                            <td style=\"width: 7%; font-weight: normal; font-size: 13px; text-align: left; padding: 5px; border: 1px solid rgb(39, 39, 39);\">{$item['answer']}</td>
+                                            <td style=\"width: 43%; font-weight: normal; font-size: 13px; text-align: left; padding: 5px; border: 1px solid rgb(39, 39, 39);\">" . ucfirst($item['comment']) . "</td>
                                         </tr>";
+
                                 $count++;
                             }
                         } else {
@@ -198,15 +211,10 @@ switch ($_GET['type']) {
                         }
                     }
 
-                    $pdf .= "        </tbody>
-                                    </table>
-                                    <p>
-                                        <h3>Terms and conditions</h3>
-                                        <p>I, " . (strlen($mechanic_['name']) ? $mechanic_['name'] : "") . " " . (strlen($mechanic_['last_name']) ? $mechanic_['last_name'] : "") . " " . (strlen($mechanic_['employee_number']) ? $mechanic_['employee_number'] : "") . " , confirm and acknowledge that I have been involved with the HIRA and am aware of all hazards and risks associated with the task and undertake to follow the Safe Work Procedure, I aslo understand that my Safty is my own responsibility and that I must at all times report unsafe conditions.</p>
-                                        
-                                    </p>
-                                </div>
-                              ";
+                    $pdf .= "</tbody>
+                    </table>
+                    <h1 style=\"font-weight: bold; font-size: 20px; text-align: left;\">Terms and conditions</h1>
+                    <p style=\"font-weight: normal; font-size: 13px; text-align: left;\">I, <b>" . (strlen($mechanic_['name']) ? $mechanic_['name'] : "") . " " . (strlen($mechanic_['last_name']) ? $mechanic_['last_name'] : "") . " " . (strlen($mechanic_['employee_number']) ? $mechanic_['employee_number'] : "") . "</b>  , confirm and acknowledge that I have been involved with the HIRA and am aware of all hazards and risks associated with the task and undertake to follow the Safe Work Procedure, I aslo understand that my Safty is my own responsibility and that I must at all times report unsafe conditions.</p>";
                     //echo $pdf;
                     printPDF($pdf, "{$jobcard_['jobcard_number']}-{$_GET['type']}-{$risk_assessment['id']}");
                 } else {
