@@ -226,7 +226,7 @@
 											<option value="High">High</option>
 										</select></div>
 									<div class="col-md-2"><input type="number" name="hours" id="hours" value="1" placeholder="Required Hours" class="form-control"></div>
-									<div class="col-md-4"><textarea class="form-control" name="report_comment" id="report_comment" placeholder="Details"></textarea></div>
+									<div class="col-md-4"><textarea class="form-control mt-2" name="report_comment" id="report_comment" placeholder="Details"></textarea></div>
 									<div class="col-md-2"><button id='add_insp' type="button" class="btn btn-primary btn-sm">Add</button></div>
 								</div>
 
