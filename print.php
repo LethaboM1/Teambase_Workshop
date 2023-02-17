@@ -115,7 +115,7 @@ switch ($_GET['type']) {
                                             <td style=\"font-weight: normal; font-size: 13px; text-align: left; padding: 10px;\">" . date('Y-m-d', strtotime($event['start_datetime'])) . "</td>
                                             <td style=\"font-weight: normal; font-size: 13px; text-align: left; padding: 10px;\">{$event['event']}</td>
                                             <td style=\"font-weight: normal; font-size: 13px; text-align: left; padding: 10px;\">{$event['total_hours']}</td>
-                                            <td style=\"font-weight: normal; font-size: 13px; text-align: left; padding: 10px; max-width: 300px;\">{$event['comment']}</td>
+                                            <td style=\"font-weight: normal; font-size: 13px; text-align: left; padding: 10px; width: 300px;\">{$event['comment']}</td>
                                         </tr>";
                                 $stripe = !$stripe;
                             }
