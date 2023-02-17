@@ -42,7 +42,8 @@
 					</div>
 				</div>
 				<hr>
-				<form method="post">
+				<form id="service_checklist_frm" method="post">
+					<?= inp('cmd', '', 'hidden', 'save_service_checklist') ?>
 					<?= inp('job_id', '', 'hidden', $_GET['id']) ?>
 					<?= inp('service_type', '', 'hidden', $jobcard_['service_type']) ?>
 					<div class="row">
@@ -197,9 +198,9 @@
 														<td><?= $item['question'] ?></td>
 														<td>0
 															<div class="button r" id="button-1">
-																<input type="checkbox" class="checkbox" name="check_<?= $item['checklist_id'] ?>" value="Yes" <?php if ($save_checklist[$item['checklist_id']]['answer'] == 'Yes') {
-																																									echo " checked='checked' ";
-																																								} ?>>
+																<input type="checkbox" class="checkbox save" name="check_<?= $item['checklist_id'] ?>" value="Yes" <?php if ($save_checklist[$item['checklist_id']]['answer'] == 'Yes') {
+																																										echo " checked='checked' ";
+																																									} ?>>
 																<div class="knobs"></div>
 																<div class="layer"></div>
 															</div>
@@ -217,9 +218,9 @@
 														<td><?= $item['question'] ?></td>
 														<td>C
 															<div class="button r" id="button-1">
-																<input type="checkbox" class="checkbox" name="check_<?= $item['checklist_id'] ?>" value="Yes" <?php if ($save_checklist[$item['checklist_id']]['answer'] == 'Yes') {
-																																									echo " checked='checked' ";
-																																								} ?>>
+																<input type="checkbox" class="checkbox save" name="check_<?= $item['checklist_id'] ?>" value="Yes" <?php if ($save_checklist[$item['checklist_id']]['answer'] == 'Yes') {
+																																										echo " checked='checked' ";
+																																									} ?>>
 																<div class="knobs"></div>
 																<div class="layer"></div>
 															</div>
@@ -240,6 +241,28 @@
 						<?= inp('save_progress', '', 'submit', 'Save', 'btn-primary') ?>
 					</div>
 				</form>
+				<?php
+
+				$jscript .= "
+							$('.save').change(function () {
+								save_progress();
+							});
+							";
+
+				$jscript_function .= "
+					function save_progress () {
+						$.ajax({
+							type: 'post',
+							url: 'includes/ajax.php',
+							data: $('#service_checklist_frm').serialize(),
+							success: function (result) {
+								console.log(result);
+							}
+						});
+
+					}
+								";
+				?>
 				<br>
 				<br>
 				<div class="row">

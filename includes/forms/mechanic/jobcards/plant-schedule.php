@@ -121,7 +121,7 @@ if (isset($_POST['save_progress'])) {
         } else {
         }
     } else {
-        error("There are no items in service checlist table.");
+        error("There are no items in service checklist table.");
     }
 }
 

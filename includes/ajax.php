@@ -26,6 +26,51 @@ switch ($_GET['cmd']) {
 }
 
 switch ($_POST['cmd']) {
+    case "save_service_checklist":
+        $get_service_checklist = dbq("select * from service_checklist");
+        if ($get_service_checklist) {
+            if (dbr($get_service_checklist) > 0) {
+                $service_type = strtolower($_POST['service_type']) . '_service';
+                while ($item = dbf($get_service_checklist)) {
+                    if ($item[$service_type] == "0" || $item[$service_type] == "C") {
+                        if ($_POST['check_' . $item['checklist_id']] == 'Yes') {
+                            $answer = 'Yes';
+                        } else {
+                            $answer = 'No';
+                        }
+
+                        $service_checklist[$item['checklist_id']] = ['question' => $item['question'], 'answer' => $answer];
+                    }
+                }
+            } else {
+                error("There is no service check list.");
+            }
+        } else {
+            sqlError();
+        }
+
+        if (isset($service_checklist)) {
+            //error("<pre>" . print_r($service_checklist, true) . "</pre>");
+            $service_checklist = base64_encode(json_encode($service_checklist));
+            if ($_POST['job_id'] > 0) {
+                $save_propgress = dbq("update jobcards set
+                                        service_checklist='{$service_checklist}'
+                                        where job_id={$_POST['job_id']}");
+                if ($save_propgress) {
+                    $jobcard_['service_checklist'] = $service_checklist;
+                } else {
+                    sqlError();
+                }
+            } else {
+            }
+        } else {
+            error("There are no items in service checklist table.");
+        }
+
+        if (!isset($error)) {
+            echo json_encode(['status', 'ok']);
+        }
+        break;
 
     case "remove_insp":
         if (isset($_POST['component'])) {
