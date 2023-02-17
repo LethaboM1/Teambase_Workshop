@@ -161,13 +161,13 @@ switch ($_GET['type']) {
                     $mechanic_ = dbf(dbq("select name, last_name,employee_number from users_tbl where user_id={$jobcard_['mechanic_id']}"));
 
                     $get_items = json_decode(base64_decode($risk_assessment['results']), true);
-                    $pdf = "<table style=\"width: 700px; border-collapse: collapse; table-layout: fixed;\">   
+                    $pdf = "<table style=\"width: 750px; border-collapse: collapse; table-layout: fixed;\">   
                                 <tr>
                                     <th style=\"font-weight: bold; font-size: 20px; text-align: left; border: none;\">Risk Assessment</th>
                                 </tr>   
                             </table>
                             <br>
-                            <table style=\"width: 700px; border-collapse: collapse; table-layout: fixed;\">
+                            <table style=\"width: 750px; border-collapse: collapse; table-layout: fixed;\">
                                 <tr>
                                     <td style=\"font-weight: normal; font-size: 13px; text-align: left;\"><strong>Job #:</strong> {$jobcard_['jobcard_number']}</td>
                                 </tr>
@@ -182,7 +182,7 @@ switch ($_GET['type']) {
                                 </tr>
                             </table>"
                         . (strlen($risk_assessment['note']) ? "<p style=\"font-weight: normal; font-size: 13px; text-align: left;\">{$risk_assessment['note']}</p>" : "<p>&nbsp;</p>")
-                        . "<table style=\"width: 700px; border-collapse: collapse; table-layout: fixed;\">
+                        . "<table style=\"width: 750px; border-collapse: collapse; table-layout: fixed;\">
                             <thead>
                                 <tr>
                                     <th style=\"width: 5%; font-weight: bold; font-size: 13px; text-align: left; padding: 5px; border: 1px solid rgb(39, 39, 39);\">#</th>
