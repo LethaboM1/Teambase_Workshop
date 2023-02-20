@@ -1417,51 +1417,43 @@ function saveRequisition($request_id)
 		$parts[] = $part;
 	}
 
-	$html = "	<style>
-					td {
-						padding:3px;
-					}					
-				</style>
-				<table style='border-collapse:collapse;'>
+	$html = "<table style=\"width: 754px; table-layout: fixed; border: 1px solid black; border-bottom: none;\">				
 				<tr>
-					<td style='border-left: 2px solid black;border-top: 2px solid black; ' colspan='2'><h3>SPARES REQUISITION</h3></td>
-					<td style='border-top: 2px solid black;'><h3>" . ($request_['status'] == 'canceled' ? " - <span style='color:red;'>CANCELED</span>" : ($request_['status'] == 'rejected' ? " - <span style='color:red;'>REJECTED</span>" : "")) . "</h3></td>
-					<td style='border-right: 2px solid black;border-top: 2px solid black;'></td>
+					<th colspan='4' style=\"width: 100%; font-size: 20px; font-weight: bold; padding-top: 20px; padding-bottom: 20px; padding-left: 5px;\">Spares Requisition" . ($request_['status'] == 'canceled' ? " - <span style='color:red;'>CANCELED</span>" : ($request_['status'] == 'rejected' ? " - <span style='color:red;'>REJECTED</span>" : "")) . "</th>					
 				</tr>
 				<tr>
-					<td style='border-left: 2px solid black; width:80px;'><b>Plant #</b></td>
-					<td style='width:100px;'>{$plant_['plant_number']}</td>
-					<td style='width:300px;'><b>Date:</b>&nbsp;{$request_['datetime']}</td>
-					<td style='border-right: 2px solid black; width:200px;'></td>
+					<th colspan=\"2\" style=\" font-size: 13px; font-weight: normal; padding-left: 5px;\"><strong>Plant #:</strong> {$plant_['plant_number']}</th>
+					<th colspan='2' style=\"font-size: 13px; font-weight: normal; padding-left: 5px;\"><strong>Date:</strong> {$request_['datetime']}</th>
+				</tr>   
+				<tr>
+					<th colspan=\"4\" style=\"font-size: 13px; font-weight: normal; padding-left: 5px;\"><strong>Site:</strong> {$jobcard_['site']}</th>
+				</tr> 
+				<tr>
+					<th colspan=\"2\" style=\" font-size: 13px; font-weight: normal; padding-left: 5px; padding-bottom: 10px;\"><strong>" . strtoupper($plant_['reading_type']) . ":</strong> " . $plant_[$plant_['reading_type'] . '_reading'] . "</th>
+					<th style=\"font-size: 13px; font-weight: normal; padding-left: 5px; padding-bottom: 10px;\"><strong>Job #:</strong>  {$jobcard_['jobcard_number']}</th>
+					<th style=\"font-size: 13px; font-weight: normal; padding-left: 5px; padding-bottom: 10px;\"><strong style=\"color: black;\">BO:</strong><strong style=\"color: crimson;\">{$request_['request_id']}</strong></th>
 				</tr>
 				<tr>
-					<td style='border-left: 2px solid black;'><b>Site</b></td>
-					<td>{$jobcard_['site']}</td>
-					<td></td>
-					<td style='border-right: 2px solid black;'></td>
+					<th style='width: 100%;' colspan='4'>" . ($request_['status'] == 'rejected' && strlen($request_['rejected_by_comment']) > 0 ? "REJECTED REASON: {$request_['rejected_by_comment']}</span>" : "") . "</th>
 				</tr>
-				<tr>
-					<td style='border-left: 2px solid black;'><b>" . strtoupper($plant_['reading_type']) . "</b></td>
-					<td>" . $plant_[$plant_['reading_type'] . '_reading'] . "</td>
-					<td><b>Job No. {$jobcard_['jobcard_number']}</b></td>
-					<td style='border-right: 2px solid black;'><b>BO</b>&nbsp;<span style='color:red; font-weight: bold; font-size:14px;'>{$request_['request_id']}</span></td>
-				</tr>
-				<tr>
-					<td style='border-left: 2px solid black;border-bottom:2px solid black; border-right: 2px solid black;'colspan='4'>" . ($request_['status'] == 'rejected' && strlen($request_['rejected_by_comment']) > 0 ? "REJECTED REASON: {$request_['rejected_by_comment']}</span>" : "") . "</td>
-				</tr>
-				<tr>
-					<td style='border-right: 1px solid black;border-left: 2px solid black;border-bottom:2px solid black;'><b>Qty</b></td>
-					<td style='border-bottom:2px solid black;border-right: 1px solid black;'><b>Part Number</b></td>
-					<td style='border-bottom:2px solid black;border-right: 1px solid black;'><b>Description</b></td>
-					<td style='border-right: 2px solid black;border-bottom:2px solid black;'><b>Component</b></td>
-				</tr>";
-	$items = 40;
+			</table>
+			<table style=\"width: 754px; table-layout: fixed; border-collapse: collapse; border: 1px solid black;\">
+			<thead>
+			  <tr style=\"border-bottom: 1px solid black;\">
+				<th style=\"width: 10%; font-size: 13px; font-weight: bold; padding: 5px; border-right: 1px solid black; border-top: 1px solid black; border-left: 1px solid black; border-bottom: 1px solid black;\">QTY</th>
+				<th style=\"width: 15%; font-size: 13px; font-weight: bold; padding: 5px; border-right: 1px solid black; border-top: 1px solid black; border-bottom: 1px solid black;\">Part Number</th>
+				<th style=\"width: 40%; font-size: 13px; font-weight: bold; padding: 5px; border-right: 1px solid black; border-top: 1px solid black; border-bottom: 1px solid black;\">Description</th>
+				<th style=\"width: 35%; font-size: 13px; font-weight: bold; padding: 5px; border-right: 1px solid black; border-top: 1px solid black; border-bottom: 1px solid black;\">Component</th>
+			  </tr>
+			</thead>
+			<tbody>";
+	$items = 50;
 	foreach ($parts as $part) {
 		$html .= "<tr>
-					<td style='border-right: 1px solid black;border-left: 2px solid black;'>{$part['qty']}</td>
-					<td style='border-right: 1px solid black;'>{$part['part_number']}</td>
-					<td style='border-right: 1px solid black;'>{$part['part_description']}</td>
-					<td style='border-right: 2px solid black;'></td>
+					<td style='border: 1px solid black; border-bottom: none;'>{$part['qty']}</td>
+					<td style='border: 1px solid black; border-bottom: none;'>{$part['part_number']}</td>
+					<td style='border: 1px solid black; border-bottom: none;'>{$part['part_description']}</td>
+					<td style='border: 1px solid black; border-bottom: none;'></td>
 				</tr>";
 		$items--;
 	}
@@ -1470,37 +1462,46 @@ function saveRequisition($request_id)
 		for ($a = 1; $a <= $items; $a++) {
 			if ($a == $items) {
 				$html .= "<tr>
-							<td style='border-right: 1px solid black;border-left: 2px solid black;border-bottom:2px solid black;'>&nbsp;</td>
-							<td style='border-bottom:2px solid black;border-right: 1px solid black;'>&nbsp;</td>
-							<td style='border-bottom:2px solid black;border-right: 1px solid black;'>&nbsp;</td>
-							<td style='border-right: 2px solid black;border-bottom:2px solid black;'>&nbsp;</td>
+							<td style='border: 1px solid black; border-bottom: none;'>&nbsp;</td>
+							<td style='border: 1px solid black; border-bottom: none;'>&nbsp;</td>
+							<td style='border: 1px solid black; border-bottom: none;'>&nbsp;</td>
+							<td style='border: 1px solid black; border-bottom: none;'>&nbsp;</td>
 						</tr>";
 			} else {
 				$html .= "<tr>
-							<td style='border-right: 1px solid black;border-left: 2px solid black;'>&nbsp;</td>
-							<td style='border-right: 1px solid black;'>&nbsp;</td>
-							<td style='border-right: 1px solid black;'>&nbsp;</td>
-							<td style='border-right: 2px solid black;'>&nbsp;</td>
+							<td style='border: 1px solid black; border-bottom: none;'>&nbsp;</td>
+							<td style='border: 1px solid black; border-bottom: none;'>&nbsp;</td>
+							<td style='border: 1px solid black; border-bottom: none;'>&nbsp;</td>
+							<td style='border: 1px solid black; border-bottom: none;'>&nbsp;</td>
 						</tr>";
 			}
 		}
 	}
-
+	$html .= "</tbody>
+		</table>";
 	$requested_by = dbf(dbq("select name, last_name from users_tbl where user_id={$request_['requested_by']}"));
 
 
-	$html .= "<tr>
-				<td style='text-align:right; border-right: 1px solid black;border-left: 2px solid black;' colspan='2'><b>REQUESTED BY:</b></td>
-				<td style='border-right: 1px solid black;'>{$requested_by['name']} {$requested_by['last_name']}, {$request_['requested_by_time']}</td>
-				<td style='border-right: 1px solid black;'>BS REQ#</td>
-			</tr>
-			<tr>
-				<td style='text-align:right; border-right: 1px solid black;border-left: 2px solid black;border-bottom:2px solid black;' colspan='2'><b>" . ($request_['status'] == 'canceled' ? "CANCELED BY" : ($request_['status'] == 'rejected' ? "REJECTED BY" : "APPROVED BY")) . ":</b></td>
-				<td style='border-bottom:2px solid black;border-right: 1px solid black;'>" . $signed_by . "</td>
-				<td style='border-right: 1px solid black;border-bottom:2px solid black;'>PL09 Rev02 190521</td>
-			</tr>";
+	$html .= "<table style=\"width: 754px; table-layout: fixed; border-collapse: collapse; border: 1px solid black;\">
+				<thead>
+					<tr>
+						<th colspan=\"2\" style=\"width: 25%; font-size: 13px; font-weight: bold; padding-left: 5px; padding-top: 5px; border-right: 1px solid black; border-top: 1px solid black; border-left: 1px solid black;\">Requested By:</th>
+						<th style=\"width: 40%; font-size: 13px; font-weight: normal; padding-left: 5px; padding-top: 5px; border-top: 1px solid black; border-right: 1px solid black;\">{$requested_by['name']} {$requested_by['last_name']}, {$request_['requested_by_time']}</th>
+						<th style=\"width: 35%; font-size: 13px; font-weight: normal; padding-left: 5px; padding-top: 5px; border-top: 1px solid black; border-right: 1px solid black;\">BS REQ#</th>
+					</tr>   
+					<tr>
+						<th colspan=\"2\" style=\"width: 25%; font-size: 13px; font-weight: bold; padding-left: 5px; padding-bottom: 5px; border-right: 1px solid black; border-left: 1px solid black; border-bottom: 1px solid black;\">" . ($request_['status'] == 'canceled' ? "Canceled By" : ($request_['status'] == 'rejected' ? "Rejected By" : "Approved By")) . ":</th>
+						<th style=\"width: 40%; font-size: 13px; font-weight: normal; padding-left: 5px; padding-bottom: 5px; border-right: 1px solid black; border-bottom: 1px solid black;\">" . $signed_by . "</th>
+						<th style=\"width: 35%; font-size: 13px; font-weight: normal; padding-left: 5px; padding-bottom: 5px; border-right: 1px solid black; border-bottom: 1px solid black;\">PL09 Rev02 190521</th>
+					</tr> 
+				</thead>
+				<tbody>
+					<tr>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>";
 
-	$html .= "</table>";
 
 	printPDF($html, __DIR__ . "/../files/requisitions/{$request_id}_request", 1, 0, 'P');
 }

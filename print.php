@@ -16,7 +16,9 @@ switch ($_GET['type']) {
                     $plant_ = dbf(dbq("select * from plants_tbl where plant_id={$jobcard_['plant_id']}"));
                     $mechanic_ = dbf(dbq("select name, last_name,employee_number from users_tbl where user_id={$jobcard_['mechanic_id']}"));
                     $logged_by = dbf(dbq("select name, last_name,employee_number from users_tbl where user_id={$jobcard_['logged_by']}"));
-                    $authorized_by = dbf(dbq("select name, last_name,employee_number from users_tbl where user_id={$jobcard_['authorized_by']}"));
+
+                    ($jobcard_['authorized_by'] > 0) ? $authorized_by = dbf(dbq("select name, last_name,employee_number from users_tbl where user_id={$jobcard_['authorized_by']}")) : $authorized_by['name'] = 'Not Authorized';
+
                     $extras = json_decode(base64_decode($jobcard_['safety_audit']), true);
 
                     $font = ""; //"font-family: 'Open Sans', sans-serif;";
