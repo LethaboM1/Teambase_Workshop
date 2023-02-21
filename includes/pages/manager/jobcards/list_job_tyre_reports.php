@@ -89,6 +89,7 @@ $mechanic_ = dbf(dbq("select * from users_tbl where user_id={$jobcard_['mechanic
 														. inp('confirm', '', 'submit', 'Save', 'btn btn-primary');
 												}
 												?>
+												<button class="btn btn-default modal-dismiss">Cancel</button>
 											</div>
 										</div>
 
