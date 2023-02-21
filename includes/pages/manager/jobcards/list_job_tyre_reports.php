@@ -102,7 +102,7 @@ $mechanic_ = dbf(dbq("select * from users_tbl where user_id={$jobcard_['mechanic
 				<!-- Modal view End -->
 				<!-- Job Card End -->
 			</div>
-			<h4 class="text-info"><?= $jobcard_['jobcard_number'] ?>, Tyre Report #<?= $row['id'] ?> Mechanic: <?= $mechanic_['name'] ?><br></h4>
+			<h4 class="text-info"><?= $jobcard_['jobcard_number'] ?>, Tyre Report #<?= $row['id'] ?> Mechanic: <?= $mechanic_['name'] . ' ' . $mechanic_['last_name'] ?><br></h4>
 			<p class="card-subtitle">
 
 				Plant: <?= $plant_['plant_number'] ?> <?= ', ' . $plant_['vehicle_type'] ?> <?= ', ' . $plant_['make'] ?> <?= ', ' . $plant_['model'] ?>
