@@ -64,6 +64,8 @@ if (isset($_POST['add_tyre_report'])) {
             } else {
                 $error[] = "SQL error adding report: " . dbe();
             }
+        } else {
+            $error[] = "You must fill in details.";
         }
     }
 }
