@@ -1,14 +1,44 @@
 <div class="row">
-	<div class="col-sm-6 col-md-4 pb-sm-3 pb-md-0">
-		<label class="col-form-label" for="formGroupExampleInput">From</label>
-		<input type="date" name="fromdate" placeholder="" class="form-control">
-	</div>
-	<div class="col-sm-6 col-md-4 pb-sm-3 pb-md-0">
-		<label class="col-form-label" for="formGroupExampleInput">To</label>
-		<input type="date" name="todate" placeholder="" class="form-control">
-	</div>
-	<div class="col-sm-6 col-md-4 pb-sm-3 pb-md-0">
-		<button class="btn btn-primary">Filter</button>
+	<div class="header-right col-lg-4 col-md-4">
+		<div class="input-group">
+			<input type="text" class="form-control" name="search" id="search" placeholder="Search Job...">
+			<button class="btn btn-default" id='searchBtn' type="button"><i class="bx bx-search"></i></button>
+			<?php
+			$jscript .= "
+									
+									$('#search').keyup(function (e) {
+										if (e.key=='Enter') {
+											$('#searchBtn').click();
+										}
+						
+						
+										if (e.key=='Backspace') {
+											if ($('#search').val().length==0) {
+												$('#resetOpenBtn').click();
+											}
+										}
+									});
+						
+									$('#searchBtn').click(function () {
+										$.ajax({
+											method:'post',
+											url:'includes/ajax.php',
+											data: {
+												cmd:'search',
+												type: 'job-card-archive',
+												search: $('#search').val()
+											},
+											success:function (result) {
+												$('#jobcard_list').html(result);
+											},
+											error: function (err) {}
+										});
+									});
+
+									";
+			?>
+
+		</div>
 	</div>
 </div>
 
@@ -30,10 +60,10 @@
 				<th></th>
 			</tr>
 		</thead>
-		<tbody>
+		<tbody id='jobcard_list'>
 			<?php
 			//connectDb("{$_SESSION['account']['account_key']}_db");
-			$lines = 13;
+			$lines = 15;
 			$pagination_pages = 15;
 
 			if (!isset($_GET['pg']) || $_GET['pg'] < 1) {

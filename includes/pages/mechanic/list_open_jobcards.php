@@ -128,6 +128,7 @@ if ($row['allocated_hours'] > 0) {
                                 <?php
                                 break;
 
+                            case 'overhead':
                             case 'breakdown':
                                 ?>
                                     <a href="dashboard.php?page=job-card-view&id=<?= $row['job_id'] ?>">

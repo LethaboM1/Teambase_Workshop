@@ -533,6 +533,55 @@ switch ($_POST['cmd']) {
                     }
                 }
                 break;
+
+            case "job-requisitions-completed":
+                if ($_SESSION['user']['role'] == 'clerk') {
+                    $query_ = " and clerk_id={$_SESSION['user']['user_id']}";
+                } else if ($_SESSION['user']['role'] == 'buyer') {
+                    $query_ = " and buyer_id={$_SESSION['user']['user_id']}";
+                } else {
+                    $query_ = "";
+                }
+
+                $get_requisitions = dbq("select * from jobcard_requisitions where (status='completed' || status='canceled' || status='rejected'){$query_} 
+                            and 
+                            (
+                                plant_id in (select plant_id from plants_tbl where plant_number like '{$_POST['search']}%') 
+                                || job_id in (select job_id from jobcards where jobcard_number like '%{$_POST['search']}%') 
+                                || requested_by in (select user_id as requested_by from users_tbl where role='mechanic' and (name like '{$_POST['search']}%' or last_name like '{$_POST['search']}%'))
+                            ) order by datetime");
+                if (!$get_requisitions) error_log('SQL: ' . dbe());
+                if (dbr($get_requisitions) > 0) while ($row = dbf($get_requisitions))  $search_results[] = $row;
+                if (is_array($search_results) && count($search_results) > 0) {
+                    foreach ($search_results as $row) {
+                        require "pages/manager/jobcards/list_job_requisitions_completed.php";
+                    }
+                } else {
+                    echo "<tr><td style='column-span: all;'>Nothing found</td></tr>";
+                }
+                break;
+
+            case "job-card-archive":
+
+                if ($_SESSION['user']['role'] == 'clerk') {
+                    $query_ = " and clerk_id={$_SESSION['user']['user_id']}";
+                } else {
+                    $query_ = '';
+                }
+
+                $get_jobcards = dbq("select * from jobcards where status='closed'{$query_} and (jobcard_number like '%{$_POST['search']}%' || mechanic_id in (select user_id as mechanic_id from users_tbl where role='mechanic' and (name like '{$_POST['search']}%' or last_name like '{$_POST['search']}%')) || plant_id in (select plant_id from plants_tbl where plant_number like '{$_POST['search']}%'))");
+                if (dbr($get_jobcards) > 0) while ($row = dbf($get_jobcards)) $search_results[] = $row;
+
+                if (is_array($search_results) && count($search_results) > 0) {
+                    foreach ($search_results as $row) {
+                        require "pages/manager/jobcards/list_archive_jobcards.php";
+                    }
+                } else {
+                    echo "<tr><td style='column-span: all;'>Nothing found</td></tr>";
+                }
+
+
+                break;
         }
         break;
 

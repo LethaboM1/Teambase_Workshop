@@ -64,12 +64,12 @@ if (isset($_POST['add_job_checklist'])) {
                     if ($update_jobcard) {
                         msg("Job assessment done.");
                         switch ($jobcard_['jobcard_type']) {
-                            case "breakdown":
-                                go("dashboard.php?page=job-card-view&id={$_GET['id']}");
-                                break;
-
                             case "service":
                                 go("dashboard.php?page=plant-schedule&id={$_GET['id']}");
+                                break;
+
+                            default:
+                                go("dashboard.php?page=job-card-view&id={$_GET['id']}");
                                 break;
                         }
                     } else {
