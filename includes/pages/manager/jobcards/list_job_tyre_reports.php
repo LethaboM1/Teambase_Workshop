@@ -26,7 +26,7 @@ $mechanic_ = dbf(dbq("select * from users_tbl where user_id={$jobcard_['mechanic
 												<h3><b>Tyre Report #</b>&nbsp;<?= $tyre_report['id'] ?></h3>
 												<b>Job card no.</b>&nbsp;<?= $jobcard_['jobcard_number'] ?><br>
 												<b>Date.</b>&nbsp;<?= $tyre_report['datetime'] ?><br>
-												<b>Mechanic.</b>&nbsp;<?= $mechanic_['name'] ?><br>
+												<b>Mechanic.</b>&nbsp;<?= $mechanic_['name'] . ' ' . $mechanic_['last_name'] ?><br>
 											</div>
 											<div class="col-md-6">
 												<button class="btn btn-lg btn-secondary" onclick="window.open(`print.php?type=tyre-report&id=<?= $row['id'] ?>`,`_blank`)" type="button">Print</button><br>
