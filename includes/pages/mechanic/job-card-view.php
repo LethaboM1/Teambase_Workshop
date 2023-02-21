@@ -140,7 +140,7 @@
 
 
 
-	<?php if ($_SESSION['user']['role'] == 'manager' && $_SESSION['user']['role'] == 'system' && $_SESSION['user']['role'] == 'clerk') { ?>
+	<?php if ($_SESSION['user']['role'] == 'manager' || $_SESSION['user']['role'] == 'system' || $_SESSION['user']['role'] == 'clerk') { ?>
 		<div class="col-lg-6 mb-3">
 			<form method="post">
 				<section class="card">
