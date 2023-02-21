@@ -546,7 +546,8 @@ switch ($_POST['cmd']) {
                 $get_requisitions = dbq("select * from jobcard_requisitions where (status='completed' || status='canceled' || status='rejected'){$query_} 
                             and 
                             (
-                                plant_id in (select plant_id from plants_tbl where plant_number like '{$_POST['search']}%') 
+                                request_id={$_POST['search']}
+                                || plant_id in (select plant_id from plants_tbl where plant_number like '{$_POST['search']}%') 
                                 || job_id in (select job_id from jobcards where jobcard_number like '%{$_POST['search']}%') 
                                 || requested_by in (select user_id as requested_by from users_tbl where role='mechanic' and (name like '{$_POST['search']}%' or last_name like '{$_POST['search']}%'))
                             ) order by datetime");
