@@ -45,9 +45,11 @@ if (isset($_POST['request_jobcard'])) {
             }
         } else if ($_POST['jobcard_type'] == 'service') {
             $query .= "service_type='{$_POST['service_type']}',";
+            $query .= "{$_POST['reading_type']}_reading={$_POST['reading']},";
+        } else {
+            $query .= "{$_POST['reading_type']}_reading={$_POST['reading']},";
         }
 
-        $query .= "{$_POST['reading_type']}_reading={$_POST['reading']},";
 
 
         if ($create_jobcard) {

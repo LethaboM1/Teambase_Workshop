@@ -124,11 +124,6 @@
 							<div id='service_detail' style="display:none;" class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 								<?= inp('service_type', 'Service Type', 'select', $_POST['service_type'], '', 0, [['name' => 'A', 'value' => 'A'], ['name' => 'B', 'value' => 'B'], ['name' => 'C', 'value' => 'C'], ['name' => 'D', 'value' => 'D']]) ?>
 							</div>
-							<div class="col-sm-12 col-md-12">
-								<label class="col-form-label" for="formGroupExampleInput">Comments</label>
-								<textarea class="form-control" rows="3" id="comment" name="comment"><?= $_POST['comment'] ?></textarea>
-								<br>
-							</div>
 							<hr>
 							<div id="extras_details" style="display:none">
 								<h2 class="card-title">Extras</h2><br>
@@ -298,6 +293,11 @@
 							</div>
 						</div>
 
+						<div class="col-sm-12 col-md-12">
+							<label class="col-form-label" for="formGroupExampleInput">Comments</label>
+							<textarea class="form-control" rows="3" id="comment" name="comment"><?= $_POST['comment'] ?></textarea>
+							<br>
+						</div>
 					</div>
 					<footer class="card-footer text-end">
 						<button name="request_jobcard" class="btn btn-primary">Request Job Card </button>
