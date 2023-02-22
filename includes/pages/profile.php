@@ -9,7 +9,7 @@
                 <div class="row">
                     <div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
                         <label class="col-form-label" for="formGroupExampleInput">First Name</label>
-                        <input type="text" name="name" placeholder="First Name" class="form-control" value="<?= $_SESSION['user']['namer'] ?>" disabled>
+                        <input type="text" name="name" placeholder="First Name" class="form-control" value="<?= $_SESSION['user']['name'] ?>" disabled>
                     </div>
                     <div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
                         <label class="col-form-label" for="formGroupExampleInput">Last Name</label>
