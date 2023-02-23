@@ -11,7 +11,7 @@
       </div>
     </div>
     <!-- Navigation Start -->
-    <?
+    <?php
     switch ($dashboard) {
       case "admin":
         if ($_SESSION['user']['role'] == 'clerk') {
