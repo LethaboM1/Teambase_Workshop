@@ -31,6 +31,7 @@ $total_jobs = dbr($get_requisitions) + dbr($get_new) + dbr($get_open) + dbr($get
 					<ul class="nav nav-children">
 						<li><a class="nav-link" href="dashboard.php?page=job-requisitions-new">New&nbsp;<span class='badge badge-danger float-end'><?= dbr($get_new_requisitions) ?></span></a></li>
 						<li><a class="nav-link" href="dashboard.php?page=job-requisitions-open">Open&nbsp;<span class='badge badge-danger float-end'><?= dbr($get_open_requisitions) ?></span></a></li>
+						<li><a class="nav-link" href="dashboard.php?page=job-requisitions-completed">Completed</a></li>
 					</ul>
 				</li>
 				<li class="nav-parent">

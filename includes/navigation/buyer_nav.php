@@ -20,7 +20,8 @@ $total_jobs = dbr($get_requisitions);
 						<span>Job Requisitions&nbsp;<span class='badge badge-danger'><?= $total_jobs ?></span></span>
 					</a>
 					<ul class="nav nav-children">
-						<li><a class="nav-link" href="dashboard.php?page=job-requisitions">Job Requisitions&nbsp;<span class='badge badge-danger'><?= $total_jobs ?></span></a></li>
+						<li><a class="nav-link" href="dashboard.php?page=job-requisitions">Open &nbsp;<span class='badge badge-danger'><?= $total_jobs ?></span></a></li>
+						<li><a class="nav-link" href="dashboard.php?page=job-requisitions-completed">Completed </a></li>
 					</ul>
 				</li>
 				<li class="nav-parent">

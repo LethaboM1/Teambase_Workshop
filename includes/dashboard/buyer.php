@@ -17,6 +17,12 @@ switch ($_GET['page']) {
         include "./includes/forms/manager/jobcards/job-requisitions.php";
         break;
 
+    case "job-requisitions-completed":
+        $page_title = 'Completed Job Card Requisitions';
+        $page_name = 'manager/jobcards/job-requisitions-completed';
+        //include "./includes/forms/manager/jobcards/job-requisitions.php";
+        break;
+
     default:
         $page_title = 'Dashboard Overview';
         $page_name = 'dash_buyer';

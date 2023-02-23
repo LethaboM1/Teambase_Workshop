@@ -4,6 +4,12 @@ if ($_SESSION['user']['role'] != 'user') {
 	go('index.php');
 }
 switch ($_GET['page']) {
+	case "profile":
+		$page_title = 'Your Profile';
+		$page_name = 'profile';
+		require "includes/forms/profile.php";
+		break;
+
 	case "plants":
 		$page_title = 'Plants';
 		$page_name = 'user/plants-page';
@@ -27,6 +33,7 @@ switch ($_GET['page']) {
 		break;
 
 	default:
-		$page_title = 'Dashboard Overview';
-		$page_name = 'dash_user';
+		$page_title = 'Plants';
+		$page_name = 'user/plants-page';
+		include "./includes/forms/user/plants-page.php";
 }

@@ -19,15 +19,6 @@
 						<!-- <li><a class="nav-link" href="dashboard.php?page=plants">Work done</a></li> -->
 					</ul>
 				</li>
-				<li class="nav-parent">
-					<a class="nav-link" href="#">
-						<i class="bx bxs-report" aria-hidden="true"></i>
-						<span>Reports</span>
-					</a>
-					<ul class="nav nav-children">
-						<li><a class="nav-link" href="">Fuel Report</a></li>
-					</ul>
-				</li>
 			</ul>
 		</nav>
 		<hr class="separator" />

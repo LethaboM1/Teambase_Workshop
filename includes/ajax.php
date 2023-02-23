@@ -539,6 +539,8 @@ switch ($_POST['cmd']) {
                     $query_ = " and clerk_id={$_SESSION['user']['user_id']}";
                 } else if ($_SESSION['user']['role'] == 'buyer') {
                     $query_ = " and buyer_id={$_SESSION['user']['user_id']}";
+                } else if ($_SESSION['user']['role'] == 'mechanic') {
+                    $query_ = " and requested_by-{$_SESSION['user']['user_id']}";
                 } else {
                     $query_ = "";
                 }

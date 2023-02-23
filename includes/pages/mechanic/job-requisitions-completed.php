@@ -65,7 +65,7 @@
 				}
 
 				if ($_SESSION['user']['role'] == 'clerk') {
-					$get_requisitions = dbq("select * from jobcard_requisitions where (status='completed' || status='canceled' || status='rejected') and requested_by={$_SESSION['user']['user_id']} order by datetime");
+					$get_requisitions = dbq("select * from jobcard_requisitions where (status='completed' || status='canceled' || status='rejected') and approved_by={$_SESSION['user']['user_id']} order by datetime");
 				} else if ($_SESSION['user']['role'] == 'buyer') {
 					$get_requisitions = dbq("select * from jobcard_requisitions where (status='completed' || status='canceled' || status='rejected') and buyer_id={$_SESSION['user']['user_id']} order by datetime");
 				} else {
@@ -74,10 +74,10 @@
 
 				$total_lines = dbr($get_requisitions);
 
-				$pages = ceil($total_lines / $lines);
 
 
 				($total_lines == 0) ? $pages = 1 : $pages = ceil($total_lines / $lines);
+
 				if ($_GET['pg'] > $pages) {
 					$_GET['pg'] = $pages;
 				}
@@ -97,7 +97,7 @@
 
 
 				if ($_SESSION['user']['role'] == 'clerk') {
-					$get_requisitions = dbq("select * from jobcard_requisitions where (status='completed' || status='canceled' || status='rejected') and clerk_id={$_SESSION['user']['user_id']} order by datetime limit {$start},$lines");
+					$get_requisitions = dbq("select * from jobcard_requisitions where (status='completed' || status='canceled' || status='rejected') and approved_by={$_SESSION['user']['user_id']} order by datetime limit {$start},$lines");
 				} else if ($_SESSION['user']['role'] == 'buyer') {
 					$get_requisitions = dbq("select * from jobcard_requisitions where (status='completed' || status='canceled' || status='rejected') and buyer_id={$_SESSION['user']['user_id']} order by datetime limit {$start},$lines");
 				} else {
@@ -112,6 +112,8 @@
 					} else {
 						echo "<tr><td colspan='5'>No open job requisitions.</td></tr>";
 					}
+				} else {
+					echo "<tr><td colspan='5'>SQL Error: " . dbe() . "</td></tr>";
 				}
 				?>
 			</tbody>

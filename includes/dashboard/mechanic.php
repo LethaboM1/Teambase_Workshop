@@ -5,6 +5,11 @@ if ($_SESSION['user']['role'] != 'mechanic') {
 }
 
 switch ($_GET['page']) {
+    case "profile":
+        $page_title = 'Your Profile';
+        $page_name = 'profile';
+        require "includes/forms/profile.php";
+        break;
 
     case 'add-job':
         $page_title = 'Request New Job Card';
@@ -42,6 +47,12 @@ switch ($_GET['page']) {
         $page_title = 'Daily Pre-Task Mini Risk Assessment';
         $page_name = 'mechanic/daily-pre-task-mini';
         require "./includes/forms/mechanic/jobcards/daily-pre-task-mini.php";
+        break;
+
+    case "job-requisitions-completed":
+        $page_title = 'Completed Job Card Requisitions';
+        $page_name = 'mechanic/job-requisitions-completed';
+        //include "./includes/forms/manager/jobcards/job-requisitions.php";
         break;
 
     case 'plant-inspection':
