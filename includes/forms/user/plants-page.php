@@ -253,39 +253,38 @@ if (isset($_POST['submit_checklist'])) {
     $faulty = false;
     if ($_POST['submit_checklist'] > 0) {
         $plant_ = dbf(dbq("select * from plants_tbl where plant_id={$_POST['submit_checklist']}"));
-
-        /* Check if KM HR reading is correct */
-        //if (check_reading($_POST['submit_checklist'], $_POST['reading'])) {
-        if (!is_error()) {
+        if ($plant_ = get_plant($_POST['submit_checklist'])) {
             $get_checklist = dbq("select * from plant_checklist order by item_order");
             if ($get_checklist) {
                 if (dbr($get_checklist) > 1) {
                     $json_checklist = [];
                     while ($checkitem = dbf($get_checklist)) {
-                        if (isset($_POST[$checkitem['checklist_id']])) {
-                            $json_checklist[] = ['Question' => $checkitem['check_item'], 'Result' => $_POST[$checkitem['checklist_id']]];
-                            if (!isset($_POST[$checkitem['checklist_id']])) {
-                                $faulty = true;
-                                switch ($checkitem['severity']) {
-                                    case "H":
-                                        $status = 'H';
-                                        break;
+                        $result =  (!isset($_POST[$checkitem['checklist_id']])) ? "No" : "Yes";
 
-                                    case "M":
-                                        if ($status != 'H') {
-                                            $status = 'M';
-                                        }
-                                        break;
+                        $json_checklist[] = ['Question' => $checkitem['check_item'], 'Result' => $result];
+                        if ($result == 'No') {
+                            $faulty = true;
+                            switch ($checkitem['severity']) {
+                                case "H":
+                                    $status = 'H';
+                                    break;
 
-                                    case "L":
-                                        if ($status != 'H' && $status != 'M') {
-                                            $status = 'L';
-                                        }
-                                        break;
-                                }
+                                case "M":
+                                    if ($status != 'H') {
+                                        $status = 'M';
+                                    }
+                                    break;
+
+                                case "L":
+                                    if ($status != 'H' && $status != 'M') {
+                                        $status = 'L';
+                                    }
+                                    break;
                             }
                         }
                     }
+                } else {
+                    error("No check list.");
                 }
             } else {
                 sqlError();
