@@ -187,7 +187,7 @@ $request_status_select = [
 																		if ($_SESSION['user']['role'] == 'buyer') {
 																			echo inp('status', '', 'select', $part['status'], '', 0, $part_status_, "style='width:150px;' onchange='change_part_status(`{$part['id']}`,$(this).val());'");
 																		} else {
-																			echo $part['status'];
+																			echo ucfirst($part['status']);
 																		}
 																		?></td>
 																	<td><span id="id_<?= $part['id'] ?>"></span></td>
