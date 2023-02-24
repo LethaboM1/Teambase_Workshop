@@ -446,7 +446,7 @@ switch ($_POST['cmd']) {
                 if (isset($items_list)) {
                     if (count($items_list) > 0) {
                         foreach ($items_list as $row) {
-                            ($_SESSION['user']['role'] == 'mechanic') ? require "./includes/pages/mechanic/list_open_jobcards.php" : require "pages/manager/jobcards/list_open_jobcards.php";
+                            ($_SESSION['user']['role'] == 'mechanic') ? require "pages/mechanic/list_open_jobcards.php" : require "pages/manager/jobcards/list_open_jobcards.php";
                         }
                     } else {
                         echo "<tr><td colspan='5'>Could not find '{$_POST['search']}'</td></tr>";
