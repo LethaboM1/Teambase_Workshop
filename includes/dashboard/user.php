@@ -27,11 +27,12 @@ switch ($_GET['page']) {
 		$page_name = 'user/log-sheet';
 		break;
 
+		/*
 	case 'add-job':
 		$page_title = 'Request New Job Card';
 		$page_name = 'user/add-job-card';
 		break;
-
+	*/
 	default:
 		$page_title = 'Plants';
 		$page_name = 'user/plants-page';

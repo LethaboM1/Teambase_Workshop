@@ -59,18 +59,12 @@ if (isset($_POST['complete_jobcard'])) {
                         require_once "./includes/forms/mail.manager.job_completed.php";
                         go('dashboard.php?page=open-job');
                     } else {
-                        $update_plant = dbq("update plants_tbl set
-                                                    {$plant_['reading_type']}_reading={$_POST['reading']}
-                                                    where plant_id={$plant_['plant_id']}");
-                        if (mysqli_affected_rows($db) != -1) {
+                        if (update_plant_reading($plant_['plant_id'], 'ready')) {
                             msg("job card completed.");
-
                             $job_id = $_GET['id'];
                             $mechanic_id = $jobcard_['mechanic_id'];
                             require_once "./includes/forms/mail.manager.job_completed.php";
                             go('dashboard.php?page=open-job');
-                        } else {
-                            sqlError();
                         }
                     }
                 } else {

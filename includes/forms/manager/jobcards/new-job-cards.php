@@ -78,7 +78,7 @@ if (isset($_POST['allocate_mechanic'])) {
 }
 
 if (isset($_POST['delete_jobcard'])) {
-    if ($_POST['job_id'] > 0) {
+    if ($jobcard_ = get_jobcard($_POST['job_id'])) {
         $update_ = dbq("update jobcards set 
                             status='completed', 
                             complete_comment='Job card was deleted by {$_SESSION['user']['name']} {$_SESSION['user']['last_name']}', 
@@ -86,7 +86,9 @@ if (isset($_POST['delete_jobcard'])) {
                             where job_id={$_POST['job_id']}");
 
         if ($update_) {
-            msg("Job card deleted.");
+            if (update_plant_status($jobcard_['plant_id'], 'ready')) {
+                msg("Job card deleted.");
+            }
         } else {
             sqlError();
         }

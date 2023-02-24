@@ -15,7 +15,7 @@
 					</a>
 					<ul class="nav nav-children">
 						<li><a class="nav-link" href="dashboard.php?page=plants">My Plants</a></li>
-						<li><a class="nav-link" href="dashboard.php?page=add-job">Request Job card</a></li>
+						<!-- <li><a class="nav-link" href="dashboard.php?page=add-job">Request Job card</a></li> -->
 						<!-- <li><a class="nav-link" href="dashboard.php?page=plants">Work done</a></li> -->
 					</ul>
 				</li>

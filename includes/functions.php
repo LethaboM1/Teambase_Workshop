@@ -1506,6 +1506,26 @@ function saveRequisition($request_id)
 	printPDF($html, __DIR__ . "/../files/requisitions/{$request_id}_request", 1, 0, 'P');
 }
 
+function update_plant_status($plant_id, $status, $query = '')
+{
+	if ($plant_ = get_plant($plant_id)) {
+		$query_ = (strlen($query)) ? "{$query}," : "";
+		$update_ = dbq("update plants_tbl set
+							{$query}
+							status='{$status}',
+							where plant_id={$plant_id}
+						");
+		if ($update_) {
+			return true;
+		} else {
+			sqlError();
+			return false;
+		}
+	} else {
+		return false;
+	}
+}
+
 function update_plant_reading($plant_id, $reading, $status = '')
 {
 	if ($plant_ = get_plant($plant_id)) {
@@ -1544,6 +1564,27 @@ function get_plant($plant_id)
 		} else {
 			error_log('SQL error: ' . dbe());
 			error("Could not find plant.");
+			return false;
+		}
+	} else {
+		return false;
+	}
+}
+
+function get_jobcard($job_id)
+{
+	if (is_numeric($job_id)) {
+		$get_jobcard = dbq("select * from jobcards where job_id={$job_id}");
+		if ($get_jobcard) {
+			if (dbr($get_jobcard) == 1) {
+				$jobcard_ = dbf($get_jobcard);
+				return $jobcard_;
+			} else {
+				error("Could not find job card.");
+			}
+		} else {
+			error_log('SQL error: ' . dbe());
+			error("Could not find job card.");
 			return false;
 		}
 	} else {
