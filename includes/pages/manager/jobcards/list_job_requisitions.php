@@ -184,7 +184,7 @@ $request_status_select = [
 																	<td><span id="<?= $part['id'] ?>_div"></span></td>
 																	<td><?= $part['comment'] ?></td>
 																	<td><?php
-																		if ($_SESSION['user']['role'] == 'manager' || $_SESSION['user']['role'] == 'buyer') {
+																		if ($_SESSION['user']['role'] == 'buyer') {
 																			echo inp('status', '', 'select', $part['status'], '', 0, $part_status_, "style='width:150px;' onchange='change_part_status(`{$part['id']}`,$(this).val());'");
 																		} else {
 																			echo $part['status'];
