@@ -421,7 +421,11 @@ switch ($_POST['cmd']) {
     case "search":
         switch ($_POST['type']) {
             case "open-jobs":
-                $get_users = dbq("select * from jobcards where (jobcard_number like '%{$_POST['search']}%' || fleet_number like '%{$_POST['search']}%') and status='completed'");
+                if ($_SESSION['user']['role'] == 'mechanic') {
+                    $query_ = " and mechanic_id={$_SESSION['user']['user_id']}";
+                }
+
+                $get_users = dbq("select * from jobcards where (jobcard_number like '%{$_POST['search']}%' || fleet_number like '%{$_POST['search']}%') and status='completed'{$query_}");
                 if ($get_users) {
                     if (dbr($get_users) > 0) {
                         while ($row = dbf($get_users)) {
