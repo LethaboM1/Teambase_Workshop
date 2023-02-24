@@ -112,6 +112,7 @@ switch ($plant_['reading_type']) {
 																echo "<h4>Start Refuel</h4>"
 																	. inp('log_id', '', 'hidden', $log_['log_id'])
 																	. inp('plant_id', '', 'hidden', $plant_['plant_id'])
+																	. inp('reading', "Reading(" . strtoupper($row['reading_type']) . ") - Last (" . $row[$row['reading_type'] . '_reading'] . ")")
 																	. inp('start_datetime', '', 'hidden', $datetime)
 																	. inp('datetime', 'Date/Time', 'datetime', $datetime, '', 0, '', 'disabled')
 																	. "<div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
@@ -124,7 +125,19 @@ switch ($plant_['reading_type']) {
 																			</div>
 																		</div>
 																	</div>"
-																	. "<div id='image_list'></div>"
+																	. "<div id='image_list'>";
+
+																if (is_array($_SESSION['upload_images']) && count($_SESSION['upload_images']) > 0) {
+																	echo "<div class='row'>";
+																	foreach ($_SESSION['upload_images'] as $key => $image) {
+
+																		echo "<div class='col-md-3'>
+																					<i onclick='remImage(`{$key}`)' class='fa fa-times fa-2x removeX'></i>
+																					<img width='200px' src='{$image['image']}' /></div>";
+																	}
+																	echo    "</div>";
+																}
+																echo "</div>"
 																	. inp('start_refuel', '', 'submit', 'Start', 'btn-primary');
 
 																$jscript .= "
@@ -167,7 +180,19 @@ switch ($plant_['reading_type']) {
 																			</div>
 																		</div>
 																	</div>"
-																	. "<div id='image_list'></div>"
+																	. "<div id='image_list'>";
+
+																if (is_array($_SESSION['upload_images']) && count($_SESSION['upload_images']) > 0) {
+																	echo "<div class='row'>";
+																	foreach ($_SESSION['upload_images'] as $key => $image) {
+
+																		echo "<div class='col-md-3'>
+																						<i onclick='remImage(`{$key}`)' class='fa fa-times fa-2x removeX'></i>
+																						<img width='200px' src='{$image['image']}' /></div>";
+																	}
+																	echo    "</div>";
+																}
+																echo "</div>"
 																	. inp('end_refuel', '', 'submit', 'End', 'btn-primary');
 
 																$jscript .= "
@@ -369,7 +394,7 @@ switch ($plant_['reading_type']) {
 				<!-- Modal view End -->
 				<!-- Plant Card End -->
 			</div>
-			<h2 class="card-title">Plant# <?= $row['reg_number'] ?>, Status: <?= ucfirst($plant_['status']) ?></h2>
+			<h2 class="card-title">Plant# <?= $row['plant_number'] . (strlen($row['reg_number']) ? " - {$row['reg_number']}" : "") ?>, Status: <?= ucfirst($plant_['status']) ?></h2>
 			<p class="card-subtitle">Status: <?= ucfirst($row['status']) ?></p>
 
 		</div>

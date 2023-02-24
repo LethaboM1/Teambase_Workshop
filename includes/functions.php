@@ -1506,6 +1506,51 @@ function saveRequisition($request_id)
 	printPDF($html, __DIR__ . "/../files/requisitions/{$request_id}_request", 1, 0, 'P');
 }
 
+function update_plant_reading($plant_id, $reading, $status = '')
+{
+	if ($plant_ = get_plant($plant_id)) {
+		if (check_reading($plant_id, $reading)) {
+			$status = (strlen($status) > 0) ? "status='{$status}'," : "";
+			$update_ = dbq("update plants_tbl set
+								{$status}
+								{$plant_['reading_type']}_reading={$reading}
+								where plant_id={$plant_id}
+							");
+			if ($update_) {
+				return true;
+			} else {
+				sqlError();
+				return false;
+			}
+		} else {
+			return false;
+		}
+	} else {
+		return false;
+	}
+}
+
+function get_plant($plant_id)
+{
+	if (is_numeric($plant_id)) {
+		$get_plant = dbq("select * from plants_tbl where plant_id={$plant_id}");
+		if ($get_plant) {
+			if (dbr($get_plant) == 1) {
+				$plant_ = dbf($get_plant);
+				return $plant_;
+			} else {
+				error("Could not find plant.");
+			}
+		} else {
+			error_log('SQL error: ' . dbe());
+			error("Could not find plant.");
+			return false;
+		}
+	} else {
+		return false;
+	}
+}
+
 function check_reading($plant_id, $reading, $thresh_hold = 3)
 {
 	$get_plant = dbq("select * from plants_tbl where plant_id={$plant_id}");
@@ -1537,6 +1582,7 @@ function check_reading($plant_id, $reading, $thresh_hold = 3)
 						return false;
 					}
 				}
+				return true;
 				break;
 
 			default:

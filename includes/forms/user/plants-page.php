@@ -159,38 +159,39 @@ if (isset($_POST['end_break'])) {
 }
 
 if (isset($_POST['start_refuel'])) {
-    if (date_create($_POST['start_datetime'])) {
 
-        $add_refuel = dbq("insert into operator_refuel set
-                                operator_log={$_POST['log_id']},
-                                start_datetime='{$_POST['start_datetime']}'
-                                ");
-        if ($add_refuel) {
-            $refuel_id = mysqli_insert_id($db);
-            if (upload_images('start_refuel', $_SESSION['user']['user_id'], $_POST['plant_id'], $_SESSION['upload_images'], $refuel_id)) {
-                $update_log = dbq("update operator_log set
-                                        status='refuel',
-                                        status_id={$refuel_id}
-                                        where log_id={$_POST['log_id']}");
+    if (date_create($_POST['start_datetime']) && is_numeric($_POST['reading']) && isset($_POST['plant_id'])) {
+        if (check_reading($_POST['plant_id'], $_POST['reading'])) {
+            if ($plant_ = get_plant($_POST['plant_id'])) {
+                $add_refuel = dbq("insert into operator_refuel set
+                                    operator_log={$_POST['log_id']},
+                                    plant_id={$_POST['plant_id']},
+                                    reading={$_POST['reading']},
+                                    start_datetime='{$_POST['start_datetime']}'
+                                    ");
+                if ($add_refuel) {
+                    $refuel_id = mysqli_insert_id($db);
+                    if (upload_images('start_refuel', $_SESSION['user']['user_id'], $_POST['plant_id'], $_SESSION['upload_images'], $refuel_id)) {
+                        $update_log = dbq("update operator_log set
+                                            status='refuel',
+                                            status_id={$refuel_id}
+                                            where log_id={$_POST['log_id']}");
 
-                if ($update_log) {
-                    $update_plant = dbq("update plants_tbl set
-                                        status='refuel'
-                                        where plant_id={$_POST['plant_id']}");
-                    if ($update_plant) {
-                        msg('Refuel started!');
-                        go('dashboard.php?page=plants');
+                        if ($update_log) {
+                            if (update_plant_reading($_POST['plant_id'], $_POST['reading'], 'refuel')) {
+                                msg('Refuel started!');
+                                go('dashboard.php?page=plants');
+                            }
+                        } else {
+                            sqlError('update log', 'update log');
+                        }
                     } else {
-                        sqlError('update plant', 'update plant');
+                        error("Error uploading images.");
                     }
                 } else {
-                    sqlError('update log', 'update log');
+                    sqlError('refuel event', 'refuel event');
                 }
-            } else {
-                error("Error uploading images.");
             }
-        } else {
-            sqlError('refuel event', 'refuel event');
         }
     } else {
         error('Invalid date/time.');
@@ -199,43 +200,47 @@ if (isset($_POST['start_refuel'])) {
 
 if (isset($_POST['end_refuel'])) {
     if (date_create($_POST['end_datetime'])) {
-        $operator_log = dbf(dbq("select * from operator_log where log_id={$_POST['log_id']}"));
+        if (strlen($_POST['liters'] > 0 && is_numeric($_POST['liters']))) {
+            $operator_log = dbf(dbq("select * from operator_log where log_id={$_POST['log_id']}"));
 
-        if (!upload_images('end_refuel', $_SESSION['user']['user_id'], $_POST['plant_id'], $_SESSION['upload_images'], $operator_log['status_id'])) {
-            error("There was an error uploading the photos.");
-        }
+            if (!upload_images('end_refuel', $_SESSION['user']['user_id'], $_POST['plant_id'], $_SESSION['upload_images'], $operator_log['status_id'])) {
+                error("There was an error uploading the photos.");
+            }
 
-        $update_refuel = dbq("update operator_refuel set
+            $update_refuel = dbq("update operator_refuel set
                                     end_datetime='{$_POST['end_datetime']}',
                                     liters={$_POST['liters']},
                                     comments='" . htmlentities($_POST['comment'], ENT_QUOTES) . "'
                                     where refuel_id={$operator_log['status_id']}
                                     ");
-        if ($update_refuel) {
-            if (upload_images('end_refuel', $_SESSION['user']['user_id'], $_POST['plant_id'], $_SESSION['upload_images'], $operator_log['status_id'])) {
-                $update_log = dbq("update operator_log set
+            if ($update_refuel) {
+                if (upload_images('end_refuel', $_SESSION['user']['user_id'], $_POST['plant_id'], $_SESSION['upload_images'], $operator_log['status_id'])) {
+                    $update_log = dbq("update operator_log set
                                         status='S',
                                         status_id=0
                                         where log_id={$_POST['log_id']}");
 
-                if ($update_log) {
-                    $update_plant = dbq("update plants_tbl set
+                    if ($update_log) {
+                        $update_plant = dbq("update plants_tbl set
                                         status='busy'
                                         where plant_id={$_POST['plant_id']}");
-                    if ($update_plant) {
-                        msg('Refuel ended!');
-                        go('dashboard.php?page=plants');
+                        if ($update_plant) {
+                            msg('Refuel ended!');
+                            go('dashboard.php?page=plants');
+                        } else {
+                            sqlError('update plant', 'update plant');
+                        }
                     } else {
-                        sqlError('update plant', 'update plant');
+                        sqlError('update log', 'update log');
                     }
                 } else {
-                    sqlError('update log', 'update log');
+                    error("Error uploading images.");
                 }
             } else {
-                error("Error uploading images.");
+                sqlError('refuel event', 'refuel event');
             }
         } else {
-            sqlError('refuel event', 'refuel event');
+            error("invalid liters entered.");
         }
     } else {
         error('Invalid date/time.');
@@ -278,10 +283,6 @@ if (isset($_POST['submit_checklist'])) {
                                         }
                                         break;
                                 }
-                            }
-                        } else {
-                            if (!isset($_SESSION['error'])) {
-                                error("Not all questions on the check list were answered.");
                             }
                         }
                     }
@@ -601,61 +602,66 @@ if (isset($_POST['end_log'])) {
         if ($get_log) {
             if (dbr($get_log) > 0) {
                 $log_ = dbf($get_log);
-                if ($log_['status'] == 'S') {
-                    if ($log_['operator_id'] == $_SESSION['user']['user_id']) {
-                        //$end_datetime = "{$_POST['enddate']} {$_POST['endtime']}";
-                        if (date_create($_POST['end_datetime'])) {
-                            // $hr_reading = get_hours($log_['start_datetime'],  $end_datetime);
+                if (isset($_SESSION['upload_images']) && count($_SESSION['upload_images']) > 0) {
+                    if ($log_['status'] == 'S') {
+                        if ($log_['operator_id'] == $_SESSION['user']['user_id']) {
+                            //$end_datetime = "{$_POST['enddate']} {$_POST['endtime']}";
+                            if (date_create($_POST['end_datetime'])) {
+                                // $hr_reading = get_hours($log_['start_datetime'],  $end_datetime);
 
-                            // if ($log_['start_reading'] <= $_POST['reading']) {
-                            $update_ = dbq("update operator_log set
+                                // if ($log_['start_reading'] <= $_POST['reading']) {
+                                $update_ = dbq("update operator_log set
                                                     end_datetime='{$_POST['end_datetime']}',
                                                     end_reading={$_POST['reading']},
                                                     status='E'
                                                     where log_id={$log_['log_id']}
                                                     ");
-                            if (mysqli_affected_rows($db) != -1) {
-                                if (upload_images('operator_log_end', $log_['operator_id'], $log_['plant_id'], $_SESSION['upload_images'], $log_['log_id'])) {
-                                    $last_log = mysqli_insert_id($db);
-                                    $query = '';
-                                    switch ($_POST['reading_type']) {
-                                        case 'km':
-                                            $query .= "km_reading={$_POST['reading']},";
-                                            break;
+                                if (mysqli_affected_rows($db) != -1) {
+                                    if (upload_images('operator_log_end', $log_['operator_id'], $log_['plant_id'], $_SESSION['upload_images'], $log_['log_id'])) {
+                                        $last_log = mysqli_insert_id($db);
+                                        $query = '';
+                                        switch ($_POST['reading_type']) {
+                                            case 'km':
+                                                $query .= "km_reading={$_POST['reading']},";
+                                                break;
 
-                                        case 'hr':
-                                            $query .= "hr_reading={$_POST['reading']},";
-                                            break;
-                                    }
+                                            case 'hr':
+                                                $query .= "hr_reading={$_POST['reading']},";
+                                                break;
+                                        }
 
-                                    $query = "update plants_tbl set
+                                        $query = "update plants_tbl set
                                                         {$query}                                                        
                                                         operator_id=0,
                                                         status='ready'
                                                         where plant_id={$log_['plant_id']}
                                                         ";
-                                    $update_plant = dbq($query);
-                                    if (mysqli_affected_rows($db) != -1) {
-                                        msg("Operator log submitted.");
-                                        go('dashboard.php?page=plants');
-                                    } else {
-                                        sqlError('Update plants_tbl', 'Update plants_tbl: ' . htmlentities($query, ENT_QUOTES));
+                                        $update_plant = dbq($query);
+                                        if (mysqli_affected_rows($db) != -1) {
+                                            msg("Operator log submitted.");
+                                            go('dashboard.php?page=plants');
+                                        } else {
+                                            sqlError('Update plants_tbl', 'Update plants_tbl: ' . htmlentities($query, ENT_QUOTES));
+                                        }
                                     }
+                                } else {
+                                    sqlError('Operator log', 'Operator log');
                                 }
-                            } else {
-                                sqlError('Operator log', 'Operator log');
-                            }
-                            /*} else {
+                                /*} else {
                                 error("Invalid reading");
                             }*/
+                            } else {
+                                error("Invalid date/time.");
+                            }
                         } else {
-                            error("Invalid date/time.");
+                            error("Invalid log.");
+                            go('logout.php');
                         }
                     } else {
-                        error("Invalid log.");
+                        error("Invalid status.");
                     }
                 } else {
-                    error("Invalid status.");
+                    error("You require a photo.");
                 }
             } else {
                 error("No log found.");
@@ -670,54 +676,45 @@ if (isset($_POST['end_log'])) {
 
 if (isset($_POST['add_log'])) {
     if (isset($_SESSION['upload_images']) && count($_SESSION['upload_images']) > 0) {
-        $get_plant = dbq("select * from plants_tbl where plant_id={$_POST['plant_id']}");
-        if ($get_plant) {
-            if (dbr($get_plant) == 1) {
-                $plant_ = dbf($get_plant);
-                if ($plant_['operator_id'] == $_SESSION['user']['user_id']) {
-                    if ($plant_['status'] == 'check') {
-                        $insert_log = dbq("insert into operator_log set
+        if ($plant_ = get_plant($_POST['plant_id'])) {
+            if ($plant_['operator_id'] == $_SESSION['user']['user_id']) {
+                if ($plant_['status'] == 'check') {
+                    $insert_log = dbq("insert into operator_log set
                                                     start_datetime='" . esc($_POST['start_datetime']) . "',
                                                     operator_id={$plant_['operator_id']},
                                                     plant_id={$plant_['plant_id']},
-                                                    site_number='{$_POST['sitenumber']}',
+                                                    site='{$_POST['site']}',
                                                     reading_type='{$_POST['reading_type']}',
                                                     start_reading='{$_POST['reading']}',
                                                     status='S'
                                                     ");
-                        if ($insert_log) {
-                            $log_key = mysqli_insert_id($db);
-                            if (upload_images('operator_log_start', $plant_['operator_id'], $plant_['plant_id'], $_SESSION['upload_images'], $log_key)) {
-                                $last_log = mysqli_insert_id($db);
-                                $update_plant = dbq("update plants_tbl set
+                    if ($insert_log) {
+                        $log_key = mysqli_insert_id($db);
+                        if (upload_images('operator_log_start', $plant_['operator_id'], $plant_['plant_id'], $_SESSION['upload_images'], $log_key)) {
+                            $last_log = mysqli_insert_id($db);
+                            $update_plant = dbq("update plants_tbl set
                                                         " . esc($_POST['reading_type']) . "_reading='{$_POST['reading']}',
                                                         operator_datetime='" . esc($_POST['start_datetime']) . "',
                                                         status='busy'
                                                         where plant_id={$plant_['plant_id']}
                                                         ");
-                                if (mysqli_affected_rows($db) != -1) {
-                                    msg("Operator log submitted.");
-                                    go('dashboard.php?page=plants');
-                                } else {
-                                    sqlError('updating plant', 'updating plant');
-                                }
+                            if (mysqli_affected_rows($db) != -1) {
+                                msg("Operator log submitted.");
+                                go('dashboard.php?page=plants');
+                            } else {
+                                sqlError('updating plant', 'updating plant');
                             }
-                        } else {
-                            sqlError('adding log', 'adding log');
                         }
                     } else {
-                        error("Plant status violation.");
+                        sqlError('adding log', 'adding log');
                     }
                 } else {
-                    error("Access violation.");
-                    go('logout.php');
+                    error("Plant status violation.");
                 }
             } else {
-                error("Could not find plant: {$_POST['plant_id']}");
+                error("Access violation.");
                 go('logout.php');
             }
-        } else {
-            sqlError();
         }
     } else {
         error("You must take photo of your reading.");

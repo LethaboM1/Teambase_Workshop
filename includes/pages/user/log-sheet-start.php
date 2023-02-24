@@ -17,8 +17,8 @@ if (folders_('operator_log', $plant_['plant_id'])) {
 			<input type="text" value="<?= $operator_['company_number'] ?>" name="company" placeholder="Company #" class="form-control" disabled>
 		</div>
 		<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-			<label class="col-form-label" for="formGroupExampleInput">Reg No.</label>
-			<input type="text" value="<?= $plant_['reg_number'] ?>" name="fleet" placeholder="Fleet No." class="form-control" disabled>
+			<label class="col-form-label" for="formGroupExampleInput">Plant</label>
+			<input type="text" value="<?= $plant_['plant_number'] . (strlen($plant_['reg_number']) > 0 ? " - {$plant_['reg_number']}" : "") ?>" name="fleet" placeholder="Fleet No." class="form-control" disabled>
 		</div>
 	</div>
 	<hr>
@@ -33,8 +33,8 @@ if (folders_('operator_log', $plant_['plant_id'])) {
 			<input type="time" name="starttime" placeholder="" class="form-control" value="<?= date('H:i') ?>" disabled>
 		</div>
 		<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-			<label class="col-form-label" for="formGroupExampleInput">Site Number</label>
-			<input type="text" name="sitenumber" placeholder="Site Number" class="form-control">
+			<label class="col-form-label" for="formGroupExampleInput">Site</label>
+			<input type="text" name="site" placeholder="Site" class="form-control">
 		</div>
 		<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 			<?= inp('reading_type', '', 'hidden', $row['reading_type']) ?>
@@ -78,7 +78,17 @@ if (folders_('operator_log', $plant_['plant_id'])) {
 		<footer class="text-end">
 			<button name="add_log" type="submit" class="btn btn-primary">Start</button>
 			<button type="reset" class="btn btn-default">Reset</button>
-			<div id="image_list" class='mt-2 mb-2'></div>
+			<div id="image_list" class='mt-2 mb-2'><?php
+													if (is_array($_SESSION['upload_images']) && count($_SESSION['upload_images']) > 0) {
+														echo "<div class='row'>";
+														foreach ($_SESSION['upload_images'] as $key => $image) {
+															echo "<div class='col-md-3'>
+																		<i onclick='remImage(`{$key}`)' class='fa fa-times fa-2x removeX'></i>
+																		<img width='200px' src='{$image['image']}' /></div>";
+														}
+														echo    "</div>";
+													}
+													?></div>
 		</footer>
 	</div>
 <?php
