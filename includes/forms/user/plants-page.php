@@ -259,7 +259,7 @@ if (isset($_POST['submit_checklist'])) {
                     while ($checkitem = dbf($get_checklist)) {
                         if (isset($_POST[$checkitem['checklist_id']])) {
                             $json_checklist[] = ['Question' => $checkitem['check_item'], 'Result' => $_POST[$checkitem['checklist_id']]];
-                            if ($_POST[$checkitem['checklist_id']] == 'no') {
+                            if (!isset($_POST[$checkitem['checklist_id']])) {
                                 $faulty = true;
                                 switch ($checkitem['severity']) {
                                     case "H":

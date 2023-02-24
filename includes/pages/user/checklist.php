@@ -42,13 +42,12 @@
 									while ($checkitem = dbf($get_checklist)) {
 										echo "
 											<tr>
-												<td>{$checkitem['check_item']}</td>
+												<td >{$checkitem['check_item']}</td>
 												<td>
-													<div class='radio-custom radio-warning'>
-														<input type='radio' name='{$checkitem['checklist_id']}' value='yes'><label>Yes</label>
-													</div>
-													<div class='radio-custom radio-warning'>
-														<input type='radio' name='{$checkitem['checklist_id']}' value='no'><label>No</label>
+													<div class='button r mt-1' id='button-1'>
+														<input type='checkbox' class='checkbox' name='{$checkitem['checklist_id']}' value='yes'>
+														<div class='knobs'></div>
+														<div class='layer'></div>
 													</div>
 												</td>
 											</tr>
