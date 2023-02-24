@@ -97,7 +97,8 @@ if (isset($_POST['request_jobcard'])) {
                         unset($_SESSION['fault_reports']);
                     }
                 }
-                update_plant_status($_POST['plant_id'], $_POST['jobcard_type'], "operator_id=0");
+                if ($_POST['plant_id'] > 0) update_plant_status($_POST['plant_id'], $_POST['jobcard_type'], "operator_id=0");
+
                 msg("Job card added.");
                 require_once "./includes/forms/mail.clerk.new_job.php";
                 go('dashboard.php');
