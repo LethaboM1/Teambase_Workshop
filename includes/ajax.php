@@ -425,7 +425,7 @@ switch ($_POST['cmd']) {
                     $query_ = " and mechanic_id={$_SESSION['user']['user_id']}";
                 }
 
-                $get_users = dbq("select * from jobcards where (jobcard_number like '%{$_POST['search']}%' || fleet_number like '%{$_POST['search']}%') and status='completed'{$query_}");
+                $get_users = dbq("select * from jobcards where (jobcard_number like '%{$_POST['search']}%' || fleet_number like '%{$_POST['search']}%') and (status='busy' || status='open'){$query_}");
                 if ($get_users) {
                     if (dbr($get_users) > 0) {
                         while ($row = dbf($get_users)) {
@@ -434,7 +434,7 @@ switch ($_POST['cmd']) {
                     }
                 }
 
-                $get_users = dbq("select * from jobcards where status='open' and logged_by in (select user_id as logged_by from users_tbl where (name like '#" . esc($_POST['search']) . "#' || name like '#" . esc($_POST['search']) . "#')");
+                $get_users = dbq("select * from jobcards where (status='busy' || status='open') and logged_by in (select user_id as logged_by from users_tbl where (name like '#" . esc($_POST['search']) . "#' || name like '#" . esc($_POST['search']) . "#')");
                 if ($get_users) {
                     if (dbr($get_users) > 0) {
                         while ($row = dbf($get_users)) {
