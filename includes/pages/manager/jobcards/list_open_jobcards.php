@@ -56,7 +56,7 @@ if ($row['allocated_hours'] > 0) {
                 </div>
                 <h2 class="card-title">Job# <?= $row['jobcard_number'] ?>,&nbsp;Plant: <?= $plant_['plant_number'] ?>, <?= strtoupper($row['jobcard_type']) ?>,&nbsp;[<?= date('Y-m-d', strtotime($row['job_date']))  ?>]</h2>
                 <p class="card-subtitle">Opened by: <?= $logged_by['name'] ?>, last event: <?= (strlen($row['last_evt_date']) ? $row['last_evt_date'] : "No event") ?></p>
-                <?php if ($row['jobcard_type'] == 'breakdown' || $jobcard['jobcard_type'] == 'overhead') { ?>
+                <?php if ($row['jobcard_type'] == 'breakdown' || $jobcard['jobcard_type'] == 'repair' || $jobcard['jobcard_type'] == 'overhead') { ?>
                     <div class="progress progress-xl progress-half-rounded m-2">
                         <div class="progress-bar progress-bar-<?= $color ?>" role="progressbar" aria-valuenow="<?= $progress ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $progress ?>%;"><?= $progress ?>%</div>
                     </div>

@@ -34,7 +34,7 @@
 						}
 						?>
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<?= inp('jobcard_type', 'Jobcard Type', 'select', '', '', 0, [['name' => 'Sundry', 'value' => 'sundry'], ['name' => 'Breakdown', 'value' => 'breakdown'], ['name' => 'Service', 'value' => 'service'], ['name' => 'Overheads', 'value' => 'overhead']]) ?>
+							<?= inp('jobcard_type', 'Jobcard Type', 'select', '', '', 0, [['name' => 'Sundry', 'value' => 'sundry'], ['name' => 'Breakdown', 'value' => 'breakdown'], ['name' => 'Repair', 'value' => 'repair'], ['name' => 'Service', 'value' => 'service'], ['name' => 'Overheads', 'value' => 'overhead']]) ?>
 							<?php
 							$jscript .= "
 										$('#jobcard_type').change(function () {

@@ -16,7 +16,7 @@
                                 <b>Logged by:</b>&nbsp;<?= $logged_by_['name'] ?><br>
                                 <b>Date Logged</b>&nbsp;<?= $jobcard['job_date'] ?><br>
                                 <b>Fault:</b><br><?= $jobcard['fault_description'] ?><br>
-                                <?php if ($jobcard['jobcard_type'] == 'breakdown' || $jobcard['jobcard_type'] == 'overhead') { ?>
+                                <?php if ($jobcard['jobcard_type'] == 'breakdown' || $jobcard['jobcard_type'] == 'overhead' || $jobcard['jobcard_type'] == 'repair') { ?>
                                     <b>Extras</b><br>
                                     <div class="row">
                                         <?php
