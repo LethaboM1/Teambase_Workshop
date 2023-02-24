@@ -26,6 +26,22 @@ switch ($_GET['cmd']) {
 }
 
 switch ($_POST['cmd']) {
+    case 'set_part_status':
+        if (isset($_POST['id'])) {
+            $update_ = dbq("update jobcard_requisition_parts set
+                                    status='{$_POST['status']}'
+                                    where id={$_POST['id']}");
+            if ($update_) {
+                $json_['status'] = 'ok';
+            } else {
+                $json_['status'] = 'error';
+                $json_['message'] = 'SQl error: ' . dbe();
+            }
+        }
+
+        echo json_encode($json_);
+        break;
+
     case "save_service_checklist":
         $get_service_checklist = dbq("select * from service_checklist");
         if ($get_service_checklist) {

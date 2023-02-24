@@ -74,7 +74,8 @@ if ($job_request['buyer_id'] > 0) $buyer_ = dbf(dbq("select * from users_tbl whe
 															<td><?= $part['qty']; ?></td>
 															<td><span id="<?= $part['id'] ?>_div"></span></td>
 															<td><?= $part['comment'] ?></td>
-															<td></td>
+															<td><?= $part['status']; ?></td>
+
 														</tr>
 											<?php
 													}
