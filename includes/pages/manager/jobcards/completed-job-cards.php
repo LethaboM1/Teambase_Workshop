@@ -1,11 +1,11 @@
 <div class="row">
 	<div class="header-right col-lg-4 col-md-4">
-		<form action="#" class="search nav-form">
-			<div class="input-group">
-				<input type="text" class="form-control" name="search" id="search" placeholder="Search Plant...">
-				<button class="btn btn-default" id='searchBtn' type="button"><i class="bx bx-search"></i></button>
-				<?php
-				$jscript .= "
+
+		<div class="input-group">
+			<input type="text" class="form-control" name="search" id="search" placeholder="Search Plant...">
+			<button class="btn btn-default" id='searchBtn' type="button"><i class="bx bx-search"></i></button>
+			<?php
+			$jscript .= "
 									
 									$('#search').keyup(function (e) {
 										if (e.key=='Enter') {
@@ -37,10 +37,10 @@
 									});
 
 									";
-				?>
+			?>
 
-			</div>
-		</form>
+		</div>
+
 	</div>
 	<div id="completed_jobs_list" class="col-xl-12">
 		<?php

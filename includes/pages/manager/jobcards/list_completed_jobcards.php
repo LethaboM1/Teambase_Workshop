@@ -2,8 +2,8 @@
 
 $color = "success";
 
-$logged_by = dbf(dbq("select concat(name,' ', last_name) as name from users_tbl where user_id={$row['logged_by']}"));
-$mechanic_ = dbf(dbq("select concat(name,' ', last_name) as name from users_tbl where user_id={$row['mechanic_id']}"));
+($row['logged_by'] > 0) ? $logged_by_ = dbf(dbq("select concat(name,' ', last_name) as name from users_tbl where user_id={$row['logged_by']}")) : $logged_by['name'] = 'Unknown';
+($row['mechanic_id'] > 0) ? $mechanic_ = dbf(dbq("select concat(name,' ', last_name) as name from users_tbl where user_id={$row['mechanic_id']}")) : $mechanic_['name'] = 'None';
 $plant_ = dbf(dbq("select * from plants_tbl where plant_id={$row['plant_id']}"));
 switch ($plant_['reading_type']) {
     case "km":
@@ -56,7 +56,7 @@ $progress = 100;
                                             </div>
                                             <div class="col-md-6">
                                                 <b>Plant.</b>&nbsp;<?= $plant_['reg_number'] ?><br>
-                                                <b>Logged by.</b>&nbsp;<?= $logged_by['name'] ?><br>
+                                                <b>Logged by.</b>&nbsp;<?= $logged_by_['name'] ?><br>
                                                 <b>Make.</b>&nbsp;<?= $plant_['make'] ?><br>
                                                 <b>Reading (<?= strtoupper($plant_['reading_type']) ?>).</b>&nbsp;<?= $reading ?><br>
                                                 <b>Allocated Hrs.</b>&nbsp;<?= $row['allocated_hours'] ?><br>
@@ -103,7 +103,7 @@ $progress = 100;
                 <?php
                 }
                 ?>
-                <p class="card-subtitle">Opened by: <?= $logged_by['name'] ?></p>
+                <p class="card-subtitle">Logged by: <?= $logged_by_['name'] . ' ' . $logged_by_['last_name'] ?></p>
                 <div class="progress progress-xl progress-half-rounded m-2">
                     <div class="progress-bar progress-bar-<?= $color ?>" role="progressbar" aria-valuenow="<?= $progress ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $progress ?>%;"><?= $progress ?>%</div>
                 </div>

@@ -119,9 +119,10 @@
 						<tr>
 							<th width="200">Plant No.</th>
 							<th width="200">Make</th>
-							<th width="200">Registration Number</th>
+							<th width="100">Registration Number</th>
 							<th width="120">Reading</th>
 							<th width="150">Next Service</th>
+							<th width="100">Status</th>
 							<th width="25">Action</th>
 						</tr>
 					</thead>
