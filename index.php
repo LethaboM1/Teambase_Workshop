@@ -27,7 +27,7 @@ $field_names = $csrf->form_names(array('username', 'password'), false);
 if (isset($_POST[$field_names['username']], $_POST[$field_names['password']])) {
 	if ($csrf->check_valid('post')) {
 
-		dbconn('127.0.0.1', $database_name, $database_user, $database_password);
+		dbconn('localhost', $database_name, $database_user, $database_password);
 		$query = "SQL:" . dbe() . "; select * from users_tbl where username='{$_POST[$field_names['username']]}'";
 		error_log($query);
 		$chk_user = dbq($query);
