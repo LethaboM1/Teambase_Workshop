@@ -43,10 +43,10 @@ if (isset($_POST[$field_names['username']], $_POST[$field_names['password']])) {
 				}
 				go('dashboard.php');
 			} else {
-				$error[] = "Incorrect username or password! wrong-pass";
+				$error[] = "Incorrect username or password!";
 			}
 		} else {
-			$error[] = "Incorrect username or password! no-user";
+			$error[] = "Incorrect username or password!";
 		}
 	} else {
 		$error[] = "Incorrect username or password! csrf";
