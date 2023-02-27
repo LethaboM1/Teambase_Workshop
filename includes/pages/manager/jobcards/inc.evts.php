@@ -29,7 +29,7 @@
                             <!-- Modal Delete End -->
                         </td>
                     </tr>
-        <?
+        <?php
                 }
             } else {
                 echo "<tr><td colspan='4'>No events</td></tr>";
