@@ -28,7 +28,7 @@ if (isset($_POST[$field_names['username']], $_POST[$field_names['password']])) {
 	if ($csrf->check_valid('post')) {
 
 		dbconn('127.0.0.1', $database_name, $database_user, $database_password);
-		$query = "select * from users_tbl where username='{$_POST[$field_names['username']]}'";
+		$query = "SQL:" . dbe() . "; select * from users_tbl where username='{$_POST[$field_names['username']]}'";
 		error_log($query);
 		$chk_user = dbq($query);
 		if (!$chk_user) error_log("SQL error: " . dbe() . ": {$query}");

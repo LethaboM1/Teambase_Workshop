@@ -3,4 +3,5 @@
 creds.php
 backups/
 files/
+documents/
 *.lock
