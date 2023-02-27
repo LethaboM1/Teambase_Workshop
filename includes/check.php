@@ -12,6 +12,6 @@ if (!isset($_SESSION['user'])) {
 
 require_once "functions.php";
 
-dbconn('127.0.0.1', $database_name, $database_user, $database_password);
+dbconn('localhost', $database_name, $database_user, $database_password);
 
 $dash_roles = array("manager", "clerk", "buyer", "mechanic", "manager", "user");
