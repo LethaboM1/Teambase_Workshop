@@ -69,7 +69,7 @@ function dbconn($server, $database, $user, $pass)
 	global $db, $error;
 	$db = mysqli_connect($server, $user, $pass, $database);
 	if ($db->connect_error) {
-		$error[] = "Connection Error. " . $db->connect_error;
+		error_log("Connection Error. " . $db->connect_error);
 	}
 }
 
