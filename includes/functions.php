@@ -832,7 +832,7 @@ foreach ($data_holidays['holidays'] as $holiday) {
 
 function calc_days($from, $to)
 {
-	error_log("from={$from} , to = $to");
+	//error_log("from={$from} , to = $to");
 	// Calculating the difference in timestamps
 	$diff = strtotime($to) - strtotime($from);
 
