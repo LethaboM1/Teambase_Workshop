@@ -255,7 +255,7 @@ $request_status_select = [
 																	<td><?= $part['part_description'] ?></td>
 																	<td>
 																		<?php
-																		if ($_SESSION['user']['role'] == 'manager') {
+																		if ($_SESSION['user']['role'] == 'manager' && $row['status'] == 'requested') {
 																			echo inp("{$part['id']}_part_qty", '', 'text', $part['qty'], '', 0, '', " style='width:80px;'");
 																		} else {
 																			echo $part['qty'];
