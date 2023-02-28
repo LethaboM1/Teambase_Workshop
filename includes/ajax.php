@@ -594,7 +594,7 @@ switch ($_POST['cmd']) {
                 if ($get_plants) {
                     if (dbr($get_plants) > 0) {
                         while ($row = dbf($get_plants)) {
-                            require "pages/user/plants/list_plants.php";
+                            require "pages/user/list_plants.php";
                         }
                     } else {
                         echo "<tr><td colspan='5'>Could not find '{$_POST['search']}'</td></tr>";

@@ -7,6 +7,16 @@ if (isset($_POST['html_code'])) {
 }
 
 switch ($_GET['type']) {
+    case "open_requisitions":
+        $query = "select * from jobcard_requisition_parts where request_id in (select request_id from jobcard_requisitions where (status!='completed' && status!='canceled' && status!='rejected'))";
+        if ($sql = dbq($query)) {
+            if (dbr()) {
+            }
+        } else {
+        }
+
+        break;
+
     case "job-card":
         if (isset($_GET['id'])) {
             $get_jobcard = dbq("select * from jobcards where job_id={$_GET['id']}");
