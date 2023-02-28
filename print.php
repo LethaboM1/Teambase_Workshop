@@ -14,6 +14,7 @@ if (isset($_POST['html_code'])) {
 
 switch ($_GET['type']) {
     case "open-requisitions":
+        if ($_SESSION['user']['role'] != 'manager' && $_SESSION['user']['role'] != 'buyer') die();
         $query = "select 
                         * 
                     from 
