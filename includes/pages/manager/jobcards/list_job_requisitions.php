@@ -52,7 +52,7 @@ $request_status_select = [
 				<!-- Job Card Good -->
 				<a class="mb-1 mt-1 mr-1 modal-sizes" href="#modalviewrequisition_<?= $row['request_id'] ?>"><i class="fa-solid fa-eye"></i></a>
 				<!-- Modal view -->
-				<div id="modalviewrequisition_<?= $row['request_id'] ?>" class="modal-block modal-block-lg mfp-hide">
+				<div id="modalviewrequisition_<?= $row['request_id'] ?>" class="modal-block modal-block-full mfp-hide">
 					<form method="post">
 						<section class="card">
 							<header class="card-header">
