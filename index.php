@@ -108,7 +108,7 @@ include "includes/inc.header.php";
 			</div>
 		</div>
 
-		<p class="text-center text-muted mt-3 mb-3">TeamBase &copy; Copyright 2022. All Rights Reserved. Alpha v2.0.2</p>
+		<p class="text-center text-muted mt-3 mb-3">TeamBase &copy; Copyright 2022. All Rights Reserved. <?= $version ?></p>
 	</div>
 </section>
 <!-- end: page -->
