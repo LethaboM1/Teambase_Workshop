@@ -1,9 +1,9 @@
 <?php
 require_once "includes/check.php";
-//require_once 'vendor/autoload.php';
+require_once 'vendor/autoload.php';
 
-//use PhpOffice\PhpSpreadsheet\Spreadsheet;
-//use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 if (isset($_POST['html_code'])) {
     $html = $_POST['html_code'];
