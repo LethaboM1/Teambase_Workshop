@@ -4,6 +4,7 @@ session_start();
 
 //echo "<pre>" . print_r($_SESSION, 1) . "</pre>";
 require_once "includes/creds.php";
+if (strlen($redirect) > 0) header("location: {$redirect}");
 require_once "includes/functions.php";
 
 if (isset($_SESSION['user'])) {
