@@ -10,8 +10,10 @@ if (isset($_POST['html_code'])) {
     printPDF($html);
 }
 
+
+
 switch ($_GET['type']) {
-    case "open_requisitions":
+    case "open-requisitions":
         $query = "select 
                         * 
                     from 
@@ -67,28 +69,41 @@ switch ($_GET['type']) {
 
             $sheet->getStyle('A1')->applyFromArray($title);
             $sheet->getStyle('A4:N4')->applyFromArray($header);
-            /*             
-                $sheet->getColumnDimension('A')->setWidth(100, 'px');
-                $sheet->getColumnDimension('B')->setWidth(200, 'px');
-                $sheet->getColumnDimension('C')->setWidth(45, 'px');
-                $sheet->getColumnDimension('D')->setWidth(95, 'px');
-                $sheet->getColumnDimension('E')->setWidth(95, 'px');
-                $sheet->getColumnDimension('F')->setWidth(95, 'px');
-                $sheet->getColumnDimension('G')->setWidth(95, 'px');
-            */
+            $sheet->getStyle('B4')->getAlignment()->setWrapText(true);
+            $sheet->getStyle('D4')->getAlignment()->setWrapText(true);
+
+            $sheet->getColumnDimension('A')->setWidth(100, 'px');
+            $sheet->getColumnDimension('B')->setWidth(85, 'px');
+            $sheet->getColumnDimension('C')->setWidth(100, 'px');
+            $sheet->getColumnDimension('D')->setWidth(85, 'px');
+            $sheet->getColumnDimension('E')->setWidth(200, 'px');
+            $sheet->getColumnDimension('F')->setWidth(100, 'px');
+            $sheet->getColumnDimension('G')->setWidth(150, 'px');
+            $sheet->getColumnDimension('H')->setWidth(45, 'px');
+            $sheet->getColumnDimension('I')->setWidth(300, 'px');
+            $sheet->getColumnDimension('J')->setWidth(200, 'px');
+            $sheet->getColumnDimension('K')->setWidth(200, 'px');
+            $sheet->getColumnDimension('L')->setWidth(200, 'px');
+            $sheet->getColumnDimension('M')->setWidth(200, 'px');
+            $sheet->getColumnDimension('N')->setWidth(200, 'px');
 
             if (dbr($sql)) {
                 $sheet_row = 5;
-                while ($request = dbf($sql)) {
-                    $requisition_ = dbf("select * from jobcard_requisitions where request_id={$row['request_id']}");
+                while ($row = dbf($sql)) {
+                    $requisition_ = dbf(dbq("select * from jobcard_requisitions where request_id={$row['request_id']}"));
                     $plant_ = dbf(dbq("select plant_number from plants_tbl where plant_id={$requisition_['plant_id']}"));
 
                     $today = date_create();
+                    $today_ = date_format($today, 'Y-m-d');
+
                     $date = date_create($requisition_['datetime']);
-                    $date_ = date_format($ordered_date, 'Y-m-d');
+                    $date_ = date_format($date, 'Y-m-d');
+
                     $date_eta = date_create($row['date_eta']);
-                    $days =  (date_diff($today, $date) > 0) ? date_diff($today, $date) : 0;
-                    $eta_days = (date_diff($date_eta, $today) > 0) ? date_diff($date_eta, $today) : 0;
+
+
+                    $days =  (strlen($date_) > 0 && strlen($today_) > 0) ? (calc_days($date_, $today_) > 0 ? calc_days($date_, $today_) : 0) : 0;;
+                    $eta_days = (strlen($row['date_eta']) > 0) ? (calc_days($today_, $row['date_eta']) > 0 ? calc_days($today_, $row['date_eta']) : 0) : 0;
                     $buyer_ = ($requisition_['buyer_id'] > 0) ? dbf(dbq("select name, last_name from users_tbl where user_id={$requisition_['buyer_id']}")) : ['name' => 'No Buyer Allocated', 'last_name' => ''];
                     $requested_by = ($requisition_['requested_by'] > 0) ? dbf(dbq("select name, last_name from users_tbl where user_id={$requisition_['requested_by']}")) : ['name' => 'None', 'last_name' => ''];
 
@@ -104,6 +119,7 @@ switch ($_GET['type']) {
                         ->setCellValue("J{$sheet_row}", $requested_by['name'] . ' ' . $requested_by['last_name'])
                         ->setCellValue("K{$sheet_row}", $buyer_['name'] . ' ' . $buyer_['last_name'])
                         ->setCellValue("L{$sheet_row}", $row['supplier']);
+
                     $sheet_row++;
                 }
             }
