@@ -69,7 +69,7 @@ $get_completed = dbq("select job_id from jobcards where status='completed'");
 						<span>Reports</span>
 					</a>
 					<ul class="nav nav-children">
-						<li><a class="nav-link" href="">Fuel Report</a></li>
+						<li><a class="nav-link" target="_blank" href="print.php?type=open-requisitions">Open Requisitions</a></li>
 					</ul>
 				</li>
 			</ul>

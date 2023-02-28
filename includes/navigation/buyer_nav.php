@@ -30,7 +30,7 @@ $total_jobs = dbr($get_requisitions);
 						<span>Reports</span>
 					</a>
 					<ul class="nav nav-children">
-						<li><a class="nav-link" href="">Report</a></li>
+						<li><a class="nav-link" target="_blank" href="print.php?type=open-requisitions">Open Requisitions</a></li>
 					</ul>
 				</li>
 			</ul>
