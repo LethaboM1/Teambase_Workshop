@@ -1,5 +1,5 @@
 <?php
-$version = "Alpha v2.0.2";
+$version = "Beta v0.2";
 
 if (file_exists('vendor/autoload.php')) {
 	require_once 'vendor/autoload.php';
