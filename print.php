@@ -1,5 +1,9 @@
 <?php
 require_once "includes/check.php";
+require_once 'vendor/autoload.php';
+
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 if (isset($_POST['html_code'])) {
     $html = $_POST['html_code'];
@@ -8,6 +12,123 @@ if (isset($_POST['html_code'])) {
 
 switch ($_GET['type']) {
     case "open_requisitions":
+        $query = "select 
+                        * 
+                    from 
+                        jobcard_requisition_parts 
+                    where  
+                        request_id in (
+                                select 
+                                    request_id 
+                                from 
+                                    jobcard_requisitions 
+                                where 
+                                    (
+                                        status!='completed' 
+                                        && status!='canceled' 
+                                        && status!='rejected'
+                                    )
+                                )";
+        if ($sql = dbq($query)) {
+            $title = [
+                'font' => [
+                    'bold' => true,
+                    'size' => 14
+
+                ],
+            ];
+
+            $header = [
+                'font' => [
+                    'bold' => true,
+                ],
+            ];
+
+            $spreadsheet = new Spreadsheet();
+            $sheet = $spreadsheet->getActiveSheet();
+
+            $sheet->setCellValue('A1', 'Job Requisitions')
+                ->setCellValue('A2', 'Date Printed: ' . date('Y-m-d'))
+
+                ->setCellValue('A4', 'Date')
+                ->setCellValue('B4', 'Days Outstanding')
+                ->setCellValue('C4', 'ETA Parts')
+                ->setCellValue('D4', 'Days remaining to ETA')
+                ->setCellValue('E4', 'Plant No.')
+                ->setCellValue('F4', 'Req No.')
+                ->setCellValue('G4', 'Purchase Order No.')
+                ->setCellValue('H4', 'Qty')
+                ->setCellValue('I4', 'Description')
+                ->setCellValue('J4', 'Req By')
+                ->setCellValue('K4', 'Buyers name')
+                ->setCellValue('L4', 'Supplier')
+                ->setCellValue('M4', 'WorkShop feedback')
+                ->setCellValue('N4', 'Plant Manager Comments');
+
+            $sheet->getStyle('A1')->applyFromArray($title);
+            $sheet->getStyle('A4:N4')->applyFromArray($header);
+            /*             
+                $sheet->getColumnDimension('A')->setWidth(100, 'px');
+                $sheet->getColumnDimension('B')->setWidth(200, 'px');
+                $sheet->getColumnDimension('C')->setWidth(45, 'px');
+                $sheet->getColumnDimension('D')->setWidth(95, 'px');
+                $sheet->getColumnDimension('E')->setWidth(95, 'px');
+                $sheet->getColumnDimension('F')->setWidth(95, 'px');
+                $sheet->getColumnDimension('G')->setWidth(95, 'px');
+            */
+
+            if (dbr($sql)) {
+                $sheet_row = 5;
+                while ($request = dbf($sql)) {
+                    $requisition_ = dbf("select * from jobcard_requisitions where request_id={$row['request_id']}");
+                    $plant_ = dbf(dbq("select plant_number from plants_tbl where plant_id={$requisition_['plant_id']}"));
+
+                    $today = date_create();
+                    $date = date_create($requisition_['datetime']);
+                    $date_ = date_format($ordered_date, 'Y-m-d');
+                    $date_eta = date_create($row['date_eta']);
+                    $days =  (date_diff($today, $date) > 0) ? date_diff($today, $date) : 0;
+                    $eta_days = (date_diff($date_eta, $today) > 0) ? date_diff($date_eta, $today) : 0;
+                    $buyer_ = ($requisition_['buyer_id'] > 0) ? dbf(dbq("select name, last_name from users_tbl where user_id={$requisition_['buyer_id']}")) : ['name' => 'No Buyer Allocated', 'last_name' => ''];
+                    $requested_by = ($requisition_['requested_by'] > 0) ? dbf(dbq("select name, last_name from users_tbl where user_id={$requisition_['requested_by']}")) : ['name' => 'None', 'last_name' => ''];
+
+                    $sheet->setCellValue("A{$sheet_row}", $date_)
+                        ->setCellValue("B{$sheet_row}", $days)
+                        ->setCellValue("C{$sheet_row}", $row['date_eta'])
+                        ->setCellValue("D{$sheet_row}", $eta_days)
+                        ->setCellValue("E{$sheet_row}", $plant_['plant_number'])
+                        ->setCellValue("F{$sheet_row}", $row['request_id'])
+                        ->setCellValue("G{$sheet_row}", $row['purchase_order'])
+                        ->setCellValue("H{$sheet_row}", $row['qty'])
+                        ->setCellValue("I{$sheet_row}", $row['part_description'])
+                        ->setCellValue("J{$sheet_row}", $requested_by['name'] . ' ' . $requested_by['last_name'])
+                        ->setCellValue("K{$sheet_row}", $buyer_['name'] . ' ' . $buyer_['last_name'])
+                        ->setCellValue("L{$sheet_row}", $row['supplier']);
+                    $sheet_row++;
+                }
+            }
+
+
+            $writer = new Xlsx($spreadsheet);
+
+
+            // Redirect output to a client’s web browser (Excel2007)
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: attachment;filename="quote-parts list-' . $quote_ref . '-' . date('Y_m_d') . '.xlsx"');
+            header('Cache-Control: max-age=0');
+            // If you're serving to IE 9, then the following may be needed
+            header('Cache-Control: max-age=1');
+
+            // If you're serving to IE over SSL, then the following may be needed
+            header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+            header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+            header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+            header('Pragma: public'); // HTTP/1.0
+
+
+            $writer->save('php://output');
+        } else {
+        }
 
         break;
 
