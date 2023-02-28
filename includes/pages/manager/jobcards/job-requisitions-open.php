@@ -34,6 +34,10 @@
 											},
 											success:function (result) {
 												$('#job_requisitions_list').html(result);
+
+												setTimeout(function() {
+													$.getScript('js/examples/examples.modals.js');
+												}, 300);
 											},
 											error: function (err) {}
 										});

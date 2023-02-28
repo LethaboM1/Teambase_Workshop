@@ -549,9 +549,9 @@ function inp($name, $label, $type = 'text', $value = '', $class = '', $required 
 
 		case "date":
 			$form = '';
-			$form .= "<div class='form-group'>
-		 <label>" . $label . "</label>
-		 <input type='" . $type . "' class='form-control ";
+			$form .= "<div class='form-group'>";
+			$form .= (strlen($label) > 0) ? "<label>" . $label . "</label>" : "";
+			$form .= "<input type='" . $type . "' class='form-control ";
 			if ($required) {
 				$form .=  "required";
 			}

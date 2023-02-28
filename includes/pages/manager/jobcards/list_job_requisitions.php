@@ -117,7 +117,9 @@ $request_status_select = [
 													<th style='width:85px;'>Qty</th>
 													<th style='width:25px;'></th>
 													<th>Comment</th>
-													<th></th>
+													<th style="width:150px;"></th>
+													<th style="width:150px;"></th>
+													<th style="width:150px;"></th>
 													<th style="width:35px;"></th>
 												</thead>
 												<tbody>
@@ -126,32 +128,113 @@ $request_status_select = [
 
 													if ($_SESSION['user']['role'] == 'buyer') {
 														$jscript_function .= "
-																	function change_part_status(id,status) {
-																		$.ajax({
-																			method:'post',
-																			url:'includes/ajax.php',
-																			data: {
-																				'cmd':'set_part_status',
-																				'id': id,
-																				'status': status
-																			},
-																			success: function (result) {
-																				let data = JSON.parse(result);
-																				if (data.status=='ok') {
-																					console.log('Ok');
-																					$('#id_' + id).html(`<i class='fa fa-check text-success'></i>`);
-																				} else if (data.status=='error') {
-																					console.log('Error : ' + data.message);
-																					$('#id_' + id).html(`<i class='fa fa-times text-danger'></i>`);
-																				} else {
-																					console.log('Error ajax');
-																					$('#id_' + id).html(`<i class='fa fa-times text-danger'></i>`);
-																				}
-																			},
-																			error: function () {}
-																		});
-																	}
-																	";
+																			function change_part_status(id,value) {
+																				$.ajax({
+																					method:'post',
+																					url:'includes/ajax.php',
+																					data: {
+																						'cmd':'set_part_status',
+																						'id': id,
+																						'value': value
+																					},
+																					success: function (result) {
+																						let data = JSON.parse(result);
+																						if (data.status=='ok') {
+																							console.log('Ok');
+																							$('#id_' + id).html(`<i class='fa fa-check text-success'></i>`);
+																						} else if (data.status=='error') {
+																							console.log('Error : ' + data.message);
+																							$('#id_' + id).html(`<i class='fa fa-times text-danger'></i>`);
+																						} else {
+																							console.log('Error ajax');
+																							$('#id_' + id).html(`<i class='fa fa-times text-danger'></i>`);
+																						}
+																					},
+																					error: function () {}
+																				});
+																			}
+
+																			
+																			function change_part_supplier(id,value) {
+																				$.ajax({
+																					method:'post',
+																					url:'includes/ajax.php',
+																					data: {
+																						'cmd':'set_part_supplier',
+																						'id': id,
+																						'value': value
+																					},
+																					success: function (result) {
+																						let data = JSON.parse(result);
+																						if (data.status=='ok') {
+																							console.log('Ok');
+																							$('#id_' + id).html(`<i class='fa fa-check text-success'></i>`);
+																						} else if (data.status=='error') {
+																							console.log('Error : ' + data.message);
+																							$('#id_' + id).html(`<i class='fa fa-times text-danger'></i>`);
+																						} else {
+																							console.log('Error ajax');
+																							$('#id_' + id).html(`<i class='fa fa-times text-danger'></i>`);
+																						}
+																					},
+																					error: function () {}
+																				});
+																			}
+
+																			
+																			function change_part_purchase_order(id,value) {
+																				$.ajax({
+																					method:'post',
+																					url:'includes/ajax.php',
+																					data: {
+																						'cmd':'set_part_purchase_order',
+																						'id': id,
+																						'value': value
+																					},
+																					success: function (result) {
+																						let data = JSON.parse(result);
+																						if (data.status=='ok') {
+																							console.log('Ok');
+																							$('#id_' + id).html(`<i class='fa fa-check text-success'></i>`);
+																						} else if (data.status=='error') {
+																							console.log('Error : ' + data.message);
+																							$('#id_' + id).html(`<i class='fa fa-times text-danger'></i>`);
+																						} else {
+																							console.log('Error ajax');
+																							$('#id_' + id).html(`<i class='fa fa-times text-danger'></i>`);
+																						}
+																					},
+																					error: function () {}
+																				});
+																			}
+
+																			
+																			function change_part_date_eta(id,value) {
+																				$.ajax({
+																					method:'post',
+																					url:'includes/ajax.php',
+																					data: {
+																						'cmd':'set_part_date_eta',
+																						'id': id,
+																						'value': value
+																					},
+																					success: function (result) {
+																						let data = JSON.parse(result);
+																						if (data.status=='ok') {
+																							console.log('Ok');
+																							$('#id_' + id).html(`<i class='fa fa-check text-success'></i>`);
+																						} else if (data.status=='error') {
+																							console.log('Error : ' + data.message);
+																							$('#id_' + id).html(`<i class='fa fa-times text-danger'></i>`);
+																						} else {
+																							console.log('Error ajax');
+																							$('#id_' + id).html(`<i class='fa fa-times text-danger'></i>`);
+																						}
+																					},
+																					error: function () {}
+																				});
+																			}
+																			";
 														unset($part_status_);
 														$part_status_ = [
 															['name' => '---', 'value' => ''],
@@ -183,17 +266,38 @@ $request_status_select = [
 																	</td>
 																	<td><span id="<?= $part['id'] ?>_div"></span></td>
 																	<td><?= $part['comment'] ?></td>
-																	<td><?php
+																	<td>
+																		<?php
 																		if ($_SESSION['user']['role'] == 'buyer') {
 																			echo inp('status', '', 'select', $part['status'], '', 0, $part_status_, "style='width:150px;' onchange='change_part_status(`{$part['id']}`,$(this).val());'");
 																		} else {
 																			echo ucfirst($part['status']);
 																		}
-																		?></td>
+																		?>
+																	</td>
+																	<td>
+																		<?php
+																		if ($_SESSION['user']['role'] == 'buyer') {
+																			echo inp('supplier', '', 'text', $part['supplier'], '', 0, $part_status_, "placeholder='Supplier' style='width:150px;' onchange='change_part_supplier(`{$part['id']}`,$(this).val());'");
+																		} else {
+																			echo ucfirst($part['supplier']);
+																		}
+																		?>
+																	</td>
+																	<td>
+																		<?php
+																		if ($_SESSION['user']['role'] == 'buyer') {
+																			echo inp('date_eta', '', 'date', $part['date_eta'], '', 0, $part_status_, "style='width:150px;' onchange='change_part_date_eta(`{$part['id']}`,$(this).val());'");
+																		} else {
+																			echo $part['date_eta'];
+																		}
+																		?>
+																	</td>
 																	<td><span id="id_<?= $part['id'] ?>"></span></td>
 																</tr>
 													<?php
 																$jscript .= "
+
 																		$('#{$part['id']}_part_qty').change(function () {
 																			$.ajax({
 																				method:'post',

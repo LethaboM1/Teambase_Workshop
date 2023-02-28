@@ -128,25 +128,3 @@ $date = date_format($date, 'Y-m-d');
     </td>
 </tr>
 <?php
-
-/* 
-
-<!-- Job Card Good -->
-<div class="col-md-12">
-    <section class="card card-featured-left card-featured-<?= $color ?> mb-4">
-        <div class="card-body">
-            <div class="card-actions">
-                <!-- Job Card Good -->
-                <a class="mb-1 mt-1 mr-1 modal-sizes" href="#modalviewjob_<?= $row['job_id'] ?>"><i class="fa-solid fa-eye"></i></a>
-
-                <!-- Job Card End -->
-            </div>
-            <h2 class="card-title">Job# <?= $row['jobcard_number'] ?>,&nbsp;Plant: <?= $plant_['plant_number'] ?></h2>
-            <p class="card-subtitle">Opened by: <?= $logged_by['name'] ?></p>
-            <div class="progress progress-xl progress-half-rounded m-2">
-                <div class="progress-bar progress-bar-<?= $color ?>" role="progressbar" aria-valuenow="<?= $progess ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $progess ?>%;"><?= $progess ?>%</div>
-            </div>
-        </div>
-    </section>
-</div>
-*/

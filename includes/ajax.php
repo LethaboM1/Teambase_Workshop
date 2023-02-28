@@ -26,10 +26,58 @@ switch ($_GET['cmd']) {
 }
 
 switch ($_POST['cmd']) {
+    case "set_part_supplier":
+        if (isset($_POST['id'])) {
+            $update_ = dbq("update jobcard_requisition_parts set
+                                    supplier='{$_POST['value']}'
+                                    where id={$_POST['id']}");
+            if ($update_) {
+                $json_['status'] = 'ok';
+            } else {
+                $json_['status'] = 'error';
+                $json_['message'] = 'SQl error: ' . dbe();
+            }
+        }
+
+        echo json_encode($json_);
+        break;
+
+    case "set_part_purchase_order":
+        if (isset($_POST['id'])) {
+            $update_ = dbq("update jobcard_requisition_parts set
+                                    purchase_order='{$_POST['value']}'
+                                    where id={$_POST['id']}");
+            if ($update_) {
+                $json_['status'] = 'ok';
+            } else {
+                $json_['status'] = 'error';
+                $json_['message'] = 'SQl error: ' . dbe();
+            }
+        }
+
+        echo json_encode($json_);
+        break;
+
+    case "set_part_date_eta":
+        if (isset($_POST['id'])) {
+            $update_ = dbq("update jobcard_requisition_parts set
+                                    date_eta='{$_POST['value']}'
+                                    where id={$_POST['id']}");
+            if ($update_) {
+                $json_['status'] = 'ok';
+            } else {
+                $json_['status'] = 'error';
+                $json_['message'] = 'SQl error: ' . dbe();
+            }
+        }
+
+        echo json_encode($json_);
+        break;
+
     case 'set_part_status':
         if (isset($_POST['id'])) {
             $update_ = dbq("update jobcard_requisition_parts set
-                                    status='{$_POST['status']}'
+                                    status='{$_POST['value']}'
                                     where id={$_POST['id']}");
             if ($update_) {
                 $json_['status'] = 'ok';
