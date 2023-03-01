@@ -44,7 +44,6 @@
 
 		</div>
 	</div>
-
 	<div id="open_jobs_list" class="col-xl-12">
 		<?php
 
