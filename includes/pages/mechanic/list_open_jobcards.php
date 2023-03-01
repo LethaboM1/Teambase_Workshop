@@ -87,7 +87,7 @@ if ($row['allocated_hours'] > 0) {
                                                 </tr>
                                             </thead>
                                             <?php
-                                            $get_events = dbq("select * from job_event where job_id={$row['job_id']}");
+                                            $get_events = dbq("select * from jobcard_events where job_id={$row['job_id']}");
                                             if ($get_events) {
                                                 if (dbr($get_events) > 0) {
                                                 } else {
