@@ -55,6 +55,8 @@
 			} else {
 				echo "<h4>No open job cards.</h4>";
 			}
+		} else {
+			echo "<h4>SQL Error: " . dbe() . "</h4>";
 		}
 		?>
 	</div>

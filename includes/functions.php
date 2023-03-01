@@ -912,7 +912,7 @@ function getWorkingDays($startDate, $endDate, $holidays)
 				$skipped_days++;
 			}
 			$no_remaining_days -= $skipped_days;
-			error_log("skipped days = {$skipped_days}");
+			//error_log("skipped days = {$skipped_days}");
 		}
 	}
 
