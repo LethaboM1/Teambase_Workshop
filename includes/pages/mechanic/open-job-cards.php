@@ -44,6 +44,7 @@
 
 		</div>
 	</div>
+	<?php echo 'Test'; ?>
 	<div id="open_jobs_list" class="col-xl-12">
 		<?php
 		error_log('test logs');
