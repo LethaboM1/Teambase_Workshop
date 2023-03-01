@@ -148,7 +148,7 @@ if ($row['allocated_hours'] > 0) {
                             }
                     }
                             ?>
-                            <h2 class="card-title">Logged: <?= $logged_date ?> Job# <?= $row['jobcard_number'] ?>,&nbsp;Plant: <?= $plant_['plant_number'] ?>, Type: <?= ucfirst($row['jobcard_type']) ?>, Status: <?= ucfirst($row['status']) ?></h2>
+                            <h2 class="card-title">Plant: <?= $plant_['plant_number'] ?>,&nbsp;Logged: <?= $logged_date ?> Job# <?= $row['jobcard_number'] ?>,&nbsp;Type: <?= ucfirst($row['jobcard_type']) ?>, Status: <?= ucfirst($row['status']) ?></h2>
                                         </a>
                                         <p class="card-subtitle">Opened by: <?= $logged_by['name'] . ' ' . $logged_by['last_name'] ?></p>
                                         <div class="progress progress-xl progress-half-rounded m-2">
