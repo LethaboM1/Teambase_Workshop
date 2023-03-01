@@ -29,6 +29,7 @@ switch ($plant_['reading_type']) {
 
 $logged_date = date_create($row['job_date']);
 $logged_date = date_format($logged_date, 'Y-m-d');
+
 $worked = dbf(dbq("select sum(total_hours) as hours from jobcard_events where job_id={$row['job_id']}"));
 
 if ($worked['hours'] == null) {
@@ -147,9 +148,9 @@ if ($row['allocated_hours'] > 0) {
                             }
                     }
                             ?>
-                            <h2 class="card-title">Logged: <?= $row['job_date'] ?> Job# <?= $row['jobcard_number'] ?>,&nbsp;Plant: <?= $plant_['plant_number'] ?>, Type: <?= ucfirst($row['jobcard_type']) ?>, Status: <?= ucfirst($row['status']) ?></h2>
+                            <h2 class="card-title">Logged: <?= $logged_date ?> Job# <?= $row['jobcard_number'] ?>,&nbsp;Plant: <?= $plant_['plant_number'] ?>, Type: <?= ucfirst($row['jobcard_type']) ?>, Status: <?= ucfirst($row['status']) ?></h2>
                                         </a>
-                                        <p class="card-subtitle">Opened by: <?= $logged_date ?></p>
+                                        <p class="card-subtitle">Opened by: <?= $logged_by['name'] . ' ' . $logged_by['last_name'] ?></p>
                                         <div class="progress progress-xl progress-half-rounded m-2">
                                             <div class="progress-bar progress-bar-<?= $color ?>" role="progressbar" aria-valuenow="<?= $progess ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $progess ?>%;"><?= $progess ?>%</div>
                                         </div>
