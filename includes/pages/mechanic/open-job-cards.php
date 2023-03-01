@@ -46,18 +46,18 @@
 	</div>
 	<div id="open_jobs_list" class="col-xl-12">
 		<?php
-		// $get_jobs = dbq("select * from jobcards where (status='open' || status='busy') and mechanic_id={$_SESSION['user']['user_id']} order by priority");
-		// if ($get_jobs) {
-		// 	if (dbr($get_jobs) > 0) {
-		// 		while ($row = dbf($get_jobs)) {
-		// 			include "./includes/pages/mechanic/list_open_jobcards.php";
-		// 		}
-		// 	} else {
-		// 		echo "<h4>No open job cards.</h4>";
-		// 	}
-		// } else {
-		// 	echo "<h4>SQL Error: " . dbe() . "</h4>";
-		// }
+		$get_jobs = dbq("select * from jobcards where (status='open' || status='busy') and mechanic_id={$_SESSION['user']['user_id']} order by datetime");
+		if ($get_jobs) {
+			if (dbr($get_jobs) > 0) {
+				while ($row = dbf($get_jobs)) {
+					include "./includes/pages/mechanic/list_open_jobcards.php";
+				}
+			} else {
+				echo "<h4>No open job cards.</h4>";
+			}
+		} else {
+			echo "<h4>SQL Error: " . dbe() . "</h4>";
+		}
 		?>
 	</div>
 </div>
