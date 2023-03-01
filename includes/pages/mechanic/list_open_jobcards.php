@@ -27,7 +27,7 @@ switch ($plant_['reading_type']) {
         break;
 }
 
-$worked = dbf(dbq("select sum(work_hrs) as hours from jobcard_events where job_id={$row['job_id']}"));
+//$worked = dbf(dbq("select sum(work_hrs) as hours from jobcard_events where job_id={$row['job_id']}"));
 
 if ($worked['hours'] == null) {
     $worked['hours'] = 0;
