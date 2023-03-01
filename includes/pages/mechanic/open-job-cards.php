@@ -50,7 +50,7 @@
 		if ($get_jobs) {
 			if (dbr($get_jobs) > 0) {
 				while ($row = dbf($get_jobs)) {
-					require "./includes/pages/mechanic/list_open_jobcards.php";
+					include "./includes/pages/mechanic/list_open_jobcards.php";
 				}
 			} else {
 				echo "<h4>No open job cards.</h4>";
