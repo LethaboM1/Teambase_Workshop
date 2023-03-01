@@ -44,7 +44,10 @@
 
 		</div>
 	</div>
-	<?php echo 'Test'; ?>
+	<?php
+	$get_users = dbq("select * from users_tbl");
+	echo "There are " . dbr($get_users) . " users.";
+	?>
 	<div id="open_jobs_list" class="col-xl-12">
 		<?php
 		error_log('test logs');
