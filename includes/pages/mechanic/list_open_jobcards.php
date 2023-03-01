@@ -13,7 +13,7 @@ switch ($row['priority']) {
         break;
 }
 
-$logged_by = dbf(dbq("select concat(name,' ', last_name) as name from users_tbl where user_id={$row['logged_by']}"));
+//$logged_by = dbf(dbq("select concat(name,' ', last_name) as name from users_tbl where user_id={$row['logged_by']}"));
 $mechanic_ = dbf(dbq("select concat(name,' ', last_name) as name from users_tbl where user_id={$row['mechanic_id']}"));
 $plant_ = dbf(dbq("select * from plants_tbl where plant_id={$row['plant_id']}"));
 switch ($plant_['reading_type']) {
