@@ -98,6 +98,8 @@
                 while ($row = dbf($get_checklists)) {
                     require "./includes/pages/manager/plants/list_checklists.php";
                 }
+            } else {
+                echo "<h2>There no plant re-checklists to view.</h2>";
             }
 
             ?>
@@ -105,13 +107,13 @@
     </table>
     <nav aria-label="Page navigation example">
         <ul class="pagination" id="pageination">
-            <li class="page-item"><a class="page-link" href="dashboard.php?page=arch-job&pg=1"><?= "<<" ?></a>
+            <li class="page-item"><a class="page-link" href="dashboard.php?page=plant-checklist&pg=1"><?= "<<" ?></a>
             </li>
-            <li class="page-item"><a class="page-link" href="dashboard.php?page=arch-job&pg=<?php echo $start_page - 1 ?>">Previous</a></li>
+            <li class="page-item"><a class="page-link" href="dashboard.php?page=plant-checklist&pg=<?php echo $start_page - 1 ?>">Previous</a></li>
             <?php
 
             for ($a = $start_page; $a <= $end_page; $a++) {
-                echo "<li class='page-item'><a class='page-link' href='dashboard.php?page=arch-job&pg={$a}'>";
+                echo "<li class='page-item'><a class='page-link' href='dashboard.php?page=plant-checklist&pg={$a}'>";
                 if ($_GET['page'] == $a) {
                     echo "<b>{$a}</b>";
                 } else {
@@ -120,8 +122,8 @@
                 echo "</a></li>";
             }
             ?>
-            <li class="page-item"><a class="page-link" href="dashboard.php?page=arch-job&pg=<?php echo $pagination * $pagination_pages + 1 ?>">Next</a></li>
-            <li class="page-item"><a class="page-link" href="dashboard.php?page=arch-job&pg=<?php echo $pages ?>">>></a></li>
+            <li class="page-item"><a class="page-link" href="dashboard.php?page=plant-checklist&pg=<?php echo $pagination * $pagination_pages + 1 ?>">Next</a></li>
+            <li class="page-item"><a class="page-link" href="dashboard.php?page=plant-checklist&pg=<?php echo $pages ?>">>></a></li>
         </ul>
     </nav>
     <?php
