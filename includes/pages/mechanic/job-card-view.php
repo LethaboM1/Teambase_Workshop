@@ -219,16 +219,16 @@
 	<?php } ?>
 
 	<div class="col-lg-12 mb-3">
-		<?php if ($jobcard_['jobcard_type'] != 'service') {
-			require_once "inc.evt.php";
-		}
+		<?php
 
-		if ($jobcard_['jobcard_type'] != 'sundry') {
-			require_once "inc.sr.php";
-		}
+		require_once "inc.evt.php";
+
+		require_once "inc.sr.php";
 
 		require_once "inc.ra.php";
-		require_once "inc.tr.php"; ?>
+		require_once "inc.tr.php";
+
+		?>
 	</div>
 </div>
 <?php

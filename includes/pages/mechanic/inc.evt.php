@@ -1,62 +1,60 @@
-<?php if ($jobcard_['jobcard_type'] != 'service') { ?>
-    <!-- Modal add event -->
-    <div id="modalAddEvent" class="modal-block modal-block-lg mfp-hide">
-        <form method="post">
-            <section class="card">
-                <header class="card-header">
-                    <h2 class="card-title">Add Event</h2>
-                </header>
-                <div class="card-body">
-                    <h2 class="card-title">Events</h2><br>
-                    <div class="row">
-                        <div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-                            <label class="col-form-label" for="formGroupExampleInput">Event Date</label>
-                            <input type="date" name="event_date" class="form-control" value="<?= date('Y-m-d') ?>">
+<!-- Modal add event -->
+<div id="modalAddEvent" class="modal-block modal-block-lg mfp-hide">
+    <form method="post">
+        <section class="card">
+            <header class="card-header">
+                <h2 class="card-title">Add Event</h2>
+            </header>
+            <div class="card-body">
+                <h2 class="card-title">Events</h2><br>
+                <div class="row">
+                    <div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+                        <label class="col-form-label" for="formGroupExampleInput">Event Date</label>
+                        <input type="date" name="event_date" class="form-control" value="<?= date('Y-m-d') ?>">
+                    </div>
+                    <div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+                        <label class="col-form-label" for="formGroupExampleInput">Hours Worked</label>
+                        <input type="number" name="total_hours" step="0.5" class="form-control" value="1">
+                    </div>
+                    <div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+                        <label class="col-form-label" for="formGroupExampleInput">Select Event</label>
+                        <select class="form-control mb-3" name="event" id="event">
+                            <option value="0">Select a Event</option>
+                            <option value="Engine">Engine</option>
+                            <option value="Clutch">Clutch</option>
+                            <option value="Gearbox">Gearbox/Drive Train</option>
+                            <option value="Axlerear">Axel + Suspension Rear</option>
+                            <option value="Axlefront">Axel + Suspension Front</option>
+                            <option value="Brakes">Brakes</option>
+                            <option value="Cab">Cab + Accessories</option>
+                            <option value="Electrical">Electrical</option>
+                            <option value="Hydraulics ">Hydraulics </option>
+                            <option value="Structure">Structure</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-12 col-md-8 pb-sm-9 pb-md-0">
+                        <label class="col-lg-3 control-label" for="Comment">Comment</label>
+                        <div class="col-lg-12">
+                            <textarea name="comment" class="form-control" rows="3" id="Comment"></textarea>
                         </div>
-                        <div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-                            <label class="col-form-label" for="formGroupExampleInput">Hours Worked</label>
-                            <input type="number" name="total_hours" step="0.5" class="form-control" value="1">
-                        </div>
-                        <div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-                            <label class="col-form-label" for="formGroupExampleInput">Select Event</label>
-                            <select class="form-control mb-3" name="event" id="event">
-                                <option value="0">Select a Event</option>
-                                <option value="Engine">Engine</option>
-                                <option value="Clutch">Clutch</option>
-                                <option value="Gearbox">Gearbox/Drive Train</option>
-                                <option value="Axlerear">Axel + Suspension Rear</option>
-                                <option value="Axlefront">Axel + Suspension Front</option>
-                                <option value="Brakes">Brakes</option>
-                                <option value="Cab">Cab + Accessories</option>
-                                <option value="Electrical">Electrical</option>
-                                <option value="Hydraulics ">Hydraulics </option>
-                                <option value="Structure">Structure</option>
-                            </select>
-                        </div>
-                        <div class="col-sm-12 col-md-8 pb-sm-9 pb-md-0">
-                            <label class="col-lg-3 control-label" for="Comment">Comment</label>
-                            <div class="col-lg-12">
-                                <textarea name="comment" class="form-control" rows="3" id="Comment"></textarea>
-                            </div>
-                        </div>
-                        <div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+                    </div>
+                    <div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 
-                        </div>
                     </div>
                 </div>
-                <footer class="card-footer">
-                    <div class="row">
-                        <div class="col-md-12 text-right">
-                            <button type="submit" name="add_event" class="btn btn-primary">Add Event</button>&nbsp;<button class="btn btn-default modal-dismiss">Cancel</button>
-                        </div>
+            </div>
+            <footer class="card-footer">
+                <div class="row">
+                    <div class="col-md-12 text-right">
+                        <button type="submit" name="add_event" class="btn btn-primary">Add Event</button>&nbsp;<button class="btn btn-default modal-dismiss">Cancel</button>
                     </div>
-                </footer>
-            </section>
-        </form>
-    </div>
-    <!-- Modal view End -->
-<?php } ?>
-<section class="card">
+                </div>
+            </footer>
+        </section>
+    </form>
+</div>
+<!-- Modal view End -->
+<section id="evt_section" class="card">
     <header class="card-header">
         <h2 class="card-title">Events</h2>
     </header>

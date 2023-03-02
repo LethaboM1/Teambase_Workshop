@@ -107,6 +107,19 @@ if (isset($modal)) {
 		if (isset($jscript)) {
 			echo $jscript;
 		}
+
+		if (isset($_SESSION['scroll_to'])) {
+			$scroll_to = $_SESSION['scroll_to'];
+			unset($_SESSION['scroll_to']);
+		}
+
+		if (isset($scroll_to)) {
+		?>
+			$('html, body').animate({
+				scrollTop: $("#<?= $scroll_to ?>").offset().top
+			}, 1000);
+		<?php
+		}
 		?>
 	});
 </script>

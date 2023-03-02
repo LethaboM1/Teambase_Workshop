@@ -1,4 +1,4 @@
-<section class="card">
+<section id='ra_section' class="card">
     <header class="card-header">
         <h2 class="card-title">Risk Assessments</h2>
     </header>

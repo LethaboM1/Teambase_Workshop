@@ -1,4 +1,4 @@
-<section class="card">
+<section id='sr_section' class="card">
 	<header class="card-header">
 		<h2 class="card-title">Spares Requisition BO</h2>
 	</header>

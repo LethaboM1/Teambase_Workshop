@@ -207,17 +207,7 @@
 														<td>0</td>
 														<td>
 															<?= inp("check_{$item['checklist_id']}", '', 'toggle-2', $save_checklist[$item['checklist_id']]['answer'], 'save', 0, $toggle_select) ?>
-															<!-- <div class="button r" id="button-1">
-																<input type="checkbox" class="checkbox save" name="check_<?= $item['checklist_id'] ?>" value="Yes" <?php if ($save_checklist[$item['checklist_id']]['answer'] == 'Yes') {
-																																										echo " checked='checked' ";
-																																									} ?>>
-																<div class="knobs"></div>
-																<div class="layer"></div>
-															</div> -->
 
-															<!-- <input type="checkbox" name="check_<?= $item['checklist_id'] ?>" value="Yes" id="checkboxExample4" <?php /* if ($save_checklist[$item['checklist_id']]['answer'] == 'Yes') {
-																																										echo " checked='checked' ";
-																																									}*/ ?>></td> -->
 													</tr>
 												<?php
 													break;
@@ -229,16 +219,7 @@
 														<td>C</td>
 														<td>
 															<?= inp("check_{$item['checklist_id']}", '', 'toggle-2', $save_checklist[$item['checklist_id']]['answer'], 'save', 0, $toggle_select) ?>
-															<!-- <div class="button r" id="button-1">
-																<input type="checkbox" class="checkbox save" name="check_<?= $item['checklist_id'] ?>" value="Yes" <?php if ($save_checklist[$item['checklist_id']]['answer'] == 'Yes') {
-																																										echo " checked='checked' ";
-																																									} ?>>
-																<div class="knobs"></div>
-																<div class="layer"></div>
-															</div> -->
-															<!-- <input type="checkbox" name="check_<?= $item['checklist_id'] ?>" value="Yes" id="checkboxExample4" <?php /*if ($save_checklist[$item['checklist_id']]['answer'] == 'Yes') {
-																																										echo " checked='checked' ";
-																																									}*/ ?>></td> -->
+
 													</tr>
 								<?php
 													break;
@@ -311,7 +292,12 @@
 
 					<div class="">
 						<?php
+
+						require_once "inc.evt.php";
 						require_once "inc.sr.php";
+
+						require_once "inc.ra.php";
+						require_once "inc.tr.php";
 						?>
 					</div>
 				</div>

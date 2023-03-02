@@ -1,4 +1,4 @@
-<section class="card">
+<section id='tr_section' class="card">
     <header class="card-header">
         <h2 class="card-title">Tyre Inspections</h2>
         <?php if ($_SESSION['user']['role'] == 'mechanic') { ?>

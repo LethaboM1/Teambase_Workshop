@@ -120,36 +120,9 @@ if (isset($_POST['save_progress'])) {
     }
 }
 
-if (isset($_POST['add_part'])) {
-    if ($_POST['qty'] > 0) {
-        if (
-            strlen($_POST['part_number'])
-            && strlen($_POST['part_description']) > 0
-        ) {
-            $add_part_request = dbq("insert into jobcard_requisitions set
-                                                datetime='" . $_POST['request_date'] . "',
-                                                job_id='{$_GET['id']}',
-                                                plant_id='{$plant_['plant_id']}',
-                                                part_number='{$_POST['part_number']}',
-                                                part_description='{$_POST['part_description']}',
-                                                qty={$_POST['qty']},
-                                                comment='{$_POST['comment']}'
-                                                ");
-            if ($add_part_request) {
-                msg("Part request send.");
-            } else {
-                sqlError('', "date: {$_POST['request_date']}");
-            }
-        } else {
-            error("You must type in a part number and description.");
-        }
-    } else {
-        error("Qty cant be 0");
-    }
-}
-
 
 if (isset($_POST['delete_request'])) {
+    $scroll_to = 'sr_section';
     $get_request = dbq("select * from jobcard_requisitions where request_id={$_POST['request_id']}");
     if ($get_request) {
         if (dbr($get_request) > 0) {
@@ -175,5 +148,60 @@ if (isset($_POST['delete_request'])) {
         }
     } else {
         sqlError();
+    }
+}
+
+
+if (isset($_POST['add_event'])) {
+    $_SESSION['scroll_to'] = 'evt_section';
+    if (strlen($_POST['comment']) > 0) {
+        if (($_POST['event'] != '0') || ($jobcard_['jobcard_type'] == 'sundry')) {
+            $add_event = dbq("insert into jobcard_events set
+                                            job_id={$_GET['id']},
+                                            start_datetime='" . $_POST['event_date'] . " 00:00:00',
+                                            total_hours={$_POST['total_hours']},
+                                            event='{$_POST['event']}',
+                                            comment='" . htmlentities($_POST['comment'], ENT_QUOTES) . "'
+                                            ");
+            if ($add_event) {
+                unset($_POST);
+                msg("Event added.");
+                go("dashboard.php?page=plant-schedule&id={$_GET['id']}");
+            } else {
+                sqlError('', '');
+            }
+        } else {
+            error("You must allocate an event type.");
+        }
+    } else {
+        error("fill in a comment.");
+    }
+}
+
+if (isset($_POST['save_event'])) {
+
+    $_SESSION['scroll_to'] = 'evt_section';
+
+    if (strlen($_POST['comment']) > 0) {
+        if ($_POST['event'] != '0' && $_POST['event_id'] > 0) {
+            $add_event = dbq("update jobcard_events set
+                                            start_datetime='" . $_POST['event_date'] . " 00:00:00',
+                                            total_hours={$_POST['total_hours']},
+                                            event='{$_POST['event']}',
+                                            comment='" . htmlentities($_POST['comment'], ENT_QUOTES) . "'
+                                            where event_id={$_POST['event_id']}
+                                            ");
+            if ($add_event) {
+                unset($_POST);
+                msg("Event added.");
+                go("dashboard.php?page=plant-schedule&id={$_GET['id']}");
+            } else {
+                sqlError('', '');
+            }
+        } else {
+            error("You must allocate an event type.");
+        }
+    } else {
+        error("fill in a comment.");
     }
 }
