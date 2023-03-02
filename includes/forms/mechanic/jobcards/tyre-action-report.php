@@ -50,9 +50,9 @@ if (isset($_POST['add_tyre_report'])) {
                                             tyre_rep_id={$tyre_rep_id},
                                             position={$pos},
                                             tread='{$_POST["{$pos}_tread"]}',
-                                            pressure='{$_POST["{$pos}_pressure"]}',
-                                            size='{$_POST["{$pos}_size"]}',
-                                            make='{$_POST["{$pos}_make"]}',
+                                            pressure='" . htmlentities($_POST["{$pos}_pressure"], ENT_QUOTES) . "',
+                                            size='" . htmlentities($_POST["{$pos}_size"], ENT_QUOTES) . "',
+                                            make='" . htmlentities($_POST["{$pos}_make"], ENT_QUOTES) . "',
                                             valve_cap={$valve_cap},
                                             valve_ext={$valve_ext},
                                             tyre_type='{$_POST["{$pos}_tyre_type"]}'
