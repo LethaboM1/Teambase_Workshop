@@ -96,6 +96,7 @@
 
             if (dbr($get_checklists) > 0) {
                 while ($row = dbf($get_checklists)) {
+
                     require "./includes/pages/manager/plants/list_checklists.php";
                 }
             } else {
