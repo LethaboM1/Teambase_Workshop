@@ -32,10 +32,9 @@
 										let comment = $('#comment').val();
 
 										if (
-											part_no.length == 0 
-											|| description.length ==0
+											description.length ==0
 										) {
-											console.log(`No part no or description.`);
+											console.log(`No description.`);
 										} else {										
 											let part = [];
 											part = {
@@ -91,7 +90,7 @@
 										<td><?= $part['qty'] ?></td>
 										<td><?= $part['comment'] ?></td>
 										<td>
-											<a onclick='remove_part(`<?= $part['part_no'] ?>`)'>
+											<a class='pointer' onclick='remove_part(`<?= $part['description'] ?>`)'>
 												<i class="fa fa-trash"></i>
 											</a>
 										</td>
@@ -107,13 +106,13 @@
 							}
 
 							$jscript_function = "
-													function remove_part (part_no) {
+													function remove_part (description) {
 														$.ajax({
 															method:'post',
 															url:'includes/ajax.php',
 															data: {
 																cmd:'remove_part',
-																part_no: part_no
+																description: description
 															},
 															success: function (result) {
 																let data = JSON. parse(result);

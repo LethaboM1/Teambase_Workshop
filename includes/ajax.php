@@ -318,9 +318,13 @@ switch ($_POST['cmd']) {
         break;
 
     case "remove_part":
-        if (isset($_POST['part_no'])) {
-            $key = array_search($_POST['part_no'], array_column($_SESSION['request_parts'], 'part_no'));
+        if (isset($_POST['description'])) {
+            $key = array_search($_POST['description'], array_column($_SESSION['request_parts'], 'description'));
+
             unset($_SESSION['request_parts'][$key]);
+            sort($_SESSION['request_parts']);
+
+
             $html = '';
             foreach ($_SESSION['request_parts'] as $part) {
                 $html .= "<tr>
@@ -329,7 +333,7 @@ switch ($_POST['cmd']) {
                         <td>{$part['qty']}</td>
                         <td>{$part['comment']}</td>
                         <td>
-                            <a onclick='remove_part(`{$part['part_no']}`);'>
+                            <a class='pointer' onclick='remove_part(`{$part['description']}`);'>
                                 <i class='fa fa-trash'></i>
                             </a>
                         </td>
@@ -338,6 +342,7 @@ switch ($_POST['cmd']) {
 
             $json_['parts'] = $html;
             $json_['status'] = 'ok';
+            $json_['session_key'] = $key;
             echo json_encode($json_);
         } else {
             $json_['status'] = 'ok';
@@ -349,11 +354,11 @@ switch ($_POST['cmd']) {
     case "add_part":
 
         $part = json_decode($_POST['part'], true);
-        if (!isset($part['part_no'])) {
-            $json_['status'] = 'error';
-            $json_['message'] = 'No part no';
-            return json_encode($json_);
-        }
+        // if (!isset($part['part_no'])) {
+        //     $json_['status'] = 'error';
+        //     $json_['message'] = 'No part no';
+        //     return json_encode($json_);
+        // }
 
         if (!isset($part['description'])) {
             $json_['status'] = 'error';
@@ -368,21 +373,22 @@ switch ($_POST['cmd']) {
         }
 
         if (is_array($_SESSION['request_parts'])) {
-            if (in_array($part['part_no'], array_column($_SESSION['request_parts'], 'part_no'))) {
-                $key = array_search($part['part_no'], array_column($_SESSION['request_parts'], 'part_no'));
+            if (in_array($part['description'], array_column($_SESSION['request_parts'], 'description'))) {
+                $key = array_search($part['description'], array_column($_SESSION['request_parts'], 'description'));
                 $_SESSION['request_parts'][$key]['qty'] += $part['qty'];
                 $html = '';
                 foreach ($_SESSION['request_parts'] as $part) {
                     $html .= "<tr>
-                        <td>{$part['part_no']}</td>
-                        <td>{$part['description']}</td>
-                        <td>{$part['qty']}</td>
-                        <td>{$part['comment']}</td>
-                        <td>
-                            <a onclick='remove_part(`{$part['part_no']}`)'></a>
-                            <i class='fa fa-trash'></i>
-                        </td>
-                    </tr>";
+                                <td>{$part['part_no']}</td>
+                                <td>{$part['description']}</td>
+                                <td>{$part['qty']}</td>
+                                <td>{$part['comment']}</td>
+                                <td>
+                                    <a class='pointer' onclick='remove_part(`{$part['description']}`)'>
+                                        <i class='fa fa-trash'></i>
+                                    </a>
+                                </td>
+                            </tr>";
                 }
                 $json_['parts'] = $html;
                 $json_['status'] = 'ok';
@@ -401,8 +407,9 @@ switch ($_POST['cmd']) {
                         <td>{$part['qty']}</td>
                         <td>{$part['comment']}</td>
                         <td>
-                            <a onclick='remove_part(`{$part['part_no']}`)'></a>
-                            <i class='fa fa-trash'></i>
+                            <a class='pointer' onclick='remove_part(`{$part['description']}`)'>
+                                <i class='fa fa-trash'></i>
+                            </a>
                         </td>
                     </tr>";
         }
