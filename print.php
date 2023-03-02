@@ -13,6 +13,73 @@ if (isset($_POST['html_code'])) {
 
 
 switch ($_GET['type']) {
+    case 'plant-checklist':
+        if ($_GET['id'] > 0) {
+            $get_checklist = dbq("select * from checklist_results where list_id={$_GET['id']}");
+            if ($get_checklist) {
+                if (dbr($get_checklist) > 0) {
+                    $check_list = dbf($get_checklist);
+                    $plant_ = dbf(dbq("select * from plants_tbl where plant_id={$check_list['plant_id']}"));
+                    $operator_ = dbf(dbq("select name, last_name from users_tbl where user_id={$check_list['user_id']}"));
+
+                    $lines = json_decode($check_list['results'], true);
+
+                    $pdf = "<table style='width: 750px; border-collapse: collapse; table-layout: fixed;'>   
+                            <tr>
+                            <th style='width: 50%; font-weight: bold; font-size: 20px; text-align: left; border: none;'>Pre-Check Report</th>
+                            </tr>   
+                        </table>
+                        <br>
+                        <table style='width: 750px; border-collapse: collapse; table-layout: fixed;'>
+                            <tr>
+                            <td style='width: 50%; font-weight: normal; font-size: 13px; text-align: left; border: 1.5px solid rgb(39, 39, 39); border-bottom: none; padding-left: 5px; padding-top: 5px;'><strong>Plant No #:</strong> {$plant_['plant_number']}</td>
+                            <td style='width: 50%; font-weight: normal; font-size: 13px; text-align: left; border: 1.5px solid rgb(39, 39, 39); border-left: none; border-bottom: none; padding-left: 5px; padding-top: 5px;'><strong>Date:</strong> {$check_list['datetime']}</td>
+                            </tr>
+                            <tr>
+                            <td style='width: 50%;  font-weight: normal; font-size: 13px; text-align: left; border: 1.5px solid rgb(39, 39, 39); border-top: none; padding-left: 5px; padding-bottom: 5px; '><strong>Opperator:</strong> {$operator_['name']} {$operator_['last_name']}</td>
+                            <td style='width: 50%;  font-weight: normal; font-size: 13px; text-align: left; border: 1.5px solid rgb(39, 39, 39); border-left: none; border-top: none; padding-left: 5px;'><strong>Reading:</strong> {$check_list['reading']} " . strtoupper($check_list['reading_type']) . "</td>
+                            </tr>
+                        </table>
+                        <br>
+                        <table style='width: 750px; border-collapse: collapse; table-layout: fixed;'>
+                            <thead>
+                                <tr style='background-color: rgb(85, 85, 85);'>
+                                    <th style='width:645px;font-weight: bold; font-size: 13px; color: #FFFFFF; text-align: left; padding: 10px;'>Question</th>
+                                    <th style='font-weight: bold; font-size: 13px; color: #FFFFFF; text-align: left; padding: 10px;'>Answer</th>
+                                </tr>
+                            </thead>";
+                    $stripe = false;
+                    foreach ($lines as $line) {
+                        $pdf .= " 
+                                <tr" . ($stripe ? " style='background-color: #f1f1f1;'" : "") . ">
+                                    <td style='font-weight: normal; font-size: 13px; text-align: left; padding: 10px;'>{$line['Question']}</td>
+                                    <td style='font-weight: normal; font-size: 13px; text-align: left; padding: 10px;'>" . ucfirst($line['Result']) . "</td>
+                                </tr>
+                                ";
+                        $stripe = !$stripe;
+                    }
+
+
+                    $pdf .= "</table>
+                        <br>
+                        <table style='width: 750px; border-collapse: collapse; table-layout: fixed;'>
+                          <thead>
+                            <tr>
+                              <th style=' font-weight: bold; font-size: 16px; text-align: left; padding: 10px;'>Comment</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td style='width: 100%;  font-weight: normal; font-size: 13px; text-align: left; padding: 10px;'>{$check_list['comments']}</td>
+                            </tr>
+                          </tbody>
+                        </table>";
+                    printPDF($pdf, "{$check_list['datetime']}-{$plant_['plant_number']}-{$operator_['name']} {$operator['last_name']}");
+                }
+            }
+        }
+        break;
+
     case "open-requisitions":
         if ($_SESSION['user']['role'] != 'manager' && $_SESSION['user']['role'] != 'buyer') die();
         $query = "select 
