@@ -38,7 +38,7 @@ if (isset($_POST['complete_service'])) {
                 $service_type = strtolower($_POST['service_type']) . '_service';
                 while ($item = dbf($get_service_checklist)) {
                     if ($item[$service_type] == "0" || $item[$service_type] == "C") {
-                        if ($checklist[$item['checklist_id']]['answer'] !== 'Yes') {
+                        if ($checklist[$item['checklist_id']]['answer'] == '') {
                             error("Required service item: {$item['question']}, has not been done");
                         }
                     }
@@ -89,12 +89,7 @@ if (isset($_POST['save_progress'])) {
             $service_type = strtolower($_POST['service_type']) . '_service';
             while ($item = dbf($get_service_checklist)) {
                 if ($item[$service_type] == "0" || $item[$service_type] == "C") {
-                    if ($_POST['check_' . $item['checklist_id']] == 'Yes') {
-                        $answer = 'Yes';
-                    } else {
-                        $answer = 'No';
-                    }
-
+                    $answer = $_POST['check_' . $item['checklist_id']];
                     $service_checklist[$item['checklist_id']] = ['question' => $item['question'], 'answer' => $answer];
                 }
             }

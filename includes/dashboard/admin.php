@@ -5,6 +5,11 @@ if ($_SESSION['user']['role'] != 'manager' && $_SESSION['user']['role'] != 'syst
 }
 
 switch ($_GET['page']) {
+    case 'plant-checklists':
+        $page_title = 'Plant Check Lists';
+        $page_name = 'manager/plants/plant-checklists';
+
+        break;
 
     case 'job-card-view':
         $page_title = 'View Job Card';

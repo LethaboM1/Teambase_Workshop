@@ -152,24 +152,28 @@
 										case "A":
 									?>
 											<td><strong>15000</strong></td>
+											<td></td>
 										<?php
 											break;
 
 										case "B":
 										?>
 											<td><strong>30000</strong></td>
+											<td></td>
 										<?php
 											break;
 
 										case "C":
 										?>
 											<td><strong>45000 / 60000</strong></td>
+											<td></td>
 										<?php
 											break;
 
 										case "D":
 										?>
 											<td><strong>45000 / 60000</strong></td>
+											<td></td>
 									<?php
 											break;
 									}
@@ -184,6 +188,10 @@
 									echo "Error: " . json_last_error_msg();
 								}
 
+								$toggle_select = [
+									['name' => 'Yes', 'value' => 'Yes'],
+									['name' => 'N/A', 'value' => 'N/A'],
+								];
 
 								//echo "<pre>xxx" . print_r($save_checklist, true) . "</pre>";
 								$get_service_checklist = dbq("select * from service_checklist");
@@ -196,14 +204,16 @@
 								?>
 													<tr>
 														<td><?= $item['question'] ?></td>
-														<td>0
-															<div class="button r" id="button-1">
+														<td>0</td>
+														<td>
+															<?= inp("check_{$item['checklist_id']}", '', 'toggle-2', $save_checklist[$item['checklist_id']]['answer'], 'save', 0, $toggle_select) ?>
+															<!-- <div class="button r" id="button-1">
 																<input type="checkbox" class="checkbox save" name="check_<?= $item['checklist_id'] ?>" value="Yes" <?php if ($save_checklist[$item['checklist_id']]['answer'] == 'Yes') {
 																																										echo " checked='checked' ";
 																																									} ?>>
 																<div class="knobs"></div>
 																<div class="layer"></div>
-															</div>
+															</div> -->
 
 															<!-- <input type="checkbox" name="check_<?= $item['checklist_id'] ?>" value="Yes" id="checkboxExample4" <?php /* if ($save_checklist[$item['checklist_id']]['answer'] == 'Yes') {
 																																										echo " checked='checked' ";
@@ -216,14 +226,16 @@
 												?>
 													<tr>
 														<td><?= $item['question'] ?></td>
-														<td>C
-															<div class="button r" id="button-1">
+														<td>C</td>
+														<td>
+															<?= inp("check_{$item['checklist_id']}", '', 'toggle-2', $save_checklist[$item['checklist_id']]['answer'], 'save', 0, $toggle_select) ?>
+															<!-- <div class="button r" id="button-1">
 																<input type="checkbox" class="checkbox save" name="check_<?= $item['checklist_id'] ?>" value="Yes" <?php if ($save_checklist[$item['checklist_id']]['answer'] == 'Yes') {
 																																										echo " checked='checked' ";
 																																									} ?>>
 																<div class="knobs"></div>
 																<div class="layer"></div>
-															</div>
+															</div> -->
 															<!-- <input type="checkbox" name="check_<?= $item['checklist_id'] ?>" value="Yes" id="checkboxExample4" <?php /*if ($save_checklist[$item['checklist_id']]['answer'] == 'Yes') {
 																																										echo " checked='checked' ";
 																																									}*/ ?>></td> -->

@@ -97,11 +97,8 @@ switch ($_POST['cmd']) {
                 $service_type = strtolower($_POST['service_type']) . '_service';
                 while ($item = dbf($get_service_checklist)) {
                     if ($item[$service_type] == "0" || $item[$service_type] == "C") {
-                        if ($_POST['check_' . $item['checklist_id']] == 'Yes') {
-                            $answer = 'Yes';
-                        } else {
-                            $answer = 'No';
-                        }
+
+                        $answer = $_POST['check_' . $item['checklist_id']];
 
                         $service_checklist[$item['checklist_id']] = ['question' => $item['question'], 'answer' => $answer];
                     }
@@ -491,6 +488,23 @@ switch ($_POST['cmd']) {
 
     case "search":
         switch ($_POST['type']) {
+            case "plant-checklists":
+                $get_checklists = dbq("select * from checklist_results where
+                (
+                    datetime like '%{$_POST['search']}%'
+                    || plant_id in (select plant_id from plants_tbl where plant_number like '{$_POST['search']}%') 
+                    || user_id in (select user_id from users_tbl where (name like '{$_POST['search']}%' or last_name like '{$_POST['search']}%'))
+                ) order by datetime DESC");
+
+                if ($get_checklists) {
+                    if (dbr($get_checklists) > 0) {
+                        while ($row = dbf($get_checklists)) {
+                            require "pages/manager/plants/list_checklists.php";
+                        }
+                    }
+                }
+                break;
+
             case "open-jobs":
                 if ($_SESSION['user']['role'] == 'mechanic') {
                     $query_ = " and mechanic_id={$_SESSION['user']['user_id']}";
