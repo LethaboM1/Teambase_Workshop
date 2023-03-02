@@ -30,6 +30,11 @@ switch ($_GET['page']) {
         $page_name = 'mechanic/open-job-cards';
         break;
 
+    case 'requested-job':
+        $page_title = 'Requested Job Cards';
+        $page_name = 'mechanic/requested-job-cards';
+        break;
+
     case 'tyre-action-report':
         $page_title = 'Tyre Action Report';
         $page_name = 'mechanic/tyre-action-report';
