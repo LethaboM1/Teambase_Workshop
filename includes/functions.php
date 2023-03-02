@@ -1695,3 +1695,20 @@ function is_json($string, $return_data = false)
 		return false;
 	}
 }
+function clean_path_($path)
+{
+	$path = str_replace("/", "", $path);
+	$path = str_replace("\\", "", $path);
+	$path = str_replace("?", "", $path);
+	$path = str_replace(":", "", $path);
+	$path = str_replace(";", "", $path);
+	$path = str_replace("*", "", $path);
+	$path = str_replace('"', "", $path);
+	$path = str_replace("'", "", $path);
+	$path = str_replace("<", "", $path);
+	$path = str_replace(">", "", $path);
+	$path = str_replace("|", "", $path);
+	$path = str_replace(" ", "", $path);
+
+	return $path;
+}

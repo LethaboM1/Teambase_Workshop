@@ -74,7 +74,11 @@ switch ($_GET['type']) {
                             </tr>
                           </tbody>
                         </table>";
-                    printPDF($pdf, "{$check_list['datetime']}-{$plant_['plant_number']}-{$operator_['name']} {$operator['last_name']}");
+
+                    $file_name = "{$check_list['datetime']}-{$plant_['plant_number']}-{$operator_['name']} {$operator['last_name']}";
+                    $file_name = clean_path_($file_name);
+
+                    printPDF($pdf, $file_name);
                 }
             }
         }
