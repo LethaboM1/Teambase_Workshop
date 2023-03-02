@@ -90,7 +90,7 @@
 
 
             $start = ($_GET['pg'] * $lines) - $lines;
-
+            if ($start < 0) $start = 0;
             $get_checklists = dbq("select * from checklist_results order by datetime DESC limit {$start},$lines");
 
 

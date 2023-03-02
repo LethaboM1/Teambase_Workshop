@@ -1,4 +1,5 @@
 <?php
+
 $plant_ = ($row['plant_id'] > 0) ? dbf(dbq("select * from plants_tbl where plant_id={$row['plant_id']}")) : ['plant_number' => 'None'];
 $operator_ = ($row['user_id'] > 0) ? dbf(dbq("select name, last_name from users_tbl where user_id={$row['user_id']}")) : ['name' => 'None', 'last_name' => ''];
 
