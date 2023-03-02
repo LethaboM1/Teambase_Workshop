@@ -99,7 +99,7 @@
                     require "./includes/pages/manager/plants/list_checklists.php";
                 }
             } else {
-                echo "<h2>There no plant re-checklists to view.</h2>";
+                echo "<tr><td colspan='6'>There no plant re-checklists to view.</td></tr>";
             }
 
             ?>
