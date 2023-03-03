@@ -102,9 +102,9 @@
                                             <div class="card-body">' .
                                 inp('event_id', '', 'hidden', $event['event_id'])
                                 . '
-                                                <label>Are you sure you want to delete this event?</label>
-                                                <button class="btn btn-xs btn-success" type="submit" value="Yes" name="delete_event">Yes</button>
-                                                <button class="btn btn-xs btn-danger modal-dismiss">No</button>
+                                                <label>Are you sure you want to delete this event?</label><br>
+                                                <button class="btn btn-success" type="submit" value="Yes" name="delete_event">Yes</button>
+                                                <button class="btn btn-danger modal-dismiss">No</button>
                                             </div>
                                             </form>
                                         </section>
