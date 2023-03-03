@@ -33,6 +33,18 @@ if (isset($_POST['allocate_mechanic'])) {
                                     $_POST['allocated_hours'] = 0;
                                 }
 
+                                $get_jobcard_reports = dbq("select sum(hours) as amount from jobcard_reports where job_id={$_POST['job_id']}");
+                                if ($get_jobcard_reports) {
+                                    $hours = dbf($get_jobcard_reports);
+                                    if (!is_numeric($hours['amount'])) $hours['amount'] = 0;
+                                } else {
+                                    $hours['amount'] = 0;
+                                }
+
+                                if ($_POST['allocated_hours'] < $hours['amount']) {
+                                    $_POST['allocated_hours'] = $hours['amount'];
+                                }
+
                                 $update_jobcard = dbq("update jobcards set 
                                                             authorized_by={$_SESSION['user']['user_id']},
                                                             {$jobcard_number}
