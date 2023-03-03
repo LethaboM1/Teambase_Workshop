@@ -122,10 +122,36 @@ $request_status_select = [
 													<th style="width:150px;"></th>
 													<th style="width:35px;"></th>
 												</thead>
-												<tbody>
+												<tbody id='list_parts_<?= $job_request['request_id'] ?>'>
 													<?php
 													$get_parts = dbq("select * from jobcard_requisition_parts where request_id={$job_request['request_id']}");
-
+													if ($_SESSION['user']['role'] == 'manager') {
+														$jscript_function .= "
+																				function del_req_part (id, request_id) {
+																					$.ajax({
+																						method:'post',
+																						url:'includes/ajax.php',
+																						data: {
+																							'cmd':'delete_requisition_part',
+																							'id': id
+																						},
+																						success: function (result) {
+																							let data = JSON.parse(result);
+																							if (data.status=='ok') {
+																								$('#list_parts_' + request_id).html(data.html);
+																							} else if (data.status=='error') {
+																								console.log('Error : ' + data.message);
+																								$('#id_' + id).html(`<i class='fa fa-times text-danger'></i>`);
+																							} else {
+																								console.log('Error ajax');
+																								$('#id_' + id).html(`<i class='fa fa-times text-danger'></i>`);
+																							}
+																						},
+																						error: function () {}
+																					});
+																				}
+																			";
+													}
 													if ($_SESSION['user']['role'] == 'buyer') {
 														$jscript_function .= "
 																			function change_part_status(id,value) {
@@ -233,7 +259,7 @@ $request_status_select = [
 																					},
 																					error: function () {}
 																				});
-																			}
+																			}	
 																			";
 														unset($part_status_);
 														$part_status_ = [
@@ -294,6 +320,11 @@ $request_status_select = [
 																		?>
 																	</td>
 																	<td><span id="id_<?= $part['id'] ?>"></span></td>
+																	<td>
+																		<?php if ($_SESSION['user']['role'] == 'manager' && $job_request['status'] == 'requested') { ?>
+																			<button type='button' onclick="del_req_part('<?= $part['id'] ?>','<?= $part['request_id'] ?>')" class="btn btn-xs btn-warning"><i class="fa fa-trash"></i></button>
+																		<?php } ?>
+																	</td>
 																</tr>
 													<?php
 																$jscript .= "
@@ -436,95 +467,3 @@ $request_status_select = [
 		</div>
 	</section>
 </div>
-<!-- Job Card Good End -->
-
-<?php
-
-/* 
-
-
-		<!-- Job Card Causion -->
-		<div class="col-md-12">
-			<section class="card card-featured-left card-featured-warning mb-4">
-				<div class="card-body">
-					<div class="card-actions">
-						<!-- View Job Card -->
-						<a class="mb-1 mt-1 mr-1 modal-sizes" href="#modalviewjob2"><i class="fa-solid fa-eye"></i></a>
-						<!-- Modal View -->
-						<div id="modalviewjob2" class="modal-block modal-block-lg mfp-hide">
-							<section class="card">
-								<header class="card-header">
-									<h2 class="card-title">View Job Card</h2>
-								</header>
-								<div class="card-body">
-									<div class="modal-wrapper">
-										<div class="modal-text">
-											<p>Job Card info here...</p>
-
-										</div>
-									</div>
-								</div>
-								<footer class="card-footer">
-									<div class="row">
-										<div class="col-md-12 text-right">
-											<button class="btn btn-default modal-dismiss">Cancel</button>
-										</div>
-									</div>
-								</footer>
-							</section>
-						</div>
-						<!-- Modal View End -->
-						<!-- View Job Card End -->
-					</div>
-					<h2 class="card-title">Plant: HP56521</h2>
-					<p class="card-subtitle">Opend by: Name</p>
-					<div class="progress progress-xl progress-half-rounded m-2">
-						<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%;">20%</div>
-					</div>
-				</div>
-			</section>
-		</div>
-		<!-- Job Card causion -->
-		<!-- Job Card Danger -->
-		<div class="col-md-12">
-			<section class="card card-featured-left card-featured-danger mb-4">
-				<div class="card-body">
-					<div class="card-actions">
-						<!-- View Job Card -->
-						<a class="mb-1 mt-1 mr-1 modal-sizes" href="#modalviewjob3"><i class="fa-solid fa-eye"></i></a>
-						<!-- Modal View -->
-						<div id="modalviewjob3" class="modal-block modal-block-lg mfp-hide">
-							<section class="card">
-								<header class="card-header">
-									<h2 class="card-title">View Job Card</h2>
-								</header>
-								<div class="card-body">
-									<div class="modal-wrapper">
-										<div class="modal-text">
-											<p>Job Card info here...</p>
-
-										</div>
-									</div>
-								</div>
-								<footer class="card-footer">
-									<div class="row">
-										<div class="col-md-12 text-right">
-											<button class="btn btn-default modal-dismiss">Cancel</button>
-										</div>
-									</div>
-								</footer>
-							</section>
-						</div>
-						<!-- Modal View End -->
-						<!-- View Job Card End -->
-					</div>
-					<h2 class="card-title">Plant: HP56521</h2>
-					<p class="card-subtitle">Opend by: Name</p>
-					<div class="progress progress-xl progress-half-rounded m-2">
-						<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%;">80%</div>
-					</div>
-				</div>
-			</section>
-		</div>
-		<!-- Job Card Danger -->
-*/

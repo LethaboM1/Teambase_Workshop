@@ -90,6 +90,89 @@ switch ($_POST['cmd']) {
         echo json_encode($json_);
         break;
 
+    case 'delete_requisition_part':
+        if ($_POST['id'] > 0 && is_numeric($_POST['id'])) {
+            $json_['status'] = 'ok';
+            $get_request_part = dbq("select * from jobcard_requisition_parts where id={$_POST['id']}");
+            if ($get_request_part) {
+                $request_part = dbf($get_request_part);
+
+                $delete = dbq("delete from jobcard_requisition_parts where id={$_POST['id']}");
+                $get_parts = dbq("select * from jobcard_requisition_parts where request_id={$request_part['request_id']}");
+                unset($part_status_);
+                $part_status_ = [
+                    ['name' => '---', 'value' => ''],
+                    ['name' => 'Ordered', 'value' => 'ordered'],
+                    ['name' => 'Received', 'value' => 'received'],
+                    ['name' => 'Completed', 'value' => 'completed'],
+                    ['name' => 'Canceled', 'value' => 'canceled'],
+                    ['name' => 'Rejected', 'value' => 'rejected']
+                ];
+
+                if ($get_parts) {
+                    if (dbr($get_parts) > 0) {
+                        $json_['html'] = '';
+                        while ($part = dbf($get_parts)) {
+                            $json_['html'] .= "<tr>
+                                <td>{$part['part_number']}</td>
+                                <td>{$part['part_description']}</td>
+                                <td>";
+                            if ($_SESSION['user']['role'] == 'manager' && $row['status'] == 'requested') {
+                                $json_['html'] .= inp("{$part['id']}_part_qty", '', 'text', $part['qty'], '', 0, '', " style='width:80px;'");
+                            } else {
+                                $json_['html'] .= $part['qty'];
+                            }
+
+
+                            $json_['html'] .= " </td>
+                                <td><span id='{$part['id']}_div'></span></td>
+                                <td>{$part['comment']}</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><span id='id_{$part['id']}'></span></td>
+                                <td>
+                                    <button type='button' onclick='del_req_part{`{$part['id']}`,`{$part['request_id']}`}' class='btn btn-xs btn-warning'><i class='fa fa-trash'></i></button>
+                                    <script>
+                                    $('#{$part['id']}_part_qty').change(function () {
+                                        $.ajax({
+                                            method:'post',
+                                            url:'includes/ajax.php',
+                                            data: {
+                                                cmd:'qty_ajust',
+                                                id: '{$part['id']}',
+                                                request_id: '{$job_request['request_id']}',
+                                                qty: $(this).val()
+                                            },
+                                            success: function (result) {
+                                                let data = JSON.parse(result);
+                                                    
+                                                if (data.status=='ok') {																						
+                                                    $('#{$part['id']}_div').html(`<i class='fa fa-check text-success'></i>`);
+                                                } else {																						
+                                                    $('#{$part['id']}_div').html(`<i class='fa fa-times text-danger'></i>`);
+                                                }
+                                            },
+                                            error: function () {}
+                                        });
+                                    });
+                                    </script>
+                                </td>
+                            </tr>";
+                        }
+                    } else {
+                        $json_['html'] .= "<tr><td colspan='5'>Nothing</td></tr>";
+                    }
+                } else {
+                    $json_['html'] .= "<tr><td colspan='5'>" . dbe() . "</td></tr>";
+                }
+            }
+            echo json_encode($json_);
+        }
+
+        break;
+
+
     case "save_service_checklist":
         $get_service_checklist = dbq("select * from service_checklist");
         if ($get_service_checklist) {
