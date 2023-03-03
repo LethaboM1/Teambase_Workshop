@@ -182,3 +182,10 @@ if (isset($_POST['save_event'])) {
         error("fill in a comment.");
     }
 }
+
+if (isset($_POST['delete_event'])) {
+    if ($_POST['event_id'] > 0) {
+        $delete_event = dbq("delete from jobcard_events where event_id={$_POST['event_id']}");
+        ($delete_event) ? $msg[] = "Event was deleted!" : $error[] = "Error deleting event.";
+    }
+}

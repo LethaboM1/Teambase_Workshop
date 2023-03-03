@@ -88,10 +88,28 @@
                                 <td><?= $event['total_hours'] ?></td>
                                 <td><?= $event['comment'] ?></td>
                                 <td class="actions">
-                                    <a class="mb-1 mt-1 mr-1 modal-basic" href="#modalEditEvent_<?= $event['event_id'] ?>"><i class="fas fa-pencil-alt"></i></a>
+                                    <a class="mb-1 mt-1 mr-1 modal-basic" href="#modalEditEvent_<?= $event['event_id'] ?>"><i class="fas fa-pencil-alt fa-2x"></i></a>
+                                    &nbsp;<a class="mb-1 mt-1 mr-1 modal-basic" href="#modalDeleteEvent_<?= $event['event_id'] ?>"><i class="fas fa-trash-alt fa-2x"></i></a>
                                 </td>
                             </tr>
                         <?php
+                            $modal .= '<div id="modalDeleteEvent_' . $event['event_id'] . '" class="modal-block modal-block-lg mfp-hide">
+                                        <section class="card">
+                                            <form method="post">
+                                            <header class="card-header">
+                                                <h2 class="card-title">View Event</h2>
+                                            </header>
+                                            <div class="card-body">' .
+                                inp('event_id', '', 'hidden', $event['event_id'])
+                                . '
+                                                <label>Are you sure you want to delete this event?</label>
+                                                <button class="btn btn-xs btn-success" type="submit" value="Yes" name="delete_event">Yes</button>
+                                                <button class="btn btn-xs btn-danger modal-dismiss">No</button>
+                                            </div>
+                                            </form>
+                                        </section>
+                                    </div>
+                                        ';
 
                             $modal .= '
 											
