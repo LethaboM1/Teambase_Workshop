@@ -313,6 +313,15 @@ $request_status_select = [
 																	<td>
 																		<?php
 																		if ($_SESSION['user']['role'] == 'buyer') {
+																			echo inp('purchase_order', '', 'text', $part['purchase_order'], '', 0, $part_status_, " placeholder='Order#' style='width:150px;'onchange='change_part_purchase_order(`{$part['id']}`,$(this).val());'");
+																		} else {
+																			echo $part['purchase_order'];
+																		}
+																		?>
+																	</td>
+																	<td>
+																		<?php
+																		if ($_SESSION['user']['role'] == 'buyer') {
 																			echo inp('date_eta', '', 'date', $part['date_eta'], '', 0, $part_status_, "style='width:150px;' onchange='change_part_date_eta(`{$part['id']}`,$(this).val());'");
 																		} else {
 																			echo $part['date_eta'];
