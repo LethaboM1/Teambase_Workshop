@@ -169,9 +169,15 @@ switch ($_GET['page']) {
         break;
 
     case 'tyre-reports-new':
-        $page_title = 'Tyre Reports';
+        $page_title = 'New Tyre Reports';
         $page_name = 'manager/jobcards/tyre-reports-new';
         require "./includes/forms/manager/jobcards/tyre-reports-new.php";
+        break;
+
+    case 'tyre-reports-list':
+        $page_title = 'Tyre Reports';
+        $page_name = 'manager/jobcards/tyre-reports-list';
+        //require "./includes/forms/manager/jobcards/tyre-reports-list.php";
         break;
 
     default:

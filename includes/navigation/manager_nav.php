@@ -46,6 +46,9 @@ $get_completed = dbq("select job_id from jobcards where status='completed'");
 					<ul class="nav nav-children">
 						<li><a class="nav-link" href="dashboard.php?page=tyre-reports-new">New&nbsp;<span class='badge badge-danger float-end'><?= dbr($get_tyre_reports) ?></span></a></li>
 					</ul>
+					<ul class="nav nav-children">
+						<li><a class="nav-link" href="dashboard.php?page=tyre-reports-list">List</a></li>
+					</ul>
 				</li>
 				<li class="nav-parent">
 					<a class="nav-link" href="#">

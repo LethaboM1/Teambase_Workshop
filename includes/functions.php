@@ -1633,6 +1633,28 @@ function get_jobcard($job_id)
 	}
 }
 
+function get_user($user_id)
+{
+	if ($user_id > 0 && is_numeric($user_id)) {
+		$get_user = dbq("select * from users_tbl where user_id={$user_id}");
+		if ($get_user) {
+			if (dbr($get_user) > 0) {
+				$user_ = dbf($get_user);
+				return $user_;
+			} else {
+				error('user not found');
+				return false;
+			}
+		} else {
+			error_log('SQL error: ' . dbe());
+			return false;
+		}
+	} else {
+		error("Invalid user id.");
+		return false;
+	}
+}
+
 function check_reading($plant_id, $reading, $thresh_hold = 3)
 {
 	$get_plant = dbq("select * from plants_tbl where plant_id={$plant_id}");

@@ -108,7 +108,7 @@
             ?>
         </tbody>
     </table>
-    <?php if (dbr($get_checklists) > $lines) { ?>
+    <?php if ($total_lines > $lines) { ?>
         <nav aria-label="Page navigation example">
             <ul class="pagination" id="pageination">
                 <li class="page-item"><a class="page-link" href="dashboard.php?page=plant-checklist&pg=1"><?= "<<" ?></a>
