@@ -98,8 +98,11 @@ if (isset($_POST['delete_jobcard'])) {
                             where job_id={$_POST['job_id']}");
 
         if ($update_) {
-            if (update_plant_status($jobcard_['plant_id'], 'ready')) {
-                msg("Job card deleted.");
+            $plant_ = get_plant($jobcard_['plant_id']);
+            if ($plant_['status'] == 'breakdown') {
+                if (update_plant_status($jobcard_['plant_id'], 'ready')) {
+                    msg("Job card deleted.");
+                }
             }
         } else {
             sqlError();

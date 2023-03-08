@@ -312,14 +312,17 @@ if (isset($_POST['submit_checklist'])) {
                 switch ($status) {
                     case "L":
                         $priority = 3;
+                        $job_status = 'repair';
                         break;
 
                     case "M":
                         $priority = 2;
+                        $job_status = 'repair';
                         break;
 
                     case "H":
                         $priority = 1;
+                        $job_status = 'breakdown';
                         break;
                 }
 
@@ -339,6 +342,7 @@ if (isset($_POST['submit_checklist'])) {
                                             job_date='" . date('Y-m-d') . "',
                                             logged_by='{$_SESSION['user']['user_id']}',
                                             {$reading}
+                                            jobcard_type='{$job_status}',
                                             priority='{$priority}'
                                             ");
 
@@ -348,6 +352,7 @@ if (isset($_POST['submit_checklist'])) {
                 } else {
                     sqlError();
                 }
+
                 /* Make plant status faulty if High */
                 if ($status == 'H') {
                     $update_plant = dbq("update plants_tbl set
@@ -391,7 +396,7 @@ if (isset($_POST['submit_checklist'])) {
                                                 user_id={$_SESSION['user']['user_id']},
                                                 plant_id={$_POST['submit_checklist']},
                                                 results='{$results}',
-                                                comments='" . htmlentities($_POST['comments'], ENT_QUOTES) . "'
+                                                comments='" . htmlentities($_POST['comments'], ENT_QUOTES) . "',
                                                 status='{$insp_status}'
                                                 ");
                 if ($save_checklist) {
@@ -399,6 +404,8 @@ if (isset($_POST['submit_checklist'])) {
                         $list_id = mysqli_insert_id($db);
                         $update_ = dbq("update jobcards set list_id={$list_id} where job_id={$job_id}");
                         if ($update_) sqlError();
+                    } else {
+                        msg("No job_id");
                     }
 
                     msg("Check list saved.");
