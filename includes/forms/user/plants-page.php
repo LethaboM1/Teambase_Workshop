@@ -401,7 +401,7 @@ if (isset($_POST['submit_checklist'])) {
                             ";
 
             $save_checklist = dbq($query_);
-            error_log("SQL : {$query_}");
+
             if ($save_checklist) {
                 if (isset($job_id)) {
                     $list_id = mysqli_insert_id($db);

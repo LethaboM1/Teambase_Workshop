@@ -22,7 +22,12 @@ switch ($_GET['type']) {
                     $plant_ = dbf(dbq("select * from plants_tbl where plant_id={$check_list['plant_id']}"));
                     $operator_ = dbf(dbq("select name, last_name from users_tbl where user_id={$check_list['user_id']}"));
 
-                    $lines = json_decode($check_list['results'], true);
+                    if (strlen($check_list['results']) > 0) {
+                        $lines = (is_json($check_list['results'])) ? json_decode($check_list['results'], true) : json_decode(base64_decode($check_list['results']), true);
+                    } else {
+                        $lines = [];
+                    }
+
 
                     $pdf = "<table style='width: 750px; border-collapse: collapse; table-layout: fixed;'>   
                             <tr>

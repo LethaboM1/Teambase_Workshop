@@ -14,6 +14,13 @@
                             <div class="card-body">
                                 <?= inp('jobcard_type', '', 'hidden', $jobcard['jobcard_type']) ?>
                                 <b>Logged by:</b>&nbsp;<?= $logged_by_['name'] ?><br>
+                                <?php
+                                if ($jobcard['list_id'] > 0) {
+                                ?>
+                                    <a target="_blank" href="print.php?type=plant-checklist&id=<?= $jobcard['list_id'] ?>" class="btn btn-warning btn-sm">Print Sheet</a><br>
+                                <?php
+                                }
+                                ?>
                                 <b>Date Logged</b>&nbsp;<?= $jobcard['job_date'] ?><br>
                                 <b>Fault:</b><br><?= $jobcard['fault_description'] ?><br>
                                 <?php if ($jobcard['jobcard_type'] == 'breakdown' || $jobcard['jobcard_type'] == 'overhead' || $jobcard['jobcard_type'] == 'repair') { ?>
