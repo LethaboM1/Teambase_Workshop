@@ -355,6 +355,7 @@ if (isset($_POST['submit_checklist'])) {
 
                 /* Make plant status faulty if High */
                 if ($status == 'H') {
+                    $insp_status = 'Fault';
                     $update_plant = dbq("update plants_tbl set
                                                 operator_id=0,
                                                 status='breakdown'
@@ -390,33 +391,35 @@ if (isset($_POST['submit_checklist'])) {
                 }
             }
 
-            if (!is_error()) {
-                $save_checklist = dbq("insert into checklist_results set
-                                                start_datetime='" . date('Y-m-d H:i:s') . "',
-                                                user_id={$_SESSION['user']['user_id']},
-                                                plant_id={$_POST['submit_checklist']},
-                                                results='{$results}',
-                                                comments='" . htmlentities($_POST['comments'], ENT_QUOTES) . "',
-                                                status='{$insp_status}'
-                                                ");
-                if ($save_checklist) {
-                    if (isset($job_id)) {
-                        $list_id = mysqli_insert_id($db);
-                        $update_ = dbq("update jobcards set list_id={$list_id} where job_id={$job_id}");
-                        if ($update_) sqlError();
-                    } else {
-                        msg("No job_id");
-                    }
+            $query_ = "insert into checklist_results set
+                            datetime='" . date('Y-m-d H:i:s') . "',
+                            user_id={$_SESSION['user']['user_id']},
+                            plant_id={$_POST['submit_checklist']},
+                            results='{$results}',
+                            comments='" . htmlentities($_POST['comments'], ENT_QUOTES) . "',
+                            status='{$insp_status}'
+                            ";
 
-                    msg("Check list saved.");
-                    go('dashboard.php?page=plants');
+            $save_checklist = dbq($query_);
+            error_log("SQL : {$query_}");
+            if ($save_checklist) {
+                if (isset($job_id)) {
+                    $list_id = mysqli_insert_id($db);
+                    $update_ = dbq("update jobcards set list_id={$list_id} where job_id={$job_id}");
+                    if ($update_) sqlError();
                 } else {
-                    sqlError();
+                    $msg[] = "No job_id";
                 }
+
+                msg("Check list saved.");
+                go('dashboard.php?page=plants');
+            } else {
+                sqlError();
+                $error[] = "SQL Error: " . dbe();
             }
+
             go("dashboard.php?page=plants");
         }
-        //}
     }
 }
 

@@ -1679,7 +1679,7 @@ function check_reading($plant_id, $reading, $thresh_hold = 3)
 
 function is_error()
 {
-	if (isset($_SESSION['error'])) {
+	if (isset($_SESSION['error']) || isset($error)) {
 		return true;
 	} else {
 		return false;
