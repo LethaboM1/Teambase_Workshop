@@ -308,103 +308,105 @@ if (isset($_POST['submit_checklist'])) {
 
             $results = base64_encode(json_encode($json_checklist));
 
+            if ($faulty) {
+                switch ($status) {
+                    case "L":
+                        $priority = 3;
+                        break;
 
+                    case "M":
+                        $priority = 2;
+                        break;
 
-            $save_checklist = dbq("insert into checklist_results set
-                                                start_datetime='" . date('Y-m-d H:i:s') . "',
-                                                user_id={$_SESSION['user']['user_id']},
-                                                plant_id={$_POST['submit_checklist']},
-                                                results='{$results}',
-                                                comments='" . htmlentities($_POST['comments'], ENT_QUOTES) . "'
-                                                status='{$status}'
-                                                ");
-            if ($save_checklist) {
-                $list_id = mysqli_insert_id($db);
-                msg("Check list saved.");
-                go('dashboard.php?page=plants');
-            } else {
-                sqlError();
-            }
+                    case "H":
+                        $priority = 1;
+                        break;
+                }
 
-            if (!is_error()) {
-                if ($faulty) {
-                    switch ($status) {
-                        case "L":
-                            $priority = 3;
-                            break;
+                /* Log Job card */
+                switch ($_POST['reading_type']) {
+                    case "hr":
+                        $reading = "hr_reading='{$_POST['reading']}',";
+                        break;
 
-                        case "M":
-                            $priority = 2;
-                            break;
+                    case "km":
+                        $reading = "km_reading='{$_POST['reading']}',";
+                        break;
+                }
 
-                        case "H":
-                            $priority = 1;
-                            break;
-                    }
-
-                    /* Log Job card */
-                    switch ($_POST['reading_type']) {
-                        case "hr":
-                            $reading = "hr_reading='{$_POST['reading']}',";
-                            break;
-
-                        case "km":
-                            $reading = "km_reading='{$_POST['reading']}',";
-                            break;
-                    }
-
-                    $add_jobcard = dbq("insert into jobcards set
+                $add_jobcard = dbq("insert into jobcards set
                                             plant_id={$_POST['submit_checklist']},
                                             job_date='" . date('Y-m-d') . "',
                                             logged_by='{$_SESSION['user']['user_id']}',
-                                            list_id={$list_id},
                                             {$reading}
                                             priority='{$priority}'
                                             ");
 
-                    if ($add_jobcard) {
-                        msg("Job card created.");
-                    } else {
-                        sqlError();
-                    }
-                    /* Make plant status faulty if High */
-                    if ($status == 'H') {
-                        $update_plant = dbq("update plants_tbl set
+                if ($add_jobcard) {
+                    $job_id = mysqli_insert_id($db);
+                    msg("Job card created.");
+                } else {
+                    sqlError();
+                }
+                /* Make plant status faulty if High */
+                if ($status == 'H') {
+                    $update_plant = dbq("update plants_tbl set
                                                 operator_id=0,
                                                 status='breakdown'
                                                 where plant_id={$_POST['submit_checklist']}
                                                 ");
-                        if ($update_plant) {
-                            msg("Plant is made faulty.");
-                        } else {
-                            sqlError();
-                        }
+                    if ($update_plant) {
+                        msg("Plant is made faulty.");
                     } else {
-                        $status = 'Good';
-                        $allocate_plant = dbq("update plants_tbl set 
+                        sqlError();
+                    }
+                } else {
+                    $insp_status = 'Fault';
+                    $allocate_plant = dbq("update plants_tbl set 
                                                     operator_id={$_SESSION['user']['user_id']},
                                                     status='check'
                                                     where plant_id={$_POST['submit_checklist']}");
-                        if (mysqli_affected_rows($db) != -1) {
-                            msg("Plant has been allocated to you.");
-                        } else {
-                            sqlError('', 'UpdatePlant:');
-                        }
-                    }
-                } else {
-                    $status = 'Good';
-                    $allocate_plant = dbq("update plants_tbl set 
-                                                operator_id={$_SESSION['user']['user_id']},
-                                                status='check'
-                                                where plant_id={$_POST['submit_checklist']}");
                     if (mysqli_affected_rows($db) != -1) {
                         msg("Plant has been allocated to you.");
                     } else {
                         sqlError('', 'UpdatePlant:');
                     }
                 }
+            } else {
+                $insp_status = 'Good';
+                $allocate_plant = dbq("update plants_tbl set 
+                                                operator_id={$_SESSION['user']['user_id']},
+                                                status='check'
+                                                where plant_id={$_POST['submit_checklist']}");
+                if (mysqli_affected_rows($db) != -1) {
+                    msg("Plant has been allocated to you.");
+                } else {
+                    sqlError('', 'UpdatePlant:');
+                }
             }
 
+            if (!is_error()) {
+                $save_checklist = dbq("insert into checklist_results set
+                                                start_datetime='" . date('Y-m-d H:i:s') . "',
+                                                user_id={$_SESSION['user']['user_id']},
+                                                plant_id={$_POST['submit_checklist']},
+                                                results='{$results}',
+                                                comments='" . htmlentities($_POST['comments'], ENT_QUOTES) . "'
+                                                status='{$insp_status}'
+                                                ");
+                if ($save_checklist) {
+                    if (isset($job_id)) {
+                        $list_id = mysqli_insert_id($db);
+                        $update_ = dbq("update jobcards set list_id={$list_id} where job_id={$job_id}");
+                        if ($update_) sqlError();
+                    }
+
+                    msg("Check list saved.");
+                    go('dashboard.php?page=plants');
+                } else {
+                    sqlError();
+                }
+            }
             go("dashboard.php?page=plants");
         }
         //}
