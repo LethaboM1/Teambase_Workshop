@@ -1553,7 +1553,7 @@ function update_plant_status($plant_id, $status, $query = '')
 		$query_ = (strlen($query)) ? "{$query}," : "";
 		$update_ = dbq("update plants_tbl set
 							{$query}
-							status='{$status}',
+							status='{$status}'
 							where plant_id={$plant_id}
 						");
 		if ($update_) {
