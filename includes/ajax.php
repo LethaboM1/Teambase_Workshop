@@ -584,6 +584,8 @@ switch ($_POST['cmd']) {
                         while ($row = dbf($get_checklists)) {
                             require "pages/manager/plants/list_checklists.php";
                         }
+                    } else {
+                        echo "<tr><td colspan='6'>Nothing found for '{$_POST['search']}'</td></tr>";
                     }
                 }
                 break;
@@ -665,6 +667,26 @@ switch ($_POST['cmd']) {
                     } else {
                         echo "<tr><td colspan='5'>Could not find '{$_POST['search']}'</td></tr>";
                     }
+                }
+                break;
+
+            case "tyre-report-list";
+                $get_tyre_report = dbq("select * from jobcard_tyre_reports where checked_by>0 
+                and 
+                (  job_id in (select job_id from jobcards where jobcard_number like '%{$_POST['search']}%') 
+                    || checked_by in (select user_id as checked_by from users_tbl where role='mechanic' and (name like '{$_POST['search']}%' or last_name like '{$_POST['search']}%'))
+                ) order by date_time DESC");
+
+                if ($get_tyre_report) {
+                    if (dbr($get_tyre_report) > 0) {
+                        while ($row = dbf($get_tyre_report)) {
+                            require "pages/manager/jobcards/list_job_tyre_reports_all.php";
+                        }
+                    } else {
+                        echo "<tr><td colspan='7'>Nothing to list: searched '{$_POST['search']}'</td></tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='7'>SQL error: " . dbe() . "</td></tr>";
                 }
                 break;
 

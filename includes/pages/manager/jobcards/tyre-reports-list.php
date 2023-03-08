@@ -25,15 +25,11 @@
 											url:'includes/ajax.php',
 											data: {
 												cmd:'search',
-												type: 'job-card-archive',
+												type: 'tyre-report-list',
 												search: $('#search').val()
 											},
 											success:function (result) {
-												$('#jobcard_list').html(result);
-
-												setTimeout(function() {
-													$.getScript('js/examples/examples.modals.js');
-												}, 300);
+												$('#tyre_report_list').html(result);
 											},
 											error: function (err) {}
 										});
@@ -59,7 +55,7 @@
 				<th></th>
 			</tr>
 		</thead>
-		<tbody id='jobcard_list'>
+		<tbody id='tyre_report_list'>
 			<?php
 			//connectDb("{$_SESSION['account']['account_key']}_db");
 			$lines = 15;
