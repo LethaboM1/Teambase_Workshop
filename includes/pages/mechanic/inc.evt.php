@@ -99,8 +99,8 @@
                                             <header class="card-header">
                                                 <h2 class="card-title">View Event</h2>
                                             </header>
-                                            <div class="card-body">' .
-                                inp('event_id', '', 'hidden', $event['event_id'])
+                                            <div class="card-body">'
+                                . inp('event_id', '', 'hidden', $event['event_id'])
                                 . '
                                                 <label>Are you sure you want to delete this event?</label><br>
                                                 <button class="btn btn-success" type="submit" value="Yes" name="delete_event">Yes</button>
