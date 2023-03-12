@@ -59,7 +59,7 @@ if (isset($_POST['complete_jobcard'])) {
                         require_once "./includes/forms/mail.manager.job_completed.php";
                         go('dashboard.php?page=open-job');
                     } else {
-                        if (update_plant_reading($plant_['plant_id'], 'ready')) {
+                        if (update_plant_reading($plant_['plant_id'], $_POST['reading'], 'ready')) {
                             msg("job card completed.");
                             $job_id = $_GET['id'];
                             $mechanic_id = $jobcard_['mechanic_id'];
