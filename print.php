@@ -78,7 +78,16 @@ switch ($_GET['type']) {
                               <td style='width: 100%;  font-weight: normal; font-size: 13px; text-align: left; padding: 10px;'>{$check_list['comments']}</td>
                             </tr>
                           </tbody>
-                        </table>";
+                        </table>
+                        <br>
+                        <br>
+                        <table style='width: 750px;'>
+                            <tfoot>
+                                <tr>
+                                  <td style='width: 100%; text-align: right; font-weight: bold; font-size: 11px;'>PL02 REV00 101001</td>
+                                </tr>
+                              </tfoot>
+                        </table>  ";
 
                     $file_name = "{$check_list['datetime']}-{$plant_['plant_number']}-{$operator_['name']} {$operator['last_name']}";
                     $file_name = clean_path_($file_name);
@@ -348,7 +357,16 @@ switch ($_GET['type']) {
 
                     $pdf .= "</tbody>
                     <tbody></tbody>
-                  </table>";
+                  </table>
+                  <br>
+                  <br>
+                  <table style='width: 750px;'>
+                      <tfoot>
+                          <tr>
+                            <td style='width: 100%; text-align: right; font-weight: bold; font-size: 11px;'>PL05 REV04 190524</td>
+                          </tr>
+                        </tfoot>
+                  </table>  ";
 
 
 
@@ -434,7 +452,16 @@ switch ($_GET['type']) {
                     $pdf .= "</tbody>
                     </table>
                     <h1 style=\"font-weight: bold; font-size: 20px; text-align: left;\">Terms and conditions</h1>
-                    <p style=\"font-weight: normal; font-size: 13px; text-align: left;\">I, <b>" . (strlen($mechanic_['name']) ? $mechanic_['name'] : "") . " " . (strlen($mechanic_['last_name']) ? $mechanic_['last_name'] : "") . " " . (strlen($mechanic_['employee_number']) ? $mechanic_['employee_number'] : "") . "</b>  , confirm and acknowledge that I have been involved with the HIRA and am aware of all hazards and risks associated with the task and undertake to follow the Safe Work Procedure, I aslo understand that my Safty is my own responsibility and that I must at all times report unsafe conditions.</p>";
+                    <p style=\"font-weight: normal; font-size: 13px; text-align: left;\">I, <b>" . (strlen($mechanic_['name']) ? $mechanic_['name'] : "") . " " . (strlen($mechanic_['last_name']) ? $mechanic_['last_name'] : "") . " " . (strlen($mechanic_['employee_number']) ? $mechanic_['employee_number'] : "") . "</b>  , confirm and acknowledge that I have been involved with the HIRA and am aware of all hazards and risks associated with the task and undertake to follow the Safe Work Procedure, I aslo understand that my Safty is my own responsibility and that I must at all times report unsafe conditions.</p>
+                    <br>
+                    <br>
+                    <table style='width: 750px;'>
+                        <tfoot>
+                            <tr>
+                            <td style='width: 100%; text-align: right; font-weight: bold; font-size: 11px;'>HS01 REV04 190522</td>
+                            </tr>
+                        </tfoot>
+                    </table>  ";
                     //echo $pdf;
                     printPDF($pdf, "{$jobcard_['jobcard_number']}-{$_GET['type']}-{$risk_assessment['id']}");
                 } else {
@@ -513,6 +540,15 @@ switch ($_GET['type']) {
                                     <img src='img/4.jpg' width='130'>
                                     <img src='img/5.jpg' width='130'>
                                 </div>
+                                <br>
+                                <br>
+                                <table style='width: 750px;'>
+                                    <tfoot>
+                                        <tr>
+                                          <td style='width: 100%; text-align: right; font-weight: bold; font-size: 11px;'>PL07 REV02 190522</td>
+                                        </tr>
+                                      </tfoot>
+                                </table>     
                               ";
                         //echo $pdf;
                         printPDF($pdf, "{$jobcard_['jobcard_number']}-{$_GET['type']}-{$tyre_report['id']}");
