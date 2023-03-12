@@ -411,13 +411,18 @@ function inp($name, $label, $type = 'text', $value = '', $class = '', $required 
 			$form .=  "' name='" . $name . "' id ='" . $name . "' autocomplete='off'>";
 			if (isset($select_list) && is_array($select_list)) {
 				foreach ($select_list as $select) {
-					if ($select['style'] == 'bold') {
-						$style = "style='font-weight: {$select['style']};'";
-					} else if ($select['style'] == 'italic') {
-						$style = "style='font-style: {$select['style']};'";
+					if (isset($select['style'])) {
+						if ($select['style'] == 'bold') {
+							$style = "style='font-weight: {$select['style']};'";
+						} else if ($select['style'] == 'italic') {
+							$style = "style='font-style: {$select['style']};'";
+						} else {
+							$style = "";
+						}
 					} else {
 						$style = "";
 					}
+
 					if ($select['value'] == $value) {
 						$form .= "<option {$style} selected='selected' value='" . $select['value'] . "'>" . $select['name'] . "</option>";
 					} else {
