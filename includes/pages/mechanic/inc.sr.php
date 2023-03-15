@@ -95,6 +95,7 @@
 																<table class="table table-hover">
 																	<thead>
 																		<th>Part No</th>
+																		<th style="width: 45px;">&nbsp;</th>
 																		<th>Description</th>
 																		<th>Qty</th>
 																		<th>Comment</th>
@@ -106,7 +107,8 @@
 								if (dbr($get_parts) > 0) {
 									while ($part = dbf($get_parts)) {
 										$modal .= "<tr>
-																<td>{$part['part_number']}</td>
+																<td>" . inp('part_no', '', 'text', $part['part_number'], '', 0, '', "style='width:100px;' onchange='update_part(`{$part['id']}`,$(this).val())'") . "</td>
+																<td><div id='{$part['id']}_update'></div></td>
 																<td>{$part['part_description']}</td>
 																<td>{$part['qty']}</td>
 																<td>{$part['comment']}</td>
@@ -143,6 +145,29 @@
 
 				?> </tbody>
 		</table>
+		<script>
+			function update_part($part_id, $part_number) {
+				$.ajax({
+					method: 'post',
+					url: 'includes/ajax.php',
+					data: {
+						cmd: 'set_part_number',
+						id: $part_id,
+						value: $part_number
+					},
+					success: function(result) {
+						let data = JSON.parse(result);
+
+						if (data.status == 'ok') {
+							$("#" + $part_id + "_update").html(`<i class="fa fa-check text-success"></i>`);
+						} else {
+							$("#" + $part_id + "_update").html(`<i class="fa fa-times text-danger"></i>`);
+						}
+					},
+					error: function() {}
+				});
+			}
+		</script>
 		<hr>
 	</div>
 </section>

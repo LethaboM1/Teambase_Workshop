@@ -26,6 +26,23 @@ switch ($_GET['cmd']) {
 }
 
 switch ($_POST['cmd']) {
+    case 'set_part_number':
+        if (isset($_POST['id']) && isset($_POST['value'])) {
+            $update_ = dbq("update jobcard_requisition_parts set
+                                    part_number='{$_POST['value']}'
+                                    where id={$_POST['id']}");
+            if ($update_) {
+                $json_['status'] = 'ok';
+            } else {
+                $json_['status'] = 'error';
+                $json_['message'] = 'SQl error: ' . dbe();
+            }
+        }
+
+        echo json_encode($json_);
+
+        break;
+
     case "set_part_supplier":
         if (isset($_POST['id'])) {
             $update_ = dbq("update jobcard_requisition_parts set
