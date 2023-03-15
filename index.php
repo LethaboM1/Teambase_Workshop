@@ -1,17 +1,13 @@
 <?php
-session_name("TeamBase-Desktop-App");
+require_once "includes/creds.php";
+session_name($session_name);
 session_start();
 
-//echo "<pre>" . print_r($_SESSION, 1) . "</pre>";
-require_once "includes/creds.php";
 if (strlen($redirect) > 0) header("location: {$redirect}");
+
 require_once "includes/functions.php";
 
-if (isset($_SESSION['user'])) {
-	go("dashboard.php");
-}
-
-
+if (isset($_SESSION['user'])) go("dashboard.php");
 
 include 'includes/csrf.php';
 
