@@ -57,7 +57,7 @@
 
 <body>
   <?php
-  if (isset($_SESSION['user'])) {
+  if (null !== $_SESSION['user']) {
   ?>
     <section class="body">
       <!-- start: header -->

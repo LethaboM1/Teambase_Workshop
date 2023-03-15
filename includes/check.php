@@ -6,9 +6,7 @@ session_start();
 //echo "<pre>" . print_r($_SESSION, 1) . "</pre>";
 
 
-if (!isset($_SESSION['user'])) {
-	header("location: index.php");
-}
+if (!isset($_SESSION['user'])) header("location: index.php");
 
 require_once "functions.php";
 
