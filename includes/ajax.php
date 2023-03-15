@@ -593,18 +593,28 @@ switch ($_POST['cmd']) {
             case "open-jobs":
                 if ($_SESSION['user']['role'] == 'mechanic') {
                     $query_ = " and mechanic_id={$_SESSION['user']['user_id']}";
+                } else {
+                    $query_ = " || mechanic_id in (select user_id as mechanic_id from users_tbl where role='mechanic' and (name like '{$_POST['search']}%' or last_name like '{$_POST['search']}%'))";
                 }
 
-                $get_users = dbq("select * from jobcards where (jobcard_number like '%{$_POST['search']}%' || fleet_number like '%{$_POST['search']}%') and (status='busy' || status='open'){$query_}");
-                if ($get_users) {
-                    if (dbr($get_users) > 0) {
-                        while ($row = dbf($get_users)) {
-                            $items_list[] = $row;
-                        }
-                    }
-                }
+                // $get_users = dbq("select * from jobcards where (jobcard_number like '%{$_POST['search']}%' || fleet_number like '%{$_POST['search']}%') and (status='busy' || status='open'){$query_}");
+                // if ($get_users) {
+                //     if (dbr($get_users) > 0) {
+                //         while ($row = dbf($get_users)) {
+                //             $items_list[] = $row;
+                //         }
+                //     }
+                // }
 
-                $get_users = dbq("select * from jobcards where (status='busy' || status='open') and logged_by in (select user_id as logged_by from users_tbl where (name like '#" . esc($_POST['search']) . "#' || name like '#" . esc($_POST['search']) . "#')");
+                // $get_users = dbq("select * from jobcards where (status='busy' || status='open') and logged_by in (select user_id as logged_by from users_tbl where (name like '#" . esc($_POST['search']) . "#' || name like '#" . esc($_POST['search']) . "#')");
+
+
+                $get_users = dbq("select * from jobcards where (
+                                    jobcard_number like '%{$_POST['search']}%' 
+                                    || plant_id in (select plant_id from plants_tbl where plant_number like '%{$_POST['search']}%')                                     
+                                    {$query_}
+                                    )");
+
                 if ($get_users) {
                     if (dbr($get_users) > 0) {
                         while ($row = dbf($get_users)) {
