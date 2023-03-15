@@ -1,8 +1,8 @@
 <?php
 
 
-$jobcard_ = dbf(dbq("select * from jobcards where job_id={$_GET['id']}"));
-$plant_ = dbf(dbq("select * from plants_tbl where plant_id={$jobcard_['plant_id']}"));
+$jobcard_ = get_jobcard($_GET['id']); // dbf(dbq("select * from jobcards where job_id={$_GET['id']}"));
+$plant_ = get_plant($jobcard_['plant_id']); // dbf(dbq("select * from plants_tbl where plant_id={$jobcard_['plant_id']}"));
 
 if (isset($_POST['cancel'])) {
     unset($_SESSION['request_parts']);

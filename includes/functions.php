@@ -1437,9 +1437,9 @@ function saveRequisition($request_id)
 {
 	$request_ = dbf(dbq("select * from jobcard_requisitions where request_id={$request_id}"));
 	$get_parts = dbq("select * from jobcard_requisition_parts where request_id={$request_id}");
-	$jobcard_ = dbf(dbq("select * from jobcards where job_id={$request_['job_id']}"));
-	$plant_ = dbf(dbq("select * from plants_tbl where plant_id={$jobcard_['plant_id']}"));
-	$mechanic_ = dbf(dbq("select * from users_tbl where user_id={$jobcard_['mechanic_id']}"));
+	$jobcard_ = get_jobcard($request_['job_id']); // dbf(dbq("select * from jobcards where job_id={$request_['job_id']}"));
+	$plant_ = get_plant($jobcard_['plant_id']); // dbf(dbq("select * from plants_tbl where plant_id={$jobcard_['plant_id']}"));
+	$mechanic_ = get_user($jobcard_['mechanic_id']); // dbf(dbq("select * from users_tbl where user_id={$jobcard_['mechanic_id']}"));
 	switch ($request_['status']) {
 		case 'canceled':
 			$user_ = dbf(dbq("select name, last_name from users_tbl where user_id={$request_['canceled_by']}"));
