@@ -83,7 +83,7 @@ switch ($_GET['page']) {
         break;
 
     case 'add-job-requisition':
-        if (!isset($_GET['id']) || $_GET == '') go('dashboard.php');
+        if (!isset($_GET['id']) || $_GET['id'] == '') go('dashboard.php');
         $page_title = 'Add Requisition Job Card';
         $page_name = 'mechanic/add-job-requisition';
         require "./includes/forms/mechanic/jobcards/add-job-requisition.php";
