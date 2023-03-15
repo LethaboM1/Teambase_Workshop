@@ -6,7 +6,15 @@ session_start();
 //echo "<pre>" . print_r($_SESSION, 1) . "</pre>";
 
 
-if (!isset($_SESSION['user'])) header("location: index.php");
+if ($design) {
+    $_SESSIOn['user'] = [
+        'role' => 'production_manager',
+        'department' => 'prodcution'
+    ];
+} else {
+    if (!isset($_SESSION['user'])) header("location: index.php");
+}
+
 
 require_once "functions.php";
 
