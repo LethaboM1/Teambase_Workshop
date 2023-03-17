@@ -13,7 +13,6 @@ switch ($_GET['page']) {
 
     case 'job-card-view':
         $page_title = 'View Job Card';
-        // $page_name = 'manager/jobcards/job-card-view';
         $page_name = 'mechanic/job-card-view';
         require "./includes/forms/manager/jobcards/job-card-view.php";
         break;

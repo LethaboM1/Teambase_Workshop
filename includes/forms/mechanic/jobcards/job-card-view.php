@@ -133,6 +133,31 @@ if (isset($_POST['delete_request'])) {
     }
 }
 
+if (isset($_POST['add_insp'])) {
+    if (
+        strlen($_POST['component']) > 0
+        && strlen($_POST['report_comment']) > 0
+        && strlen($_POST['severity']) > 0
+        && is_numeric($_POST['hours'])
+    ) {
+        $add_report = dbq("insert into jobcard_reports set
+                                job_id={$_GET['id']},
+                                component='{$_POST['component']}',
+                                severity='{$_POST['severity']}',
+                                hours='{$_POST['hours']}',
+                                comment='{$_POST['report_comment']}'
+                                ");
+        if ($add_report) {
+            msg("Fault report added.");
+            go("dashboard.php?page=job-card-view&id={$_GET['id']}");
+        } else {
+            sqlError();
+        }
+    } else {
+        error("Fill in all required fields. Must be valid hours.");
+    }
+}
+
 if (isset($_POST['add_event'])) {
     if (strlen($_POST['comment']) > 0) {
         if (($_POST['event'] != '0') || ($jobcard_['jobcard_type'] == 'sundry')) {

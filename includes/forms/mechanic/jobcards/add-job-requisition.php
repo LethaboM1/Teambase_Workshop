@@ -28,6 +28,7 @@ if (isset($_POST['request_parts'])) {
                 }
                 $add_part = dbq("insert into jobcard_requisition_parts set
                                         request_id={$request_id},
+                                        component='" . $part['component'] . "',
                                         part_number='" . htmlentities($part['part_no'], ENT_QUOTES) . "',
                                         part_description='" . htmlentities($part['description'], ENT_QUOTES) . "',
                                         qty={$part['qty']},

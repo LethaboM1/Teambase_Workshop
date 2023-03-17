@@ -26,6 +26,7 @@ switch ($_GET['cmd']) {
 }
 
 switch ($_POST['cmd']) {
+
     case 'set_part_number':
         if (isset($_POST['id']) && isset($_POST['value'])) {
             $update_ = dbq("update jobcard_requisition_parts set
@@ -131,6 +132,7 @@ switch ($_POST['cmd']) {
                         $json_['html'] = '';
                         while ($part = dbf($get_parts)) {
                             $json_['html'] .= "<tr>
+                                <td>{$part['component']}</td>
                                 <td>{$part['part_number']}</td>
                                 <td>{$part['part_description']}</td>
                                 <td>";
@@ -353,19 +355,22 @@ switch ($_POST['cmd']) {
                 && isset($_POST['job_id']) > 0
             ) {
                 $update = dbq("update jobcard_reports set
-                                    hours={$_POST['hours']}
+                                    hours={$_POST['hours']}"
+                    . ($_SESSION['user']['role'] == 'manager' && $_SESSION['user']['role'] == 'system' ? ", reviewed=1" : "") . "
                                     where id={$_POST['id']} and job_id={$_POST['job_id']}");
                 if ($update) {
-                    $hours = dbf(dbq("select sum(hours) as hours from jobcard_reports where job_id={$_POST['job_id']}"));
+                    $hours = dbf(dbq("select sum(hours) as hours from jobcard_reports where job_id={$_POST['job_id']} and reviewed=1"));
                     if (!is_numeric($hours['hours'])) {
                         $hours['hours'] = 0;
                     }
 
-                    $update_ = dbq("update jobcards set allocated_hours={$hours['hours']} where job_id={$_POST['job_id']}");
-                    if (!$update_) error_log("SQL Error: " . dbe());
+                    if ($_SESSION['user']['role'] == 'manager' || $_SESSION['user']['role'] == 'system') {
+                        $update_ = dbq("update jobcards set allocated_hours={$hours['hours']} where job_id={$_POST['job_id']}");
+                        if (!$update_) error_log("SQL Error: " . dbe());
+                        $json_['hours'] = $hours['hours'];
+                    }
 
                     $json_['status'] = 'ok';
-                    $json_['hours'] = $hours['hours'];
                 } else {
                     $json_['status'] = 'error';
                     $json_['message'] = 'invalid id, request id.';
@@ -457,6 +462,12 @@ switch ($_POST['cmd']) {
         //     return json_encode($json_);
         // }
 
+        if (!isset($part['component'])) {
+            $json_['status'] = 'error';
+            $json_['message'] = 'No component';
+            return json_encode($json_);
+        }
+
         if (!isset($part['description'])) {
             $json_['status'] = 'error';
             $json_['message'] = 'No description';
@@ -476,6 +487,7 @@ switch ($_POST['cmd']) {
                 $html = '';
                 foreach ($_SESSION['request_parts'] as $part) {
                     $html .= "<tr>
+                                <td>{$part['component']}</td>
                                 <td>{$part['part_no']}</td>
                                 <td>{$part['description']}</td>
                                 <td>{$part['qty']}</td>
@@ -499,6 +511,7 @@ switch ($_POST['cmd']) {
         $html = '';
         foreach ($_SESSION['request_parts'] as $part) {
             $html .= "<tr>
+                        <td>{$part['component']}</td>
                         <td>{$part['part_no']}</td>
                         <td>{$part['description']}</td>
                         <td>{$part['qty']}</td>

@@ -96,6 +96,44 @@ if (isset($_POST['allocate_hours'])) {
     }
 }
 
+if (isset($_POST['add_insp'])) {
+    if (
+        strlen($_POST['component']) > 0
+        && strlen($_POST['report_comment']) > 0
+        && strlen($_POST['severity']) > 0
+        && is_numeric($_POST['hours'])
+    ) {
+        $add_report = dbq("insert into jobcard_reports set
+                                job_id={$_GET['id']},
+                                component='{$_POST['component']}',
+                                severity='{$_POST['severity']}',
+                                hours='{$_POST['hours']}',
+                                comment='{$_POST['report_comment']}',
+                                reviewed=1
+                                ");
+        if ($add_report) {
+            $hours = dbf(dbq("select sum(hours) as hours from jobcard_reports where job_id={$_GET['id']} and reviewed=1"));
+            if (!is_numeric($hours['hours'])) {
+                $hours['hours'] = 0;
+            }
+
+            if ($_SESSION['user']['role'] == 'manager' || $_SESSION['user']['role'] == 'system') {
+                $update_ = dbq("update jobcards set allocated_hours={$hours['hours']} where job_id={$_GET['id']}");
+                if (!$update_) error_log("SQL Error: " . dbe());
+            }
+
+            $jobcard_ = get_jobcard($_GET['id']);
+
+            msg("Fault report added.");
+        } else {
+            sqlError();
+        }
+    } else {
+        error("Fill in all required fields. Must be valid hours.");
+    }
+}
+
+
 if (isset($_POST['allocate_clerk'])) {
     if ($_POST['clerk_id'] > 0) {
         $update_jobcard = dbq("update jobcards set clerk_id={$_POST['clerk_id']} where job_id={$_GET['id']}");

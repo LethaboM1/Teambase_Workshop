@@ -54,7 +54,7 @@
     </form>
 </div>
 <!-- Modal view End -->
-<section id="evt_section" class="card">
+<section id="evt_section" class="card mt-3">
     <header class="card-header">
         <h2 class="card-title">Events</h2>
     </header>

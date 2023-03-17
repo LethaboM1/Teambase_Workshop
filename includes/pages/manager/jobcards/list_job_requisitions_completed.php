@@ -53,6 +53,7 @@ if ($job_request['buyer_id'] > 0) $buyer_ = dbf(dbq("select * from users_tbl whe
 									</div>
 									<table class="table table-hover">
 										<thead>
+											<th>Component</th>
 											<th>Part No.</th>
 											<th>Description</th>
 											<th style='width:85px;'>Qty</th>
@@ -69,6 +70,7 @@ if ($job_request['buyer_id'] > 0) $buyer_ = dbf(dbq("select * from users_tbl whe
 													while ($part = dbf($get_parts)) {
 											?>
 														<tr>
+															<td><?= $part['component'] ?></td>
 															<td><?= $part['part_number'] ?></td>
 															<td><?= $part['part_description'] ?></td>
 															<td><?= $part['qty']; ?></td>

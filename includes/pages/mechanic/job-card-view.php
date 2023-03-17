@@ -140,38 +140,8 @@
 
 
 
-	<?php if ($_SESSION['user']['role'] == 'manager' || $_SESSION['user']['role'] == 'system' || $_SESSION['user']['role'] == 'clerk') { ?>
-		<div class="col-lg-6 mb-3">
-			<form method="post">
-				<section class="card">
-					<header class="card-header">
-						<div class="row">
-							<div class="col-md-9">
-								<h2 class="card-title">Allocated Hours</h2>
-								<p class="card-subtitle">Allocated Hours</p>
-							</div>
-						</div>
-					</header>
-					<div class="card-body">
-						<div class="row">
-							<div class="col-md-12 mb-4">
-								<?= inp('allocated_hours', 'Allocated Hours', 'number', $jobcard_['allocated_hours'], '', 0, '', ' step="0.5"') ?>
-							</div>
-							<div class='col-md-12'>
-								<?= inp('allocate_hours', '&nbsp', 'inline-submit', 'Allocate', 'btn-primary') ?>
-							</div>
-						</div>
-					</div>
-					<footer class="card-footer text-end">
 
-					</footer>
-				</section>
-			</form>
-		</div>
-	<?php } else { ?>
-		<h3>Allocated Hours: <?= $jobcard_['allocated_hours'] ?></h3>
-	<?php } ?>
-
+	<h3>Allocated Hours: <span id="jobcard_allocated_hours"><?= $jobcard_['allocated_hours'] ?></span></h3>
 
 	<?php if ($jobcard_['type'] != 'service') { ?>
 		<!-- Modal Close Jobcard -->
@@ -220,7 +190,7 @@
 
 	<div class="col-lg-12 mb-3">
 		<?php
-
+		require_once "inc.reps.php";
 		require_once "inc.evt.php";
 
 		require_once "inc.sr.php";

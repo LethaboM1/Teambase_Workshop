@@ -1499,7 +1499,7 @@ function saveRequisition($request_id)
 					<td style='border: 1px solid black; border-bottom: none;'>{$part['qty']}</td>
 					<td style='border: 1px solid black; border-bottom: none;'>{$part['part_number']}</td>
 					<td style='border: 1px solid black; border-bottom: none;'>{$part['part_description']}</td>
-					<td style='border: 1px solid black; border-bottom: none;'></td>
+					<td style='border: 1px solid black; border-bottom: none;'>{$part['component']}</td>
 				</tr>";
 		$items--;
 	}

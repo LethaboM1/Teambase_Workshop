@@ -112,6 +112,7 @@ $request_status_select = [
 											</div>
 											<table class="table table-hover">
 												<thead>
+													<th>Component</th>
 													<th>Part No.</th>
 													<th>Description</th>
 													<th style='width:85px;'>Qty</th>
@@ -277,6 +278,7 @@ $request_status_select = [
 															while ($part = dbf($get_parts)) {
 													?>
 																<tr>
+																	<td><?= $part['component'] ?></td>
 																	<td><?= $part['part_number'] ?></td>
 																	<td><?= $part['part_description'] ?></td>
 																	<td>

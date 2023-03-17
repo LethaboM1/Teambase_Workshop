@@ -112,9 +112,7 @@
 							</div>
 							<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 								<label class="col-form-label" for="formGroupExampleInput">Site</label>
-								<input type="text" name="site" placeholder="site" class="form-control" value="<?= $_POST['site'] ?>" </div>
-
-
+								<input type="text" name="site" placeholder="site" class="form-control" value="<?= $_POST['site'] ?>" />
 							</div>
 
 
