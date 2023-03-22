@@ -514,7 +514,7 @@ switch ($_GET['type']) {
                                             </tr>
                                         </thead>
                                         <tbody>";
-                        if (count($tyres) > 0) {
+                        if (is_array($tyres) && count($tyres) > 0) {
                             foreach ($tyres as $tyre) {
                                 $pdf .= "<tr>
                                             <td style='border:1px solid black; padding:3px;'>#{$tyre['position']}</td>

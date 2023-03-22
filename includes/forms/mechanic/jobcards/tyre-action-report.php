@@ -31,7 +31,7 @@ if (isset($_POST['add_tyre_report'])) {
         }
     }
 
-    if (!isset($error)) {
+    if (!isset($error) && is_array($tyres) &&  count($tyres) > 0) {
         if (is_array($tyres) && count($tyres) > 0) {
             $add_report = dbq("insert into jobcard_tyre_reports set
                                     date_time='" . date('Y-m-d H:i') . "',
@@ -57,7 +57,10 @@ if (isset($_POST['add_tyre_report'])) {
                                             valve_ext={$valve_ext},
                                             tyre_type='{$_POST["{$pos}_tyre_type"]}'
                                             ");
-                    if (!$add_tyre) $error[] = "Error adding tyre {$pos} : " . dbe();
+                    if (!$add_tyre) {
+                        error("Error adding tyre {$pos} : " . dbe());
+                        error_log("Error adding tyre {$pos} : " . dbe());
+                    }
                 }
 
                 go("dashboard.php?page=job-card-view&id={$_GET['id']}");
@@ -67,5 +70,7 @@ if (isset($_POST['add_tyre_report'])) {
         } else {
             $error[] = "You must fill in details.";
         }
+    } else {
+        error("No tyres loaded.");
     }
 }
