@@ -1,5 +1,5 @@
 <!-- Modal add event -->
-<div id="modalAddEvent" class="modal-block modal-block-lg mfp-hide">
+<div id="modalAddReport" class="modal-block modal-block-lg mfp-hide">
     <form method="post">
         <section class="card">
             <header class="card-header">
@@ -58,7 +58,7 @@
 
     <div class="card-body">
         <div class="header-right">
-            <a class="mb-1 mt-1 mr-1 modal-basic" href="#modalAddEvent"><button class="btn btn-primary">Add Report</button></a>
+            <a class="mb-1 mt-1 mr-1 modal-basic" href="#modalAddReport"><button class="btn btn-primary">Add Report</button></a>
         </div>
         <table width="1047" class="table table-responsive-md mb-0">
             <thead>
