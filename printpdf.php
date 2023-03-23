@@ -11,7 +11,7 @@ include "includes/inc.header.php";
             <h2>HTML to PDF</h2>
             <form target="_blank" action="printpdf_.php" method="post">
                 <?= inp('html_code', 'HTML', 'textarea', $_POST['html_code'], '', 0, '', 'style="font-size: 12px;"') ?>
-                <?= inp('orientation', 'Orientaion', 'select', '', '', 0, [['name' => 'Portraite', 'value' => 'P'], ['name' => 'Landscape', 'value' => 'L']]) ?>
+                <?= inp('orientation', 'Orientaion', 'select', '', '', 0, [['name' => 'P', 'value' => 'P'], ['name' => 'L', 'value' => 'L']]) ?>
                 <?= inp('print', '', 'submit', 'Print', 'btn-primary') ?>
             </form>
         </div>
