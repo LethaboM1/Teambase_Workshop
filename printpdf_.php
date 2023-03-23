@@ -5,5 +5,5 @@ require_once "includes/functions.php";
 
 if (isset($_POST['html_code'])) {
     $html = $_POST['html_code'];
-    printPDF($html);
+    printPDF($html, 'temp', false, false, $_POST['orientation']);
 }
