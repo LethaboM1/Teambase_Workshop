@@ -4,6 +4,7 @@ $get_open_requisitions = dbq("select request_id from jobcard_requisitions where 
 $get_tyre_reports = dbq("select id from jobcard_tyre_reports where checked_by=0");
 
 $get_new = dbq("select job_id from jobcards where status='logged'");
+$get_new_defect = dbq("select job_id from jobcards where status='defect-logged'");
 $get_new_jobnumber = dbq("select job_id from jobcards where status='allocated'");
 $get_open = dbq("select job_id from jobcards where status='open'");
 $get_completed = dbq("select job_id from jobcards where status='completed'");
@@ -64,10 +65,11 @@ $get_completed = dbq("select job_id from jobcards where status='completed'");
 				<li class="nav-parent">
 					<a class="nav-link" href="#">
 						<i class="bx bx-spreadsheet" aria-hidden="true"></i>
-						<span>Job Cards&nbsp;<span class='badge badge-danger'><?= dbr($get_new) + dbr($get_new_jobnumber) ?></span></span>
+						<span>Job Cards&nbsp;<span class='badge badge-danger'><?= dbr($get_new) + dbr($get_new_jobnumber) + dbr($get_new_defect) ?></span></span>
 					</a>
 					<ul class="nav nav-children">
 						<li><a class="nav-link" href="dashboard.php?page=add-job">Create</a></li>
+						<li><a class="nav-link" href="dashboard.php?page=new-defects">New Defect Report&nbsp;<span class='badge badge-danger float-end'><?= dbr($get_new_defect) ?></span></a></li>
 						<li><a class="nav-link" href="dashboard.php?page=new-job">New&nbsp;<span class='badge badge-danger float-end'><?= dbr($get_new) ?></span></a></li>
 						<li><a class="nav-link" href="dashboard.php?page=new-job-allocate">New - Require Job Number&nbsp;<span class='badge badge-danger float-end'><?= dbr($get_new_jobnumber) ?></span></a></li>
 						<li><a class="nav-link" href="dashboard.php?page=open-job">Open&nbsp;<span class='badge badge-danger float-end'><?= dbr($get_open) ?></span></a></li>
@@ -82,6 +84,8 @@ $get_completed = dbq("select job_id from jobcards where status='completed'");
 					</a>
 					<ul class="nav nav-children">
 						<li><a class="nav-link" target="_blank" href="print.php?type=open-requisitions">Open Requisitions</a></li>
+						<li><a class="nav-link" href="dashboard.php?page=rep-jobcard-events">Job Card Events</a></li>
+						<li><a class="nav-link" href="dashboard.php?page=rep-operator-log">Plant Operator Logs</a></li>
 					</ul>
 				</li>
 			</ul>

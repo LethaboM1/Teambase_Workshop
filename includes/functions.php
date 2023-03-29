@@ -1097,9 +1097,16 @@ function get_hours($from_datetime, $to_datetime)
 	return abs($timestamp2 - $timestamp1) / (60 * 60);
 }
 
-function get_operator_log($plant_id, $user_id)
+function get_operator_log($plant_id = '', $user_id = '', $log_id = '')
 {
-	$get_operator_log = dbq("select * from operator_log where plant_id={$plant_id} and operator_id={$user_id} and status!='E'");
+	if ($plant_id == '' && $user_id = '' && $log_id > 0) {
+		$get_operator_log = dbq("select * from operator_log where log_id={$log_id}");
+	} else if ($log_id == '' && $plant_id > 0 && $user_id > 0) {
+		$get_operator_log = dbq("select * from operator_log where plant_id={$plant_id} and operator_id={$user_id} and status!='E'");
+	} else {
+		return false;
+	}
+
 	if ($get_operator_log) {
 		if (dbr($get_operator_log) > 0) {
 			$operator_log = dbf($get_operator_log);
@@ -1108,6 +1115,21 @@ function get_operator_log($plant_id, $user_id)
 			return false;
 		}
 	} else {
+		return false;
+	}
+}
+
+function get_record($table, $column, $id, $extra = '')
+{
+	$get_record = dbq("select * from {$table} where {$column}='{$id}'" . (strlen($extra) > 0 ? " and {$extra}" : ""));
+	if ($get_record) {
+		if (dbr($get_record) > 0) {
+			return dbf($get_record);
+		} else {
+			return false;
+		}
+	} else {
+		error_log('get_record: error: ' . dbe());
 		return false;
 	}
 }

@@ -1,5 +1,6 @@
 <?php
 require_once "includes/check.php";
+
 if ($_SESSION['user']['role'] != 'manager' && $_SESSION['user']['role'] != 'system' && $_SESSION['user']['role'] != 'clerk') {
     go('index.php');
 }
@@ -8,6 +9,12 @@ switch ($_GET['page']) {
     case 'plant-checklists':
         $page_title = 'Plant Check Lists';
         $page_name = 'manager/plants/plant-checklists';
+
+        break;
+
+    case 'operator-logs':
+        $page_title = 'Operator Logs';
+        $page_name = 'manager/operator_logs/operator-logs';
 
         break;
 
@@ -133,6 +140,12 @@ switch ($_GET['page']) {
         require "./includes/forms/manager/jobcards/new-job-cards-allocated.php";
         break;
 
+    case 'new-defects':
+        $page_title = 'New Defect reports';
+        $page_name = 'manager/jobcards/new-defects';
+        require "./includes/forms/manager/jobcards/new-defects.php";
+        break;
+
     case 'open-job':
         $page_title = 'Open Job Cards';
         $page_name = 'manager/jobcards/open-job-cards';
@@ -178,6 +191,18 @@ switch ($_GET['page']) {
         $page_name = 'manager/jobcards/tyre-reports-list';
         //require "./includes/forms/manager/jobcards/tyre-reports-list.php";
         break;
+
+    case 'rep-operator-log':
+        $page_title  = "Plant Operator Log Report";
+        $page_name = 'manager/reports/rep-operator-log';
+        break;
+
+    case 'rep-jobcard-events':
+        $page_title  = "Job Card Events Report";
+        $page_name = 'manager/reports/rep-jobcard-events';
+
+        break;
+
 
     default:
         $page_title = 'Dashboard Overview';

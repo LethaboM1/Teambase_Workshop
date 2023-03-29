@@ -17,6 +17,12 @@ switch ($_GET['page']) {
         require "./includes/forms/mechanic/jobcards/add-job-card.php";
         break;
 
+    case 'add-defect-report':
+        $page_title = 'Submit Defect Report';
+        $page_name = 'mechanic/add-defect-report';
+        require "./includes/forms/mechanic/jobcards/add-defect-report.php";
+        break;
+
 
     case 'plant-inspection':
         $page_title = 'Request Mechanic';
@@ -28,6 +34,13 @@ switch ($_GET['page']) {
     case 'open-job':
         $page_title = 'Open Job Cards';
         $page_name = 'mechanic/open-job-cards';
+        break;
+
+    case 'new-defects':
+        $page_title = 'Defect Reports';
+        $page_name = 'mechanic/new-defects';
+        require "./includes/forms/mechanic/jobcards/new-defects.php";
+
         break;
 
     case 'requested-job':

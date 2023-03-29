@@ -14,10 +14,11 @@
 						<span>Job Cards</span>
 					</a>
 					<ul class="nav nav-children">
-						<li><a class="nav-link" href="dashboard.php?page=add-job">Request a New Job Card</a></li>
+						<li><a class="nav-link" href="dashboard.php?page=add-job">Request Job Card</a></li>
 						<li><a class="nav-link" href="dashboard.php?page=open-job">Open Job Cards</a></li>
 						<li><a class="nav-link" href="dashboard.php?page=requested-job">Requested Job Cards</a></li>
-						<!-- <li><a class="nav-link" href="dashboard.php?page=plant-inspection">Plant Inspection / Job Instruction Report</a></li> -->
+						<li><a class="nav-link" href="dashboard.php?page=add-defect-report">Submit Defect Report</a></li>
+						<li><a class="nav-link" href="dashboard.php?page=new-defects">List New Defect Reports</a></li>
 					</ul>
 				</li>
 			</ul>

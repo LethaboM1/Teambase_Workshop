@@ -572,6 +572,167 @@ switch ($_GET['type']) {
         }
         break;
 
+    case 'operator-log':
+        if (
+            $_GET['id'] > 0
+            && strlen($_GET['start']) > 0
+            && strlen($_GET['end']) > 0
+        ) {
+            $plant_ = get_plant($_GET['id']);
+
+            $start_date = date_create($_GET['start']);
+            $end_date = date_create($_GET['end']);
+
+            if (date_format($start_date, 'Y-m-d') <= date_format($end_date, 'Y-m-d')) {
+                $get_logs = dbq("select * from operator_log where plant_id='{$_GET['id']}' and start_datetime > '" . date_format($start_date, 'Y-m-d 00:00:00') . "' and start_datetime <= '" . date_format($end_date, 'Y-m-d 23:59:59') . "'");
+                if (!$get_logs) error_log("sql error: " . dbe());
+
+                $pdf = "<table style='width: 1090px; table-layout: fixed;'>
+                        <thead>
+                            <tr>
+                            <th style='width: 100%; font-weight: bold; font-size: 25px; color: black; text-align: center; border: 1px; padding: 5px;'>Drivers / Operators Log Sheet</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                            <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br>
+                    <br>
+                    <table style='width: 1090px; table-layout: fixed;' cellspacing='-1'>
+                        
+                            <tr>
+                                <td style='width: 15%; font-weight: bold; font-size: 11px; color: black; text-align: right; border: 1px; padding: 5px;'>Plant:</td>
+                                <td style='width: 35%; font-size: 11px; color: black; text-align: left; border: 1px; padding: 5px;'>{$plant_['plant_number']} - {$plant_['make']} {$plant_['model']}</td>
+                                <td style='width: 15%; font-weight: bold; font-size: 11px; color: black; text-align: right; border: 1px; padding: 5px;'>Company No:</td>
+                                <td style='width: 35%; font-size: 11px; color: black; text-align: left; border: 1px; padding: 5px;'>{$operator_['company_number']}</td>
+                            </tr>";
+                /* 
+                    
+                            <tr>
+                                <td style='width: 15%; font-weight: bold; font-size: 11px; color: black; text-align: right; border: 1px; padding: 5px;'>Plant No:</td>
+                                <td style='width: 35%; font-size: 11px; color: black; text-align: left; border: 1px; padding: 5px;'>{$plant_['plant_number']}</td>
+                                <td style='width: 15%; font-weight: bold; font-size: 11px; color: black; text-align: right; border: 1px; padding: 5px;'>&nbsp;</td>
+                                <td style='width: 35%; font-size: 11px; color: black; text-align: left; border: 1px; padding: 5px;'>&nbsp;</td>
+                            </tr>
+                    */
+                $pdf .= "</table>
+                    <table style='width: 1090px; table-layout: fixed;' cellspacing='-1'>
+                        <tbody>
+                            <tr>
+                                <td rowspan='2' style='width: 6%; font-size: 11px; color: black; text-align: center; border: 1px; padding: 5px;'>Date</td>
+                                <td rowspan='2' style='width: 5%; font-size: 11px; color: black; text-align: center; border: 1px; padding: 5px;'>Day</td>
+                                <td rowspan='2' style='width: 10%; font-size: 11px; color: black; text-align: center; border: 1px; padding: 5px;'>Site No</td>
+                                <td colspan='2' style='width: 5%; font-size: 11px; color: black; text-align: center; border: 1px; padding: 5px;'>Operating Time</td>
+                                <td colspan='2' style='width: 8%; font-size: 11px; color: black; text-align: center; border: 1px; padding: 5px;'>Michine HR/ KM Reading</td>
+                                <td rowspan='2' style='width: 5%; font-size: 11px; color: black; text-align: center; border: 1px; padding: 5px;'>Fuel Liters Issued</td>
+                                <td colspan='2' style='width: 5%; font-size: 11px; color: black; text-align: center; border: 1px; padding: 5px;'>Breakdown Time</td>
+                                <td rowspan='2' style='width: 16%; font-size: 11px; color: black; text-align: center; border: 1px; padding: 5px;'>Reason for breakdown or other remarks</td>
+                                <td style='width: 9%; font-size: 11px; color: black; text-align: center; border: 1px; padding: 5px;'>DR / OP's Name</td>
+                                <td colspan='2' style='width: 19%; font-size: 11px; color: black; text-align: center; border: 1px; padding: 5px;'>Supervisor</td>
+                            </tr>
+                            <tr>
+                                <td style='width: 5%; font-size: 11px; color: black; text-align: center; border: 1px; padding: 5px;'>Start</td>
+                                <td style='width: 5%; font-size: 11px; color: black; text-align: center; border: 1px; padding: 5px;'>End</td>
+                                <td style='width: 5%; font-size: 11px; color: black; text-align: center; border: 1px; padding: 5px;'>Start</td>
+                                <td style='width: 5%; font-size: 11px; color: black; text-align: center; border: 1px; padding: 5px;'>End</td>
+                                <td style='width: 5%; font-size: 11px; color: black; text-align: center; border: 1px; padding: 5px;'>From</td>
+                                <td style='width: 5%; font-size: 11px; color: black; text-align: center; border: 1px; padding: 5px;'>To</td>
+
+                                <td style='font-size: 11px; color: black; text-align: center; border: 1px; padding: 5px;'>Signature</td>
+                                <td style='font-size: 11px; color: black; text-align: center; border: 1px; padding: 5px;'>Name</td>
+                                <td style='font-size: 11px; color: black; text-align: center; border: 1px; padding: 5px;'>Signature</td>
+                            </tr>";
+                if (dbr($get_logs) > 0) {
+                    while ($log = dbf($get_logs)) {
+                        $operator_ = get_user($log['operator_id']);
+                        $startdate = date_create($log['start_datetime']);
+                        $enddate = date_create($log['end_datetime']);
+                        $breakdown = get_record('operator_events', 'operator_log', $log['log_id'], "type='breakdown'");
+                        $refuel = get_record('operator_refuel', 'operator_log', $log['log_id']);
+
+                        if ($breakdown) {
+                            $bd_start = date_create($log['start_datetime']);
+                            $bd_end = date_create($log['end_datetime']);
+
+                            $bd_start = date_format($bd_start, 'H:i');
+                            $bd_end = date_format($bd_end, 'H:i');
+                        }
+
+                        $pdf .= " <tr>
+                                        <td style='font-size: 11px; color: black; text-align: center; border: 1px; padding: 5px;'>" . date_format($startdate, 'Y-m-d') . "</td>
+                                        <td style='font-size: 11px; color: black; text-align: center; border: 1px; padding: 5px;'>" . date_format($startdate, 'l') . "</td>
+                                        <td style='font-size: 11px; color: black; text-align: center; border: 1px; padding: 5px;'>{$log['site']}</td>
+                                        <td style='font-size: 11px; color: black; text-align: center; border: 1px; padding: 5px;'>" . date_format($startdate, 'H:i') . "</td>
+                                        <td style='font-size: 11px; color: black; text-align: center; border: 1px; padding: 5px;'>" . date_format($startdate, 'H:i') . "</td>
+                                        <td style='font-size: 11px; color: black; text-align: center; border: 1px; padding: 5px;'>{$log['start_reading']}</td>
+                                        <td style='font-size: 11px; color: black; text-align: center; border: 1px; padding: 5px;'>{$log['end_reading']}</td>
+                                        <td style='font-size: 11px; color: black; text-align: center; border: 1px; padding: 5px;'>{$refuel['liters']}</td>
+                                        <td style='font-size: 11px; color: black; text-align: center; border: 1px; padding: 5px;'>" . ($bd_start ? $bd_start : "-") . "</td>
+                                        <td style='font-size: 11px; color: black; text-align: center; border: 1px; padding: 5px;'>" . ($bd_end ? $bd_end : "-") . "</td>
+                                        <td style='font-size: 11px; color: black; text-align: center; border: 1px; padding: 5px;'>" . ($breakdown['start_comment'] ? $breakdown['start_comment'] : " - ") . "</td>
+                                        <td style='font-size: 11px; color: black; text-align: center; border: 1px; padding: 5px;'>" . (strlen($operator_['name']) > 0 ? $operator_['name'] . ' ' : "") . (strlen($operator_['name']) > 0 ? $operator_['last_name'] : "") . "</td>
+                                        <td style='font-size: 11px; color: black; text-align: center; border: 1px; padding: 5px;'>&nbsp;</td>
+                                        <td style='font-size: 11px; color: black; text-align: center; border: 1px; padding: 5px;'>&nbsp;</td>
+                                    </tr>";
+                    }
+                } else {
+                    $pdf .= "
+                                <tr><td colspan='15'>No logs to show.</td></tr>
+                                ";
+                }
+
+                $pdf .= "
+                        </tbody>
+                    </table>
+                    <br>
+                    <br>
+                    <br>
+                    <table style='width: 1090px; table-layout: fixed;'>
+                        <tr>
+                            <td style='width: 10%; font-size: 11px; color: black; text-align: center; padding: 5px;'>Received from operator by:</td>
+                            <td style='width: 20%; font-size: 11px; color: black; text-align: center; border-bottom: 1px; padding: 5px;'>&nbsp;</td>
+                            <td style='width: 10%; font-size: 11px; color: black; text-align: center; padding: 5px;'>Date Recieved:</td>
+                            <td style='width: 20%; font-size: 11px; color: black; text-align: center; border-bottom: 1px; padding: 5px;'>&nbsp;</td>
+                            <td style='width: 10%; font-size: 11px; color: black; text-align: center; padding: 5px;'>Signature:</td>
+                            <td style='width: 20%; font-size: 11px; color: black; text-align: center; border-bottom: 1px; padding: 5px;'>&nbsp;</td>
+                        </tr>
+                    </table>                   
+                    <table style='width: 1090px; border-collapse: collapse; table-layout: fixed;'>
+                        <tbody>
+                            <tr>
+                                <th style='width: 100%; font-weight: bold; font-size: 11px; color: black; text-align: right; padding: 5px;'>PL13 Rev 00 061011</th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    ";
+
+                printPDF($pdf, 'temp', false, false, 'L');
+            } else {
+                http_response_code(404);
+                die();
+            }
+        } else {
+            error_log('Missing data.');
+            http_response_code(404);
+            die();
+        }
+        break;
+
+    case 'jobcard-events':
+        if (
+            strlen($_POST['start']) > 0
+            && strlen($_POST['end']) > 0
+        ) {
+            $get_events = dbq("select * from jobcard_events where start_datetime>'{$_POST['start']}' and start_datetime<'{$_POST['end']}'");
+        } else {
+            http_response_code(404);
+            die();
+        }
+        break;
+
     default:
         http_response_code(404);
         die();

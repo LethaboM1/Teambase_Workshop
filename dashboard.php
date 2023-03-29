@@ -9,7 +9,7 @@ if (isset($_SESSION['request_parts'])) {
 
 
 if (isset($_SESSION['fault_reports'])) {
-	if ($_GET['page'] != 'add-job') {
+	if ($_GET['page'] != 'add-job' && $_GET['page'] != 'add-defect-report') {
 		unset($_SESSION['fault_reports']);
 	}
 }

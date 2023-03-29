@@ -239,7 +239,7 @@ switch ($_POST['cmd']) {
         if (isset($_POST['component'])) {
 
             $key = array_search($_POST['component'], array_column($_SESSION['fault_reports'], 'component'));
-            error_log("key = {$key}," . print_r($_SESSION['fault_reports'][$key], true));
+            //error_log("key = {$key}," . print_r($_SESSION['fault_reports'][$key], true));
             unset($_SESSION['fault_reports'][$key]);
 
             $html = '';
@@ -271,11 +271,12 @@ switch ($_POST['cmd']) {
         }
         break;
 
+    case 'add_defect_insp':
     case "add_insp":
 
         $report = json_decode($_POST['insp'], true);
 
-        if (!isset($report['hours'])) {
+        if (!isset($report['hours']) && $_POST['cmd'] == 'add_insp') {
             $json_['status'] = 'error';
             $json_['message'] = 'No hours';
             echo json_encode($json_);
@@ -296,7 +297,7 @@ switch ($_POST['cmd']) {
             return;
         }
 
-        if (!is_numeric($report['hours'])) {
+        if (!is_numeric($report['hours']) && $_POST['cmd'] == 'add_insp') {
             $json_['status'] = 'error';
             $json_['message'] = 'invalid hours';
             echo json_encode($json_);
@@ -306,7 +307,7 @@ switch ($_POST['cmd']) {
         if (is_array($_SESSION['fault_reports'])) {
             if (in_array($report['component'], array_column($_SESSION['fault_reports'], 'component'))) {
                 $key = array_search($report['component'], array_column($_SESSION['fault_reports'], 'component'));
-                $_SESSION['fault_reports'][$key]['hours'] += $report['hours'];
+                if ($_POST['cmd'] == 'add_insp') $_SESSION['fault_reports'][$key]['hours'] += $report['hours'];
                 $_SESSION['fault_reports'][$key]['severity'] = $report['severity'];
                 $_SESSION['fault_reports'][$key]['comment'] .= '. ' . $report['comment'];
 
@@ -314,9 +315,9 @@ switch ($_POST['cmd']) {
                 foreach ($_SESSION['fault_reports'] as $report) {
                     $html .= "<tr>
                                 <td>{$report['component']}</td>
-                                <td>{$report['severity']}</td>
-                                <td>{$report['hours']}</td>
-                                <td>{$report['comment']}</td>
+                                <td>{$report['severity']}</td>"
+                        . ($_POST['cmd'] == 'add_insp' ? "<td>{$report['hours']}</td>" : "")
+                        . "<td>{$report['comment']}</td>
                                 <td>
                                     <a onclick='remove_insp(`{$report['component']}`)'><i class='fa fa-trash'></i></a>                                                            
                                 </td>
