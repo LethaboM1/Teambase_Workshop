@@ -65,12 +65,20 @@ $get_completed = dbq("select job_id from jobcards where status='completed'");
 				<li class="nav-parent">
 					<a class="nav-link" href="#">
 						<i class="bx bx-spreadsheet" aria-hidden="true"></i>
-						<span>Job Cards&nbsp;<span class='badge badge-danger'><?= dbr($get_new) + dbr($get_new_jobnumber) + dbr($get_new_defect) ?></span></span>
+						<span>Defect Reports&nbsp;<span class='badge badge-danger'><?= dbr($get_new_defect) ?></span></span>
+					</a>
+					<ul class="nav nav-children">
+						<li><a class="nav-link" href="dashboard.php?page=new-defects">New Defect Reports&nbsp;<span class='badge badge-danger float-end'><?= dbr($get_new_defect) ?></span></a></li>
+					</ul>
+				</li>
+				<li class="nav-parent">
+					<a class="nav-link" href="#">
+						<i class="bx bx-spreadsheet" aria-hidden="true"></i>
+						<span>Job Cards&nbsp;<span class='badge badge-danger'><?= dbr($get_new) + dbr($get_new_jobnumber) ?></span></span>
 					</a>
 					<ul class="nav nav-children">
 						<li><a class="nav-link" href="dashboard.php?page=add-job">Create</a></li>
-						<li><a class="nav-link" href="dashboard.php?page=new-defects">New Defect Report&nbsp;<span class='badge badge-danger float-end'><?= dbr($get_new_defect) ?></span></a></li>
-						<li><a class="nav-link" href="dashboard.php?page=new-job">New&nbsp;<span class='badge badge-danger float-end'><?= dbr($get_new) ?></span></a></li>
+						<li><a class="nav-link" href="dashboard.php?page=new-job">New Job cards&nbsp;<span class='badge badge-danger float-end'><?= dbr($get_new) ?></span></a></li>
 						<li><a class="nav-link" href="dashboard.php?page=new-job-allocate">New - Require Job Number&nbsp;<span class='badge badge-danger float-end'><?= dbr($get_new_jobnumber) ?></span></a></li>
 						<li><a class="nav-link" href="dashboard.php?page=open-job">Open&nbsp;<span class='badge badge-danger float-end'><?= dbr($get_open) ?></span></a></li>
 						<li><a class="nav-link" href="dashboard.php?page=completed-job">Completed&nbsp;<span class='badge badge-danger float-end'><?= dbr($get_completed) ?></span></a></li>
