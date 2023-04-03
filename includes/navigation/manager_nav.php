@@ -32,7 +32,7 @@ $get_completed = dbq("select job_id from jobcards where status='completed'");
 				</li>
 				<li class="nav-parent">
 					<a class="nav-link" href="#">
-						<i class="bx bx-spreadsheet" aria-hidden="true"></i>
+						<i class="bx bx-list-check" aria-hidden="true"></i>
 						<span>Check Lists&nbsp;<span class='badge badge-danger'></span></span>
 					</a>
 					<ul class="nav nav-children">
@@ -41,7 +41,7 @@ $get_completed = dbq("select job_id from jobcards where status='completed'");
 				</li>
 				<li class="nav-parent">
 					<a class="nav-link" href="#">
-						<i class="bx bx-spreadsheet" aria-hidden="true"></i>
+						<i class="bx bx-disc" aria-hidden="true"></i>
 						<span>Tyre Reports&nbsp;<span class='badge badge-danger'><?= dbr($get_tyre_reports) ?></span></span>
 					</a>
 					<ul class="nav nav-children">
@@ -64,7 +64,7 @@ $get_completed = dbq("select job_id from jobcards where status='completed'");
 				</li>
 				<li class="nav-parent">
 					<a class="nav-link" href="#">
-						<i class="bx bx-spreadsheet" aria-hidden="true"></i>
+						<i class="bx bxs-car-crash" aria-hidden="true"></i>
 						<span>Defect Reports&nbsp;<span class='badge badge-danger'><?= dbr($get_new_defect) ?></span></span>
 					</a>
 					<ul class="nav nav-children">
@@ -73,7 +73,7 @@ $get_completed = dbq("select job_id from jobcards where status='completed'");
 				</li>
 				<li class="nav-parent">
 					<a class="nav-link" href="#">
-						<i class="bx bx-spreadsheet" aria-hidden="true"></i>
+						<i class="bx bxs-car-mechanic" aria-hidden="true"></i>
 						<span>Job Cards&nbsp;<span class='badge badge-danger'><?= dbr($get_new) + dbr($get_new_jobnumber) ?></span></span>
 					</a>
 					<ul class="nav nav-children">
