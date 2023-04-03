@@ -8,11 +8,16 @@
                 <div id="modalassign_<?= $jobcard['job_id'] ?>" class="modal-block modal-block-lg mfp-hide">
                     <section class="card">
                         <header class="card-header">
-                            <h2 class="card-title">Defect Report</h2>
+                            <div class="row">
+                                <div class="col">
+                                    <h2 class="card-title">Defect Report</h2>
+                                </div>
+                                <div class="col"><a class="btn btn-secondary ml-auto" target="_blank" href="print.php?type=defect-report&id=<?= $jobcard['job_id'] ?>">Print</a></div>
+                            </div>
+
                         </header>
                         <form method="post">
                             <div class="card-body">
-                                <?= inp('jobcard_type', '', 'hidden', $jobcard['jobcard_type']) ?>
                                 <b>Reported by:</b>&nbsp;<?= $logged_by_['name'] ?><br>
                                 <?php
                                 if ($jobcard['list_id'] > 0) {
@@ -22,8 +27,6 @@
                                 }
                                 ?>
                                 <b>Date Reported</b>&nbsp;<?= $jobcard['job_date'] ?><br>
-
-
                                 <b>Extras</b><br>
                                 <div class="row">
                                     <?php
@@ -83,32 +86,6 @@
                                                                     <td><?= $report['comment'] ?></td>
                                                                 </tr>
                                                             <?php
-                                                                $allocated_hours += $report['hours'];
-                                                                $jscript .= "
-                                                            $('#{$report['id']}_report_hours').change(function () {
-                                                                $.ajax({
-                                                                    method:'post',
-                                                                    url:'includes/ajax.php',
-                                                                    data: {
-                                                                        cmd:'report_hours_ajust',
-                                                                        id: '{$report['id']}',
-                                                                        job_id: '{$jobcard['job_id']}',
-                                                                        hours: $(this).val()
-                                                                    },
-                                                                    success: function (result) {
-                                                                        let data = JSON.parse(result);
-
-                                                                        if (data.status=='ok') {																						
-                                                                            $('#{$report['id']}_div').html(`<i class='fa fa-check text-success'></i>`);
-                                                                            $('#{$jobcard['id']}_allocated_hours').val(data.hours);
-                                                                        } else {																						
-                                                                            $('#{$report['id']}_div').html(`<i class='fa fa-times text-danger'></i>`);
-                                                                        }
-                                                                    },
-                                                                    error: function () {}
-                                                                });
-                                                            });
-                                                            ";
                                                             }
                                                         } else {
                                                             ?>
@@ -128,7 +105,6 @@
                                     <div class="row">
                                         <?= inp('mechanic', 'Select Mechanic', 'select', $jobcard['mechanic_id'], '', 0, $mechanic_select_) ?>
                                         <?php
-
                                         if ($_SESSION['user']['role'] == 'manager' || $_SESSION['user']['role'] == 'system') {
                                             echo inp('clerk_id', 'Select Clerk', 'select', $jobcard['clerk_id'], '', 0, $clerk_select_);
                                         } else {
@@ -153,22 +129,9 @@
                 <!-- Assign Job Card End -->
             </div>
             <a class="mb-1 mt-1 mr-1 modal-sizes" href="#modalassign_<?= $jobcard['job_id'] ?>">
-                <?php
-                if ($jobcard['jobcard_type'] == 'sundry') {
-                ?>
-                    <h2 class="card-title">Sundry Jobcard</h2>
-                <?php
-                } else if ($jobcard['jobcard_type'] == 'service') {
-                ?>
-                    <h2 class="card-title">Plant: <?= $plant_['plant_number'] ?>, <?= ucfirst($jobcard['jobcard_type']) ?>, Type: <?= $jobcard['service_type'] ?>,&nbsp;[<?= date('Y-m-d', strtotime($jobcard['job_date']))  ?>]</h2>
-                <?php
 
-                } else {
-                ?>
-                    <h2 class="card-title">Plant: <?= $plant_['plant_number'] ?>, <?= ucfirst($jobcard['jobcard_type']) ?>,&nbsp;[<?= date('Y-m-d', strtotime($jobcard['job_date']))  ?>]</h2>
-                <?php
-                }
-                ?>
+                <h2 class="card-title">Plant: <?= $plant_['plant_number'] ?>, Defect-Report ,&nbsp;[<?= date('Y-m-d', strtotime($jobcard['job_date']))  ?>]</h2>
+
                 <p class="card-subtitle"><b>Logged by:</b><?= $logged_by_['name'] ?><br><?= $jobcard['fault_description'] ?></p>
             </a>
         </div>

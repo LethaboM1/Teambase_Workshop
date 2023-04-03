@@ -202,14 +202,19 @@
 											<option value="">Select Component</option>
 											<option value="Engine">Engine</option>
 											<option value="Clutch">Clutch</option>
-											<option value="Gearbox/Drive Train">Gearbox/Drive Train</option>
+											<option value="Gearbox/Drive Train">Gearbox/Drive Train/Gear Selection</option>
 											<option value="Axel + Suspension Rear">Axel + Suspension Rear</option>
 											<option value="Axel + Suspension Front">Axel + Suspension Front</option>
 											<option value="Brakes">Brakes</option>
 											<option value="Cab + Accessories">Cab + Accessories</option>
-											<option value="Electrical">Electrical</option>
+											<option value="Electrical">Electrical / Batteries</option>
 											<option value="Hydraulics ">Hydraulics </option>
 											<option value="Structure">Structure</option>
+											<option value="All Glass & Mirrors">All Glass & Mirrors</option>
+											<option value="Tracks / Under Carriage / Tyres">Tracks / Under Carriage / Tyres</option>
+											<option value="Steering">Steering</option>
+											<option value="Cooling System">Cooling System</option>
+											<option value="Instruments">Instruments</option>
 											<option value="Other">Other / Comment</option>
 										</select></div>
 									<div class="col-md-2"><select name="severity" class="form-control mb-3" id="severity">

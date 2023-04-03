@@ -1746,6 +1746,7 @@ function is_json($string, $return_data = false)
 }
 function clean_path_($path)
 {
+	$path = trim($path, "\t\n\r\0\x0B");
 	$path = str_replace("/", "", $path);
 	$path = str_replace("\\", "", $path);
 	$path = str_replace("?", "", $path);
@@ -1760,4 +1761,25 @@ function clean_path_($path)
 	$path = str_replace(" ", "", $path);
 
 	return $path;
+}
+
+function get_fault_component_comment($job_id, $component)
+{
+	$get_comments = dbq("select comment from jobcard_reports where job_id={$job_id} and component='{$component}'");
+	if ($get_comments) {
+		$comments = '';
+		$start = 1;
+		if (dbr($get_comments) > 0) {
+			while ($comment = dbf($get_comments)) {
+				if ($start) {
+					$start = 0;
+					$comments = ucfirst($comment['comment']);
+				} else {
+					$comments .= '. ' . ucfirst($comment['comment']);
+				}
+			}
+		}
+
+		return $comments;
+	}
 }

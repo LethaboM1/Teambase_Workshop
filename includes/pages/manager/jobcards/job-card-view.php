@@ -188,17 +188,23 @@
 							<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 								<label class="col-form-label" for="formGroupExampleInput">Select Event</label>
 								<select class="form-control mb-3" name="event" id="event">
-									<option value="0">Select a Event</option>
+									<option value="">Select Component</option>
 									<option value="Engine">Engine</option>
 									<option value="Clutch">Clutch</option>
-									<option value="Gearbox">Gearbox/Drive Train</option>
-									<option value="Axlerear">Axel + Suspension Rear</option>
-									<option value="Axlefront">Axel + Suspension Front</option>
+									<option value="Gearbox/Drive Train">Gearbox/Drive Train/Gear Selection</option>
+									<option value="Axel + Suspension Rear">Axel + Suspension Rear</option>
+									<option value="Axel + Suspension Front">Axel + Suspension Front</option>
 									<option value="Brakes">Brakes</option>
-									<option value="Cab">Cab + Accessories</option>
-									<option value="Electrical">Electrical</option>
+									<option value="Cab + Accessories">Cab + Accessories</option>
+									<option value="Electrical">Electrical / Batteries</option>
 									<option value="Hydraulics ">Hydraulics </option>
 									<option value="Structure">Structure</option>
+									<option value="All Glass & Mirrors">All Glass & Mirrors</option>
+									<option value="Tracks / Under Carriage / Tyres">Tracks / Under Carriage / Tyres</option>
+									<option value="Steering">Steering</option>
+									<option value="Cooling System">Cooling System</option>
+									<option value="Instruments">Instruments</option>
+									<option value="Other">Other / Comment</option>
 								</select>
 							</div>
 							<div class="col-sm-12 col-md-8 pb-sm-9 pb-md-0">

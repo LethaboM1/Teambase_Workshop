@@ -733,6 +733,308 @@ switch ($_GET['type']) {
         }
         break;
 
+    case 'defect-report':
+        if ($_GET['id'] > 0) {
+            if ($jobcard_ = get_jobcard($_GET['id'])) {
+                $plant_ = get_plant($jobcard_['plant_id']);
+                $get_reports = dbq("select * from jobcard_reports where job_id={$jobcard_['job_id']}");
+                if ($get_reports) {
+                    if (dbr($get_reports) > 0) {
+                        $pdf = "
+                                <table style='width: 750px; border-collapse: collapse; table-layout: fixed;'>
+                                    <thead>
+                                        <tr>
+                                        <th style='width: 100%; font-weight: bold; font-size: 25px; color: black; text-align: left; padding: 5px;'>Defect Report</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                        <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <br>
+                                <br>
+                                <br>
+                                <table style='width: 750px; border-collapse: collapse; table-layout: fixed;'>                                
+                                    <tr>
+                                        <td style='margin:3px; width: 10%; font-weight: bold; font-size: 11px; color: black; text-align: left; padding: 5px;'>Date:</td>
+                                        <td style='margin:3px; width: 40%; font-weight: bold; font-size: 11px; color: black; text-align: left;  padding: 5px;'>{$jobcard_['job_date']}</td>
+                                        <td style='margin:3px; width: 10%; font-weight: bold; font-size: 11px; color: black; text-align: right; padding: 5px;'>Site:</td>
+                                        <td style='margin:3px; width: 40%; font-weight: bold; font-size: 11px; color: black; text-align: left;  padding: 5px;'>{$jobcard['site']}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style='margin:3px; width: 10%; font-weight: bold; font-size: 11px; color: black; text-align: left; padding: 5px;'>Plant No:</td>
+                                        <td style='margin:3px; width: 23%; font-weight: bold; font-size: 11px; color: black; text-align: left;  padding: 5px;'>{$plant_['plant_number']}</td>
+                                        <td style='margin:3px; width: 15%; font-weight: bold; font-size: 11px; color: black; text-align: right; padding: 5px;'>Registation No:</td>
+                                        <td style='margin:3px; width: 20%; font-weight: bold; font-size: 11px; color: black; text-align: left;  padding: 5px;'>{$plant_[$plant_['reading_type'] . '_reading']}</td>
+                                        <td style='margin:3px; width: 10%; font-weight: bold; font-size: 11px; color: black; text-align: right; padding: 5px;'>Km/Hm:</td>
+                                        <td style='margin:3px; width: 22%; font-weight: bold; font-size: 11px; color: black; text-align: left;  padding: 5px;'>" . strtoupper($plant_['reading_type']) . "</td>
+                                    </tr>
+                                </table>
+                                <br>
+                                <br>
+                                <br>
+                                <table style='width: 750px; border-collapse: collapse; table-layout: fixed;'>
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>";
+
+                        $type = 'Engine';
+                        $component = get_fault_component_comment($_GET['id'], $type);
+                        if (strlen($component) > 0) {
+                            $pdf .= "<tr>
+                                                <td style='width: 40%; font-weight: bold; font-size: 11px; color: black; text-align: left; padding: 10px;'>Engine:</td>
+                                                <td style='width: 60%; font-weight: bold; font-size: 11px; color: black; text-align: left; border-bottom: 1px; padding: 10px;'>{$component}</td>
+                                            </tr>";
+                        }
+
+                        $type = 'Cooling System';
+                        $component = get_fault_component_comment($_GET['id'], $type);
+                        if (strlen($component) > 0) {
+                            $pdf .= "<tr>
+                                                <td style='width: 40%; font-weight: bold; font-size: 11px; color: black; text-align: left; padding: 10px;'>Cooling System:</td>
+                                                <td style='width: 60%; font-weight: bold; font-size: 11px; color: black; text-align: left; border-bottom: 1px; padding: 10px;'>{$component}</td>
+                                            </tr>";
+                        }
+
+                        $type = 'Gearbox/Drive Train';
+                        $component = get_fault_component_comment($_GET['id'], $type);
+                        if (strlen($component) > 0) {
+                            $pdf .= "<tr>
+                                                <td style='width: 40%; font-weight: bold; font-size: 11px; color: black; text-align: left; padding: 10px;'>Gear Box / Gear Selection:</td>
+                                                <td style='width: 60%; font-weight: bold; font-size: 11px; color: black; text-align: left; border-bottom: 1px; padding: 10px;'>{$component}</td>
+                                            </tr>";
+                        }
+
+                        $type = 'Clutch';
+                        $component = get_fault_component_comment($_GET['id'], $type);
+                        if (strlen($component) > 0) {
+                            $pdf .= "<tr>
+                                                <td style='width: 40%; font-weight: bold; font-size: 11px; color: black; text-align: left; padding: 10px;'>Clutch:</td>
+                                                <td style='width: 60%; font-weight: bold; font-size: 11px; color: black; text-align: left; border-bottom: 1px; padding: 10px;'>{$component}</td>
+                                            </tr>";
+                        }
+
+                        $type = 'Electrical';
+                        $component = get_fault_component_comment($_GET['id'], $type);
+                        if (strlen($component) > 0) {
+                            $pdf .= "<tr>
+                                                <td style='width: 40%; font-weight: bold; font-size: 11px; color: black; text-align: left; padding: 10px;'>Electrical & Batteries:</td>
+                                                <td style='width: 60%; font-weight: bold; font-size: 11px; color: black; text-align: left; border-bottom: 1px; padding: 10px;'>{$component}</td>
+                                            </tr>";
+                        }
+
+                        $type = 'Hydraulics';
+                        $component = get_fault_component_comment($_GET['id'], $type);
+                        if (strlen($component) > 0) {
+                            $pdf .= "<tr>
+                                                <td style='width: 40%; font-weight: bold; font-size: 11px; color: black; text-align: left; padding: 10px;'>Hydraulics:</td>
+                                                <td style='width: 60%; font-weight: bold; font-size: 11px; color: black; text-align: left; border-bottom: 1px; padding: 10px;'>{$component}</td>
+                                            </tr>";
+                        }
+
+                        $type = 'Instruments';
+                        $component = get_fault_component_comment($_GET['id'], $type);
+                        if (strlen($component) > 0) {
+                            $pdf .= "<tr>
+                                                <td style='width: 40%; font-weight: bold; font-size: 11px; color: black; text-align: left; padding: 10px;'>Instruments:</td>
+                                                <td style='width: 60%; font-weight: bold; font-size: 11px; color: black; text-align: left; border-bottom: 1px; padding: 10px;'>{$component}</td>
+                                            </tr>";
+                        }
+
+                        $type = 'Brakes';
+                        $component = get_fault_component_comment($_GET['id'], $type);
+                        if (strlen($component) > 0) {
+                            $pdf .= "<tr>
+                                                <td style='width: 40%; font-weight: bold; font-size: 11px; color: black; text-align: left; padding: 10px;'>Brakes:</td>
+                                                <td style='width: 60%; font-weight: bold; font-size: 11px; color: black; text-align: left; border-bottom: 1px; padding: 10px;'>{$component}</td>
+                                            </tr>";
+                        }
+
+                        $type = 'Structure';
+                        $component = get_fault_component_comment($_GET['id'], $type);
+                        if (strlen($component) > 0) {
+                            $pdf .= "<tr>
+                                                <td style='width: 40%; font-weight: bold; font-size: 11px; color: black; text-align: left; padding: 10px;'>Body Work / Structure:</td>
+                                                <td style='width: 60%; font-weight: bold; font-size: 11px; color: black; text-align: left; border-bottom: 1px; padding: 10px;'>{$component}</td>
+                                            </tr>";
+                        }
+
+                        $type = 'Steering';
+                        $component = get_fault_component_comment($_GET['id'], $type);
+                        if (strlen($component) > 0) {
+                            $pdf .= "<tr>
+                                                <td style='width: 40%; font-weight: bold; font-size: 11px; color: black; text-align: left; padding: 10px;'>Body Work / Steering:</td>
+                                                <td style='width: 60%; font-weight: bold; font-size: 11px; color: black; text-align: left; border-bottom: 1px; padding: 10px;'>{$component}</td>
+                                            </tr>";
+                        }
+
+                        $type = 'Steering';
+                        $component = get_fault_component_comment($_GET['id'], $type);
+                        if (strlen($component) > 0) {
+                            $pdf .= "<tr>
+                                                <td style='width: 40%; font-weight: bold; font-size: 11px; color: black; text-align: left; padding: 10px;'>Body Work / Steering:</td>
+                                                <td style='width: 60%; font-weight: bold; font-size: 11px; color: black; text-align: left; border-bottom: 1px; padding: 10px;'>{$component}</td>
+                                            </tr>";
+                        }
+
+                        $type = 'All Glass & Mirrors';
+                        $component = get_fault_component_comment($_GET['id'], $type);
+                        if (strlen($component) > 0) {
+                            $pdf .= "<tr>
+                                                <td style='width: 40%; font-weight: bold; font-size: 11px; color: black; text-align: left; padding: 10px;'>All Glass & Mirrors:</td>
+                                                <td style='width: 60%; font-weight: bold; font-size: 11px; color: black; text-align: left; border-bottom: 1px; padding: 10px;'>{$component}</td>
+                                            </tr>";
+                        }
+
+                        $type = 'Tracks / Under Carriage / Tyres';
+                        $component = get_fault_component_comment($_GET['id'], $type);
+                        if (strlen($component) > 0) {
+                            $pdf .= "<tr>
+                                                <td style='width: 40%; font-weight: bold; font-size: 11px; color: black; text-align: left; padding: 10px;'>Tracks / Under Carriage / Tyres:</td>
+                                                <td style='width: 60%; font-weight: bold; font-size: 11px; color: black; text-align: left; border-bottom: 1px; padding: 10px;'>{$component}</td>
+                                            </tr>";
+                        }
+
+
+                        $pdf .= "   </tbody>
+                                </table>
+                                <br>
+                                <br>
+                                <table style='width: 750px; border-collapse: collapse; table-layout: fixed;'>
+                                    <thead>
+                                        <tr>
+                                            <th style='width: 100%; font-weight: bold; font-size: 15px; color: black; text-align: left; padding: 5px;'>Do You Have:</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th></th>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <br>
+                                <table style='width: 750px; table-layout: fixed;'>
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>";
+
+                        if (strlen($jobcard_['safety_audit']) > 0) {
+                            if (is_json($jobcard_['safety_audit'])) {
+                                $safety_audit = json_decode($jobcard_['safety_audit'], true);
+                            } else {
+                                $safety_audit = json_decode(base64_decode($jobcard_['safety_audit']), true);
+                            }
+                        } else {
+                            $safety_audit = [];
+                        }
+
+                        if (count($safety_audit) > 0) {
+                            $pos = 1;
+
+
+                            $pdf .= "<tr>
+                                        <td style='width: 20%; font-weight: bold; font-size: 11px; color: black; text-align: left; padding: 5px;'>{$safety_audit[0]['name']}:</td>
+                                        <td style='width: 10%; font-weight: bold; font-size: 11px; color: black; text-align: center; border-bottom: 1px; border-top: 1px; border-left: 1px; border-right: 1px; padding: 5px;'>{$safety_audit[0]['answer']}</td>
+                                        <td style='width: 20%;'></td>
+                                        <td style='width: 20%; font-weight: bold; font-size: 11px; color: black; text-align: left; padding: 5px;'>{$safety_audit[1]['name']}:</td>
+                                        <td style='width: 10%; font-weight: bold; font-size: 11px; color: black; text-align: center; border-bottom: 1px; border-top: 1px; border-left: 1px; border-right: 1px; padding: 5px;'>{$safety_audit[1]['answer']}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style='width: 20%; font-weight: bold; font-size: 11px; color: black; text-align: left; padding: 5px;'>{$safety_audit[2]['name']}:</td>
+                                        <td style='width: 10%; font-weight: bold; font-size: 11px; color: black; text-align: center; border-bottom: 1px; border-top: 1px; border-left: 1px; border-right: 1px; padding: 5px;'>{$safety_audit[2]['answer']}</td>
+                                        <td style='width: 20%;'></td>
+                                        <td style='width: 20%; font-weight: bold; font-size: 11px; color: black; text-align: left; padding: 5px;'>{$safety_audit[3]['name']}:</td>
+                                        <td style='width: 10%; font-weight: bold; font-size: 11px; color: black; text-align: center; border-bottom: 1px; border-top: 1px; border-left: 1px; border-right: 1px; padding: 5px;'>{$safety_audit[3]['answer']}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style='width: 20%; font-weight: bold; font-size: 11px; color: black; text-align: left; padding: 5px;'>{$safety_audit[4]['name']}:</td>
+                                        <td style='width: 10%; font-weight: bold; font-size: 11px; color: black; text-align: center; border-bottom: 1px; border-top: 1px; border-left: 1px; border-right: 1px; padding: 5px;'>{$safety_audit[4]['answer']}</td>
+                                        <td style='width: 20%;'></td>
+                                        <td style='width: 20%; font-weight: bold; font-size: 11px; color: black; text-align: left; padding: 5px;'>{$safety_audit[5]['name']}:</td>
+                                        <td style='width: 10%; font-weight: bold; font-size: 11px; color: black; text-align: center; border-bottom: 1px; border-top: 1px; border-left: 1px; border-right: 1px; padding: 5px;'>{$safety_audit[5]['answer']}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style='width: 20%; font-weight: bold; font-size: 11px; color: black; text-align: left; padding: 5px;'>{$safety_audit[6]['name']}:</td>
+                                        <td style='width: 10%; font-weight: bold; font-size: 11px; color: black; text-align: center; border-bottom: 1px; border-top: 1px; border-left: 1px; border-right: 1px; padding: 5px;'>{$safety_audit[6]['answer']}</td>
+                                        <td style='width: 20%;'></td>
+                                        <td style='width: 20%; font-weight: bold; font-size: 11px; color: black; text-align: left; padding: 5px;'>{$safety_audit[7]['name']}:</td>
+                                        <td style='width: 10%; font-weight: bold; font-size: 11px; color: black; text-align: center; border-bottom: 1px; border-top: 1px; border-left: 1px; border-right: 1px; padding: 5px;'>{$safety_audit[7]['answer']}</td>
+                                    </tr>";
+                        }
+
+
+
+                        $pdf .= "</tbody>
+                                </table>
+                                <br>
+                                <br>
+                                <table style='width: 750px; border-collapse: collapse; table-layout: fixed;'>
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td style='width: 20%; font-weight: bold; font-size: 11px; color: black; text-align: left; padding: 10px;'>Reported By:</td>
+                                            <td style='width: 30%; font-weight: bold; font-size: 11px; color: black; text-align: left; border-bottom: 1px; padding: 10px;'>Name</td>
+                                            <td style='width: 20%; font-weight: bold; font-size: 11px; color: black; text-align: left; padding: 10px;'>Date:</td>
+                                            <td style='width: 30%; font-weight: bold; font-size: 11px; color: black; text-align: left; border-bottom: 1px; padding: 10px;'>15 Feb 2022</td>
+                                        </tr>
+                                        <tr>
+                                            <td style='width: 20%; font-weight: bold; font-size: 11px; color: black; text-align: left; padding: 10px;'>Received By:</td>
+                                            <td style='width: 30%; font-weight: bold; font-size: 11px; color: black; text-align: left; border-bottom: 1px; padding: 10px;'>Name</td>
+                                            <td style='width: 20%; font-weight: bold; font-size: 11px; color: black; text-align: left; padding: 10px;'>Date:</td>
+                                            <td style='width: 30%; font-weight: bold; font-size: 11px; color: black; text-align: left; border-bottom: 1px; padding: 10px;'>15 Feb 2022</td>
+                                        </tr>
+                                        <tr>
+                                            <td style='width: 20%; font-weight: bold; font-size: 11px; color: black; text-align: left; padding: 10px;'>Job No#:</td>
+                                            <td style='width: 30%; font-weight: bold; font-size: 11px; color: black; text-align: left; border-bottom: 1px; padding: 10px;'>654654654</td>
+                                            <td style='width: 20%; font-weight: bold; font-size: 11px; color: black; text-align: left; padding: 10px;'>Job Completed Date:</td>
+                                            <td style='width: 30%; font-weight: bold; font-size: 11px; color: black; text-align: left; border-bottom: 1px; padding: 10px;'>15 Feb 2022</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <br>
+                                <br>
+                                <table style='width: 750px; border-collapse: collapse; table-layout: fixed;'>
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th style='width: 100%; font-weight: bold; font-size: 11px; color: black; text-align: right; padding: 5px;'>DFR Rev 00 200801</th>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                ";
+
+                        printPDF($pdf);
+                    } else {
+                        http_response_code(404);
+                        die();
+                    }
+                }
+            } else {
+                http_response_code(404);
+                die();
+            }
+        } else {
+            http_response_code(404);
+            die();
+        }
+        break;
+
     default:
         http_response_code(404);
         die();
