@@ -771,7 +771,7 @@ switch ($_GET['type']) {
                     $date = date_create($row['start_datetime']);
                     $date = date_format($date, 'Y-m-d');
                     $jobcard_ = get_jobcard($row['job_id']);
-                    $mechanic = get_user($jobcard_['machanic_id']);
+                    $mechanic = get_user($jobcard_['mechanic_id']);
                     $sheet->setCellValue("A{$line}", $date)
                         ->setCellValue("B{$line}", $jobcard_['jobcard_number'])
                         ->setCellValue("C{$line}", $mechanic['name']['surname'])
