@@ -747,9 +747,10 @@ switch ($_GET['type']) {
 
                 ->setCellValue('A4', 'Date')
                 ->setCellValue('B4', 'Job card No.')
-                ->setCellValue('C4', 'Hours')
-                ->setCellValue('D4', 'Component')
-                ->setCellValue('E4', 'Event');
+                ->setCellValue('C4', 'Mechanic')
+                ->setCellValue('D4', 'Hours')
+                ->setCellValue('E4', 'Component')
+                ->setCellValue('F4', 'Event');
 
             $sheet->getStyle('A1')->applyFromArray($title);
             $sheet->getStyle('A4:E4')->applyFromArray($header);
@@ -758,9 +759,10 @@ switch ($_GET['type']) {
 
             $sheet->getColumnDimension('A')->setWidth(100, 'px');
             $sheet->getColumnDimension('B')->setWidth(100, 'px');
-            $sheet->getColumnDimension('C')->setWidth(85, 'px');
-            $sheet->getColumnDimension('D')->setWidth(100, 'px');
-            $sheet->getColumnDimension('E')->setWidth(300, 'px');
+            $sheet->getColumnDimension('C')->setWidth(100, 'px');
+            $sheet->getColumnDimension('D')->setWidth(85, 'px');
+            $sheet->getColumnDimension('E')->setWidth(100, 'px');
+            $sheet->getColumnDimension('F')->setWidth(300, 'px');
 
             $get_events = dbq("select * from jobcard_events where start_datetime>='{$_GET['start']}' and start_datetime<='{$_GET['end']}' order by start_datetime");
             $line = 5;
@@ -769,11 +771,13 @@ switch ($_GET['type']) {
                     $date = date_create($row['start_datetime']);
                     $date = date_format($date, 'Y-m-d');
                     $jobcard_ = get_jobcard($row['job_id']);
+                    $mechanic = get_user($jobcard_['machanic_id']);
                     $sheet->setCellValue("A{$line}", $date)
                         ->setCellValue("B{$line}", $jobcard_['jobcard_number'])
-                        ->setCellValue("C{$line}", $row['total_hours'])
-                        ->setCellValue("D{$line}", $row['event'])
-                        ->setCellValue("E{$line}", $row['comment']);
+                        ->setCellValue("C{$line}", $mechanic['name']['surname'])
+                        ->setCellValue("D{$line}", $row['total_hours'])
+                        ->setCellValue("E{$line}", $row['event'])
+                        ->setCellValue("F{$line}", $row['comment']);
                     $line++;
                 }
             } else {
