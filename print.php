@@ -723,11 +723,84 @@ switch ($_GET['type']) {
 
     case 'jobcard-events':
         if (
-            strlen($_POST['start']) > 0
-            && strlen($_POST['end']) > 0
+            strlen($_GET['start']) > 0
+            && strlen($_GET['end']) > 0
         ) {
-            $get_events = dbq("select * from jobcard_events where start_datetime>'{$_POST['start']}' and start_datetime<'{$_POST['end']}'");
+            $title = [
+                'font' => [
+                    'bold' => true,
+                    'size' => 14
+
+                ],
+            ];
+
+            $header = [
+                'font' => [
+                    'bold' => true,
+                ],
+            ];
+            $spreadsheet = new Spreadsheet();
+            $sheet = $spreadsheet->getActiveSheet();
+
+            $sheet->setCellValue('A1', 'Job Card Events')
+                ->setCellValue('A2', 'Dates: ' . $_GET['start'] . ' to ' . $_GET['end'])
+
+                ->setCellValue('A4', 'Date')
+                ->setCellValue('B4', 'Job card No.')
+                ->setCellValue('C4', 'Hours')
+                ->setCellValue('D4', 'Component')
+                ->setCellValue('E4', 'Event');
+
+            $sheet->getStyle('A1')->applyFromArray($title);
+            $sheet->getStyle('A4:E4')->applyFromArray($header);
+            $sheet->getStyle('E4')->getAlignment()->setWrapText(true);
+
+
+            $sheet->getColumnDimension('A')->setWidth(100, 'px');
+            $sheet->getColumnDimension('B')->setWidth(100, 'px');
+            $sheet->getColumnDimension('C')->setWidth(85, 'px');
+            $sheet->getColumnDimension('D')->setWidth(100, 'px');
+            $sheet->getColumnDimension('E')->setWidth(300, 'px');
+
+            $get_events = dbq("select * from jobcard_events where start_datetime>'{$_GET['start']}' and start_datetime<'{$_GET['end']}'");
+            $line = 5;
+            if (dbr($get_events) > 0) {
+                while ($row = dbf($get_events)) {
+                    $date = date_create($row['start_datetime']);
+                    $date = date_format($date, 'Y-m-d');
+                    $jobcard_ = get_jobcard($row['job_id']);
+                    $sheet->setCellValue("A{$line}", $date)
+                        ->setCellValue("B{$line}", $jobcard_['jobcard_number'])
+                        ->setCellValue("C{$line}", $row['total_hours'])
+                        ->setCellValue("D{$line}", $row['event'])
+                        ->setCellValue("E{$line}", $row['comment']);
+                }
+                $line++;
+            } else {
+                $sheet->setCellValue("A{$line}", 'No event at the date range.');
+            }
+
+
+            $writer = new Xlsx($spreadsheet);
+
+
+            // Redirect output to a client’s web browser (Excel2007)
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: attachment;filename="job-card-events-' . $_GET['start'] . '-' . $_GET['end'] . '.xlsx"');
+            header('Cache-Control: max-age=0');
+            // If you're serving to IE 9, then the following may be needed
+            header('Cache-Control: max-age=1');
+
+            // If you're serving to IE over SSL, then the following may be needed
+            header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+            header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+            header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+            header('Pragma: public'); // HTTP/1.0
+
+
+            $writer->save('php://output');
         } else {
+            error_log("Report: Job Card Events : Cannot find range: {$_GET['start']} to {$_GET['end']}");
             http_response_code(404);
             die();
         }
