@@ -759,9 +759,9 @@ switch ($_GET['type']) {
 
             $sheet->getColumnDimension('A')->setWidth(100, 'px');
             $sheet->getColumnDimension('B')->setWidth(100, 'px');
-            $sheet->getColumnDimension('C')->setWidth(100, 'px');
+            $sheet->getColumnDimension('C')->setWidth(120, 'px');
             $sheet->getColumnDimension('D')->setWidth(85, 'px');
-            $sheet->getColumnDimension('E')->setWidth(100, 'px');
+            $sheet->getColumnDimension('E')->setWidth(120, 'px');
             $sheet->getColumnDimension('F')->setWidth(300, 'px');
 
             $get_events = dbq("select * from jobcard_events where start_datetime>='{$_GET['start']}' and start_datetime<='{$_GET['end']}' order by start_datetime");
