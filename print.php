@@ -762,7 +762,7 @@ switch ($_GET['type']) {
             $sheet->getColumnDimension('D')->setWidth(100, 'px');
             $sheet->getColumnDimension('E')->setWidth(300, 'px');
 
-            $get_events = dbq("select * from jobcard_events where start_datetime>='{$_GET['start']}' and start_datetime<='{$_GET['end']}'");
+            $get_events = dbq("select * from jobcard_events where start_datetime>='{$_GET['start']}' and start_datetime<='{$_GET['end']}' order by start_datetime");
             $line = 5;
             if (dbr($get_events) > 0) {
                 while ($row = dbf($get_events)) {
