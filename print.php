@@ -762,7 +762,7 @@ switch ($_GET['type']) {
             $sheet->getColumnDimension('D')->setWidth(100, 'px');
             $sheet->getColumnDimension('E')->setWidth(300, 'px');
 
-            $get_events = dbq("select * from jobcard_events where start_datetime>'{$_GET['start']}' and start_datetime<'{$_GET['end']}'");
+            $get_events = dbq("select * from jobcard_events where start_datetime>='{$_GET['start']}' and start_datetime<='{$_GET['end']}'");
             $line = 5;
             if (dbr($get_events) > 0) {
                 while ($row = dbf($get_events)) {
@@ -774,8 +774,8 @@ switch ($_GET['type']) {
                         ->setCellValue("C{$line}", $row['total_hours'])
                         ->setCellValue("D{$line}", $row['event'])
                         ->setCellValue("E{$line}", $row['comment']);
+                    $line++;
                 }
-                $line++;
             } else {
                 $sheet->setCellValue("A{$line}", 'No event at the date range.');
             }
