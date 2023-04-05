@@ -737,7 +737,16 @@ switch ($_GET['type']) {
         if ($_GET['id'] > 0) {
             if ($jobcard_ = get_jobcard($_GET['id'])) {
                 $plant_ = get_plant($jobcard_['plant_id']);
+                $logged_by = get_user($jobcard_['logged_by']);
+                $receieved_by = get_user($jobcard_['clerk_id']);
+                $completed_date =  ($jobcard_['complete_datetime'] != null) ? $jobcard_['complete_datetime'] : "Not Completed";
+                $jobcard_number = (strlen($jobcard_['jobcard_number']) > 0) ? $jobcard_['jobcard_number'] : 'Waiting';
                 $get_reports = dbq("select * from jobcard_reports where job_id={$jobcard_['job_id']}");
+                $logged_date = date_create($jobcard_['job_date']);
+                $logged_date = date_format($logged_date, "d M Y");
+
+
+
                 if ($get_reports) {
                     if (dbr($get_reports) > 0) {
                         $pdf = "
@@ -985,21 +994,21 @@ switch ($_GET['type']) {
                                     <tbody>
                                         <tr>
                                             <td style='width: 20%; font-weight: bold; font-size: 11px; color: black; text-align: left; padding: 10px;'>Reported By:</td>
-                                            <td style='width: 30%; font-weight: bold; font-size: 11px; color: black; text-align: left; border-bottom: 1px; padding: 10px;'>Name</td>
+                                            <td style='width: 30%; font-weight: bold; font-size: 11px; color: black; text-align: left; border-bottom: 1px; padding: 10px;'>{$logged_by['name']} {$logged_by['last_name']}</td>
                                             <td style='width: 20%; font-weight: bold; font-size: 11px; color: black; text-align: left; padding: 10px;'>Date:</td>
-                                            <td style='width: 30%; font-weight: bold; font-size: 11px; color: black; text-align: left; border-bottom: 1px; padding: 10px;'>15 Feb 2022</td>
+                                            <td style='width: 30%; font-weight: bold; font-size: 11px; color: black; text-align: left; border-bottom: 1px; padding: 10px;'>{$logged_date}</td>
                                         </tr>
                                         <tr>
                                             <td style='width: 20%; font-weight: bold; font-size: 11px; color: black; text-align: left; padding: 10px;'>Received By:</td>
-                                            <td style='width: 30%; font-weight: bold; font-size: 11px; color: black; text-align: left; border-bottom: 1px; padding: 10px;'>Name</td>
+                                            <td style='width: 30%; font-weight: bold; font-size: 11px; color: black; text-align: left; border-bottom: 1px; padding: 10px;'>{$receieved_by['name']} {$receieved_by['last_name']}</td>
                                             <td style='width: 20%; font-weight: bold; font-size: 11px; color: black; text-align: left; padding: 10px;'>Date:</td>
-                                            <td style='width: 30%; font-weight: bold; font-size: 11px; color: black; text-align: left; border-bottom: 1px; padding: 10px;'>15 Feb 2022</td>
+                                            <td style='width: 30%; font-weight: bold; font-size: 11px; color: black; text-align: left; border-bottom: 1px; padding: 10px;'>{$logged_date}</td>
                                         </tr>
                                         <tr>
                                             <td style='width: 20%; font-weight: bold; font-size: 11px; color: black; text-align: left; padding: 10px;'>Job No#:</td>
-                                            <td style='width: 30%; font-weight: bold; font-size: 11px; color: black; text-align: left; border-bottom: 1px; padding: 10px;'>654654654</td>
+                                            <td style='width: 30%; font-weight: bold; font-size: 11px; color: black; text-align: left; border-bottom: 1px; padding: 10px;'>{$jobcard_number}</td>
                                             <td style='width: 20%; font-weight: bold; font-size: 11px; color: black; text-align: left; padding: 10px;'>Job Completed Date:</td>
-                                            <td style='width: 30%; font-weight: bold; font-size: 11px; color: black; text-align: left; border-bottom: 1px; padding: 10px;'>15 Feb 2022</td>
+                                            <td style='width: 30%; font-weight: bold; font-size: 11px; color: black; text-align: left; border-bottom: 1px; padding: 10px;'>{$completed_date}</td>
                                         </tr>
                                     </tbody>
                                 </table>
