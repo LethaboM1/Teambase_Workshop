@@ -774,7 +774,7 @@ switch ($_GET['type']) {
                     $mechanic = get_user($jobcard_['mechanic_id']);
                     $sheet->setCellValue("A{$line}", $date)
                         ->setCellValue("B{$line}", $jobcard_['jobcard_number'])
-                        ->setCellValue("C{$line}", $mechanic['name'] . ' ' . $mechanic['surname'])
+                        ->setCellValue("C{$line}", $mechanic['name'] . ' ' . $mechanic['last_name'])
                         ->setCellValue("D{$line}", $row['total_hours'])
                         ->setCellValue("E{$line}", $row['event'])
                         ->setCellValue("F{$line}", $row['comment']);
