@@ -1030,15 +1030,18 @@ switch ($_GET['type']) {
 
                         printPDF($pdf);
                     } else {
+                        error_log("Print: defect-Report: No Defect - Report: {$_GET['id']}");
                         http_response_code(404);
                         die();
                     }
                 }
             } else {
+                error_log("Print: defect-Report: Cannot find Job Card: {$_GET['id']}");
                 http_response_code(404);
                 die();
             }
         } else {
+
             http_response_code(404);
             die();
         }

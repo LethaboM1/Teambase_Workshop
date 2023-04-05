@@ -5,6 +5,8 @@ $color = "default";
 $logged_by = dbf(dbq("select concat(name,' ', last_name) as name from users_tbl where user_id={$row['logged_by']}"));
 $mechanic_ = dbf(dbq("select concat(name,' ', last_name) as name from users_tbl where user_id={$row['mechanic_id']}"));
 $plant_ = dbf(dbq("select * from plants_tbl where plant_id={$row['plant_id']}"));
+$get_reports = dbq("select * from jobcard_reports where job_id={$row['job_id']}");
+$has_defect_report =  (dbr($get_reports) > 0) ? true : false;
 switch ($plant_['reading_type']) {
     case "km":
         $reading = $row['km_reading'];
@@ -69,7 +71,10 @@ $date = date_format($date, 'Y-m-d');
                             <h2 class="card-title">View Job Card</h2>
                         </div>
                         <div class="col-md-6">
-                            <button onclick="window.open(`print.php?type=job-card&id=<?= $row['job_id'] ?>`,`_blank`);" class="btn btn-warning float-right">Print</button>
+                            <button onclick="window.open(`print.php?type=job-card&id=<?= $row['job_id'] ?>`,`_blank`);" class="btn btn-warning float-right">Print Job Card</button>
+                            <?php if ($has_defect_repor) { ?>
+                                &nbsp; <button onclick="window.open(`print.php?type=defect-report&id=<?= $row['job_id'] ?>`,`_blank`);" class="btn btn-warning float-right">Print Defect Report</button>
+                            <?php } ?>
                         </div>
                     </div>
                 </header>
