@@ -5,6 +5,8 @@ $get_tyre_reports = dbq("select id from jobcard_tyre_reports where checked_by=0"
 
 $get_new = dbq("select job_id from jobcards where status='logged'");
 $get_new_defect = dbq("select job_id from jobcards where status='defect-logged'");
+$get_add_defect = dbq("select distinct job_id from jobcard_reports where reviewed=0");
+
 $get_new_jobnumber = dbq("select job_id from jobcards where status='allocated'");
 $get_open = dbq("select job_id from jobcards where status='open'");
 $get_completed = dbq("select job_id from jobcards where status='completed'");
@@ -65,10 +67,11 @@ $get_completed = dbq("select job_id from jobcards where status='completed'");
 				<li class="nav-parent">
 					<a class="nav-link" href="#">
 						<i class="bx bxs-car-crash" aria-hidden="true"></i>
-						<span>Defect Reports&nbsp;<span class='badge badge-danger'><?= dbr($get_new_defect) ?></span></span>
+						<span>New Defect Reports&nbsp;<span class='badge badge-danger'><?= dbr($get_new_defect) +  dbr($get_add_defect) ?></span></span>
 					</a>
 					<ul class="nav nav-children">
 						<li><a class="nav-link" href="dashboard.php?page=new-defects">New Defect Reports&nbsp;<span class='badge badge-danger float-end'><?= dbr($get_new_defect) ?></span></a></li>
+						<li><a class="nav-link" href="dashboard.php?page=additional-defects">Additional Defect Reports&nbsp;<span class='badge badge-danger float-end'><?= dbr($get_add_defect) ?></span></a></li>
 					</ul>
 				</li>
 				<li class="nav-parent">

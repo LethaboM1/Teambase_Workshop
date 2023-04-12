@@ -6,15 +6,18 @@ if ($_SESSION['user']['role'] == 'clerk') {
   $get_jobcard_events = dbq("select event_id from jobcard_events where start_datetime>='" . date('Y-m-d 00:00:00') . "' and start_datetime<='" . date('Y-m-d 23:59:59') . "'");
   $count_job_tyre_reports = 0;
   $count_new_defects = 0;
+  $count_additional_defects = 0;
   $count_events = dbr($get_jobcard_events);
 } else {
   $get_new_defects = dbq("select job_id from jobcards where status='defect-logged'");
+  $get_additional_defects = dbq("select * from jobcards where status!='defect-logged' and job_id in (select distinct job_id from jobcard_reports where reviewed=0)");
   $get_new_jobs_notify = dbq("select job_id from jobcards where status='logged'");
   $get_job_requests = dbq("select * from jobcard_requisitions where status='requested'");
   $get_completed_jobs = dbq("select * from jobcards where status='completed' order by complete_datetime");
   $get_job_tyre_reports = dbq("select * from  jobcard_tyre_reports where checked_by=0");
   $count_job_tyre_reports = dbr($get_job_tyre_reports);
   $count_new_defects = dbr($get_new_defects);
+  $count_additional_defects = dbr($get_additional_defects);
   $count_events = 0;
 }
 
@@ -38,7 +41,7 @@ $total_notifications = $count_new_jobs + $count_new_requests + $count_completed_
     <div class="content">
       <ul>
         <?php
-        if (isset($count_new_defects) &&  $count_new_defects > 0) {
+        if (isset($count_new_defects)  &&  $count_new_defects) {
         ?>
           <li>
             <a href="dashboard.php?page=new-defects" class="clearfix">
@@ -46,7 +49,22 @@ $total_notifications = $count_new_jobs + $count_new_requests + $count_completed_
                 <i class="fas fa-wrench bg-danger text-light"></i>
               </div>
               <span class="title">New defect reports</span>
-              <span class="message"><?= $count_new_defects ?> event(s) loaded today.</span>
+              <span class="message"><?= $count_new_defects ?> New Defect(s) loaded.</span>
+            </a>
+          </li>
+        <?php
+        }
+        ?>
+        <?php
+        if (isset($count_additional_defects)  &&  $count_additional_defects) {
+        ?>
+          <li>
+            <a href="dashboard.php?page=new-defects" class="clearfix">
+              <div class="image">
+                <i class="fas fa-wrench bg-danger text-light"></i>
+              </div>
+              <span class="title">Additional defect reports</span>
+              <span class="message"><?= $count_additional_defects ?>Additional Defect(s) loaded.</span>
             </a>
           </li>
         <?php

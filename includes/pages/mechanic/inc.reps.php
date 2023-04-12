@@ -70,12 +70,12 @@
             <thead>
                 <tr>
                     <th width="200">Component</th>
-                    <th width="110">Severity</th>
+                    <th class="d-none d-md-table-cell" width="110">Severity</th>
                     <th width="45">Hours</th>
                     <th width='38'></th>
                     <th width="400">Comment</th>
-                    <th width="45">Reveiewed</th>
-                    <th width="120"></th>
+                    <th class="d-none d-md-table-cell" width="45"></th>
+                    <th class="d-none d-md-table-cell" width="120"></th>
                 </tr>
             </thead>
             <tbody>
@@ -88,12 +88,12 @@
                 ?>
                             <tr>
                                 <td><?= $job_report['component'] ?></td>
-                                <td><?= ucfirst($job_report['severity']) ?></td>
+                                <td class="d-none d-md-table-cell"><?= ucfirst($job_report['severity']) ?></td>
                                 <td><?= ((!$job_report['reviewed'] && $_SESSION['user']['role'] == 'mechanic') || $_SESSION['user']['role'] == 'manager' || $_SESSION['user']['role'] == 'system' ? inp('hours', '', 'number', $job_report['hours'], '', 0, '', "style='width:120px;' onchange='update_hours(`{$job_report['id']}`,$(this).val())'") : $job_report['hours']) ?></td>
                                 <td><span id="<?= $job_report['id'] ?>_update"></span></td>
                                 <td><?= $job_report['comment'] ?></td>
-                                <td><?= ($job_report['reviewed'] ? "<i class='fa fa-check'></i>" : "<i class='fa fa-times'></i>") ?></td>
-                                <td></td>
+                                <td class="d-none d-md-table-cell"><?= ($job_report['reviewed'] ? "<i class='fa fa-check'></i>" : "<i class='fa fa-times'></i>") ?></td>
+                                <td class="d-none d-md-table-cell"></td>
                             </tr>
                         <?php
                         }
