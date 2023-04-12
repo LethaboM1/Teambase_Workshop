@@ -108,6 +108,7 @@
 								<option value="buyer">Buyer</option>
 								<option value="supervisor">Supervisor</option>
 								<option value="mechanic">Mechanic</option>
+								<option value="ws_inspector">Inspector</option>
 								<option value="user">Driver / Opperator</option>
 							</select>
 						</div>

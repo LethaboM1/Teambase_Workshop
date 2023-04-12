@@ -3,7 +3,7 @@
 		<nav id="menu" class="nav-main" role="navigation">
 			<ul class="nav nav-main">
 				<li>
-					<a class="nav-link" href="dashboard.php?page=mechanic_dash">
+					<a class="nav-link" href="dashboard.php">
 						<i class="bx bx-home-alt" aria-hidden="true"></i>
 						<span>Dashboard</span>
 					</a>
@@ -11,12 +11,11 @@
 				<li class="nav-parent">
 					<a class="nav-link" href="#">
 						<i class="bx bx-spreadsheet" aria-hidden="true"></i>
-						<span>Job Cards</span>
+						<span>Inspection</span>
 					</a>
 					<ul class="nav nav-children">
-						<li><a class="nav-link" href="dashboard.php?page=add-job">Request Job Card</a></li>
-						<li><a class="nav-link" href="dashboard.php?page=open-job">Open Job Cards</a></li>
-						<li><a class="nav-link" href="dashboard.php?page=requested-job">Requested Job Cards</a></li>
+						<li><a class="nav-link" href="dashboard.php?page=add-defect-report">Submit Defect Report</a></li>
+						<li><a class="nav-link" href="dashboard.php">List Defect Reports</a></li>
 					</ul>
 				</li>
 			</ul>

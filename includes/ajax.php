@@ -2,7 +2,17 @@
 require_once "./check.php";
 
 switch ($_GET['cmd']) {
+    case 'get_drivers':
+        if (isset($_GET['plant_id'])) {
+            $get_drivers = dbq("select concat(name,' ',last_name) as name, user_id as value from users_tbl where user_id in (select user_id from plant_user_tbl where plant_id={$_GET['plant_id']})");
+            $select_[] = ['name' => 'None', 'value' => 0];
 
+            if ($get_drivers) if (dbr($get_drivers)) while ($driver = dbf($get_drivers)) $select_[] = $driver;
+
+            echo inp('driver_id', 'Driver/Operator', 'select', '', '', 0, $select_);
+        }
+
+        break;
     case "print_request":
         if (isset($_GET['id'])) {
             $request_file = 'files/requisitions/' . $_GET['id'] . '_request.pdf';

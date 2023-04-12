@@ -34,8 +34,13 @@ switch ($_SESSION['user']['role']) {
 	case "user":
 		$dashboard = 'user';
 		break;
+
 	case "mechanic":
 		$dashboard = 'mechanic';
+		break;
+
+	case "ws_inspector":
+		$dashboard = 'ws_inspector';
 		break;
 }
 
@@ -51,8 +56,13 @@ switch ($dashboard) {
 	case "user":
 		include "includes/dashboard/user.php";
 		break;
+
 	case "mechanic":
 		include "includes/dashboard/mechanic.php";
+		break;
+
+	case "ws_inspector":
+		include "includes/dashboard/ws_inspector.php";
 		break;
 }
 

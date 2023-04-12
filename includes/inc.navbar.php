@@ -32,6 +32,10 @@
       case "mechanic":
         include('includes/navigation/mech_nav.php');
         break;
+
+      case 'ws_inspector':
+        include('includes/navigation/ws_inspector_nav.php');
+        break;
     }
 
     ?>
