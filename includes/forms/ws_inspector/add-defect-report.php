@@ -52,9 +52,10 @@ if (isset($_POST['submit'])) {
             || $brakes_fault
             || $body_work_fault
             || $glass_mirrors_fault
-            || $tracks_carriage_fault
             || $electrical_batteries_fault
             || $gear_clutch_fault
+            || $tracks_carriage_tyres_fault
+            || $steering_fault
         ) {
             $status = 'F';
         } else {

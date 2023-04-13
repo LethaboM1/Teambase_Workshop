@@ -13,8 +13,37 @@
 				</tr>
 			</thead>
 			<?php
+			$lines = 15;
+			$pagination_pages = 15;
+
+			if (!isset($_GET['pg']) || $_GET['pg'] < 1) {
+				$_GET['pg'] = 1;
+			}
 
 			$get_defect_reports = dbq("select * from ws_defect_reports where inspector_id={$_SESSION['user']['user_id']}");
+
+			$total_lines = dbr($get_defect_reports);
+
+			$pages = ceil($total_lines / $lines);
+
+			if ($_GET['pg'] > $pages) {
+				$_GET['pg'] = $pages;
+			}
+
+			$pagination = ceil($_GET['pg'] / $pagination_pages);
+
+			$start_page = $pagination * $pagination_pages - $pagination_pages + 1;
+
+			$end_page = $start_page + $pagination_pages;
+			if ($end_page > $pages) {
+				$end_page = $pages;
+			}
+
+
+
+			$start = ($_GET['pg'] * $lines) - $lines;
+
+			$get_defect_reports = dbq("select * from ws_defect_reports where inspector_id={$_SESSION['user']['user_id']} order by date DESC limit {$start},$lines");
 
 			if ($get_defect_reports) {
 				if (dbr($get_defect_reports) > 0) {
@@ -38,5 +67,26 @@
 			}
 			?>
 		</table>
+		<nav aria-label="Page navigation example">
+			<ul class="pagination" id="pageination">
+				<li class="page-item"><a class="page-link" href="dashboard.php?page=arch-job&pg=1"><?= "<<" ?></a>
+				</li>
+				<li class="page-item"><a class="page-link" href="dashboard.php?page=arch-job&pg=<?php echo $start_page - 1 ?>">Previous</a></li>
+				<?php
+
+				for ($a = $start_page; $a <= $end_page; $a++) {
+					echo "<li class='page-item'><a class='page-link' href='dashboard.php?page=arch-job&pg={$a}'>";
+					if ($_GET['page'] == $a) {
+						echo "<b>{$a}</b>";
+					} else {
+						echo $a;
+					}
+					echo "</a></li>";
+				}
+				?>
+				<li class="page-item"><a class="page-link" href="dashboard.php?page=arch-job&pg=<?php echo $pagination * $pagination_pages + 1 ?>">Next</a></li>
+				<li class="page-item"><a class="page-link" href="dashboard.php?page=arch-job&pg=<?php echo $pages ?>">>></a></li>
+			</ul>
+		</nav>
 	</div>
 </div>
