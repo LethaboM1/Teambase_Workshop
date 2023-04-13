@@ -4,12 +4,13 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\SMTP;
 
+
+
 if (isset($_POST['add_jobcard'])) {
     if (
-        strlen($_POST['jobcard_number']) > 0
-        && $_POST['clerk_id'] > 0
+        $_POST['clerk_id'] > 0
         && $_POST['mechanic_id'] != '0'
-        && (($_POST['plant_id'] > 0 && $_POST['jobcard_type'] != 'sundry' &&  $_POST['allocated_hours'] > 0 && strlen($_POST['site']) > 0) || ($_POST['jobcard_type'] == 'sundry'))
+        && (($_POST['plant_id'] > 0 && $_POST['jobcard_type'] != 'sundry' && strlen($_POST['site']) > 0) || ($_POST['jobcard_type'] == 'sundry'))
 
     ) {
         $create_jobcard = true;
@@ -36,7 +37,12 @@ if (isset($_POST['add_jobcard'])) {
                     $reading = "km_reading='{$_POST['reading']}',";
                     break;
             }
-            $status = "status='open'";
+
+            if (strlen($_POST['jobcard_number']) > 0) {
+                $status = "status='open'";
+            } else {
+                $status = "status='allocated'";
+            }
         }
 
         if ($create_jobcard) {
@@ -56,13 +62,16 @@ if (isset($_POST['add_jobcard'])) {
                                 mechanic_id='{$_POST['mechanic_id']}',
                                 {$reading}
                                 {$job_type}
-                                allocated_hours={$_POST['allocated_hours']},
                                 priority={$_POST['priority']},
                                 jobcard_type='{$_POST['jobcard_type']}',
                                 {$status}
                                 ");
             if ($add_jobcard) {
+                $job_id = mysqli_insert_id($db);
                 msg("Job card logged!");
+                if (isset($_GET['defect'])) {
+                    $update_ = dbq("update ws_defect_reports set status='J', job_id={$job_id} where id={$_GET['defect']}");
+                }
                 require_once "./includes/forms/sms.mechanic.allocated.php";
                 go('dashboard.php?page=open-job');
             } else {
@@ -72,4 +81,13 @@ if (isset($_POST['add_jobcard'])) {
     } else {
         error("Fill in all the required fields. Really");
     }
+}
+
+if (isset($_GET['defect'])) {
+    $defect_report_ = dbq("select plant_id, site from ws_defect_reports where id={$_GET['defect']}");
+    if (!$defect_report_)  go("dashboard.php?page=add-job");
+
+    $defect_report_ = dbf($defect_report_);
+
+    $plant_ = get_plant($defect_report_['plant_id']);
 }
