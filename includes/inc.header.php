@@ -37,7 +37,7 @@
   <link rel="stylesheet" href="vendor/codemirror/theme/monokai.css" />
 
   <!-- Specific Page Vendor CSS -->
-  <link rel="stylesheet" href="vendor/select2/css/select2.css" />
+  <!-- <link rel="stylesheet" href="vendor/select2/css/select2.css" /> -->
   <link rel="stylesheet" href="vendor/select2-bootstrap-theme/select2-bootstrap.min.css" />
   <link rel="stylesheet" href="vendor/pnotify/pnotify.custom.css" />
 

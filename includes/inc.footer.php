@@ -12,13 +12,13 @@ if (isset($modal)) {
 <script src="vendor/bootstrap/js/bootstrap.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-<script src="vendor/common/common.js"></script>
+<!-- <script src="vendor/common/common.js"></script> -->
 <script src="vendor/nanoscroller/nanoscroller.js"></script>
 <script src="vendor/magnific-popup/jquery.magnific-popup.js"></script>
 <script src="vendor/jquery-placeholder/jquery.placeholder.js"></script>
 <script src="vendor/jquery.easy-pie-chart/jquery.easypiechart.js"></script>
 <script src="vendor/jquery-ui/jquery-ui.js"></script>
-<script src="vendor/jqueryui-touch-punch/jquery.ui.touch-punch.js"></script>
+<!-- <script src="vendor/jqueryui-touch-punch/jquery.ui.touch-punch.js"></script> -->
 <script src="vendor/jquery-appear/jquery.appear.js"></script>
 <script src="vendor/jquery-maskedinput/jquery.maskedinput.js"></script>
 <script src="vendor/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
@@ -28,12 +28,12 @@ if (isset($modal)) {
 <script src="vendor/flot/jquery.flot.pie.js"></script>
 <script src="vendor/flot/jquery.flot.categories.js"></script>
 <script src="vendor/flot/jquery.flot.resize.js"></script>
-<script src="vendor/jquery-sparkline/jquery.sparkline.js"></script>
+<!-- <script src="vendor/jquery-sparkline/jquery.sparkline.js"></script> -->
 <script src="vendor/raphael/raphael.js"></script>
 <script src="vendor/morris/morris.js"></script>
 <script src="vendor/gauge/gauge.js"></script>
 <script src="vendor/snap.svg/snap.svg.js"></script>
-<script src="vendor/liquid-meter/liquid.meter.js"></script>
+<!-- <script src="vendor/liquid-meter/liquid.meter.js"></script> -->
 <script src="vendor/chartist/chartist.js"></script>
 
 <!-- Specific Page Vendor -->

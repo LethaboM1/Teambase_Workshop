@@ -1,14 +1,12 @@
 <div class="row">
 	<div class="col-xl-12">
-		<table class="table table-responsive-md table-bordered mb-0 dark">
+		<table class="table table-hover table-responsive-md table-bordered mb-0 dark">
 			<thead>
 				<tr>
 					<th>Date</th>
 					<th>Plant</th>
 					<th>Operator</th>
 					<th>Site</th>
-					<th></th>
-					<th></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -51,14 +49,12 @@
 						/* Get Stuff */
 						$plant_ = get_plant($report['plant_id']);
 						$operator_ = ($report['operator_id'] != 0) ? get_user($report['operator_id']) : ['name' => 'None', 'last_name' => ''];
-						echo "<tr onclick='window.open(`print.php?type=defect-report&id={$report['id']}`,`_blank`)'>
+						echo "<tr class='pointer' onclick='window.open(`print.php?type=defect-report&id={$report['id']}`,`_blank`)'>
 								<td>{$report['date']}</td>
 								<td>{$plant_['plant_number']}" . (strlen($plant_['fleet_number']) > 0 ? "-" . $plant_['fleet_number'] : "") . "</td>
 								<td>{$operator_['name']}" . (strlen($operator_['last_name']) > 0 ? " " . $operator_['last_name'] : "") . "</td>
 								<td>{$report['site']}</td>
-								<td></td>
-								<td></td>
-								<td></td>
+								<td><i class='fa fa-print'></i></td>
 							</tr>";
 					}
 				} else {
@@ -69,13 +65,13 @@
 		</table>
 		<nav aria-label="Page navigation example">
 			<ul class="pagination" id="pageination">
-				<li class="page-item"><a class="page-link" href="dashboard.php?page=arch-job&pg=1"><?= "<<" ?></a>
+				<li class="page-item"><a class="page-link" href="dashboard.php?pg=1"><?= "<<" ?></a>
 				</li>
-				<li class="page-item"><a class="page-link" href="dashboard.php?page=arch-job&pg=<?php echo $start_page - 1 ?>">Previous</a></li>
+				<li class="page-item"><a class="page-link" href="dashboard.php?pg=<?php echo $start_page - 1 ?>">Previous</a></li>
 				<?php
 
 				for ($a = $start_page; $a <= $end_page; $a++) {
-					echo "<li class='page-item'><a class='page-link' href='dashboard.php?page=arch-job&pg={$a}'>";
+					echo "<li class='page-item'><a class='page-link' href='dashboard.php?pg={$a}'>";
 					if ($_GET['page'] == $a) {
 						echo "<b>{$a}</b>";
 					} else {
@@ -84,8 +80,8 @@
 					echo "</a></li>";
 				}
 				?>
-				<li class="page-item"><a class="page-link" href="dashboard.php?page=arch-job&pg=<?php echo $pagination * $pagination_pages + 1 ?>">Next</a></li>
-				<li class="page-item"><a class="page-link" href="dashboard.php?page=arch-job&pg=<?php echo $pages ?>">>></a></li>
+				<li class="page-item"><a class="page-link" href="dashboard.php?pg=<?php echo $pagination * $pagination_pages + 1 ?>">Next</a></li>
+				<li class="page-item"><a class="page-link" href="dashboard.php?pg=<?php echo $pages ?>">>></a></li>
 			</ul>
 		</nav>
 	</div>

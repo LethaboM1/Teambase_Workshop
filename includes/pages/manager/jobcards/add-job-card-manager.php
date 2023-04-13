@@ -53,6 +53,7 @@
 											}
 										});
 										";
+							if (isset($_GET['defect'])) $jscript .= "$('#jobcard_type').val('repair').trigger('change');";
 							?>
 						</div>
 						<div class='row' style="display:none" id='plant_details'>
@@ -105,6 +106,8 @@
 										});
 										";
 
+								if (isset($_GET['defect'])) $jscript .= "$('#plant_id').val('{$defect_report_['plant_id']}').trigger('change'); $('#datalist_plant_id_input').val('{$plant_['plant_number']} - {$plant_['vehicle_type']} {$plant_['make']} {$plant_['model']}');";
+
 								?>
 							</div>
 							<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
@@ -114,12 +117,8 @@
 								<input id="reading_inp" type="text" name="reading" placeholder="Reading" class="form-control">
 							</div>
 							<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-								<label class="col-form-label" for="formGroupExampleInput">Allocated Hours</label>
-								<input type="number" name="allocated_hours" placeholder="Allocated Hours" class="form-control" value="<?= $_POST['allocated_hours'] ?>">
-							</div>
-							<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 								<label class="col-form-label" for="formGroupExampleInput">Site</label>
-								<input type="text" name="site" placeholder="Site" class="form-control" value="<?= $_POST['site'] ?>">
+								<input type="text" name="site" placeholder="Site" class="form-control" value="<?= (isset($defect_report_) ? $defect_report_['site'] : $_POST['site']) ?>">
 							</div>
 						</div> <!-- PLant Details -->
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
