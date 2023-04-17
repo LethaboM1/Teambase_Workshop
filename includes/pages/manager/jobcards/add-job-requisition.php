@@ -98,7 +98,7 @@
 					?>
 					<table class="table table-hover">
 						<thead>
-							<th>Component</th>
+							<th>Comp.</th>
 							<th>Part No</th>
 							<th>Desc.</th>
 							<th>Qty</th>
