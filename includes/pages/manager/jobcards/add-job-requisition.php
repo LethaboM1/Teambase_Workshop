@@ -133,13 +133,13 @@
 							}
 
 							$jscript_function = "
-													function remove_part (part_no) {
+													function remove_part (description) {
 														$.ajax({
 															method:'post',
 															url:'includes/ajax.php',
 															data: {
 																cmd:'remove_part',
-																part_no: part_no
+																description: description
 															},
 															success: function (result) {
 																let data = JSON. parse(result);
