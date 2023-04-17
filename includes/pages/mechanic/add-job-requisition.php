@@ -97,6 +97,7 @@
 					?>
 					<table class="table table-hover">
 						<thead>
+							<th>Component</th>
 							<th>Part No</th>
 							<th>Description</th>
 							<th>Qty</th>
@@ -109,7 +110,6 @@
 								foreach ($_SESSION['request_parts'] as $part) {
 							?>
 									<tr>
-										<th><?= $part['component'] ?></th>
 										<td><?= $part['component'] ?></td>
 										<td><?= $part['part_no'] ?></td>
 										<td><?= $part['description'] ?></td>
