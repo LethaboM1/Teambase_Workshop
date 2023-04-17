@@ -117,7 +117,7 @@
 										<td><?= $part['qty'] ?></td>
 										<td><?= $part['comment'] ?></td>
 										<td>
-											<a onclick='remove_part(`<?= $part['part_no'] ?>`)'>
+											<a class='pointer' onclick='remove_part(`<?= $part['description'] ?>`)'>
 												<i class="fa fa-trash"></i>
 											</a>
 										</td>
