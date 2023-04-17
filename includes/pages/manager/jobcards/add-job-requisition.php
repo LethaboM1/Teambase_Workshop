@@ -100,7 +100,7 @@
 						<thead>
 							<th>Component</th>
 							<th>Part No</th>
-							<th>Description</th>
+							<th>Desc.</th>
 							<th>Qty</th>
 							<th>Comment</th>
 							<th></th>
