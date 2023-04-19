@@ -60,6 +60,8 @@
 				} else {
 					echo "<tr><td colspan='7'>Nothing to list</td></tr>";
 				}
+			} else {
+				echo "<tr><td colspan='7'>SQL Error: " . dbe() . "</td></tr>";
 			}
 			?>
 		</table>
