@@ -48,7 +48,7 @@
 		<?php
 		$get_plants = dbq("select * from plants_tbl where operator_id={$_SESSION['user']['user_id']}");
 		if (dbr($get_plants) == 0) {
-			$get_plants = dbq("select * from plants_tbl where plant_id in (select plant_id from plant_user_tbl where user_id={$_SESSION['user']['user_id']}) and status='Ready'");
+			$get_plants = dbq("select * from plants_tbl where plant_id in (select plant_id from plant_user_tbl where user_id={$_SESSION['user']['user_id']})"); // and status='Ready'
 		}
 
 		if ($get_plants) {
