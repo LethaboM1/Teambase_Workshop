@@ -63,26 +63,28 @@
 			}
 			?>
 		</table>
-		<nav aria-label="Page navigation example">
-			<ul class="pagination" id="pageination">
-				<li class="page-item"><a class="page-link" href="dashboard.php?pg=1"><?= "<<" ?></a>
-				</li>
-				<li class="page-item"><a class="page-link" href="dashboard.php?pg=<?php echo $start_page - 1 ?>">Previous</a></li>
-				<?php
+		<?php if ($total_lines > 0) { ?>
+			<nav aria-label="Page navigation example">
+				<ul class="pagination" id="pageination">
+					<li class="page-item"><a class="page-link" href="dashboard.php?pg=1"><?= "<<" ?></a>
+					</li>
+					<li class="page-item"><a class="page-link" href="dashboard.php?pg=<?php echo $start_page - 1 ?>">Previous</a></li>
+					<?php
 
-				for ($a = $start_page; $a <= $end_page; $a++) {
-					echo "<li class='page-item'><a class='page-link' href='dashboard.php?pg={$a}'>";
-					if ($_GET['page'] == $a) {
-						echo "<b>{$a}</b>";
-					} else {
-						echo $a;
+					for ($a = $start_page; $a <= $end_page; $a++) {
+						echo "<li class='page-item'><a class='page-link' href='dashboard.php?pg={$a}'>";
+						if ($_GET['page'] == $a) {
+							echo "<b>{$a}</b>";
+						} else {
+							echo $a;
+						}
+						echo "</a></li>";
 					}
-					echo "</a></li>";
-				}
-				?>
-				<li class="page-item"><a class="page-link" href="dashboard.php?pg=<?php echo $pagination * $pagination_pages + 1 ?>">Next</a></li>
-				<li class="page-item"><a class="page-link" href="dashboard.php?pg=<?php echo $pages ?>">>></a></li>
-			</ul>
-		</nav>
+					?>
+					<li class="page-item"><a class="page-link" href="dashboard.php?pg=<?php echo $pagination * $pagination_pages + 1 ?>">Next</a></li>
+					<li class="page-item"><a class="page-link" href="dashboard.php?pg=<?php echo $pages ?>">>></a></li>
+				</ul>
+			</nav>
+		<?php } ?>
 	</div>
 </div>
