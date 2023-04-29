@@ -62,7 +62,7 @@ if (isset($_POST['add_tyre_report'])) {
                         error_log("Error adding tyre {$pos} : " . dbe());
                     }
                 }
-
+                $_SESSION['scroll_to'] = 'tr_section';
                 go("dashboard.php?page=job-card-view&id={$_GET['id']}");
             } else {
                 $error[] = "SQL error adding report: " . dbe();

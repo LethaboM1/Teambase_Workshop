@@ -467,28 +467,26 @@ switch ($_POST['cmd']) {
     case "add_part":
 
         $part = json_decode($_POST['part'], true);
-        // if (!isset($part['part_no'])) {
-        //     $json_['status'] = 'error';
-        //     $json_['message'] = 'No part no';
-        //     return json_encode($json_);
-        // }
 
-        if (!isset($part['component'])) {
+        if (!isset($part['component']) || strlen($part['component']) == 0) {
             $json_['status'] = 'error';
             $json_['message'] = 'No component';
-            return json_encode($json_);
+            echo json_encode($json_);
+            return;
         }
 
         if (!isset($part['description'])) {
             $json_['status'] = 'error';
             $json_['message'] = 'No description';
-            return json_encode($json_);
+            echo json_encode($json_);
+            return;
         }
 
         if (!is_numeric($part['qty'])) {
             $json_['status'] = 'error';
             $json_['message'] = 'invalid qty';
-            return json_encode($json_);
+            echo json_encode($json_);
+            return;
         }
 
         if (is_array($_SESSION['request_parts'])) {

@@ -41,6 +41,7 @@
 
 			$start = ($_GET['pg'] * $lines) - $lines;
 			if ($start < 0) $start = 0;
+
 			$get_defect_reports = dbq("select * from ws_defect_reports where inspector_id={$_SESSION['user']['user_id']} order by date DESC limit {$start},$lines");
 
 			if ($get_defect_reports) {

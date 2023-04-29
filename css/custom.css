@@ -1,4 +1,6 @@
-/* Add here all your CSS customizations */
+
+
+#alertMessage/* Add here all your CSS customizations */
 .main_logo{
 	margin-bottom: -80px;
 }
@@ -144,4 +146,15 @@
  }
  .switch-toggle input:checked + label {
    background: green;
+ }
+
+ #alertMsg {
+	position: absolute;
+	top: 100px;
+	max-width: 300px;
+	right:0;
+	left:0;
+	margin-left:auto;
+	margin-right:auto;
+	z-index: 999;
  }

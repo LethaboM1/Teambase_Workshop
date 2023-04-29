@@ -84,3 +84,23 @@ function remImage ($key) {
 
     });
 }
+
+function alertMessage ($message, $error=true) {
+    if ($error) {
+        $html_message = `<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                            <strong>Error!</strong>&nbsp;` + $message + `
+                            <button type='button' class='btn-close' data-bs-dismiss='alert' aria-hidden='true' aria-label='Close'></button>
+                        </div>`;              
+    } else {
+        $html_message = `<div class='alert success-danger alert-dismissible fade show' role='alert'>
+                            <strong>Error!</strong>&nbsp;` + $message + `
+                            <button type='button' class='btn-close' data-bs-dismiss='alert' aria-hidden='true' aria-label='Close'></button>
+                        </div>`;      
+    }
+
+     $("#alertMsg").html($html_message); 
+
+    setInterval(function () {
+            $("#alertMsg").html(``);
+        }, 5000);
+}

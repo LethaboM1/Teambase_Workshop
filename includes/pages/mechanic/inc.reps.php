@@ -57,7 +57,7 @@
 </div>
 <!-- Modal view End -->
 
-<section id="evt_section" class="card mt-3">
+<section id="evt_reps_section" class="card mt-3">
     <header class="card-header">
         <h2 class="card-title">Fault Reports</h2>
     </header>

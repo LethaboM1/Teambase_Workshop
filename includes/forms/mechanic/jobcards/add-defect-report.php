@@ -71,6 +71,7 @@ if (isset($_POST['submit'])) {
 
             msg("Job card added.");
             require_once "./includes/forms/mail.clerk.new_job.php";
+            $_SESSION['scroll_to'] = 'evt_reps_section';
             go('dashboard.php');
         } else {
             sqlError('Adding job card', 'adding job card');

@@ -83,6 +83,8 @@
 														$('#part_no').val(``);
 														$('#description').val(``);
 														$('#qty').val(`1`);
+													} else {
+														alertMessage(data.message);
 													}
 												},
 												error: function (error) {

@@ -5,6 +5,8 @@ $plant_ = get_plant($jobcard_['plant_id']); // dbf(dbq("select * from plants_tbl
 
 if (isset($_POST['cancel'])) {
     unset($_SESSION['request_parts']);
+
+    $_SESSION['scroll_to'] = 'sr_section';
     go('dashboard.php?page=job-card-view&id=' . $_GET['id']);
 }
 
@@ -42,6 +44,7 @@ if (isset($_POST['request_parts'])) {
             }
 
             if (!isset($error)) {
+                $_SESSION['scroll_to'] = 'sr_section';
                 saveRequisition($request_id);
                 if ($jobcard['jobcard_type'] == 'service') {
                     go('dashboard.php?page=plant-schedule&id=' . $_GET['id']);
