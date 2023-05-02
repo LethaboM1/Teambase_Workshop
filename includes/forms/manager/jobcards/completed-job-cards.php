@@ -26,7 +26,7 @@ if (isset($_POST['reopen_jobcard'])) {
     if (isset($_POST['job_id'])) {
         $update_jobcard = dbq("update jobcards set 
                                     status='busy',
-                                    complete_comment='" . htmlentities($_POST['comment']) . "'
+                                    complete_comment='" . htmlentities($_POST['comment'], ENT_QUOTES) . "'
                                     where job_id={$_POST['job_id']}");
         if ($update_jobcard) {
             $jobcard_ = dbf(dbq("select jobcard_number, mechanic_id from jobcards where job_id={$_POST['job_id']}"));
