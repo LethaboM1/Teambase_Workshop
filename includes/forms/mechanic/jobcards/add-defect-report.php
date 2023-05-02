@@ -57,7 +57,7 @@ if (isset($_POST['submit'])) {
                                                     component='{$report['component']}',
                                                     severity='{$report['severity']}',
                                                     hours='0',
-                                                    comment='" . htmlentities($report['comment']) . "'
+                                                    comment='" . htmlentities($report['comment'], ENT_QUOTES) . "'
                                                     ");
                         if (!$insert_report) {
                             error_log("Error adding report: job={$job_id}:" . dbe());

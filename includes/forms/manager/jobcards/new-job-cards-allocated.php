@@ -63,7 +63,7 @@ if (isset($_POST['delete_jobcard'])) {
     if ($jobcard_ = get_jobcard($_POST['job_id'])) {
         $update_ = dbq("update jobcards set 
                             status='completed', 
-                            complete_comment='Job card was deleted by {$_SESSION['user']['name']} {$_SESSION['user']['last_name']}', 
+                            complete_comment='Job card was deleted by " . htmlentities($_SESSION['user']['name'], ENT_QUOTES) . " " . htmlentities($_SESSION['user']['last_name'], ENT_QUOTES) . "', 
                             complete_datetime='" . date('Y-m-d H:i') . "'
                             where job_id={$_POST['job_id']}");
 
