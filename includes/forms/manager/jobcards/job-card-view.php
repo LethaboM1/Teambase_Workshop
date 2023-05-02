@@ -108,7 +108,7 @@ if (isset($_POST['add_insp'])) {
                                 component='{$_POST['component']}',
                                 severity='{$_POST['severity']}',
                                 hours='{$_POST['hours']}',
-                                comment='{$_POST['report_comment']}',
+                                comment='" . htmlentities($_POST['report_comment'], ENT_QUOTES) . "',
                                 reviewed=1
                                 ");
         if ($add_report) {
