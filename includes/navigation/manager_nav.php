@@ -4,7 +4,10 @@ $get_open_requisitions = dbq("select request_id from jobcard_requisitions where 
 $get_tyre_reports = dbq("select id from jobcard_tyre_reports where checked_by=0");
 
 $get_new = dbq("select job_id from jobcards where status='logged'");
-$get_new_defect = dbq("select job_id from jobcards where status='defect-logged'");
+
+// $get_new_defect = dbq("select job_id from jobcards where status='defect-logged'");
+$get_new_defect = dbq("select id from ws_defect_reports where status='F'");
+
 $get_add_defect = dbq("select distinct job_id from jobcard_reports where reviewed=0");
 
 $get_new_jobnumber = dbq("select job_id from jobcards where status='allocated'");
@@ -67,22 +70,23 @@ $get_completed = dbq("select job_id from jobcards where status='completed'");
 				<li class="nav-parent">
 					<a class="nav-link" href="#">
 						<i class="bx bxs-car-crash" aria-hidden="true"></i>
-						<span>New Defect Reports&nbsp;<span class='badge badge-danger'><?= dbr($get_new_defect) +  dbr($get_add_defect) ?></span></span>
+						<span>Defect Reports&nbsp;<span class='badge badge-danger'>New&nbsp;<?= dbr($get_new_defect) ?></span></span>
 					</a>
 					<ul class="nav nav-children">
 						<li><a class="nav-link" href="dashboard.php?page=new-defects">New Defect Reports&nbsp;<span class='badge badge-danger float-end'><?= dbr($get_new_defect) ?></span></a></li>
-						<li><a class="nav-link" href="dashboard.php?page=additional-defects">Additional Defect Reports&nbsp;<span class='badge badge-danger float-end'><?= dbr($get_add_defect) ?></span></a></li>
+						<li><a class="nav-link" href="dashboard.php?page=list-defects">Reviewed Defect Reports</a></li>
 					</ul>
 				</li>
 				<li class="nav-parent">
 					<a class="nav-link" href="#">
 						<i class="bx bxs-car-mechanic" aria-hidden="true"></i>
-						<span>Job Cards&nbsp;<span class='badge badge-danger'><?= dbr($get_new) + dbr($get_new_jobnumber) ?></span></span>
+						<span>Job Cards&nbsp;<span class='badge badge-danger'><?= dbr($get_new) + dbr($get_new_jobnumber)  +  dbr($get_add_defect) ?></span></span>
 					</a>
 					<ul class="nav nav-children">
 						<li><a class="nav-link" href="dashboard.php?page=add-job">Create</a></li>
 						<li><a class="nav-link" href="dashboard.php?page=new-job">New Job cards&nbsp;<span class='badge badge-danger float-end'><?= dbr($get_new) ?></span></a></li>
 						<li><a class="nav-link" href="dashboard.php?page=new-job-allocate">New - Require Job Number&nbsp;<span class='badge badge-danger float-end'><?= dbr($get_new_jobnumber) ?></span></a></li>
+						<li><a class="nav-link" href="dashboard.php?page=additional-defects">Additional Defects&nbsp;<span class='badge badge-danger float-end'><?= dbr($get_add_defect) ?></span></a></li>
 						<li><a class="nav-link" href="dashboard.php?page=open-job">Open&nbsp;<span class='badge badge-danger float-end'><?= dbr($get_open) ?></span></a></li>
 						<li><a class="nav-link" href="dashboard.php?page=completed-job">Completed&nbsp;<span class='badge badge-danger float-end'><?= dbr($get_completed) ?></span></a></li>
 						<li><a class="nav-link" href="dashboard.php?page=arch-job">Archived</a></li>

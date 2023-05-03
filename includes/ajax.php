@@ -741,12 +741,13 @@ switch ($_POST['cmd']) {
 
             case "plants":
                 $get_plants = dbq("select * from plants_tbl where (
-                                    vehicle_type like '%{$_POST['search']}%' 
+                                    plant_number like '%{$_POST['search']}%'
+                                    || vehicle_type like '%{$_POST['search']}%' 
                                     || reg_number like '%{$_POST['search']}%' 
                                     || vin_number like '%{$_POST['search']}%'
                                     || make like '%{$_POST['search']}%'
                                     || model like '%{$_POST['search']}%'
-                                    )");
+                                    ) order by plant_number");
                 if ($get_plants) {
                     if (dbr($get_plants) > 0) {
                         while ($row = dbf($get_plants)) {

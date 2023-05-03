@@ -13,6 +13,10 @@
                         <form method="post">
                             <div class="card-body">
                                 <?= inp('jobcard_type', '', 'hidden', $jobcard['jobcard_type']) ?>
+                                <h4>Plant:&nbsp;<?= $plant_['plant_number'] ?></h4>
+                                <h5><?= strtoupper($plant_['reading_type']) ?> Reading:&nbsp;<?= $jobcard[$plant_['reading_type'] . '_reading'] ?></h5>
+                                <h5>Site:&nbsp;<?= (strlen($jobcard['site']) > 0 ? "{$jobcard['site']}" : "No site") ?></h5>
+
                                 <b>Logged by:</b>&nbsp;<?= $logged_by_['name'] ?><br>
                                 <b>Date Logged</b>&nbsp;<?= $jobcard['job_date'] ?><br>
                                 <b>Fault:</b><br><?= $jobcard['fault_description'] ?><br>

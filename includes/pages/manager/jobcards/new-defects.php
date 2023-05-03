@@ -59,7 +59,7 @@
 											<header class='card-header'>
 												<div class='row'>
 													<div class='col-md-6'>
-														<h2 class='card-title'>View Job Card</h2>
+														<h2 class='card-title'>Review Faulty Defect Report</h2>
 													</div>
 													<div class='col-md-6'>
 														<button onclick='window.open(`print.php?type=defect-report&id={$report['id']}`,`_blank`);' class='btn btn-warning float-right'>Print Report</button>
@@ -69,6 +69,10 @@
 											<div class='card-body'>
 												<div class='modal-wrapper'>
 													<div class='modal-text'>
+													<h4>Plant:&nbsp; {$plant_['plant_number']}</h4>
+                                                        <h5>Operator: {$operator_['name']}" . (strlen($operator_['last_name']) > 0 ? " " . $operator_['last_name'] : "") . "</h5>
+														Date: {$report['date']}<br>
+														Site: " . (strlen($report['site']) > 0 ? $report['site'] : "None") . "
 														<form method='post'>"
 							. inp('report_id', '', 'hidden', $report['id'])
 							. inp('comment', 'Comment', 'textarea')

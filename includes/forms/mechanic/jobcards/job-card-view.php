@@ -160,23 +160,27 @@ if (isset($_POST['add_insp'])) {
 
 if (isset($_POST['add_event'])) {
     if (strlen($_POST['comment']) > 0) {
-        if (($_POST['event'] != '0') || ($jobcard_['jobcard_type'] == 'sundry')) {
-            $add_event = dbq("insert into jobcard_events set
+        if ($_POST['event_date'] <= date('Y-m-d')) {
+            if (($_POST['event'] != '0') || ($jobcard_['jobcard_type'] == 'sundry')) {
+                $add_event = dbq("insert into jobcard_events set
                                             job_id={$_GET['id']},
                                             start_datetime='" . $_POST['event_date'] . " 00:00:00',
                                             total_hours={$_POST['total_hours']},
                                             event='{$_POST['event']}',
                                             comment='" . htmlentities($_POST['comment'], ENT_QUOTES) . "'
                                             ");
-            if ($add_event) {
-                unset($_POST);
-                msg("Event added.");
-                go("dashboard.php?page=job-card-view&id={$_GET['id']}");
+                if ($add_event) {
+                    unset($_POST);
+                    msg("Event added.");
+                    go("dashboard.php?page=job-card-view&id={$_GET['id']}");
+                } else {
+                    sqlError('', '');
+                }
             } else {
-                sqlError('', '');
+                error("You must allocate an event type.");
             }
         } else {
-            error("You must allocate an event type.");
+            error('Invalid date!');
         }
     } else {
         error("fill in a comment.");
