@@ -379,15 +379,17 @@ if (isset($_POST['submit_checklist'])) {
                     }
                 }
             } else {
-                $insp_status = 'Good';
-                $allocate_plant = dbq("update plants_tbl set 
-                                                operator_id={$_SESSION['user']['user_id']},
-                                                status='check'
-                                                where plant_id={$_POST['submit_checklist']}");
-                if (mysqli_affected_rows($db) != -1) {
-                    msg("Plant has been allocated to you.");
-                } else {
-                    sqlError('', 'UpdatePlant:');
+                if ($plant_['status'] == 'ready') {
+                    $insp_status = 'Good';
+                    $allocate_plant = dbq("update plants_tbl set 
+                                                    operator_id={$_SESSION['user']['user_id']},
+                                                    status='check'
+                                                    where plant_id={$_POST['submit_checklist']}");
+                    if (mysqli_affected_rows($db) != -1) {
+                        msg("Plant has been allocated to you.");
+                    } else {
+                        sqlError('', 'UpdatePlant:');
+                    }
                 }
             }
 
