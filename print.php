@@ -36,8 +36,6 @@ switch ($_GET['type']) {
                                     $diff = $plant_['next_service_reading'] - $plant_['km_reading'];
                                     $show = true;
                                 }
-                            } else {
-                                $show = false;
                             }
                             break;
 
@@ -52,14 +50,13 @@ switch ($_GET['type']) {
                                     $diff = $plant_['next_service_reading'] - $plant_['km_reading'];
                                     $show = true;
                                 }
-                            } else {
-                                $show = false;
                             }
                             break;
                     }
-
-                    $plant_['diff'] = $diff;
-                    $service_list[] = $plant_;
+                    if ($show) {
+                        $plant_['diff'] = $diff;
+                        $service_list[] = $plant_;
+                    }
                 }
             }
         }
