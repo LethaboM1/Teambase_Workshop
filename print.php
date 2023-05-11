@@ -13,6 +13,122 @@ if (isset($_POST['html_code'])) {
 
 
 switch ($_GET['type']) {
+    case 'next-service':
+        $km_diff = 2600;
+        $hr_diff = 100;
+
+        $get_plants = dbq("select plant_number, make,model, reading_type, km_reading, hr_reading, next_service_reading from plants_tbl");
+        if ($get_plants) {
+            if (dbr($get_plants) > 0) {
+                /* 2600 km , 100hrs */
+                while ($plant_ = dbf($get_plants)) {
+                    $show = false;
+
+                    switch ($plant_['reading_type']) {
+                        case 'km':
+                            if ($plant_['km_reading'] < $plant_['next_service_reading']) {
+                                $diff = $plant_['next_service_reading'] - $plant_['km_reading'];
+                                if ($diff <= $km_diff) {
+                                    $show = true;
+                                }
+                            } else if ($plant_['km_reading'] >= $plant_['next_service_reading']) {
+                                $show = true;
+                            }
+                            break;
+
+                        case 'hr':
+                            if ($plant_['hr_reading'] < $plant_['next_service_reading']) {
+                                $diff = $plant_['next_service_reading'] - $plant_['hr_reading'];
+                                if ($diff <= $hr_diff) {
+                                    $show = true;
+                                }
+                            } else if ($plant_['hr_reading'] >= $plant_['next_service_reading']) {
+                                $show = true;
+                            }
+                            break;
+                    }
+
+                    if ($show) {
+                        $plant_['diff'] = $diff;
+                        $service_list[] = $plant_;
+                    }
+                }
+            }
+        }
+
+        $title = [
+            'font' => [
+                'bold' => true,
+                'size' => 14
+
+            ],
+        ];
+
+        $header = [
+            'font' => [
+                'bold' => true,
+            ],
+        ];
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $sheet->setCellValue('A1', 'Plants to service')
+            ->setCellValue('A2', 'Date Printed: ' . date('Y-m-d'))
+
+            ->setCellValue('A4', 'Plant No.')
+            ->setCellValue('B4', 'Make')
+            ->setCellValue('C4', 'Model')
+            ->setCellValue('D4', 'Reading')
+            ->setCellValue('E4', 'Service')
+            ->setCellValue('F4', 'Variance');
+
+        $sheet->getStyle('A1')->applyFromArray($title);
+        $sheet->getStyle('A4:F4')->applyFromArray($header);
+
+
+        $sheet->getColumnDimension('A')->setWidth(100, 'px');
+        $sheet->getColumnDimension('B')->setWidth(100, 'px');
+        $sheet->getColumnDimension('C')->setWidth(100, 'px');
+        $sheet->getColumnDimension('D')->setWidth(100, 'px');
+        $sheet->getColumnDimension('E')->setWidth(100, 'px');
+        $sheet->getColumnDimension('F')->setWidth(100, 'px');
+
+        $sheet_row = 5;
+        if (isset($service_list) && count($service_list)) {
+            foreach ($service_list as $item) {
+                $sheet->setCellValue("A{$sheet_row}", $item['plant_number'])
+                    ->setCellValue("B{$sheet_row}",  $item['make'])
+                    ->setCellValue("C{$sheet_row}",  $item['model'])
+                    ->setCellValue("D{$sheet_row}",  $item[$item['reading_type'] . '_reading'])
+                    ->setCellValue("E{$sheet_row}",  $item['next_service_reading'])
+                    ->setCellValue("E{$sheet_row}",  $item['diff']);
+            }
+            $sheet_row++;
+        }
+
+
+        $writer = new Xlsx($spreadsheet);
+
+
+        // Redirect output to a client’s web browser (Excel2007)
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="next-service-' . date('Y_m_d') . '.xlsx"');
+        header('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+
+        // If you're serving to IE over SSL, then the following may be needed
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0
+
+
+        $writer->save('php://output');
+
+        break;
+
     case 'plant-checklist':
         if ($_GET['id'] > 0) {
             $get_checklist = dbq("select * from checklist_results where list_id={$_GET['id']}");
