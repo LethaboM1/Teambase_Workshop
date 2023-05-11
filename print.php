@@ -978,17 +978,19 @@ switch ($_GET['type']) {
                                 <table style='width: 750px; border-collapse: collapse; table-layout: fixed;'>                                
                                     <tr>
                                         <td style='margin:3px; width: 10%; font-weight: bold; font-size: 11px; color: black; text-align: left; padding: 5px;'>Date:</td>
-                                        <td style='margin:3px; width: 40%; font-weight: bold; font-size: 11px; color: black; text-align: left;  padding: 5px;'>{$defect_report_['date']}</td>
+                                        <td style='margin:3px; width: 20%; font-weight: bold; font-size: 11px; color: black; text-align: left;  padding: 5px;'>{$defect_report_['date']}</td>
                                         <td style='margin:3px; width: 10%; font-weight: bold; font-size: 11px; color: black; text-align: right; padding: 5px;'>Site:</td>
-                                        <td style='margin:3px; width: 40%; font-weight: bold; font-size: 11px; color: black; text-align: left;  padding: 5px;'>{$defect_report_['site']}</td>
+                                        <td style='margin:3px; width: 20%; font-weight: bold; font-size: 11px; color: black; text-align: left;  padding: 5px;'>{$defect_report_['site']}</td>
+                                        <td></td>
+                                        <td></td>
                                     </tr>
                                     <tr>
                                         <td style='margin:3px; width: 10%; font-weight: bold; font-size: 11px; color: black; text-align: left; padding: 5px;'>Plant No:</td>
-                                        <td style='margin:3px; width: 23%; font-weight: bold; font-size: 11px; color: black; text-align: left;  padding: 5px;'>{$plant_['plant_number']}</td>
+                                        <td style='margin:3px; width: 20%; font-weight: bold; font-size: 11px; color: black; text-align: left;  padding: 5px;'>{$plant_['plant_number']}</td>
                                         <td style='margin:3px; width: 15%; font-weight: bold; font-size: 11px; color: black; text-align: right; padding: 5px;'>Registation No:</td>
                                         <td style='margin:3px; width: 20%; font-weight: bold; font-size: 11px; color: black; text-align: left;  padding: 5px;'>{$plant_['reg_number']}</td>
                                         <td style='margin:3px; width: 10%; font-weight: bold; font-size: 11px; color: black; text-align: right; padding: 5px;'>" . strtoupper($plant_['reading_type']) . ":</td>
-                                        <td style='margin:3px; width: 22%; font-weight: bold; font-size: 11px; color: black; text-align: left;  padding: 5px;'>{$defect_report_['reading']}</td>
+                                        <td style='margin:3px; width: 20%; font-weight: bold; font-size: 11px; color: black; text-align: left;  padding: 5px;'>{$defect_report_['reading']}</td>
                                     </tr>
                                 </table>
                                 <br>
