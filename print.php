@@ -26,24 +26,32 @@ switch ($_GET['type']) {
 
                     switch ($plant_['reading_type']) {
                         case 'km':
-                            if ($plant_['km_reading'] < $plant_['next_service_reading']) {
-                                $diff = $plant_['next_service_reading'] - $plant_['km_reading'];
-                                if ($diff <= $km_diff) {
+                            if ($plant_['next_service_reading'] != null) {
+                                if ($plant_['km_reading'] < $plant_['next_service_reading']) {
+                                    $diff = $plant_['next_service_reading'] - $plant_['km_reading'];
+                                    if ($diff <= $km_diff) {
+                                        $show = true;
+                                    }
+                                } else if ($plant_['km_reading'] >= $plant_['next_service_reading']) {
                                     $show = true;
                                 }
-                            } else if ($plant_['km_reading'] >= $plant_['next_service_reading']) {
-                                $show = true;
+                            } else {
+                                $show = false;
                             }
                             break;
 
                         case 'hr':
-                            if ($plant_['hr_reading'] < $plant_['next_service_reading']) {
-                                $diff = $plant_['next_service_reading'] - $plant_['hr_reading'];
-                                if ($diff <= $hr_diff) {
+                            if ($plant_['next_service_reading'] != null) {
+                                if ($plant_['hr_reading'] < $plant_['next_service_reading']) {
+                                    $diff = $plant_['next_service_reading'] - $plant_['hr_reading'];
+                                    if ($diff <= $hr_diff) {
+                                        $show = true;
+                                    }
+                                } else if ($plant_['hr_reading'] >= $plant_['next_service_reading']) {
                                     $show = true;
                                 }
-                            } else if ($plant_['hr_reading'] >= $plant_['next_service_reading']) {
-                                $show = true;
+                            } else {
+                                $show = false;
                             }
                             break;
                     }
