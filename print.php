@@ -110,7 +110,8 @@ switch ($_GET['type']) {
                     ->setCellValue("C{$sheet_row}",  $item['model'])
                     ->setCellValue("D{$sheet_row}",  $item[$item['reading_type'] . '_reading'])
                     ->setCellValue("E{$sheet_row}",  $item['next_service_reading'])
-                    ->setCellValue("E{$sheet_row}",  $item['diff']);
+                    ->setCellValue("E{$sheet_row}",  $item['diff'])
+                    ->setCellValue("E{$sheet_row}",  count($service_list));
             }
             $sheet_row++;
         }
