@@ -111,7 +111,7 @@ switch ($_GET['type']) {
                     ->setCellValue("C{$sheet_row}",  $list_item['model'])
                     ->setCellValue("D{$sheet_row}",  $list_item[$list_item['reading_type'] . '_reading'])
                     ->setCellValue("E{$sheet_row}",  $list_item['next_service_reading'])
-                    ->setCellValue("E{$sheet_row}",  $list_item['diff']);
+                    ->setCellValue("F{$sheet_row}",  $list_item['diff']);
                 $sheet_row++;
             }
         }
