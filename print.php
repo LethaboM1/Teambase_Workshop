@@ -840,7 +840,8 @@ switch ($_GET['type']) {
                                 <table style='width: 750px; border-collapse: collapse; table-layout: fixed;'>
                                     <thead>
                                         <tr>
-                                        <th style='width: 100%; font-weight: bold; font-size: 25px; color: black; text-align: left; padding: 5px;'>Defect Report</th>
+                                            <th style='width: 90%; font-weight: bold; font-size: 25px; color: black; text-align: left; padding: 5px;'>Defect Report</th>
+                                            <th># {$_GET['id']}</th>
                                         </tr>
                                     </thead>
                                     <tbody>

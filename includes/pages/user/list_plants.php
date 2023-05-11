@@ -302,9 +302,9 @@ switch ($plant_['reading_type']) {
 					<?php
 					switch ($row['status']) {
 
-						case "ready":
-							echo "<i title='Start work' class='fa-solid fa-circle-check fa-2x'></i>";
-							break;
+							// case "ready":
+							// 	echo "<i title='Start work' class='fa-solid fa-circle-check fa-2x'></i>";
+							// 	break;
 
 						case "busy":
 							echo '<i title="Stop work" class="fa-regular fa-hand fa-2x"></i>';
@@ -312,6 +312,10 @@ switch ($plant_['reading_type']) {
 
 						case "check":
 							echo '<i title="Start work" class="fa-solid fa-play fa-2x"></i>';
+							break;
+
+						default:
+							echo "<i title='Start work' class='fa-solid fa-circle-check fa-2x'></i>";
 							break;
 					}
 					?>
@@ -351,30 +355,30 @@ switch ($plant_['reading_type']) {
 									</div>
 								</div>
 							</div>
-							<?php
+						<?php
 						} else {
-							if ($plant_['status'] == 'ready') {
-							?>
 
-								<header class="card-header">
-									<h2 class="card-title">Allocate Plant</h2>
-								</header>
-								<div class="card-body">
-									<div class="modal-wrapper">
-										<div class="modal-text">
-											<div class="row">
-												<form method="post">
-													<?php
-													$plant_id = $row['plant_id'];
-													require "./includes/pages/user/checklist.php";
-													?>
-												</form>
-											</div>
+						?>
+
+							<header class="card-header">
+								<h2 class="card-title">Allocate Plant</h2>
+							</header>
+							<div class="card-body">
+								<div class="modal-wrapper">
+									<div class="modal-text">
+										<div class="row">
+											<form method="post">
+												<?php
+												$plant_id = $row['plant_id'];
+												require "./includes/pages/user/checklist.php";
+												?>
+											</form>
 										</div>
 									</div>
 								</div>
+							</div>
 						<?php
-							}
+
 						}
 						?>
 						<footer class="card-footer">
@@ -403,92 +407,3 @@ switch ($plant_['reading_type']) {
 <!-- Plant Card Good End -->
 
 <?php
-
-/* 
-
-
-		<!-- Plant Card Causion -->
-		<div class="col-md-12">
-			<section class="card card-featured-left card-featured-warning mb-4">
-				<div class="card-body">
-					<div class="card-actions">
-						<!-- View Plant Card -->
-						<a class="mb-1 mt-1 mr-1 modal-sizes" href="#modalviewPlant2"><i class="fa-solid fa-eye"></i></a>
-						<!-- Modal View -->
-						<div id="modalviewPlant2" class="modal-block modal-block-lg mfp-hide">
-							<section class="card">
-								<header class="card-header">
-									<h2 class="card-title">View Plant Card</h2>
-								</header>
-								<div class="card-body">
-									<div class="modal-wrapper">
-										<div class="modal-text">
-											<p>Plant Card info here...</p>
-
-										</div>
-									</div>
-								</div>
-								<footer class="card-footer">
-									<div class="row">
-										<div class="col-md-12 text-right">
-											<button class="btn btn-default modal-dismiss">Cancel</button>
-										</div>
-									</div>
-								</footer>
-							</section>
-						</div>
-						<!-- Modal View End -->
-						<!-- View Plant Card End -->
-					</div>
-					<h2 class="card-title">Plant: HP56521</h2>
-					<p class="card-subtitle">Opend by: Name</p>
-					<div class="progress progress-xl progress-half-rounded m-2">
-						<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%;">20%</div>
-					</div>
-				</div>
-			</section>
-		</div>
-		<!-- Plant Card causion -->
-		<!-- Plant Card Danger -->
-		<div class="col-md-12">
-			<section class="card card-featured-left card-featured-danger mb-4">
-				<div class="card-body">
-					<div class="card-actions">
-						<!-- View Plant Card -->
-						<a class="mb-1 mt-1 mr-1 modal-sizes" href="#modalviewPlant3"><i class="fa-solid fa-eye"></i></a>
-						<!-- Modal View -->
-						<div id="modalviewPlant3" class="modal-block modal-block-lg mfp-hide">
-							<section class="card">
-								<header class="card-header">
-									<h2 class="card-title">View Plant Card</h2>
-								</header>
-								<div class="card-body">
-									<div class="modal-wrapper">
-										<div class="modal-text">
-											<p>Plant Card info here...</p>
-
-										</div>
-									</div>
-								</div>
-								<footer class="card-footer">
-									<div class="row">
-										<div class="col-md-12 text-right">
-											<button class="btn btn-default modal-dismiss">Cancel</button>
-										</div>
-									</div>
-								</footer>
-							</section>
-						</div>
-						<!-- Modal View End -->
-						<!-- View Plant Card End -->
-					</div>
-					<h2 class="card-title">Plant: HP56521</h2>
-					<p class="card-subtitle">Opend by: Name</p>
-					<div class="progress progress-xl progress-half-rounded m-2">
-						<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%;">80%</div>
-					</div>
-				</div>
-			</section>
-		</div>
-		<!-- Plant Card Danger -->
-*/
