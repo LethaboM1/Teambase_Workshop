@@ -81,7 +81,7 @@ $progress = 100;
                                         <div class="col-md-12 text-right">
                                             <?= inp('job_id', '', 'hidden', $row['job_id']) ?>
                                             <?= inp('comment', 'Comment', 'textarea') ?>
-                                            <?= inp('close_jobcard', '', 'inline-submit', 'Close Job Card', 'btn-primary') ?>&nbsp;<button class="btn btn-default modal-dismiss">Cancel</button>
+                                            <?= inp('close_jobcard', '', 'inline-submit', 'Close Job Card', 'btn-primary') ?>&nbsp;<?= inp('reopen_jobcard', '', 'inline-submit', 'Reopen Job Card', 'btn-secondary') ?>&nbsp;<button class="btn btn-default modal-dismiss">Cancel</button>
                                         </div>
                                     </form>
                                 </div>
