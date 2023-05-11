@@ -47,7 +47,7 @@ switch ($_GET['type']) {
                                         $show = true;
                                     }
                                 } else if ($plant_['hr_reading'] >= $plant_['next_service_reading']) {
-                                    $diff = $plant_['next_service_reading'] - $plant_['km_reading'];
+                                    $diff = $plant_['next_service_reading'] - $plant_['hr_reading'];
                                     $show = true;
                                 }
                             }
