@@ -33,6 +33,7 @@ switch ($_GET['type']) {
                                         $show = true;
                                     }
                                 } else if ($plant_['km_reading'] >= $plant_['next_service_reading']) {
+                                    $diff = $plant_['next_service_reading'] - $plant_['km_reading'];
                                     $show = true;
                                 }
                             } else {
@@ -48,6 +49,7 @@ switch ($_GET['type']) {
                                         $show = true;
                                     }
                                 } else if ($plant_['hr_reading'] >= $plant_['next_service_reading']) {
+                                    $diff = $plant_['next_service_reading'] - $plant_['km_reading'];
                                     $show = true;
                                 }
                             } else {
@@ -56,10 +58,8 @@ switch ($_GET['type']) {
                             break;
                     }
 
-                    if ($show) {
-                        $plant_['diff'] = $diff;
-                        $service_list[] = $plant_;
-                    }
+                    $plant_['diff'] = $diff;
+                    $service_list[] = $plant_;
                 }
             }
         }
@@ -103,17 +103,17 @@ switch ($_GET['type']) {
         $sheet->getColumnDimension('F')->setWidth(100, 'px');
 
         $sheet_row = 5;
-        if (isset($service_list) && count($service_list)) {
-            foreach ($service_list as $item) {
-                $sheet->setCellValue("A{$sheet_row}", $item['plant_number'])
-                    ->setCellValue("B{$sheet_row}",  $item['make'])
-                    ->setCellValue("C{$sheet_row}",  $item['model'])
-                    ->setCellValue("D{$sheet_row}",  $item[$item['reading_type'] . '_reading'])
-                    ->setCellValue("E{$sheet_row}",  $item['next_service_reading'])
-                    ->setCellValue("E{$sheet_row}",  $item['diff'])
-                    ->setCellValue("E{$sheet_row}",  count($service_list));
+        if (isset($service_list) && count($service_list) > 0) {
+            error_log(count($service_list));
+            foreach ($service_list as $list_item) {
+                $sheet->setCellValue("A{$sheet_row}", $list_item['plant_number'])
+                    ->setCellValue("B{$sheet_row}",  $list_item['make'])
+                    ->setCellValue("C{$sheet_row}",  $list_item['model'])
+                    ->setCellValue("D{$sheet_row}",  $list_item[$list_item['reading_type'] . '_reading'])
+                    ->setCellValue("E{$sheet_row}",  $list_item['next_service_reading'])
+                    ->setCellValue("E{$sheet_row}",  $list_item['diff']);
+                $sheet_row++;
             }
-            $sheet_row++;
         }
 
 
