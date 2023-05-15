@@ -137,6 +137,7 @@ switch ($_GET['page']) {
     case 'new-job-allocate':
         $page_title = 'New Job Cards - Allocate Job Card Number';
         $page_name = 'manager/jobcards/new-job-cards-allocated';
+
         require "./includes/forms/manager/jobcards/new-job-cards-allocated.php";
         break;
 

@@ -147,6 +147,9 @@
                                         <div class="col-md-12 text-right">
                                             <button type="submit" name="allocate_jobcard" class="btn btn-primary">Allocate</button>
                                             <!-- <button type="submit" name="delete_jobcard" class="btn btn-danger">Delete</button> -->
+                                            <?php if (is_array($defect_report) > 0) { ?>
+                                                <a class="mb-1 mt-1 mr-1" target="_blank" href="print.php?type=defect-report&id=<?= $defect_report['id'] ?>"><button type="button" class='btn btn-info float-right'>Defect Report</button></a>
+                                            <?php } ?>
                                             <button class="btn btn-default modal-dismiss">Cancel</button>
                                         </div>
                                     </div>

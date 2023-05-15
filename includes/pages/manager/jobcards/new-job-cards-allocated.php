@@ -25,7 +25,7 @@
 					/* Get Stuff */
 					$plant_ = dbf(dbq("select * from plants_tbl where plant_id={$jobcard['plant_id']}"));
 					$logged_by_ = dbf(dbq("select concat(name,' ',last_name) as name from users_tbl where user_id={$jobcard['logged_by']}"));
-
+					$defect_report = get_record('ws_defect_reports', 'job_id', $jobcard['job_id'], "status='J'");
 					switch ($jobcard['priority']) {
 						case "1":
 							$status_color = "danger";
