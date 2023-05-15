@@ -9,6 +9,9 @@
 							<p class="card-subtitle">View Job Card</p>
 						</div>
 						<div class="col-md-3">
+							<?php if (is_array($defect_report) > 0) { ?>
+								<a class="mb-1 mt-1 mr-1" target="_blank" href="print.php?type=defect-report&id=<?= $defect_report['id'] ?>"><button type="button" class='btn btn-info float-right'>Defect Report</button></a>
+							<?php } ?>
 							<a class="mb-1 mt-1 mr-1 modal-basic" href="#modalCloseJob"><button type="button" class='btn btn-danger float-right'>Completed</button></a>
 						</div>
 					</div>

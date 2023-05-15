@@ -64,6 +64,7 @@ switch ($_GET['page']) {
     case 'daily-pre-task-mini':
         $page_title = 'Daily Pre-Task Mini Risk Assessment';
         $page_name = 'mechanic/daily-pre-task-mini';
+        $defect_report = get_record('ws_defect_reports', 'job_id', $_GET['id'], "status='J'");
         require "./includes/forms/mechanic/jobcards/daily-pre-task-mini.php";
         break;
 
@@ -92,6 +93,7 @@ switch ($_GET['page']) {
     case 'job-card-view':
         $page_title = 'View Job Card';
         $page_name = 'mechanic/job-card-view';
+        $defect_report = get_record('ws_defect_reports', 'job_id', $_GET['id'], "status='J'");
         require "./includes/forms/mechanic/jobcards/job-card-view.php";
         break;
 

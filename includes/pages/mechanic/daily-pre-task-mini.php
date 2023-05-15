@@ -6,6 +6,9 @@
 					<h2 class="card-title">Daily Pre-Task Mini Risk Assessment</h2>
 					<?php if ($jobcard_['status'] != 'open') { ?>
 						<div class="text-end">
+							<?php if (is_array($defect_report) > 0) { ?>
+								<a class="mb-1 mt-1 mr-1" target="_blank" href="print.php?type=defect-report&id=<?= $defect_report['id'] ?>"><button type="button" class='btn btn-info float-right'>Defect Report</button></a>
+							<?php } ?>
 							<a href="dashboard.php?page=job-card-view&id=<?= $_GET['jobid'] ?>" class="btn btn-primary">Back to Job Card</a>
 						</div>
 					<?php } ?>
