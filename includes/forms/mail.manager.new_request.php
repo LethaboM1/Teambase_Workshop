@@ -9,7 +9,7 @@ if (!$testserver) {
     if (!isset($job_id)) {
         $job_id = mysqli_insert_id($db);
     }
-    $get_managers = dbq("select * from users_tbl where role='manager'");
+    $get_managers = dbq("select * from users_tbl where role='manager' and depart='workshop'");
     if ($get_managers) {
         if (dbr($get_managers) > 0) {
 
