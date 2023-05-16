@@ -113,6 +113,7 @@ if (isset($_POST['add_user'])) {
                                             username='{$_POST['username']}',
                                             email='{$_POST['email']}',
                                             password='" . password_hash($_POST['password'], PASSWORD_DEFAULT) . "',
+                                            depart='" . $_SESSION['user']['depart'] . "',
                                             role='{$_POST['role']}'
                                             ");
                     if ($insert_user) {
