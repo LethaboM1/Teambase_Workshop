@@ -41,7 +41,14 @@
 								<label class="col-form-label" for="formGroupExampleInput">Site</label>
 								<input type="text" name="site" class="form-control" value="<?= $jobcard_['site'] ?>" disabled>
 							</div>
+							<?php
+							if ($_SESSION['user']['role'] == 'clerk' || $_SESSION['user']['role'] == 'manager'  || $_SESSION['user']['role'] == 'system') {
+							?>
+								<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+									<?= inp('mechanic', 'Mechanic', 'select', $jobcard_['mechanic_id'], '', 0, $mechanic_list, 'disabled') ?>
+								</div>
 						<?php
+							}
 						}
 						?>
 					</div>

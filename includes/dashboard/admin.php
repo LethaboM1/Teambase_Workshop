@@ -21,6 +21,10 @@ switch ($_GET['page']) {
     case 'job-card-view':
         $page_title = 'View Job Card';
         $page_name = 'mechanic/job-card-view';
+
+        $get_mechanic = dbq("select concat(name,' ',last_name) as name, user_id as value from users_tbl where role='mechanic' and depart='workshop'");
+        while ($row = dbf($get_mechanic))  $mechanic_list = $row;
+
         require "./includes/forms/manager/jobcards/job-card-view.php";
         break;
 
