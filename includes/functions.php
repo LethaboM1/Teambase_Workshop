@@ -1669,8 +1669,8 @@ function get_user($user_id)
 				$user_ = dbf($get_user);
 				return $user_;
 			} else {
-				error('user not found');
-				return false;
+				//error('user not found');
+				return ['name' => 'None', 'last_name' => ''];
 			}
 		} else {
 			error_log('SQL error: ' . dbe());
