@@ -87,7 +87,7 @@
 
                 if ($get_defect_reports) {
                     if (dbr($get_defect_reports) > 0) {
-                        while ($report = dbf($get_defect_reports)) {
+                        while ($row = dbf($get_defect_reports)) {
                             require "pages/manager/jobcards/list_job_defect_reports.php";
                         }
                     } else {
