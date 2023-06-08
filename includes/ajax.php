@@ -739,6 +739,30 @@ switch ($_POST['cmd']) {
                 }
                 break;
 
+            case "defect-reports";
+                $get_defect_reports = dbq("select * from ws_defect_reports where status!='F'
+                    and 
+                    (  
+                        job_id in (select job_id from jobcards where jobcard_number like '%{$_POST['search']}%') 
+                        || plant_id in (select plant_id from plants_tbl where plant_number like '%{$_POST['search']}%') 
+                        || operator_id in (select user_id as operator_id from users_tbl where role='user' and (name like '{$_POST['search']}%' or last_name like '{$_POST['search']}%'))
+                        || inspector_id in (select user_id as inspector_id from users_tbl where role='ws_inspector' and (name like '{$_POST['search']}%' or last_name like '{$_POST['search']}%'))
+                    
+                    ) order by date_time DESC");
+
+                if ($get_defect_reports) {
+                    if (dbr($get_defect_reports) > 0) {
+                        while ($row = dbf($get_defect_reports)) {
+                            require "pages/manager/jobcards/list_job_defect_reports.php";
+                        }
+                    } else {
+                        echo "<tr><td colspan='7'>Nothing to list: searched '{$_POST['search']}'</td></tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='7'>SQL error: " . dbe() . "</td></tr>";
+                }
+                break;
+
             case "plants":
                 $get_plants = dbq("select * from plants_tbl where (
                                     plant_number like '%{$_POST['search']}%'
