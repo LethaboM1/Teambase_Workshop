@@ -88,6 +88,7 @@
                 if ($get_defect_reports) {
                     if (dbr($get_defect_reports) > 0) {
                         while ($row = dbf($get_defect_reports)) {
+                            echo "<tr><td colspan='7'>" . print_r($row, 1) . "</td></tr>";
                             require "pages/manager/jobcards/list_job_defect_reports.php";
                         }
                     } else {

@@ -748,7 +748,7 @@ switch ($_POST['cmd']) {
                         || operator_id in (select user_id as operator_id from users_tbl where role='user' and (name like '{$_POST['search']}%' or last_name like '{$_POST['search']}%'))
                         || inspector_id in (select user_id as inspector_id from users_tbl where role='ws_inspector' and (name like '{$_POST['search']}%' or last_name like '{$_POST['search']}%'))
                     
-                    ) order by date_time DESC");
+                    ) order by date DESC");
 
                 if ($get_defect_reports) {
                     if (dbr($get_defect_reports) > 0) {
