@@ -30,6 +30,7 @@
                                                 },
                                                 success:function (result) {
                                                     $('#defect_reports').html(result);
+                                                    $.getScript('js/examples/examples.modals.js');                                
                                                 },
                                                 error: function (err) {}
                                             });
