@@ -441,6 +441,7 @@ switch ($_POST['cmd']) {
             $html = '';
             foreach ($_SESSION['request_parts'] as $part) {
                 $html .= "<tr>
+                        <td>{$part['component']}</td>
                         <td>{$part['part_no']}</td>
                         <td>{$part['description']}</td>
                         <td>{$part['qty']}</td>
