@@ -489,7 +489,7 @@ switch ($_POST['cmd']) {
             return;
         }
 
-        if (is_array($_SESSION['request_parts'])) {
+        /*if (is_array($_SESSION['request_parts'])) {
             if (in_array($part['description'], array_column($_SESSION['request_parts'], 'description'))) {
                 $key = array_search($part['description'], array_column($_SESSION['request_parts'], 'description'));
                 $_SESSION['request_parts'][$key]['qty'] += $part['qty'];
@@ -513,7 +513,7 @@ switch ($_POST['cmd']) {
                 echo json_encode($json_);
                 return;
             }
-        }
+        }*/
 
         $_SESSION['request_parts'][] = $part;
         $json_['status'] = 'ok';
