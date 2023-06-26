@@ -818,9 +818,9 @@ switch ($_POST['cmd']) {
                             and 
                             (
                                 request_id='{$_POST['search']}'
-                                || plant_id in (select plant_id from plants_tbl where plant_number like '{$_POST['search']}%') 
+                                || plant_id in (select plant_id from plants_tbl where plant_number like '%{$_POST['search']}%') 
                                 || job_id in (select job_id from jobcards where jobcard_number like '%{$_POST['search']}%') 
-                                || requested_by in (select user_id as requested_by from users_tbl where role='mechanic' and (name like '{$_POST['search']}%' or last_name like '{$_POST['search']}%'))
+                                || requested_by in (select user_id as requested_by from users_tbl where role='mechanic' and (name like '%{$_POST['search']}%' or last_name like '%{$_POST['search']}%'))
                             ) order by datetime DESC");
                 if (!$get_requisitions) error_log('SQL: ' . dbe());
                 if (dbr($get_requisitions) > 0) while ($row = dbf($get_requisitions))  $search_results[] = $row;
