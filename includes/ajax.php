@@ -814,7 +814,7 @@ switch ($_POST['cmd']) {
                     $query_ = "";
                 }
 
-                $get_requisitions = dbq("select * from jobcard_requisitions where status='open'{$query_} 
+                $get_requisitions = dbq("select * from jobcard_requisitions where (status!='completed' && status!='canceled' && status!='rejected'){$query_} 
                                 and 
                                 (
                                     request_id='{$_POST['search']}'
