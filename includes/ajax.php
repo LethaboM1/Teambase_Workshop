@@ -826,7 +826,8 @@ switch ($_POST['cmd']) {
                 if (dbr($get_requisitions) > 0) while ($row = dbf($get_requisitions))  $search_results[] = $row;
                 if (is_array($search_results) && count($search_results) > 0) {
                     foreach ($search_results as $row) {
-                        require "pages/manager/jobcards/list_job_requisitions_completed.php";
+                        require "pages/manager/jobcards/list_job_requisitions.php";
+                        //require "pages/manager/jobcards/list_job_requisitions_completed.php";
                     }
                 } else {
                     echo "<tr><td style='column-span: all;'>Nothing found</td></tr>";
