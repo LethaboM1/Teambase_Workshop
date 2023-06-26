@@ -834,6 +834,37 @@ switch ($_POST['cmd']) {
                 }
                 break;
 
+            case "job-requisitions-requested":
+                if ($_SESSION['user']['role'] == 'clerk') {
+                    $query_ = " and clerk_id={$_SESSION['user']['user_id']}";
+                } else if ($_SESSION['user']['role'] == 'buyer') {
+                    $query_ = " and buyer_id={$_SESSION['user']['user_id']}";
+                } else if ($_SESSION['user']['role'] == 'mechanic') {
+                    $query_ = " and requested_by-{$_SESSION['user']['user_id']}";
+                } else {
+                    $query_ = "";
+                }
+
+                $get_requisitions = dbq("select * from jobcard_requisitions where status='requested'{$query_} 
+                                    and 
+                                    (
+                                        request_id='{$_POST['search']}'
+                                        || plant_id in (select plant_id from plants_tbl where plant_number like '%{$_POST['search']}%') 
+                                        || job_id in (select job_id from jobcards where jobcard_number like '%{$_POST['search']}%') 
+                                        || requested_by in (select user_id as requested_by from users_tbl where role='mechanic' and (name like '%{$_POST['search']}%' or last_name like '%{$_POST['search']}%'))
+                                    ) order by datetime DESC");
+                if (!$get_requisitions) error_log('SQL: ' . dbe());
+                if (dbr($get_requisitions) > 0) while ($row = dbf($get_requisitions))  $search_results[] = $row;
+                if (is_array($search_results) && count($search_results) > 0) {
+                    foreach ($search_results as $row) {
+                        require "pages/manager/jobcards/list_job_requisitions.php";
+                        //require "pages/manager/jobcards/list_job_requisitions_completed.php";
+                    }
+                } else {
+                    echo "<tr><td style='column-span: all;'>Nothing found</td></tr>";
+                }
+                break;
+
             case "job-requisitions-completed":
                 if ($_SESSION['user']['role'] == 'clerk') {
                     $query_ = " and clerk_id={$_SESSION['user']['user_id']}";

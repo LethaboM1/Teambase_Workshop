@@ -3,12 +3,11 @@
 ?>
 <div class="row">
 	<div class="header-right col-lg-4 col-md-4">
-		<form action="#" class="search nav-form">
-			<div class="input-group">
-				<input type="text" class="form-control" name="search" id="search" placeholder="Search Job...">
-				<button class="btn btn-default" id='searchBtn' type="button"><i class="bx bx-search"></i></button>
-				<?php
-				$jscript .= "
+		<div class="input-group">
+			<input type="text" class="form-control" name="search" id="search" placeholder="Search Job...">
+			<button class="btn btn-default" id='searchBtn' type="button"><i class="bx bx-search"></i></button>
+			<?php
+			$jscript .= "
 									
 									$('#search').keyup(function (e) {
 										if (e.key=='Enter') {
@@ -29,7 +28,7 @@
 											url:'includes/ajax.php',
 											data: {
 												cmd:'search',
-												type: 'job-requisitions',
+												type: 'job-requisitions-requested',
 												search: $('#search').val()
 											},
 											success:function (result) {
@@ -44,10 +43,9 @@
 										});
 									});
 									";
-				?>
+			?>
 
-			</div>
-		</form>
+		</div>
 	</div>
 	<div id="job_requisitions_list" class="col-xl-12">
 		<?php
