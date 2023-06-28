@@ -13,6 +13,7 @@ switch ($_GET['cmd']) {
         }
 
         break;
+
     case "print_request":
         if (isset($_GET['id'])) {
             $request_file = 'files/requisitions/' . $_GET['id'] . '_request.pdf';
@@ -52,6 +53,19 @@ switch ($_POST['cmd']) {
 
         echo json_encode($json_);
 
+        break;
+
+    case 'update_sys':
+        if (isset($_POST['id'])) {
+            if (isset($_POST['value'])) {
+                $checked = ($_POST['value'] == 'true' ? 1 : 0);
+                $sql = dbq("update jobcard_events set 
+                                    update_sys={$checked}, 
+                                    update_sys_date='" . date('Y-m-d H:i:s') . "',
+                                    update_sys_user='{$_SESSION['user']['user_id']}'
+                                    where event_id={$_POST['id']}");
+            }
+        }
         break;
 
     case "set_part_supplier":
@@ -784,6 +798,23 @@ switch ($_POST['cmd']) {
                 }
                 break;
 
+            case "sites":
+                $get_sites = dbq("select * from sites_tbl 
+                                        where 
+                                            name like '%{$_POST['search']}%'
+                                        order by name
+                                        ");
+                if ($get_sites) {
+                    if (dbr($get_sites) > 0) {
+                        while ($row = dbf($get_sites)) {
+                            require "pages/manager/sites/list_sites.php";
+                        }
+                    } else {
+                        echo "<tr><td colspan='5'>Could not find '{$_POST['search']}'</td></tr>";
+                    }
+                }
+                break;
+
             case "user-plants":
                 $get_plants = dbq("select * from plants_tbl where  (
                                         vehicle_type like '%{$_POST['search']}%' 
@@ -997,6 +1028,26 @@ switch ($_POST['cmd']) {
             }
         }
         break;
+
+    case "get_del_site";
+        $get_site = dbq("select * from sites_tbl where id='{$_POST['id']}'");
+        if ($get_site) {
+            if (dbr($get_site) > 0) {
+                $site_ = dbf($get_site);
+                echo inp('id', '', 'hidden', $site_['id'])
+                    . "<div class='modal-wrapper'>
+                        <div class='modal-icon'>
+                            <i class='fas fa-times-circle'></i>
+                        </div>
+                        <div class='modal-text'>
+                            <h4>Danger</h4>
+                            <p>Are you sure that you want to delete this site {$site_['name']}?</p>
+                        </div>
+                    </div>";
+            }
+        }
+        break;
+
     case "get_edit_plant":
         if (isset($_POST['plant_id'])) {
             $get_plant = dbq("select * from plants_tbl where plant_id='{$_POST['plant_id']}'");
@@ -1059,6 +1110,24 @@ switch ($_POST['cmd']) {
                             <input type='number' name='next_service_reading' placeholder='Next Service Reading' class='form-control' value='{$plant_['next_service_reading']}'>
                         </div>
                     </div>";
+                }
+            }
+        }
+        break;
+
+    case "get_edit_site":
+        if (isset($_POST['id'])) {
+            $get_site = dbq("select * from sites_tbl where id='{$_POST['id']}'");
+            if ($get_site) {
+                if (dbr($get_site) > 0) {
+                    $site_ = dbf($get_site);
+                    echo inp('id', '', 'hidden', $site_['id'])
+                        . "<div class='row'>
+                                <div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>
+                                    <label class='col-form-label' for='formGroupExampleInput'>Name</label>
+                                    <input type='text' name='name' class='form-control' value='{$site_['name']}'>
+                                </div>
+                            </div>";
                 }
             }
         }

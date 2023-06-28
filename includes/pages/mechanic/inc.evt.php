@@ -72,6 +72,7 @@
         <table width="1047" class="table table-responsive-md mb-0">
             <thead>
                 <tr>
+                    <th width="20"></th>
                     <th width="100">Date</th>
                     <th width="100">Type</th>
                     <th width="120">Time Worked</th>
@@ -81,7 +82,7 @@
             </thead>
             <tbody>
                 <?php
-                $get_job_events = dbq("select * from jobcard_events where job_id={$_GET['id']} order by start_datetime");
+                $get_job_events = dbq("select * from jobcard_events where job_id={$_GET['id']} order by update_sys, start_datetime");
                 if ($get_job_events) {
                     if (dbr($get_job_events) > 0) {
                         while ($event = dbf($get_job_events)) {
@@ -89,6 +90,11 @@
                             $event_date = date_format($event_date, 'Y-m-d');
                 ?>
                             <tr>
+                                <td style="width:20px">
+                                    <?php if ($_SESSION['user']['role'] == 'manager' || $_SESSION['user']['role'] == 'system' || $_SESSION['user']['role'] == 'clerk') { ?>
+                                        <?= inp('update_sys', '', 'checkbox', 1, '', 0, $event['update_sys'], 'onclick="update_sys(`' . $event['event_id'] . '`,$(this).is(`:checked`)); "') ?>
+                                    <?php } ?>
+                                </td>
                                 <td><?= $event_date ?></td>
                                 <td><?= $event['event'] ?></td>
                                 <td><?= $event['total_hours'] ?></td>
@@ -99,6 +105,8 @@
                                 </td>
                             </tr>
                         <?php
+
+
                             $modal .= '<div id="modalDeleteEvent_' . $event['event_id'] . '" class="modal-block modal-block-lg mfp-hide">
                                         <section class="card">
                                             <form method="post">

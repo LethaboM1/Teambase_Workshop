@@ -213,7 +213,26 @@
 </div>
 <?php
 echo $modal;
-$jscript_function = "
+$jscript_function .= "
+function update_sys(id, value) {
+    $.ajax({
+        method:'post',
+        url:'includes/ajax.php',
+        data: {
+            cmd:'update_sys',
+            id: id,
+            value: value ,
+
+        },
+        success: function (result) {
+            
+        } 
+
+    });
+}
+";
+
+$jscript_function .= "
 					function print_request (request_id) {
 						$.ajax({
 							method:'get',
