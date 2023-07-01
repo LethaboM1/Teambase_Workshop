@@ -3,7 +3,10 @@
 if (isset($_POST['request_jobcard'])) {
     if (
         $_POST['clerk_id'] > 0
-        && (($_POST['plant_id'] > 0 && $_POST['jobcard_type'] != 'sundry' && strlen($_POST['site']) > 0) || ($_POST['jobcard_type'] == 'sundry'))
+        && (
+            ($_POST['plant_id'] > 0 && $_POST['jobcard_type'] != 'sundry' && strlen($_POST['site']) > 0) ||
+            ($_POST['jobcard_type'] == 'sundry')) ||
+        ($_POST['jobcard_type'] == 'contract' && $_POST['site_id'] > 0)
     ) {
         $create_jobcard = true;
 
@@ -39,6 +42,7 @@ if (isset($_POST['request_jobcard'])) {
                 $create_jobcard = false;
             } else {
                 $_POST['plant_id'] = 0;
+                $_POST['site_id'] = 0;
                 $_POST['priority'] = 9999;
                 $_POST['allocated_hours'] = 0;
                 $query .= "status='allocated',allocated_hours=0,";
@@ -47,7 +51,12 @@ if (isset($_POST['request_jobcard'])) {
             $query .= "service_type='{$_POST['service_type']}',";
             $query .= "{$_POST['reading_type']}_reading={$_POST['reading']},";
         } else {
-            $query .= "{$_POST['reading_type']}_reading={$_POST['reading']},";
+            if ($_POST['jobcard_type'] == 'contract') {
+                $_POST['plant_id'] = 0;
+            } else {
+                $_POST['site_id'] = 0;
+                $query .= "{$_POST['reading_type']}_reading={$_POST['reading']},";
+            }
         }
 
 
@@ -55,6 +64,7 @@ if (isset($_POST['request_jobcard'])) {
         if ($create_jobcard) {
             $add_jobcard = dbq("insert into jobcards set
                                     plant_id={$_POST['plant_id']},
+                                    site_id={$_POST['site_id']},
                                     job_date='" . date('Y-m-d') . "',
                                     clerk_id={$_POST['clerk_id']},
                                     mechanic_id={$_SESSION['user']['user_id']},

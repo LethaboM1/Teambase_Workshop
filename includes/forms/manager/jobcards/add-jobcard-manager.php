@@ -10,7 +10,11 @@ if (isset($_POST['add_jobcard'])) {
     if (
         $_POST['clerk_id'] > 0
         && $_POST['mechanic_id'] != '0'
-        && (($_POST['plant_id'] > 0 && $_POST['jobcard_type'] != 'sundry' && strlen($_POST['site']) > 0) || ($_POST['jobcard_type'] == 'sundry'))
+        && (
+            ($_POST['plant_id'] > 0 && $_POST['jobcard_type'] != 'sundry' && strlen($_POST['site']) > 0) ||
+            ($_POST['jobcard_type'] == 'sundry') ||
+            ($_POST['jobcard_type'] == 'contract' && $_POST['site_id'] > 0)
+        )
 
     ) {
         $create_jobcard = true;
@@ -22,20 +26,27 @@ if (isset($_POST['add_jobcard'])) {
                 $create_jobcard = false;
             } else {
                 $_POST['plant_id'] = 0;
+                $_POST['site_id'] = 0;
                 $_POST['priority'] = 9999;
                 $_POST['allocated_hours'] = 0;
                 $reading = "";
                 $status = "status='busy'";
             }
         } else {
-            switch ($_POST['reading_type']) {
-                case "hr":
-                    $reading = "hr_reading='{$_POST['reading']}',";
-                    break;
+            if ($_POST['jobcard_type'] == 'contract') {
+                $_POST['plant_id'] = 0;
+                $reading = '';
+            } else {
+                $_POST['site_id'] = 0;
+                switch ($_POST['reading_type']) {
+                    case "hr":
+                        $reading = "hr_reading='{$_POST['reading']}',";
+                        break;
 
-                case "km":
-                    $reading = "km_reading='{$_POST['reading']}',";
-                    break;
+                    case "km":
+                        $reading = "km_reading='{$_POST['reading']}',";
+                        break;
+                }
             }
 
             if (strlen($_POST['jobcard_number']) > 0) {
@@ -56,6 +67,7 @@ if (isset($_POST['add_jobcard'])) {
             $add_jobcard = dbq("insert into jobcards set
                                 jobcard_number='{$_POST['jobcard_number']}',
                                 plant_id={$_POST['plant_id']},
+                                site_id={$_POST['site_id']},
                                 job_date='{$_POST['job_date']}',
                                 logged_by='{$_SESSION['user']['user_id']}',
                                 clerk_id={$_POST['clerk_id']},
@@ -79,7 +91,7 @@ if (isset($_POST['add_jobcard'])) {
             }
         }
     } else {
-        error("Fill in all the required fields. Really");
+        error("Fill in all the required fields.");
     }
 }
 

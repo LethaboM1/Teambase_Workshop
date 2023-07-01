@@ -23,7 +23,7 @@
                                 ?>
                                 <b>Date Logged</b>&nbsp;<?= $jobcard['job_date'] ?><br>
                                 <b>Fault:</b><br><?= $jobcard['fault_description'] ?><br>
-                                <?php if ($jobcard['jobcard_type'] == 'breakdown' || $jobcard['jobcard_type'] == 'overhead' || $jobcard['jobcard_type'] == 'repair') { ?>
+                                <?php if ($jobcard['jobcard_type'] == 'breakdown' || $jobcard['jobcard_type'] == 'overhead' || $jobcard['jobcard_type'] == 'repair' ||  $jobcard['jobcard_type'] == 'contract') { ?>
                                     <b>Extras</b><br>
                                     <div class="row">
                                         <?php
@@ -190,6 +190,10 @@
                     <h2 class="card-title">Plant: <?= $plant_['plant_number'] ?>, <?= ucfirst($jobcard['jobcard_type']) ?>, Type: <?= $jobcard['service_type'] ?>,&nbsp;[<?= date('Y-m-d', strtotime($jobcard['job_date']))  ?>]</h2>
                 <?php
 
+                } else if ($jobcard['jobcard_type'] == 'contract') {
+                ?>
+                    <h2 class="card-title">Site <?= $site_['name'] ?>, <?= ucfirst($jobcard['jobcard_type']) ?>, Type: <?= $jobcard['service_type'] ?>,&nbsp;[<?= date('Y-m-d', strtotime($jobcard['job_date']))  ?>]</h2>
+                <?php
                 } else {
                 ?>
                     <h2 class="card-title">Plant: <?= $plant_['plant_number'] ?>, <?= ucfirst($jobcard['jobcard_type']) ?>,&nbsp;[<?= date('Y-m-d', strtotime($jobcard['job_date']))  ?>]</h2>

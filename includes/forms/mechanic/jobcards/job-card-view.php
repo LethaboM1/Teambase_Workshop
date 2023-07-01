@@ -4,7 +4,7 @@ if (isset($_GET['id'])) {
     if ($get_jobcard) {
         if (dbr($get_jobcard) > 0) {
             $jobcard_ = dbf($get_jobcard);
-            if ($jobcard_['jobcard_type'] != 'sundry') {
+            if ($jobcard_['jobcard_type'] != 'sundry' && $jobcard_['jobcard_type'] != 'contract') {
                 if ($jobcard_['jobcard_type'] == 'service') {
                     go('dashboard.php?page=plant-schedule&id=' . $_GET['id']);
                 }
@@ -19,6 +19,13 @@ if (isset($_GET['id'])) {
                 } else {
                     sqlError();
                     go('dashboard.php?page=open-job');
+                }
+            } else {
+                if ($jobcard_['jobcard_type'] == 'contract') {
+                    $site_ = get_site($jobcard_['site_id']);
+                    if (!$site_) {
+                        go('dashboard.php?page=open-job');
+                    }
                 }
             }
         } else {
@@ -52,9 +59,11 @@ if (isset($_POST['allocate_clerk'])) {
 if (isset($_POST['complete_jobcard'])) {
     if (
         strlen($_POST['compdate'] > 0)
-        && (strlen($_POST['reading']) > 0 && is_numeric($_POST['reading']) && $jobcard_['jobcard_type'] != 'sundry') || ($jobcard_['jobcard_type'] == 'sundry')
+        && (strlen($_POST['reading']) > 0 && is_numeric($_POST['reading']) && $jobcard_['jobcard_type'] != 'sundry') ||
+        ($jobcard_['jobcard_type'] == 'sundry' ||
+            ($jobcard_['jobcard_type'] == 'contract' && $jobcard_['site_id'] > 0))
     ) {
-        if (($_POST['reading'] >= $plant_[$plant_['reading_type'] . '_reading']) || ($jobcard_['jobcard_type'] == 'sundry')) {
+        if (($_POST['reading'] >= $plant_[$plant_['reading_type'] . '_reading']) || ($jobcard_['jobcard_type'] == 'sundry') || ($jobcard_['jobcard_type'] == 'contract')) {
             $events = dbr(dbq("select event_id from jobcard_events where job_id={$_GET['id']}"));
             if ($events == 0) {
                 error("There were no events for this job card.");
@@ -68,7 +77,7 @@ if (isset($_POST['complete_jobcard'])) {
                                             where job_id={$_GET['id']}
                                             ");
                 if (mysqli_affected_rows($db) > 0) {
-                    if ($jobcard_['jobcard_type'] == 'sundry') {
+                    if ($jobcard_['jobcard_type'] == 'sundry' || $jobcard_['jobcard_type'] == 'contract') {
                         msg("job card completed!");
 
                         $job_id = $_GET['id'];
@@ -161,7 +170,7 @@ if (isset($_POST['add_insp'])) {
 if (isset($_POST['add_event'])) {
     if (strlen($_POST['comment']) > 0) {
         if ($_POST['event_date'] <= date('Y-m-d')) {
-            if (($_POST['event'] != '0') || ($jobcard_['jobcard_type'] == 'sundry')) {
+            if (($_POST['event'] != '0') || ($jobcard_['jobcard_type'] == 'sundry') || ($jobcard_['jobcard_type'] == 'contract')) {
                 $add_event = dbq("insert into jobcard_events set
                                             job_id={$_GET['id']},
                                             start_datetime='" . $_POST['event_date'] . " 00:00:00',

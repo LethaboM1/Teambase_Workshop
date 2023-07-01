@@ -16,6 +16,8 @@ switch ($row['priority']) {
 $logged_by = dbf(dbq("select concat(name,' ', last_name) as name from users_tbl where user_id={$row['logged_by']}"));
 $mechanic_ = dbf(dbq("select concat(name,' ', last_name) as name from users_tbl where user_id={$row['mechanic_id']}"));
 $plant_ = dbf(dbq("select * from plants_tbl where plant_id={$row['plant_id']}"));
+$site_ = get_site($row['site_id']);
+
 switch ($plant_['reading_type']) {
     case "km":
         $reading = $row['km_reading'];
@@ -54,7 +56,18 @@ if ($row['allocated_hours'] > 0) {
                     <!-- Modal view End -->
                     <!-- Job Card End -->
                 </div>
-                <h2 class="card-title">Job# <?= $row['jobcard_number'] ?>,&nbsp;Plant: <?= $plant_['plant_number'] ?>, <?= strtoupper($row['jobcard_type']) ?>,&nbsp;[<?= date('Y-m-d', strtotime($row['job_date']))  ?>]</h2>
+                <?php
+                if ($row['jobcard_type'] == 'contract') {
+                ?>
+                    <h2 class="card-title">Job# <?= $row['jobcard_number'] ?>,&nbsp;Site: <?= $site_['name'] ?>, <?= strtoupper($row['jobcard_type']) ?>,&nbsp;[<?= date('Y-m-d', strtotime($row['job_date']))  ?>]</h2>
+                <?php
+                } else {
+                ?>
+                    <h2 class="card-title">Job# <?= $row['jobcard_number'] ?>,&nbsp;Plant: <?= $plant_['plant_number'] ?>, <?= strtoupper($row['jobcard_type']) ?>,&nbsp;[<?= date('Y-m-d', strtotime($row['job_date']))  ?>]</h2>
+                <?php
+                }
+                ?>
+
                 <p class="card-subtitle">Opened by: <?= $logged_by['name'] ?>, Mechanic: <b><?= $mechanic_['name'] ?></b>, last event: <?= (strlen($row['last_evt_date']) ? $row['last_evt_date'] : "No event") ?></p>
                 <?php if ($row['jobcard_type'] == 'breakdown' || $jobcard['jobcard_type'] == 'repair' || $jobcard['jobcard_type'] == 'overhead') { ?>
                     <div class="progress progress-xl progress-half-rounded m-2">

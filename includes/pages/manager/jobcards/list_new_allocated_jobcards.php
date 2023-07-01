@@ -13,9 +13,21 @@
                         <form method="post">
                             <div class="card-body">
                                 <?= inp('jobcard_type', '', 'hidden', $jobcard['jobcard_type']) ?>
-                                <h4>Plant:&nbsp;<?= $plant_['plant_number'] ?></h4>
-                                <h5><?= strtoupper($plant_['reading_type']) ?> Reading:&nbsp;<?= $jobcard[$plant_['reading_type'] . '_reading'] ?></h5>
-                                <h5>Site:&nbsp;<?= (strlen($jobcard['site']) > 0 ? "{$jobcard['site']}" : "No site") ?></h5>
+                                <?php
+                                if ($jobcard['jobcard_type'] == 'contract') {
+                                ?>
+                                    <h4>Site:&nbsp;<?= $site_['name'] ?></h4>
+                                <?php
+                                } else {
+                                ?>
+                                    <h4>Plant:&nbsp;<?= $plant_['plant_number'] ?></h4>
+                                    <h5><?= strtoupper($plant_['reading_type']) ?> Reading:&nbsp;<?= $jobcard[$plant_['reading_type'] . '_reading'] ?></h5>
+                                    <h5>Site:&nbsp;<?= (strlen($jobcard['site']) > 0 ? "{$jobcard['site']}" : "No site") ?></h5>
+                                <?php
+                                }
+                                ?>
+
+
 
                                 <b>Logged by:</b>&nbsp;<?= $logged_by_['name'] ?><br>
                                 <b>Date Logged</b>&nbsp;<?= $jobcard['job_date'] ?><br>
@@ -171,6 +183,10 @@
                     <h2 class="card-title">Plant: <?= $plant_['plant_number'] ?>, <?= ucfirst($jobcard['jobcard_type']) ?>, Type: <?= $jobcard['service_type'] ?>,&nbsp;[<?= date('Y-m-d', strtotime($jobcard['job_date']))  ?>] </h2>
                 <?php
 
+                } else if ($jobcard['jobcard_type'] == 'contract') {
+                ?>
+                    <h2 class="card-title">Site: <?= $site_['name'] ?>, <?= ucfirst($jobcard['jobcard_type']) ?>, Type: <?= $jobcard['service_type'] ?>,&nbsp;[<?= date('Y-m-d', strtotime($jobcard['job_date']))  ?>] </h2>
+                <?php
                 } else {
                 ?>
                     <h2 class="card-title">Plant: <?= $plant_['plant_number'] ?>, <?= ucfirst($jobcard['jobcard_type']) ?>,&nbsp;[<?= date('Y-m-d', strtotime($jobcard['job_date']))  ?>]</h2>

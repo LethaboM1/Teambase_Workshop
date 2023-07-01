@@ -6,7 +6,7 @@ if (isset($_GET['id'])) {
         if (dbr($get_jobcard) > 0) {
             $jobcard_ = dbf($get_jobcard);
             $get_plant = dbq("select * from plants_tbl where plant_id={$jobcard_['plant_id']}");
-            if ($jobcard_['jobcard_type'] != 'sundry') {
+            if ($jobcard_['jobcard_type'] != 'sundry' && $jobcard_['jobcard_type'] != 'contract') {
                 if ($get_plant) {
                     if (dbr($get_plant)) {
                         $plant_ = dbf($get_plant);
@@ -16,6 +16,11 @@ if (isset($_GET['id'])) {
                     }
                 } else {
                     sqlError();
+                    go('dashboard.php?page=open-job');
+                }
+            } else if ($jobcard_['jobcard_type'] == 'contract') {
+                $site_ = get_site($jobcard_['site_id']);
+                if (!$site_) {
                     go('dashboard.php?page=open-job');
                 }
             }
@@ -35,9 +40,11 @@ if (isset($_GET['id'])) {
 if (isset($_POST['complete_jobcard'])) {
     if (
         strlen($_POST['compdate'] > 0)
-        && (strlen($_POST['reading']) > 0 && is_numeric($_POST['reading']) && $jobcard_['jobcard_type'] != 'sundry') || ($jobcard_['jobcard_type'] == 'sundry')
+        && (strlen($_POST['reading']) > 0 && is_numeric($_POST['reading']) && $jobcard_['jobcard_type'] != 'sundry') ||
+        ($jobcard_['jobcard_type'] == 'sundry') ||
+        ($jobcard_['jobcard_type'] == 'contract' && $jobcard_['site_id'] > 0)
     ) {
-        if (($_POST['reading'] >= $plant_[$plant_['reading_type'] . '_reading']) || ($jobcard_['jobcard_type'] == 'sundry')) {
+        if (($_POST['reading'] >= $plant_[$plant_['reading_type'] . '_reading']) || ($jobcard_['jobcard_type'] == 'sundry') || ($jobcard_['jobcard_type'] == 'contract')) {
             $events = dbr(dbq("select event_id from jobcard_events where job_id={$_GET['id']}"));
             if ($events == 0) {
                 error("There were no events for this job card.");
@@ -51,7 +58,7 @@ if (isset($_POST['complete_jobcard'])) {
                                             where job_id={$_GET['id']}
                                             ");
                 if (mysqli_affected_rows($db) > 0) {
-                    if ($jobcard_['jobcard_type'] == 'sundry') {
+                    if ($jobcard_['jobcard_type'] == 'sundry' || $jobcard_['jobcard_type'] == 'contract') {
                         msg("job card completed.");
 
                         $job_id = $_GET['id'];

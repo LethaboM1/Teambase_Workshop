@@ -34,7 +34,7 @@
 						}
 						?>
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<?= inp('jobcard_type', 'Jobcard Type', 'select', '', '', 0, [['name' => 'Sundry', 'value' => 'sundry'], ['name' => 'Breakdown', 'value' => 'breakdown'], ['name' => 'Repair', 'value' => 'repair'], ['name' => 'Service', 'value' => 'service'], ['name' => 'Overheads', 'value' => 'overhead']]) ?>
+							<?= inp('jobcard_type', 'Jobcard Type', 'select', '', '', 0, [['name' => 'Sundry', 'value' => 'sundry'], ['name' => 'Breakdown', 'value' => 'breakdown'], ['name' => 'Repair', 'value' => 'repair'], ['name' => 'Service', 'value' => 'service'], ['name' => 'Overheads', 'value' => 'overhead'], ['name' => 'Contract', 'value' => 'contract']]) ?>
 							<?php
 							$jscript .= "
 										$('#jobcard_type').change(function () {
@@ -42,21 +42,41 @@
 												$('#service_detail').show();
 												$('#priority_detail').hide();
 												$('#plant_details').show();
+												$('#site_details').hide();
+
 											} else if ($(this).val() == 'sundry') {
 												$('#service_detail').hide();
 												$('#priority_detail').hide();
 												$('#plant_details').hide();
+												$('#site_details').hide();
+
 											} else {
 												$('#service_detail').hide();
 												$('#priority_detail').show();
-												$('#plant_details').show();
+
+												if ($(this).val() == 'contract') {
+													$('#site_details').show();
+													$('#plant_details').hide();
+												} else {
+													$('#site_details').hide();
+													$('#plant_details').show();
+												}
 											}
 										});
 										";
 							if (isset($_GET['defect'])) $jscript .= "$('#jobcard_type').val('repair').trigger('change');";
 							?>
 						</div>
-						<div class='row' style="display:none" id='plant_details'>
+						<div id="site_details" class="row" style="display:none">
+							<?php
+							$get_sites = dbq("select id as value, name from sites_tbl where active=1");
+							if ($get_sites) while ($row = dbf($get_sites)) $sites_list[] = $row;
+							array_unshift($sites_list, ['name' => 'Select', 'value' => 0]);
+							echo inp('site_id', 'Site', 'select', $_POST['site_id'], '', 0, $sites_list);
+
+							?>
+						</div>
+						<div class='row' id='plant_details' style="display:none">
 							<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
 
 								<?php

@@ -28,19 +28,30 @@
 						</div>
 						<?php
 						if ($jobcard_['jobcard_type'] != 'sundry') {
+							if ($jobcard_['jobcard_type'] == 'contract') {
 						?>
-							<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-								<label class="col-form-label" for="formGroupExampleInput">Plant Number</label>
-								<input type="text" name="plantNumber" class="form-control" value="<?= $plant_['plant_number'] ?>" disabled>
-							</div>
-							<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-								<label class="col-form-label" for="formGroupExampleInput">(<?= strtoupper($plant_['reading_type']) ?>) Reading</label>
-								<input type="text" class="form-control" value="<?= $plant_[$plant_['reading_type'] . '_reading'] ?>" disabled>
-							</div>
-							<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-								<label class="col-form-label" for="formGroupExampleInput">Site</label>
-								<input type="text" name="site" class="form-control" value="<?= $jobcard_['site'] ?>" disabled>
-							</div>
+								<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+									<label class="col-form-label" for="formGroupExampleInput">Site</label>
+									<input type="text" name="plantNumber" class="form-control" value="<?= $site_['name'] ?>" disabled>
+								</div>
+							<?php
+							} else {
+							?>
+								<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+									<label class="col-form-label" for="formGroupExampleInput">Plant Number</label>
+									<input type="text" name="plantNumber" class="form-control" value="<?= $plant_['plant_number'] ?>" disabled>
+								</div>
+								<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+									<label class="col-form-label" for="formGroupExampleInput">(<?= strtoupper($plant_['reading_type']) ?>) Reading</label>
+									<input type="text" class="form-control" value="<?= $plant_[$plant_['reading_type'] . '_reading'] ?>" disabled>
+								</div>
+								<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+									<label class="col-form-label" for="formGroupExampleInput">Site</label>
+									<input type="text" name="site" class="form-control" value="<?= $jobcard_['site'] ?>" disabled>
+								</div>
+							<?php
+							}
+							?>
 							<?php
 							if ($_SESSION['user']['role'] == 'clerk' || $_SESSION['user']['role'] == 'manager'  || $_SESSION['user']['role'] == 'system') {
 							?>

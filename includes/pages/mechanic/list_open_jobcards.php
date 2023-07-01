@@ -16,7 +16,7 @@ switch ($row['priority']) {
 $logged_by = ($row['logged_by'] > 0) ? dbf(dbq("select concat(name,' ', last_name) as name from users_tbl where user_id={$row['logged_by']}")) : ['name' => 'None'];
 $mechanic_ = ($row['mechanic_id'] > 0) ? dbf(dbq("select concat(name,' ', last_name) as name from users_tbl where user_id={$row['mechanic_id']}")) : ['name' => 'None'];
 $plant_ = ($row['mechanic_id'] > 0) ? dbf(dbq("select * from plants_tbl where plant_id={$row['plant_id']}")) : ['name' => 'None'];
-
+$site_ = get_site($row['site_id']);
 switch ($plant_['reading_type']) {
     case "km":
         $reading = $row['km_reading'];
@@ -131,7 +131,7 @@ if ($row['allocated_hours'] > 0) {
                                 <a href="dashboard.php?page=job-card-view&id=<?= $row['job_id'] ?>">
                                 <?php
                                 break;
-
+                            case 'contract':
                             case 'overhead':
                             case 'repair':
                             case 'breakdown':
@@ -143,12 +143,21 @@ if ($row['allocated_hours'] > 0) {
                                 case 'service':
                                     ?>
                                         <a href="dashboard.php?page=plant-schedule&id=<?= $row['job_id'] ?>">
-                            <?php
+                                <?php
                                     break;
                             }
                     }
+
+                    if ($row['jobcard_type'] == 'contract') {
+                                ?>
+                                <h2 class="card-title">Site: <?= $site_['name'] ?>,&nbsp;Logged: <?= $logged_date ?> Job# <?= $row['jobcard_number'] ?>,&nbsp;Type: <?= ucfirst($row['jobcard_type']) ?>, Status: <?= ucfirst($row['status']) ?></h2>
+                            <?php
+                        } else {
                             ?>
-                            <h2 class="card-title">Plant: <?= $plant_['plant_number'] ?>,&nbsp;Logged: <?= $logged_date ?> Job# <?= $row['jobcard_number'] ?>,&nbsp;Type: <?= ucfirst($row['jobcard_type']) ?>, Status: <?= ucfirst($row['status']) ?></h2>
+                                <h2 class="card-title">Plant: <?= $plant_['plant_number'] ?>,&nbsp;Logged: <?= $logged_date ?> Job# <?= $row['jobcard_number'] ?>,&nbsp;Type: <?= ucfirst($row['jobcard_type']) ?>, Status: <?= ucfirst($row['status']) ?></h2>
+                            <?php
+                        }
+                            ?>
                                         </a>
                                         <p class="card-subtitle">Opened by: <?= $logged_by['name'] . ' ' . $logged_by['last_name'] ?></p>
                                         <div class="progress progress-xl progress-half-rounded m-2">

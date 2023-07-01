@@ -1627,11 +1627,34 @@ function get_plant($plant_id)
 				$plant_ = dbf($get_plant);
 				return $plant_;
 			} else {
-				error("Could not find plant.");
+				// error("Could not find plant.");
 			}
 		} else {
 			error_log('SQL error: ' . dbe());
 			error("Could not find plant.");
+			return false;
+		}
+	} else {
+		return false;
+	}
+}
+
+
+function get_site($site_id)
+{
+	if (is_numeric($site_id)) {
+		$get_site = dbq("select * from sites_tbl where id={$site_id}");
+		if ($get_site) {
+			if (dbr($get_site) == 1) {
+				$site_ = dbf($get_site);
+				return $site_;
+			} else {
+				// error("Could not find site.");
+				return false;
+			}
+		} else {
+			error_log('SQL error: ' . dbe());
+			error("Could not find site.");
 			return false;
 		}
 	} else {

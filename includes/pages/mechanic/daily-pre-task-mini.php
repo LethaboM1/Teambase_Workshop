@@ -24,10 +24,24 @@
 							<label class="col-form-label" for="formGroupExampleInput">Job No.</label>
 							<input type="text" name="jobnumber" placeholder="Job No." class="form-control" value="<?= $jobcard_['jobcard_number'] ?>" disabled>
 						</div>
-						<div class="col-sm-6 col-md-4 col-lg-4">
-							<label class="col-form-label" for="formGroupExampleInput">Plant No.</label>
-							<input type="text" name="plantnumber" placeholder="Plant No." class="form-control" value="<?= $plant_['plant_number'] . ' ' . $plant_['reg_number'] . ' ' . $plant_['make'] . ' ' . $plant_['model'] ?>" disabled>
-						</div>
+						<?php
+						if ($jobcard_['jobcard_type'] == 'contract') {
+						?>
+							<div class="col-sm-6 col-md-4 col-lg-4">
+								<label class="col-form-label" for="formGroupExampleInput">Site</label>
+								<input type="text" name="site_id" placeholder="Site" class="form-control" value="<?= $site_['name'] ?>" disabled>
+							</div>
+						<?php
+						} else {
+						?>
+							<div class="col-sm-6 col-md-4 col-lg-4">
+								<label class="col-form-label" for="formGroupExampleInput">Plant No.</label>
+								<input type="text" name="plantnumber" placeholder="Plant No." class="form-control" value="<?= $plant_['plant_number'] . ' ' . $plant_['reg_number'] . ' ' . $plant_['make'] . ' ' . $plant_['model'] ?>" disabled>
+							</div>
+						<?php
+
+						}
+						?>
 						<?php if ($jobcard_['status'] == 'open') {
 							echo inp('note', '', 'hidden', 'Initial Risk Assessment.');
 						} else { ?>

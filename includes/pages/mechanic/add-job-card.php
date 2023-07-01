@@ -9,23 +9,38 @@
 				<div class="card-body">
 					<div class="row">
 						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-							<?= inp('jobcard_type', 'Jobcard Type', 'select', $_POST['jobcard_type'], '', 0, [['name' => 'Sundry', 'value' => 'sundry'], ['name' => 'Breakdown', 'value' => 'breakdown'], ['name' => 'Repair', 'value' => 'repair'], ['name' => 'Service', 'value' => 'service'], ['name' => 'Overheads', 'value' => 'overhead']]) ?>
+							<?= inp('jobcard_type', 'Jobcard Type', 'select', $_POST['jobcard_type'], '', 0, [['name' => 'Sundry', 'value' => 'sundry'], ['name' => 'Breakdown', 'value' => 'breakdown'], ['name' => 'Repair', 'value' => 'repair'], ['name' => 'Service', 'value' => 'service'], ['name' => 'Overheads', 'value' => 'overhead'], ['name' => 'Contract', 'value' => 'contract']]) ?>
 							<?php
 							$jscript .= "
 										$('#jobcard_type').change(function () {
 											if ($(this).val() == 'service') {
 												$('#service_detail').show();
+												$('#main_details').show();
 												$('#plant_details').show();
+
 												$('#priority_detail').hide();
 												$('#extras_details').show();
 											} else if ($(this).val() == 'sundry') {
 												$('#service_detail').hide();
+												$('#main_details').hide();
 												$('#plant_details').hide();
+
 												$('#priority_detail').hide();
 												$('#extras_details').hide();
 											} else {
 												$('#service_detail').hide();
-												$('#plant_details').show();
+												$('#main_details').show();
+												
+												if ($(this).val() == 'contract') {
+													$('#plant_details').hide();
+													$('#site_details').show();
+													
+												} else {
+													$('#plant_details').show();
+													$('#site_details').hide();
+													
+												}
+
 												$('#priority_detail').show();
 												$('#extras_details').show();
 											}
@@ -55,19 +70,30 @@
 							echo "<div class='col-sm-12 col-md-4 pb-sm-3 pb-md-0'>" . inp('clerk_id', 'Clerk', 'select', $_POST['clerk_id'], '', 0, $clerk_select_) . "</div>";
 						}
 						?>
-						<div id="plant_details" style="display:none" class="row">
-							<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+						<div id="main_details" style="display:none" class="row">
+							<div id="site_details" class="row">
 								<?php
-								$get_plants = dbq("select concat(plant_number,' - ',vehicle_type,' ',make,' ',model) as name, plant_id as value from plants_tbl where active=1 order by plant_number");
-								if ($get_plants) {
-									if (dbr($get_plants) > 0) {
-										while ($plant = dbf($get_plants)) {
-											$plant_select_[] = $plant;
+								$get_sites = dbq("select id as value, name from sites_tbl where active=1");
+								if ($get_sites) while ($row = dbf($get_sites)) $sites_list[] = $row;
+								array_unshift($sites_list, ['name' => 'select', 'value' => 0]);
+								echo inp('site_key', 'Site', 'select', $_POST['site_key'], '', 0, $sites_list);
+
+								?>
+							</div>
+							<div id="plant_details" class="row">
+
+								<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+									<?php
+									$get_plants = dbq("select concat(plant_number,' - ',vehicle_type,' ',make,' ',model) as name, plant_id as value from plants_tbl where active=1 order by plant_number");
+									if ($get_plants) {
+										if (dbr($get_plants) > 0) {
+											while ($plant = dbf($get_plants)) {
+												$plant_select_[] = $plant;
+											}
 										}
 									}
-								}
-								echo inp('plant_id', 'Plant Number', 'datalist', $_POST['plant_id'], '', 0, $plant_select_);
-								$jscript .= "
+									echo inp('plant_id', 'Plant Number', 'datalist', $_POST['plant_id'], '', 0, $plant_select_);
+									$jscript .= "
 										$('#plant_id').change(function () {
 											console.log('Changed!');
 											$.ajax({
@@ -103,16 +129,17 @@
 										});
 										";
 
-								?>
-							</div>
-							<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-								<label class="col-form-label" for="formGroupExampleInput">Reading <span id="reading_lbl"></span></label>
-								<?= inp('reading_type', '', 'hidden') ?>
-								<input id="reading" type="text" name="reading" placeholder="Reading" class="form-control">
-							</div>
-							<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
-								<label class="col-form-label" for="formGroupExampleInput">Site</label>
-								<input type="text" name="site" placeholder="site" class="form-control" value="<?= $_POST['site'] ?>" />
+									?>
+								</div>
+								<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+									<label class="col-form-label" for="formGroupExampleInput">Reading <span id="reading_lbl"></span></label>
+									<?= inp('reading_type', '', 'hidden') ?>
+									<input id="reading" type="text" name="reading" placeholder="Reading" class="form-control">
+								</div>
+								<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+									<label class="col-form-label" for="formGroupExampleInput">Site</label>
+									<input type="text" name="site" placeholder="site" class="form-control" value="<?= $_POST['site'] ?>" />
+								</div>
 							</div>
 
 

@@ -33,6 +33,7 @@ $get_completed = dbq("select job_id from jobcards where status='completed'");
 					<ul class="nav nav-children">
 						<li><a class="nav-link" href="dashboard.php?page=add-user">Add/Manage Users</a></li>
 						<li><a class="nav-link" href="dashboard.php?page=add-plant">Add/Manage Plants</a></li>
+						<li><a class="nav-link" href="dashboard.php?page=add-site">Add/Manage Sites</a></li>
 					</ul>
 				</li>
 				<li class="nav-parent">

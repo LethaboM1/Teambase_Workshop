@@ -90,6 +90,25 @@ switch ($_GET['page']) {
 
         break;
 
+    case 'add-site':
+        if ($_SESSION['user']['role'] == 'clerk') {
+            $page_title = 'Dashboard Overview';
+            switch ($_SESSION['user']['role']) {
+                case "clerk":
+                    $page_name = 'dash_clerk';
+                    break;
+
+                default:
+                    $page_name = 'dash_manager';
+            }
+        } else {
+            $page_title = 'Add/Manage Site';
+            $page_name = 'manager/sites/add-manage-site';
+            require "includes/forms/manager/sites/manage-sites-form.php";
+        }
+
+        break;
+
     case 'view-plant':
 
         if ($_SESSION['user']['role'] == 'clerk') {
