@@ -1654,7 +1654,7 @@ function get_site($site_id)
 			}
 		} else {
 			error_log('SQL error: ' . dbe());
-			error("Could not find site.");
+			//error("Could not find site.");
 			return false;
 		}
 	} else {
