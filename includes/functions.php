@@ -1642,7 +1642,7 @@ function get_plant($plant_id)
 
 function get_site($site_id)
 {
-	if (is_numeric($site_id)) {
+	if (is_numeric($site_id) && $site_id > 0) {
 		$get_site = dbq("select * from sites_tbl where id={$site_id}");
 		if ($get_site) {
 			if (dbr($get_site) == 1) {
