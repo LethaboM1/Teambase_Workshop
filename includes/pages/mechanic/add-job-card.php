@@ -74,7 +74,14 @@
 							<div id="site_details" class="row">
 								<?php
 								$get_sites = dbq("select id as value, name from sites_tbl where active=1");
-								if ($get_sites) while ($row = dbf($get_sites)) $sites_list[] = $row;
+
+								if ($get_sites) {
+									if (dbr($get_sites) > 0) {
+										while ($row = dbf($get_sites)) $sites_list[] = $row;
+									} else {
+										$sites_list = [];
+									}
+								}
 								array_unshift($sites_list, ['name' => 'select', 'value' => 0]);
 								echo inp('site_key', 'Site', 'select', $_POST['site_key'], '', 0, $sites_list);
 
