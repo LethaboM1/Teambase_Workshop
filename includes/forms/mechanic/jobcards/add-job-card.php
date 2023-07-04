@@ -59,7 +59,8 @@ if (isset($_POST['request_jobcard'])) {
             }
         }
 
-
+        if (!isset($_POST['site_id'])) $_POST['site_id'] = 0;
+        if (!isset($_POST['plant_id'])) $_POST['plant_id'] = 0;
 
         if ($create_jobcard) {
             $add_jobcard = dbq("insert into jobcards set
