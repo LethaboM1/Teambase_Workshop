@@ -690,7 +690,7 @@ switch ($_POST['cmd']) {
                 break;
 
             case "completed-jobs":
-                $get_users = dbq("select * from jobcards where (jobcard_number like '%{$_POST['search']}%' || plant_id in (select plant_id from plants_tbl where fleet_number like '%{$_POST['search']}%')) and status='completed'");
+                $get_users = dbq("select * from jobcards where (jobcard_number like '%{$_POST['search']}%' || plant_id in (select plant_id from plants_tbl where plant_number like '%{$_POST['search']}%')) and status='completed'");
                 if ($get_users) {
                     if (dbr($get_users) > 0) {
                         while ($row = dbf($get_users)) {
