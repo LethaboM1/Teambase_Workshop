@@ -3,6 +3,7 @@
 $logged_by = ($row['logged_by'] > 0) ? dbf(dbq("select concat(name,' ', last_name) as name from users_tbl where user_id={$row['logged_by']}")) : ['name' => 'None'];
 $mechanic_ = ($row['mechanic_id'] > 0) ? dbf(dbq("select concat(name,' ', last_name) as name from users_tbl where user_id={$row['mechanic_id']}")) : ['name' => 'None'];
 $plant_ = ($row['mechanic_id'] > 0) ? dbf(dbq("select * from plants_tbl where plant_id={$row['plant_id']}")) : ['name' => 'None'];
+$site_ = ($row['site_id'] > 0) ? dbf(dbq("select * from sites_tbl where id={$row['site_id']}")) : ['name' => 'None'];
 
 switch ($plant_['reading_type']) {
     case "km":
@@ -170,7 +171,7 @@ $logged_date = date_format($logged_date, 'Y-m-d');
                 <!-- Modal view End -->
                 <!-- Job Card End -->
             </div>
-            <h2 class="card-title">Plant: <?= $plant_['plant_number'] ?>,&nbsp;Logged: <?= $logged_date ?> Job# <?= $row['jobcard_number'] ?>,&nbsp;Type: <?= ucfirst($row['jobcard_type']) ?>, Status: <?= ucfirst($row['status']) ?></h2>
+            <h2 class="card-title"><?= ($row['jobcard_type'] == 'contract' ?  "Site: {$site_['name']}" : "Plant: {$plant_['plant_number']}") ?>,&nbsp;Logged: <?= $logged_date ?> Job# <?= $row['jobcard_number'] ?>,&nbsp;Type: <?= ucfirst($row['jobcard_type']) ?>, Status: <?= ucfirst($row['status']) ?></h2>
             </a>
             <p class="card-subtitle">Opened by: <?= $logged_by['name'] . ' ' . $logged_by['last_name'] ?></p>
         </div>
