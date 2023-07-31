@@ -83,7 +83,7 @@
 									}
 								}
 								array_unshift($sites_list, ['name' => 'select', 'value' => 0]);
-								echo inp('site_key', 'Site', 'select', $_POST['site_key'], '', 0, $sites_list);
+								echo inp('site_id', 'Site', 'select', $_POST['site_id'], '', 0, $sites_list);
 
 								?>
 							</div>
