@@ -192,7 +192,7 @@
 
                 } else if ($jobcard['jobcard_type'] == 'contract') {
                 ?>
-                    <h2 class="card-title">Site <?= $site_['name'] ?>, <?= ucfirst($jobcard['jobcard_type']) ?>, Type: <?= $jobcard['service_type'] ?>,&nbsp;[<?= date('Y-m-d', strtotime($jobcard['job_date']))  ?>]</h2>
+                    <h2 class="card-title">Site <?= $site_['name'] ?>,Type: <?= ucfirst($jobcard['jobcard_type']) ?>,&nbsp;[<?= date('Y-m-d', strtotime($jobcard['job_date']))  ?>]</h2>
                 <?php
                 } else {
                 ?>
