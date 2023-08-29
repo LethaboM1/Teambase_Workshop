@@ -594,15 +594,15 @@ switch ($_GET['type']) {
                     }
 
                     $pdf .= "</b>  , confirm and acknowledge that I have been involved with the HIRA and am aware of all hazards and risks associated with the task and undertake to follow the Safe Work Procedure, I aslo understand that my Safty is my own responsibility and that I must at all times report unsafe conditions.</p>
-                    <br>
-                    <br>
-                    <table style='width: 750px;'>
-                        <tfoot>
-                            <tr>
-                            <td style='width: 100%; text-align: right; font-weight: bold; font-size: 11px;'>HS01 REV04 190522</td>
-                            </tr>
-                        </tfoot>
-                    </table>  ";
+                            <br>
+                            <br>
+                            <table style='width: 750px;'>
+                                <tfoot>
+                                    <tr>
+                                    <td style='width: 100%; text-align: right; font-weight: bold; font-size: 11px;'>HS01 REV04 190522</td>
+                                    </tr>
+                                </tfoot>
+                            </table>  ";
                     //echo $pdf;
                     printPDF($pdf, "{$jobcard_['jobcard_number']}-{$_GET['type']}-{$risk_assessment['id']}");
                 } else {
