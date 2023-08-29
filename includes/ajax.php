@@ -693,6 +693,26 @@ switch ($_POST['cmd']) {
                 }
                 break;
 
+            case 'additional-defect-report-archive':
+                $get_reports = dbq("select * from jobcard_reports where reviewed=0 
+                                        and 
+                                            (
+                                                component like '%{$_POST['search']}%'
+                                                || severity like '%{$_POST['search']}%'
+                                                || comment like '%{$_POST['search']}%'
+                                                || created_at like '%{$_POST['search']}%'
+                                                || job_id in (select job_id from jobcards where jobcard_number like '%{$_POST['search']}%')
+                                            )");
+                if ($get_reports && dbr($get_reports) > 0) {
+                    while ($row = dbf($get_reports)) {
+                        require "pages/manager/jobcards/list_archive_defect_report.php";
+                    }
+                } else {
+                    echo "<tr><td colspan='6'>Could not find '{$_POST['search']}'</td></tr>";
+                }
+
+                break;
+
             case "open-jobs":
                 if ($_SESSION['user']['role'] == 'mechanic') {
                     $query_ = " and mechanic_id={$_SESSION['user']['user_id']}";

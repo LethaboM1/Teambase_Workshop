@@ -88,6 +88,7 @@ $get_completed = dbq("select job_id from jobcards where status='completed'");
 						<li><a class="nav-link" href="dashboard.php?page=new-job">New Job cards&nbsp;<span class='badge badge-danger float-end'><?= dbr($get_new) ?></span></a></li>
 						<li><a class="nav-link" href="dashboard.php?page=new-job-allocate">New - Require Job Number&nbsp;<span class='badge badge-danger float-end'><?= dbr($get_new_jobnumber) ?></span></a></li>
 						<li><a class="nav-link" href="dashboard.php?page=additional-defects">Additional Defects&nbsp;<span class='badge badge-danger float-end'><?= dbr($get_add_defect) ?></span></a></li>
+						<li><a class="nav-link" href="dashboard.php?page=additional-defects-archive">Additional Defects - Archive</a></li>
 						<li><a class="nav-link" href="dashboard.php?page=open-job">Open&nbsp;<span class='badge badge-danger float-end'><?= dbr($get_open) ?></span></a></li>
 						<li><a class="nav-link" href="dashboard.php?page=completed-job">Completed&nbsp;<span class='badge badge-danger float-end'><?= dbr($get_completed) ?></span></a></li>
 						<li><a class="nav-link" href="dashboard.php?page=arch-job">Archived</a></li>
@@ -102,6 +103,7 @@ $get_completed = dbq("select job_id from jobcards where status='completed'");
 						<li><a class="nav-link" target="_blank" href="print.php?type=open-requisitions">Open Requisitions</a></li>
 						<li><a class="nav-link" href="dashboard.php?page=rep-jobcard-events">Job Card Events</a></li>
 						<li><a class="nav-link" href="dashboard.php?page=rep-operator-log">Plant Operator Logs</a></li>
+						<li><a class="nav-link" href="print.php?type=next-service">Next Service Report</a></li>
 						<li><a class="nav-link" href="print.php?type=next-service">Next Service Report</a></li>
 					</ul>
 				</li>
