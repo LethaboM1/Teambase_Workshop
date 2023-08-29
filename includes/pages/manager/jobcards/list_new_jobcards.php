@@ -74,6 +74,7 @@
                                                     <?php
                                                     $get_reports = dbq("select * from jobcard_reports where job_id={$jobcard['job_id']}");
                                                     $allocated_hours = 0;
+
                                                     if ($get_reports) {
                                                         if (dbr($get_reports) > 0) {
                                                             while ($report = dbf($get_reports)) {
@@ -126,6 +127,31 @@
                                                     ?>
                                                 </tbody>
                                             </table>
+
+                                            <hr>
+                                            <?php
+
+                                            $photos = [];
+                                            $photos_ = get_photos('defect-reports', $jobcard['job_id']);
+                                            if (isset($photos_) && is_array($photos_) && count($photos_) > 0) $photos = array_merge($photos_, $photos);
+                                            if (count($photos) > 0) {
+                                            ?>
+                                                <h4>Photos</h4>
+                                                <div class="row">
+                                                    <?php
+                                                    foreach ($photos as $photo) {
+                                                    ?>
+                                                        <div class="col-md-4">
+                                                            <img style="max-height:270px" src="./files/defect-reports/<?= $jobcard['job_id'] . '/' . $photo ?>" alt="" class="rounded img-fluid">
+                                                        </div>
+                                                    <?php
+                                                    }
+                                                    ?>
+                                                </div>
+                                            <?php
+                                            }
+                                            ?>
+                                            <hr>
                                         </div>
                                     </div>
                                     <div class="row">

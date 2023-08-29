@@ -38,6 +38,55 @@ switch ($_GET['cmd']) {
 
 switch ($_POST['cmd']) {
 
+    case 'add_team_member':
+        $lines = '';
+        if (strlen($_POST['name']) > 0) {
+            if (!isset($_SESSION['pre-task']['team']) || !in_array($_POST['name'], $_SESSION['pre-task']['team'])) {
+                $_SESSION['pre-task']['team'][] = [
+                    'name' => $_POST['name'],
+                    'company_number' => $_POST['company_number']
+                ];
+            }
+        }
+
+
+        foreach ($_SESSION['pre-task']['team'] as $member) {
+            $lines .= "<tr>
+                            <td>" . $member['name'] . "</td>                        
+                            <td>" . $member['company_number'] . "</td>
+                            <td>
+                                <button onClick='remove_member(`" . $member['name'] . "`)' class='btn btn-sm btn-danger'>
+                                    <i class='fa fa-times'></i>
+                                </button>
+                            </td>
+                        </tr>";
+        }
+
+        echo $lines;
+        break;
+
+    case 'remove_team_member':
+        $lines = '';
+        if (strlen($_POST['value']) > 0) {
+            $key = array_search($_POST['value'], $_SESSION['pre-task']['team']);
+            if (is_numeric($key))  unset($_SESSION['pre-task']['team'][$key]);
+        }
+
+        foreach ($_SESSION['pre-task']['team'] as $member) {
+            $lines .= "<tr>
+                            <td>" . $member['name'] . "</td>                        
+                            <td>" . $member['company_number'] . "</td>
+                            <td>
+                                <button onClick='remove_member(`" . $member['name'] . "`)' class='btn btn-sm btn-danger'>
+                                    <i class='fa fa-times'></i>
+                                </button>
+                            </td>
+                        </tr>";
+        }
+        echo $lines;
+
+        break;
+
     case 'set_part_number':
         if (isset($_POST['id']) && isset($_POST['value'])) {
             $update_ = dbq("update jobcard_requisition_parts set

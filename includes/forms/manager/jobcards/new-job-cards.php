@@ -57,6 +57,7 @@ if (isset($_POST['allocate_mechanic'])) {
                                                             ");
 
                                 if (mysqli_affected_rows($db) != -1) {
+                                    dbq("update jobcard_reports set reviewed=1 where job_id={$_POST['job_id']}");
                                     msg("Mechanic allocated!");
                                     unset($_POST);
                                     if (strlen($_POST['jobnumber']) > 0) {

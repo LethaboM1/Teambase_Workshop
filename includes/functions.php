@@ -1053,7 +1053,7 @@ function prettyJson($json)
 }
 
 
-function folders_($type, $plant_id)
+function folders_($type, $id)
 {
 	if (!file_exists("./files")) {
 		if (!mkdir("./files")) {
@@ -1063,6 +1063,26 @@ function folders_($type, $plant_id)
 	}
 
 	switch ($type) {
+		case 'defect-report':
+			if (!file_exists("./files/defect-reports")) {
+				if (!mkdir("./files/defect-reports")) {
+					error("Could not create folder for defect-reports.");
+					return false;
+				}
+			}
+
+			if (!file_exists("./files/defect-reports/{$id}")) {
+				if (!mkdir("./files/defect-reports/{$id}")) {
+					error("Could not create folder for defect-reports.");
+					return false;
+				}
+			}
+
+			if (!is_error()) {
+				return "./files/defect-reports/{$id}/";
+			}
+			break;
+
 		case "operator_log":
 			if (!file_exists("./files/operator_logs")) {
 				if (!mkdir("./files/operator_logs")) {
@@ -1071,15 +1091,15 @@ function folders_($type, $plant_id)
 				}
 			}
 
-			if (!file_exists("./files/operator_logs/{$plant_id}")) {
-				if (!mkdir("./files/operator_logs/{$plant_id}")) {
-					error("Could not create folder for plant {$plant_id}.");
+			if (!file_exists("./files/operator_logs/{$id}")) {
+				if (!mkdir("./files/operator_logs/{$id}")) {
+					error("Could not create folder for plant {$id}.");
 					return false;
 				}
 			}
 
 			if (!is_error()) {
-				return "./files/operator_logs/{$plant_id}/";
+				return "./files/operator_logs/{$id}/";
 			}
 			break;
 		default:
@@ -1134,9 +1154,70 @@ function get_record($table, $column, $id, $extra = '')
 	}
 }
 
+function get_photos($type, $id)
+{
+	switch ($type) {
+		case 'defect-reports':
+			$folders = scandir("./files/defect-reports/{$id}");
+
+			if ($folders) {
+				$photos = array_diff($folders, ['.', '..']);
+				return $photos;
+			} else {
+
+				return [];
+			}
+			break;
+		default:
+			return [];
+	}
+}
+
 function upload_images($type, $id, $id_2, $photos, $key)
 {
 	switch ($type) {
+		case 'defect-report':
+			if (is_array($photos)) {
+				if (count($photos) > 0) {
+					if ($user_ = get_user($id)) {
+						if ($jobcard_ = get_jobcard($id_2)) {
+							if ($folder = folders_('defect-report', $id_2)) {
+								$count = 1;
+								foreach ($photos as $photo) {
+									$img_type = explode('/', $photo['type']);
+									$extension = $img_type[1];
+									//error_log('type = ' . $photo['type'] . ' ,Extension=' . $extension);
+									$base64data = str_replace('data:image/jpeg;base64,', '', $photo['image']);
+									//error_log("image = " . $folder . $key . '.' . $count . '.' . $extension);
+									if (file_put_contents($folder . $key . '-defect-report-' . $count . '.' . $extension, base64_decode($base64data))) {
+									}
+									$count++;
+								}
+								return true;
+							} else {
+								error("Error with folders.");
+								return false;
+							}
+						} else {
+							error("Error getting Job card.");
+							return false;
+						}
+					} else {
+						error("Error getting user.");
+						return false;
+					}
+				} else {
+					error("You have not submitted a photo.");
+					return false;
+				}
+			} else {
+				error('invalid photo data.');
+				return false;
+			}
+
+
+			break;
+
 		case "start_refuel":
 			$chk_operator = dbq("select user_id from users_tbl where user_id={$id}");
 			if ($chk_operator) {

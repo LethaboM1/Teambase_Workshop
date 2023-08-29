@@ -113,11 +113,91 @@
 					<hr>
 					<div class="row">
 						<h3>Team members performing task</h3>
+						<div class="row">
+							<div class="col-md-3">
+								<?= inp('team_member', 'Team Member Name', 'text') ?>
+							</div>
+							<div class="col-md-3">
+								<?= inp('company_number', 'Member Company Number', 'text') ?>
+							</div>
+							<div class="col-md-3">
+								<label>&nbsp;</label><br>
+								<button type="button" onClick="add_member($('#team_member').val(),$('#company_number').val())" class="btn btn-warning">
+									<i class="fa fa-plus"></i>
+								</button>
+							</div>
+						</div>
+						<table class="table table-responsive table-hover">
+							<thead>
+								<tr>
+									<th>Name</th>
+									<th>Company Number</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody id="team_list">
+								<?php if (isset($_SESSION['pre-task']['team']) && count($_SESSION['pre-task']['team']) > 0) { ?>
+
+									<?php
+									foreach ($_SESSION['pre-task']['team'] as $member) {
+									?>
+										<tr>
+											<td><?= $member['name'] ?></td>
+											<td><?= $memebr['company_number'] ?></td>
+											<td>
+												<button type="button" onClick="remove_member(<?= $member['name'] ?>)" class="btn btn-sm btn-danger">
+													<i class="fa fa-times"></i>
+												</button>
+											</td>
+										</tr>
+									<?php
+									}
+									?>
+
+								<?php  } ?>
+							</tbody>
+						</table>
+
+						<script>
+							function add_member($name, $company_number) {
+								$.ajax({
+									method: 'post',
+									url: 'includes/ajax.php',
+									data: {
+										cmd: 'add_team_member',
+										name: $name,
+										company_number: $company_number
+									},
+									success: function(result) {
+										$("#team_list").html(result);
+										$('#team_member').val('');
+										$('#company_number').val('');
+									}
+
+
+								});
+							}
+
+							function remove_member($value) {
+								$.ajax({
+									method: 'post',
+									url: 'includes/ajax.php',
+									data: {
+										cmd: 'remove_team_member',
+										value: $value
+									},
+									success: function(result) {
+										$("#team_list").html(result);
+									}
+
+								});
+							}
+						</script>
 						<p>I, the undersigned, confirm and acknowledge that I have been involved with the HIRA and am aware of all hazards and risks associated with the task and undertake to follow the Safe Work Procedure, I aslo understand that my Safty is my own responsibility and that I must at all times report unsafe conditions.</p>
 					</div>
 					<div class="row">
 						<div class="col-sm-5 col-md-5 col-lg-5">
-							<label><input type="checkbox" name="agree_to_statements" id="checkboxExample4" value="agree"> Confirm above stament.</label>
+							<label><input type="checkbox" name="agree_to_statements" id="checkboxExample4" value="agree"> Confirm above statement.</label>
 						</div>
 					</div>
 				</div>

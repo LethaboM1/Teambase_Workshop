@@ -231,6 +231,44 @@
 								?>
 
 								<h2 class="card-title">Plant Inspection / Job Instruction Report</h2>
+								<div class="row">
+									<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+										<label class="col-form-label" for="formGroupExampleInput">Photos</label>
+										<div class="col-sm-12 col-md-4 mt-2">
+											<div class="input-group mb-3">
+												<input id="file-bd" type="file" style="display:none">
+												<input id="image-box-bd" type='text' class="form-control">
+												<button id="image-btn-bd" type='button' class="input-group-text" id="basic-addon2"><i class="fa fa-image"></i></button>
+											</div>
+											<?php
+											$jscript .= "
+												$('#image-btn-bd').click(function (){ 
+													$('#file-bd').click();
+
+												});
+												
+												$('#image-box-bd').click(function (){ 
+													$('#file-bd').click();
+
+												});
+
+												document.getElementById('file-bd').addEventListener('change', function () {
+													var fileExtension = ['jpg','jpeg'];
+													var extension = $('#file-bd').val().split('.').pop().toLowerCase();
+
+													//console.log(`Extension :` + extension);
+
+													if ($.inArray(extension, fileExtension) > -1) {
+														ResizeImage(800,2048,2,'file-bd');
+													}              
+												});
+												";
+											?>
+										</div>
+									</div>
+								</div>
+								<div class="row" id="image_list">
+								</div>
 								<div class="row mt-2">
 									<div class="col-md-2"><select class="form-control mb-3" id="component" name="component">
 											<option value="">Select Component</option>

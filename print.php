@@ -518,7 +518,17 @@ switch ($_GET['type']) {
                     $risk_assessment = dbf($get_risk_assessment);
                     $jobcard_ = dbf(dbq("select * from jobcards where job_id={$risk_assessment['job_id']}"));
                     $plant_ = dbf(dbq("select * from plants_tbl where plant_id={$jobcard_['plant_id']}"));
-                    $mechanic_ = dbf(dbq("select name, last_name,employee_number from users_tbl where user_id={$jobcard_['mechanic_id']}"));
+
+                    if (strlen($risk_assessment['team_members']) > 0) {
+                        $team_members = json_decode(base64_decode($risk_assessment['team_members']), true);
+                    } else {
+                        $mechanic_ = dbf(dbq("select name, last_name,company_number from users_tbl where user_id={$jobcard_['mechanic_id']}"));
+                        $team_members[] = [
+                            'name' => "{$mechanic_['name']} {$mechanic_['last_name']}",
+                            'company_number' => $mechanic_['company_number']
+                        ];
+                    }
+
 
                     $get_items = json_decode(base64_decode($risk_assessment['results']), true);
                     $pdf = "<table style=\"width: 750px; border-collapse: collapse; table-layout: fixed;\">   
@@ -574,7 +584,16 @@ switch ($_GET['type']) {
                     $pdf .= "</tbody>
                     </table>
                     <h1 style=\"font-weight: bold; font-size: 20px; text-align: left;\">Terms and conditions</h1>
-                    <p style=\"font-weight: normal; font-size: 13px; text-align: left;\">I, <b>" . (strlen($mechanic_['name']) ? $mechanic_['name'] : "") . " " . (strlen($mechanic_['last_name']) ? $mechanic_['last_name'] : "") . " " . (strlen($mechanic_['employee_number']) ? $mechanic_['employee_number'] : "") . "</b>  , confirm and acknowledge that I have been involved with the HIRA and am aware of all hazards and risks associated with the task and undertake to follow the Safe Work Procedure, I aslo understand that my Safty is my own responsibility and that I must at all times report unsafe conditions.</p>
+                    <p style=\"font-weight: normal; font-size: 13px; text-align: left;\">I, <b>";
+
+                    foreach ($team_members as $key => $member) {
+                        // error_log(print_r($member['company_number'], true));
+                        if (isset($member['name'])) {
+                            $pdf .= ($key > 0 ? ", " : "") . "{$member['name']}" . (strlen($member['company_number']) > 0 ? " - {$member['company_number']}" : "");
+                        }
+                    }
+
+                    $pdf .= "</b>  , confirm and acknowledge that I have been involved with the HIRA and am aware of all hazards and risks associated with the task and undertake to follow the Safe Work Procedure, I aslo understand that my Safty is my own responsibility and that I must at all times report unsafe conditions.</p>
                     <br>
                     <br>
                     <table style='width: 750px;'>

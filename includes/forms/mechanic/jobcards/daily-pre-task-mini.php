@@ -37,6 +37,7 @@ if (isset($_GET['id'])) {
     go('dashboard.php?page=open-job');
 }
 
+
 if (isset($_POST['add_job_checklist'])) {
     if ($_POST['agree_to_statements'] == 'agree') {
         $check_list = dbq("select * from job_checklist order by item_order");
@@ -61,15 +62,22 @@ if (isset($_POST['add_job_checklist'])) {
 
         if (!is_error()) {
             if (isset($job_check_list)) {
+                $_SESSION['pre-task']['team'][] = [
+                    'name' => "{$_SESSION['user']['name']} {$_SESSION['user']['last_name']}",
+                    'company_number' => $_SESSION['user']['company_number']
+                ];
+
                 $job_check_list = base64_encode(json_encode($job_check_list));
                 $add_assessment = dbq("insert into jobcard_risk_assessments set
                                                 job_id={$_GET['id']},
                                                 date_time='" . date('Y-m-d H:i') . "',
                                                 note='" . htmlentities($_POST['note'], ENT_QUOTES) . "',
-                                                results='" . esc($job_check_list) . "'
+                                                results='" . esc($job_check_list) . "',
+                                                team_members='" . base64_encode(json_encode($_SESSION['pre-task']['team'])) . "'
                                                 ");
                 if ($add_assessment) {
                     $update_jobcard = dbq("update jobcards set status='busy' where job_id={$_GET['id']}");
+
                     if ($update_jobcard) {
                         msg("Job assessment done.");
                         switch ($jobcard_['jobcard_type']) {
@@ -92,4 +100,10 @@ if (isset($_POST['add_job_checklist'])) {
     } else {
         error("You must agree to the statements to continue.");
     }
+}
+
+
+if (!isset($_POST['add_job_checklist'])) {
+    unset($_SESSION['pre-task']['team']);
+    error_log("Unset pre-task");
 }

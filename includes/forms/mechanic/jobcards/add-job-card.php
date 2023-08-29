@@ -88,7 +88,9 @@ if (isset($_POST['request_jobcard'])) {
                                             hours='{$_SESSION['settings']["jobcard_service_" . strtolower($_POST['service_type']) . "_hours"]}',
                                             comment='Type " . strtoupper($_POST['service_type']) . " service.'
                                             ");
-                    if (!$add_service)  error_log("Error adding service to report: " . dbe());
+                    if (!$add_service) {
+                        error_log("Error adding service to report: " . dbe());
+                    }
                 }
 
                 if (is_array($_SESSION['fault_reports'])) {
@@ -103,9 +105,16 @@ if (isset($_POST['request_jobcard'])) {
                                                     ");
                             if (!$insert_report) {
                                 error_log("Error adding report: job={$job_id}:" . dbe());
+                            } else {
+                                $report_id = mysqli_insert_id($db);
                             }
                         }
+
+                        if (!upload_images('defect-report', $_SESSION['user']['user_id'], $job_id, $_SESSION['upload_images'], $report_id)) {
+                            error("There was an error uploading the photos.");
+                        }
                         unset($_SESSION['fault_reports']);
+                        unset($_SESSION['upload_images']);
                     }
                 }
 

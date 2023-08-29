@@ -40,10 +40,10 @@ function ResizeImage(maxWidth = 800, maxHeight = 800, limit=1, source='file' ) {
                   var ctx = theCanvas.getContext("2d");
                   ctx.drawImage(img, 0, 0, width, height);
 
-                  console.log(`File Type: ` + file.type);
+                //   console.log(`File Type: ` + file.type);
                   
                   if (dataurl = theCanvas.toDataURL(file.type)) {
-                    console.log(`base64 data = ` + dataurl);
+                    // console.log(`base64 data = ` + dataurl);
                     $.ajax({
                         method:'post',
                         url:'includes/ajax.php',

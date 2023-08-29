@@ -3,7 +3,7 @@
 		<?php
 
 		// $get_jobcards = dbq("select * from jobcards where status='defect-logged'");
-		$get_jobcards = dbq("select * from jobcards where job_id in (select distinct job_id from jobcard_reports where reviewed=0)");
+		$get_jobcards = dbq("select * from jobcards where status!='logged' and status!='closed' and job_id in (select distinct job_id from jobcard_reports where reviewed=0)");
 
 		if ($get_jobcards) {
 			if (dbr($get_jobcards) > 0) {
@@ -31,7 +31,7 @@
 				while ($jobcard = dbf($get_jobcards)) {
 					/* Get Stuff */
 					$plant_ = dbf(dbq("select * from plants_tbl where plant_id={$jobcard['plant_id']}"));
-					$logged_by_ = dbf(dbq("select concat(name,' ',last_name) as name from users_tbl where user_id={$jobcard['logged_by']}"));
+					$logged_by_ = dbf(dbq("select concat(name,' ',last_name) as name from users_tbl where user_id={$jobcard['mechanic_id']}"));
 
 					switch ($jobcard['priority']) {
 						case "1":

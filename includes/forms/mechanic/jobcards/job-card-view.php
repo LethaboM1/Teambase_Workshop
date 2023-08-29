@@ -149,6 +149,7 @@ if (isset($_POST['add_insp'])) {
         && strlen($_POST['severity']) > 0
         && is_numeric($_POST['hours'])
     ) {
+
         $add_report = dbq("insert into jobcard_reports set
                                 job_id={$_GET['id']},
                                 component='{$_POST['component']}',
@@ -157,6 +158,11 @@ if (isset($_POST['add_insp'])) {
                                 comment='{$_POST['report_comment']}'
                                 ");
         if ($add_report) {
+            $key = mysqli_insert_id($db);
+            if (!upload_images('defect-report', $_SESSION['user']['user_id'], $_GET['id'], $_SESSION['upload_images'], $key)) {
+                error("There was an error uploading the photos.");
+            }
+
             msg("Fault report added.");
             go("dashboard.php?page=job-card-view&id={$_GET['id']}");
         } else {

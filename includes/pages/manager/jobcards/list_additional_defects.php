@@ -12,20 +12,14 @@
                                 <div class="col">
                                     <h2 class="card-title">Defect Report</h2>
                                 </div>
-                                <div class="col"><a class="btn btn-secondary ml-auto" target="_blank" href="print.php?type=defect-report&id=<?= $jobcard['job_id'] ?>">Print</a></div>
+                                <div class="col"></div>
                             </div>
 
                         </header>
                         <form method="post">
                             <div class="card-body">
                                 <b>Reported by:</b>&nbsp;<?= $logged_by_['name'] ?><br>
-                                <?php
-                                if ($jobcard['list_id'] > 0) {
-                                ?>
-                                    <a target="_blank" href="print.php?type=plant-checklist&id=<?= $jobcard['list_id'] ?>" class="btn btn-warning btn-sm">Print Sheet</a><br>
-                                <?php
-                                }
-                                ?>
+
                                 <b>Date Reported</b>&nbsp;<?= $jobcard['job_date'] ?><br>
                                 <b>Extras</b><br>
                                 <div class="row">
@@ -69,6 +63,7 @@
                                                         <th>severity</th>
                                                         <th style='width:25px;'></th>
                                                         <th>Comment</th>
+                                                        <th>Photos</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -85,6 +80,9 @@
                                                                     <td><?= ((!$report['reviewed'] && $_SESSION['user']['role'] == 'mechanic') || $_SESSION['user']['role'] == 'manager' || $_SESSION['user']['role'] == 'system' ? inp('hours', '', 'number', $report['hours'], '', 0, '', "style='width:120px;' step='0.1' onchange='update_hours(`{$report['id']}`,$(this).val(),`{$report['job_id']}`)'") : $report['hours']) ?></td>
                                                                     <td><span id="<?= $report['id'] ?>_update"></span></td>
                                                                     <td><?= $report['comment'] ?></td>
+                                                                    <td>
+                                                                        <!-- <a class="btn btn-secondary ml-auto" target="_blank" href="print.php?type=additional-defect-report&id=<?= $report['id'] ?>"><i class="fa fa-print"></i></a> -->
+                                                                    </td>
                                                                 </tr>
                                                             <?php
                                                             }
@@ -101,7 +99,29 @@
                                                     ?>
                                                 </tbody>
                                             </table>
-
+                                            <hr>
+                                            <?php
+                                            $photos = [];
+                                            $photos_ = get_photos('defect-reports', $jobcard['job_id']);
+                                            if (isset($photos_) && is_array($photos_) && count($photos_) > 0) $photos = array_merge($photos_, $photos);
+                                            if (count($photos) > 0) {
+                                            ?>
+                                                <h4>Photos</h4>
+                                                <div class="row">
+                                                    <?php
+                                                    foreach ($photos as $photo) {
+                                                    ?>
+                                                        <div class="col-md-4">
+                                                            <img style="max-height:270px" src="./files/defect-reports/<?= $jobcard['job_id'] . '/' . $photo ?>" alt="" class="rounded img-fluid">
+                                                        </div>
+                                                    <?php
+                                                    }
+                                                    ?>
+                                                </div>
+                                            <?php
+                                            }
+                                            ?>
+                                            <hr>
                                         </div>
                                     </div>
 
