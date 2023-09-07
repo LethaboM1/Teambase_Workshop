@@ -470,17 +470,17 @@ switch ($_GET['type']) {
                     ->setCellValue("C{$sheet_row}", $plant['plant_number'])
                     ->setCellValue("D{$sheet_row}", $row['reading'])
                     ->setCellValue("E{$sheet_row}", "{$operator['name']} {$operator['last_name']}")
-                    ->setCellValue("F{$sheet_row}", ($results['engine_fault'] ? 'Yes' : 'No'))
-                    ->setCellValue("G{$sheet_row}", ($results['gear_clutch_fault'] ? 'Yes' : 'No'))
-                    ->setCellValue("H{$sheet_row}", ($results['hydraulics_fault'] ? 'Yes' : 'No'))
-                    ->setCellValue("I{$sheet_row}", ($results['brakes_fault'] ? 'Yes' : 'No'))
-                    ->setCellValue("J{$sheet_row}", ($results['steering_fault'] ? 'Yes' : 'No'))
-                    ->setCellValue("K{$sheet_row}", ($results['glass_mirrors_fault'] ? 'Yes' : 'No'))
-                    ->setCellValue("L{$sheet_row}", ($results['tracks_carriage_tyres_fault'] ? 'Yes' : 'No'))
-                    ->setCellValue("M{$sheet_row}", ($results['cooling_system_fault'] ? 'Yes' : 'No'))
-                    ->setCellValue("N{$sheet_row}", ($results['electrical_batteries_fault'] ? 'Yes' : 'No'))
-                    ->setCellValue("O{$sheet_row}", ($results['instruments_fault'] ? 'Yes' : 'No'))
-                    ->setCellValue("P{$sheet_row}", ($results['body_work_fault'] ? 'Yes' : 'No'));
+                    ->setCellValue("F{$sheet_row}", ($row['engine_fault'] ? 'Yes' : 'No'))
+                    ->setCellValue("G{$sheet_row}", ($row['gear_clutch_fault'] ? 'Yes' : 'No'))
+                    ->setCellValue("H{$sheet_row}", ($row['hydraulics_fault'] ? 'Yes' : 'No'))
+                    ->setCellValue("I{$sheet_row}", ($row['brakes_fault'] ? 'Yes' : 'No'))
+                    ->setCellValue("J{$sheet_row}", ($row['steering_fault'] ? 'Yes' : 'No'))
+                    ->setCellValue("K{$sheet_row}", ($row['glass_mirrors_fault'] ? 'Yes' : 'No'))
+                    ->setCellValue("L{$sheet_row}", ($row['tracks_carriage_tyres_fault'] ? 'Yes' : 'No'))
+                    ->setCellValue("M{$sheet_row}", ($row['cooling_system_fault'] ? 'Yes' : 'No'))
+                    ->setCellValue("N{$sheet_row}", ($row['electrical_batteries_fault'] ? 'Yes' : 'No'))
+                    ->setCellValue("O{$sheet_row}", ($row['instruments_fault'] ? 'Yes' : 'No'))
+                    ->setCellValue("P{$sheet_row}", ($row['body_work_fault'] ? 'Yes' : 'No'));
 
                 $sheet_row++;
             }
