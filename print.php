@@ -424,7 +424,7 @@ switch ($_GET['type']) {
         if (!isset($_GET['end'])) $_GET['end'] = date('Y-m-d');
 
 
-        $sql = dbq("select * from ws_defect_reports where date >= '{$_GET['start']}' and date <= '{$_GET['end']}' order by date DESC");
+        $sql = dbq("select * from ws_defect_reports where date >= '{$_GET['start']}' and date <= '{$_GET['end']}' order by date");
 
         if (dbr($sql)) {
             $sheet_row = 5;
