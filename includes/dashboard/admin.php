@@ -245,6 +245,12 @@ switch ($_GET['page']) {
 
         break;
 
+    case 'rep-plant-inspection':
+        $page_title  = "Plant Inspection Report";
+        $page_name = 'manager/reports/rep-plant-inspection';
+        break;
+
+
 
     default:
         $page_title = 'Dashboard Overview';

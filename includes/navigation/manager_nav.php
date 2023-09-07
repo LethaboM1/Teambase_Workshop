@@ -105,6 +105,8 @@ $get_completed = dbq("select job_id from jobcards where status='completed'");
 						<li><a class="nav-link" href="dashboard.php?page=rep-operator-log">Plant Operator Logs</a></li>
 						<li><a class="nav-link" href="print.php?type=next-service">Next Service Report</a></li>
 						<li><a class="nav-link" href="print.php?type=next-service">Next Service Report</a></li>
+						<li><a class="nav-link" href="dashboard.php?page=rep-plant-inspection">Plant Inspection</a></li>
+						<!-- target="_blank" href="print.php?type=plant-inspection" -->
 					</ul>
 				</li>
 			</ul>

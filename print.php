@@ -338,7 +338,7 @@ switch ($_GET['type']) {
 
             // Redirect output to a client’s web browser (Excel2007)
             header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-            header('Content-Disposition: attachment;filename="quote-parts list-' . $quote_ref . '-' . date('Y_m_d') . '.xlsx"');
+            header('Content-Disposition: attachment;filename="open-requisitions-' . date('Y_m_d') . '.xlsx"');
             header('Cache-Control: max-age=0');
             // If you're serving to IE 9, then the following may be needed
             header('Cache-Control: max-age=1');
@@ -355,6 +355,156 @@ switch ($_GET['type']) {
         }
 
         break;
+
+    case 'plant-inspection':
+        $title = [
+            'font' => [
+                'bold' => true,
+                'size' => 14
+
+            ],
+        ];
+
+        $header = [
+            'font' => [
+                'bold' => true,
+            ],
+        ];
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $sheet->setCellValue('A1', 'Plant Inspection overview')
+            ->setCellValue('A2', 'Date Range: ' . $_GET['start'] . ' to ' . $_GET['end'])
+
+            ->setCellValue('A4', 'Date')
+            ->setCellValue('B4', 'Site No')
+            ->setCellValue('C4', 'Plant No.')
+            ->setCellValue('D4', 'Km/Hr')
+            ->setCellValue('E4', 'Operator Name')
+            ->setCellValue('F4', 'Engine')
+            ->setCellValue('G4', 'Gearbox, Gear selection')
+            ->setCellValue('H4', 'Hydraulics')
+            ->setCellValue('I4', 'Brakes')
+            ->setCellValue('J4', 'Steering')
+            ->setCellValue('K4', 'Glass & Mirrors')
+            ->setCellValue('L4', 'Tracks under Carriage / Tyres')
+            ->setCellValue('M4', 'Cooling System')
+            ->setCellValue('N4', 'Electrical & Batteriers')
+            ->setCellValue('O4', 'Instruments')
+            ->setCellValue('P4', 'Body Work');
+
+        $sheet->getStyle('A1')->applyFromArray($title);
+        $sheet->getStyle('A4:P4')->applyFromArray($header);
+        $sheet->getStyle('F4:P4')->getAlignment()->setWrapText(true);
+        // $sheet->getStyle('D4')->getAlignment()->setWrapText(true);
+
+        $sheet->getColumnDimension('A')->setWidth(100, 'px');
+        $sheet->getColumnDimension('B')->setWidth(150, 'px');
+        $sheet->getColumnDimension('C')->setWidth(150, 'px');
+        $sheet->getColumnDimension('D')->setWidth(150, 'px');
+        $sheet->getColumnDimension('E')->setWidth(150, 'px');
+        $sheet->getColumnDimension('F')->setWidth(100, 'px');
+        $sheet->getColumnDimension('G')->setWidth(100, 'px');
+        $sheet->getColumnDimension('H')->setWidth(100, 'px');
+        $sheet->getColumnDimension('I')->setWidth(100, 'px');
+        $sheet->getColumnDimension('J')->setWidth(100, 'px');
+        $sheet->getColumnDimension('K')->setWidth(100, 'px');
+        $sheet->getColumnDimension('L')->setWidth(100, 'px');
+        $sheet->getColumnDimension('M')->setWidth(100, 'px');
+        $sheet->getColumnDimension('N')->setWidth(100, 'px');
+        $sheet->getColumnDimension('O')->setWidth(100, 'px');
+        $sheet->getColumnDimension('P')->setWidth(100, 'px');
+        /* 
+       
+
+        */
+
+        if (!isset($_GET['start'])) $_GET['start'] = date('Y-m-01');
+        if (!isset($_GET['end'])) $_GET['end'] = date('Y-m-d');
+
+
+        $sql = dbq("select * from ws_defect_reports where date >= '{$_GET['start']}' and date <= '{$_GET['end']}' order by date DESC");
+
+        if (dbr($sql)) {
+            $sheet_row = 5;
+            while ($row = dbf($sql)) {
+                $date = date_create($row['datetime']);
+                $date = date_format($date, 'Y-m-d');
+                $operator = get_user($row['inspector_id']);
+                $plant = get_plant($row['plant_id']);
+
+                if (!is_json($row['results'])) {
+                    $results = base64_decode($row['results']);
+                } else {
+                    $results = $row['results'];
+                }
+
+                if (!is_json($results)) {
+                    $results = [];
+                } else {
+                    $results = json_decode($results, true);
+                }
+
+
+                /* 
+                ->setCellValue('A4', 'Date')
+                ->setCellValue('B4', 'Site No')
+                ->setCellValue('C4', 'Plant No.')
+                ->setCellValue('D4', 'Km/Hr')
+                ->setCellValue('E4', 'Operator Name')
+                ->setCellValue('F4', 'Engine')
+                ->setCellValue('G4', 'Gearbox, Gear selection')
+                ->setCellValue('H4', 'Hydraulics')
+                ->setCellValue('I4', 'Brakes')
+                ->setCellValue('J4', 'Steering')
+                ->setCellValue('K4', 'Glass & Mirrors')
+                ->setCellValue('L4', 'Tracks under Carriage / Tyres')
+                ->setCellValue('M4', 'Cooling System')
+                ->setCellValue('N4', 'Electrical & Batteriers')
+                ->setCellValue('O4', 'Instruments')
+                ->setCellValue('P4', 'Body Work');
+                */
+                $sheet->setCellValue("A{$sheet_row}", $date)
+                    ->setCellValue("B{$sheet_row}", $row['site'])
+                    ->setCellValue("C{$sheet_row}", $plant['plant_number'])
+                    ->setCellValue("D{$sheet_row}", $row['reading'])
+                    ->setCellValue("E{$sheet_row}", "{$operator['name']} {$operator['last_name']}")
+                    ->setCellValue("F{$sheet_row}", ($results['engine_fault'] ? 'Yes' : 'No'))
+                    ->setCellValue("G{$sheet_row}", ($results['gear_clutch_fault'] ? 'Yes' : 'No'))
+                    ->setCellValue("H{$sheet_row}", ($results['hydraulics_fault'] ? 'Yes' : 'No'))
+                    ->setCellValue("I{$sheet_row}", ($results['brakes_fault'] ? 'Yes' : 'No'))
+                    ->setCellValue("J{$sheet_row}", ($results['steering_fault'] ? 'Yes' : 'No'))
+                    ->setCellValue("K{$sheet_row}", ($results['glass_mirrors_fault'] ? 'Yes' : 'No'))
+                    ->setCellValue("L{$sheet_row}", ($results['tracks_carriage_tyres_fault'] ? 'Yes' : 'No'))
+                    ->setCellValue("M{$sheet_row}", ($results['cooling_system_fault'] ? 'Yes' : 'No'))
+                    ->setCellValue("N{$sheet_row}", ($results['electrical_batteries_fault'] ? 'Yes' : 'No'))
+                    ->setCellValue("O{$sheet_row}", ($results['instruments_fault'] ? 'Yes' : 'No'))
+                    ->setCellValue("P{$sheet_row}", ($results['body_work_fault'] ? 'Yes' : 'No'));
+
+                $sheet_row++;
+            }
+        }
+
+        $writer = new Xlsx($spreadsheet);
+
+        // Redirect output to a client’s web browser (Excel2007)
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $_POST['page'] . '-' . date('Y_m_d') . '.xlsx"');
+        header('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+
+        // If you're serving to IE over SSL, then the following may be needed
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0   
+
+
+        $writer->save('php://output');
+        break;
+
 
     case "job-card":
         if (isset($_GET['id'])) {
