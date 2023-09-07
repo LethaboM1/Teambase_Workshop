@@ -429,7 +429,7 @@ switch ($_GET['type']) {
         if (dbr($sql)) {
             $sheet_row = 5;
             while ($row = dbf($sql)) {
-                $date = date_create($row['datetime']);
+                $date = date_create($row['date']);
                 $date = date_format($date, 'Y-m-d');
                 $operator = get_user($row['inspector_id']);
                 $plant = get_plant($row['plant_id']);
@@ -490,7 +490,7 @@ switch ($_GET['type']) {
 
         // Redirect output to a client’s web browser (Excel2007)
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="' . $_POST['page'] . '-' . date('Y_m_d') . '.xlsx"');
+        header('Content-Disposition: attachment;filename="' . $_POST['type'] . '-' . date('Y_m_d') . '.xlsx"');
         header('Cache-Control: max-age=0');
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');
