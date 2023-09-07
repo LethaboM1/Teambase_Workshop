@@ -68,7 +68,7 @@
 				$_GET['pg'] = 1;
 			}
 
-			$get_defect_reports = dbq("select * from jobcard_reports where reviewed=0");
+			$get_defect_reports = dbq("select * from jobcard_reports where reviewed=1");
 
 			$total_lines = dbr($get_defect_reports);
 

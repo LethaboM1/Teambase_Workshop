@@ -1,5 +1,52 @@
 <div class="row">
-	<div class="col-xl-12">
+	<div class="header-right col-lg-4 col-md-4">
+		<div class="input-group">
+			<input type="text" class="form-control" name="search" id="search" placeholder="Search Job...">
+			<button class="btn btn-default" id='searchBtn' type="button"><i class="bx bx-search"></i></button>
+			<?php
+			$jscript .= "
+									
+									$('#search').keyup(function (e) {
+										if (e.key=='Enter') {
+											$('#searchBtn').click();
+										}
+						
+						
+										if (e.key=='Backspace') {
+											if ($('#search').val().length==0) {
+												$('#resetOpenBtn').click();
+											}
+										}
+									});
+						
+									$('#searchBtn').click(function () {
+										$.ajax({
+											method:'post',
+											url:'includes/ajax.php',
+											data: {
+												cmd:'search',
+												type: 'additional-defect-report',
+												search: $('#search').val()
+											},
+											success:function (result) {
+												$('#jobcard_list').html(result);
+
+												setTimeout(function() {
+													$.getScript('js/examples/examples.modals.js');
+												}, 300);
+											},
+											error: function (err) {}
+										});
+									});
+
+									";
+			?>
+
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div id="jobcard_list" class="col-xl-12">
 		<?php
 
 		// $get_jobcards = dbq("select * from jobcards where status='defect-logged'");

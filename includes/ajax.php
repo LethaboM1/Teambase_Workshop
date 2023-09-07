@@ -693,8 +693,70 @@ switch ($_POST['cmd']) {
                 }
                 break;
 
+            case 'additional-defect-report':
+                $get_jobcards = dbq("select 
+                                            * 
+                                        from 
+                                            jobcards 
+                                        where 
+                                            status!='logged' 
+                                        and 
+                                            status!='closed' 
+                                        and 
+                                            (
+                                                jobcard_number like '%{$_POST['search']}%'
+                                                || plant_id in (select plant_id from plants_tbl where plant_number like '%{$_POST['search']}%') 
+                                            )
+                                        and
+                                            job_id in (select distinct job_id from jobcard_reports where reviewed=0)");
+
+                if ($get_jobcards) {
+                    if (dbr($get_jobcards) > 0) {
+
+                        $mechanic_select_[] = ['name' => 'Choose Mechanic', 'value' => '0'];
+                        $get_mechanics = dbq("select concat(name,' ',last_name) as name, user_id as value from users_tbl where role='mechanic' and active=1");
+                        if ($get_mechanics) {
+                            if (dbr($get_mechanics) > 0) {
+                                while ($mechanic = dbf($get_mechanics)) {
+                                    $mechanic_select_[] = $mechanic;
+                                }
+                            }
+                        }
+
+                        $clerk_select_[] = ['name' => 'Choose Clerk', 'value' => '0'];
+                        $get_clerks = dbq("select concat(name,' ',last_name) as name, user_id as value from users_tbl where role='clerk' and active=1");
+                        if ($get_clerks) {
+                            if (dbr($get_clerks) > 0) {
+                                while ($clerk = dbf($get_clerks)) {
+                                    $clerk_select_[] = $clerk;
+                                }
+                            }
+                        }
+
+                        while ($jobcard = dbf($get_jobcards)) {
+                            /* Get Stuff */
+                            $plant_ = dbf(dbq("select * from plants_tbl where plant_id={$jobcard['plant_id']}"));
+                            $logged_by_ = dbf(dbq("select concat(name,' ',last_name) as name from users_tbl where user_id={$jobcard['mechanic_id']}"));
+
+                            switch ($jobcard['priority']) {
+                                case "1":
+                                    $status_color = "danger";
+                                    break;
+
+                                default:
+                                    $status_color = "warning";
+                                    break;
+                            }
+                            require "pages/manager/jobcards/list_additional_defects.php";
+                        }
+                    } else {
+                        echo "<h4>Could not find \"{$_POST['search']}\"</h4>";
+                    }
+                }
+                break;
+
             case 'additional-defect-report-archive':
-                $get_reports = dbq("select * from jobcard_reports where reviewed=0 
+                $get_reports = dbq("select * from jobcard_reports where reviewed=1 
                                         and 
                                             (
                                                 component like '%{$_POST['search']}%'
@@ -708,7 +770,7 @@ switch ($_POST['cmd']) {
                         require "pages/manager/jobcards/list_archive_defect_report.php";
                     }
                 } else {
-                    echo "<tr><td colspan='6'>Could not find '{$_POST['search']}'</td></tr>";
+                    echo "<tr><td colspan='6'>Could not find \"{$_POST['search']}\"</td></tr>";
                 }
 
                 break;
