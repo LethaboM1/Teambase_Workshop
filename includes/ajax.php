@@ -706,6 +706,7 @@ switch ($_POST['cmd']) {
                                             (
                                                 jobcard_number like '%{$_POST['search']}%'
                                                 || plant_id in (select plant_id from plants_tbl where plant_number like '%{$_POST['search']}%') 
+                                                || mechanic_id in (select user_id as mechanic_id from users_tbl where name like '%{$_POST['search']}%' || last_name like '%{$_POST['search']}%') 
                                             )
                                         and
                                             job_id in (select distinct job_id from jobcard_reports where reviewed=0)");
