@@ -128,6 +128,12 @@ if (isset($_POST['request_jobcard'])) {
             }
         }
     } else {
-        error("Required filed missing: Plant, Site and clerk");
+        $field = '';
+        if ($_POST['clerk_id'] == 0) $field .= 'Clerk, ';
+        if ($_POST['plant_id'] > 0 && $_POST['jobcard_type'] != 'sundry') $field .= 'Plant,';
+        if ($_POST['jobcard_type'] != 'sundry' && strlen($_POST['site']) > 0) $field .= 'Site,';
+
+        $field = rtrim($field, ',');
+        error("Required field missing: {$field}");
     }
 }
