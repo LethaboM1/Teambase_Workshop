@@ -7,9 +7,6 @@ if (isset($_GET['id'])) {
             $jobcard_ = dbf($get_jobcard);
             $get_plant = dbq("select * from plants_tbl where plant_id={$jobcard_['plant_id']}");
             if ($jobcard_['jobcard_type'] != 'sundry' && $jobcard_['jobcard_type'] != 'contract') {
-                if ($jobcard_['jobcard_type'] == 'service') {
-                    go('dashboard.php?page=plant-schedule&id=' . $_GET['id']);
-                }
                 if ($get_plant) {
                     if (dbr($get_plant)) {
                         $plant_ = dbf($get_plant);
