@@ -188,6 +188,12 @@ switch ($_GET['page']) {
         require "./includes/forms/manager/jobcards/additional-defects.php";
         break;
 
+    case 'plant-schedule':
+        $page_title = 'Plant Service Schedule';
+        $page_name = 'mechanic/plant-schedule';
+        require "./includes/forms/mechanic/jobcards/plant-schedule.php";
+        break;
+
     case 'open-job':
         $page_title = 'Open Job Cards';
         $page_name = 'manager/jobcards/open-job-cards';
