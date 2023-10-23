@@ -2,7 +2,8 @@
 
 if (isset($_POST['request_jobcard'])) {
     if (
-        $_POST['clerk_id'] > 0
+        $_POST['clerk_id'] > 0 &&
+        validateDate($_POST['date'])
         && (
             ($_POST['plant_id'] > 0 && $_POST['jobcard_type'] != 'sundry' && strlen($_POST['site']) > 0) ||
             ($_POST['jobcard_type'] == 'sundry')) ||
@@ -66,7 +67,7 @@ if (isset($_POST['request_jobcard'])) {
             $add_jobcard = dbq("insert into jobcards set
                                     plant_id={$_POST['plant_id']},
                                     site_id={$_POST['site_id']},
-                                    job_date='" . date('Y-m-d') . "',
+                                    job_date='" . $_POST['date'] . "',
                                     clerk_id={$_POST['clerk_id']},
                                     mechanic_id={$_SESSION['user']['user_id']},
                                     logged_by='{$_SESSION['user']['user_id']}',
