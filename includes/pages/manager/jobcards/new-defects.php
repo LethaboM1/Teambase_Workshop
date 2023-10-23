@@ -1,4 +1,47 @@
 <div class="row">
+
+	<div class="header-right col-lg-4 col-md-4">
+		<div class="input-group">
+			<input type="text" class="form-control" name="search" id="search" placeholder="Search Job...">
+			<button class="btn btn-default" id='searchBtn' type="button"><i class="bx bx-search"></i></button>
+			<?php
+			$jscript .= "
+                                        
+                                        $('#search').keyup(function (e) {
+                                            if (e.key=='Enter') {
+                                                $('#searchBtn').click();
+                                            }
+                            
+                            
+                                            if (e.key=='Backspace') {
+                                                if ($('#search').val().length==0) {
+                                                    $('#resetOpenBtn').click();
+                                                }
+                                            }
+                                        });
+                            
+                                        $('#searchBtn').click(function () {
+                                            $.ajax({
+                                                method:'post',
+                                                url:'includes/ajax.php',
+                                                data: {
+                                                    cmd:'search',
+                                                    type: 'new-defect-reports',
+                                                    search: $('#search').val()
+                                                },
+                                                success:function (result) {
+                                                    $('#defect_reports').html(result);
+                                                    $.getScript('js/examples/examples.modals.js');                                
+                                                },
+                                                error: function (err) {}
+                                            });
+                                        });
+
+                                        ";
+			?>
+
+		</div>
+	</div>
 	<div class="col-xl-12">
 		<table class="table table-hover table-responsive-md table-bordered mb-0 dark">
 			<thead>
@@ -10,46 +53,48 @@
 					<th></th>
 				</tr>
 			</thead>
-			<?php
-			$lines = 15;
-			$pagination_pages = 15;
+			<tbody id="defect_reports">
 
-			if (!isset($_GET['pg']) || $_GET['pg'] < 1) {
-				$_GET['pg'] = 1;
-			}
+				<?php
+				$lines = 15;
+				$pagination_pages = 15;
 
-			$get_defect_reports = dbq("select * from ws_defect_reports where status='F'");
+				if (!isset($_GET['pg']) || $_GET['pg'] < 1) {
+					$_GET['pg'] = 1;
+				}
 
-			$total_lines = dbr($get_defect_reports);
+				$get_defect_reports = dbq("select * from ws_defect_reports where status='F'");
 
-			$pages = ceil($total_lines / $lines);
+				$total_lines = dbr($get_defect_reports);
 
-			if ($_GET['pg'] > $pages) {
-				$_GET['pg'] = $pages;
-			}
+				$pages = ceil($total_lines / $lines);
 
-			$pagination = ceil($_GET['pg'] / $pagination_pages);
+				if ($_GET['pg'] > $pages) {
+					$_GET['pg'] = $pages;
+				}
 
-			$start_page = $pagination * $pagination_pages - $pagination_pages + 1;
+				$pagination = ceil($_GET['pg'] / $pagination_pages);
 
-			$end_page = $start_page + $pagination_pages;
-			if ($end_page > $pages) {
-				$end_page = $pages;
-			}
+				$start_page = $pagination * $pagination_pages - $pagination_pages + 1;
+
+				$end_page = $start_page + $pagination_pages;
+				if ($end_page > $pages) {
+					$end_page = $pages;
+				}
 
 
 
-			$start = ($_GET['pg'] * $lines) - $lines;
+				$start = ($_GET['pg'] * $lines) - $lines;
 
-			$get_defect_reports = dbq("select * from ws_defect_reports where status='F' order by date DESC limit {$start},$lines");
+				$get_defect_reports = dbq("select * from ws_defect_reports where status='F' order by date DESC limit {$start},$lines");
 
-			if ($get_defect_reports) {
-				if (dbr($get_defect_reports) > 0) {
-					while ($report = dbf($get_defect_reports)) {
-						/* Get Stuff */
-						$plant_ = get_plant($report['plant_id']);
-						$operator_ = ($report['operator_id'] != 0) ? get_user($report['operator_id']) : ['name' => 'None', 'last_name' => ''];
-						echo "<tr class='pointer'>
+				if ($get_defect_reports) {
+					if (dbr($get_defect_reports) > 0) {
+						while ($report = dbf($get_defect_reports)) {
+							/* Get Stuff */
+							$plant_ = get_plant($report['plant_id']);
+							$operator_ = ($report['operator_id'] != 0) ? get_user($report['operator_id']) : ['name' => 'None', 'last_name' => ''];
+							echo "<tr class='pointer'>
 								<td onclick='$(`#link_{$report['id']}`).click()'>
 									{$report['date']}
 									<a id='link_{$report['id']}' class='mb-1 mt-1 mr-1 modal-sizes' href='#ModalViewReport_{$report['id']}'></a>
@@ -74,12 +119,12 @@
 														Date: {$report['date']}<br>
 														Site: " . (strlen($report['site']) > 0 ? $report['site'] : "None") . "
 														<form method='post'>"
-							. inp('report_id', '', 'hidden', $report['id'])
-							. inp('comment', 'Comment', 'textarea')
-							. "<p>What action do you want to take?</p>"
-							. inp('reviewed', '', 'inline-submit', 'Reviewed', 'btn btn-info')
-							. inp('create_jobcard', '', 'inline-submit', 'Open Job Card', 'btn btn-primary')
-							. "							</form>
+								. inp('report_id', '', 'hidden', $report['id'])
+								. inp('comment', 'Comment', 'textarea')
+								. "<p>What action do you want to take?</p>"
+								. inp('reviewed', '', 'inline-submit', 'Reviewed', 'btn btn-info')
+								. inp('create_jobcard', '', 'inline-submit', 'Open Job Card', 'btn btn-primary')
+								. "							</form>
 													</div>
 												</div>
 											</div>
@@ -101,12 +146,13 @@
 									<i class='fa fa-print'></i>
 								</td>
 							</tr>";
+						}
+					} else {
+						echo "<tr><td colspan='7'>Nothing to list</td></tr>";
 					}
-				} else {
-					echo "<tr><td colspan='7'>Nothing to list</td></tr>";
 				}
-			}
-			?>
+				?>
+			</tbody>
 		</table>
 		<nav aria-label="Page navigation example">
 			<ul class="pagination" id="pageination">
