@@ -1701,14 +1701,14 @@ function update_plant_reading($plant_id, $reading, $status = '')
 
 function get_plant($plant_id)
 {
+	if ($plant_id == 0) return ['plant_id' => 0];
+
 	if (is_numeric($plant_id)) {
-		$get_plant = dbq("select * from plants_tbl where plant_id={$plant_id}");
+		$get_plant = dbq("select * from plants_tbl where plant_id={$plant_id} limit 1");
 		if ($get_plant) {
-			if (dbr($get_plant) == 1) {
+			if (dbr($get_plant) > 0) {
 				$plant_ = dbf($get_plant);
 				return $plant_;
-			} else {
-				// error("Could not find plant.");
 			}
 		} else {
 			error_log('SQL error: ' . dbe());
