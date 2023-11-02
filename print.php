@@ -221,7 +221,7 @@ switch ($_GET['type']) {
         break;
 
     case "open-requisitions":
-        if ($_SESSION['user']['role'] != 'manager' && $_SESSION['user']['role'] != 'buyer') die();
+        if ($_SESSION['user']['role'] != 'manager' && $_SESSION['user']['role'] != 'buyer' && $_SESSION['user']['role'] != 'clerk') die();
         $query = "select 
                         * 
                     from 
