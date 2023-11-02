@@ -54,7 +54,12 @@ $total_jobs = dbr($get_requisitions) + dbr($get_new) + dbr($get_open) + dbr($get
 						<span>Reports</span>
 					</a>
 					<ul class="nav nav-children">
-						<li><a class="nav-link" href="">Fuel Report</a></li>
+						<li><a class="nav-link" target="_blank" href="print.php?type=open-requisitions">Open Requisitions</a></li>
+						<li><a class="nav-link" href="dashboard.php?page=rep-jobcard-events">Job Card Events</a></li>
+						<li><a class="nav-link" href="dashboard.php?page=rep-operator-log">Plant Operator Logs</a></li>
+						<li><a class="nav-link" href="print.php?type=next-service">Next Service Report</a></li>
+						<li><a class="nav-link" href="dashboard.php?page=rep-plant-inspection">Plant Inspection</a></li>
+						<!-- target="_blank" href="print.php?type=plant-inspection" -->
 					</ul>
 				</li>
 			</ul>
