@@ -54,7 +54,7 @@
 												$('#service_detail').hide();
 												$('#priority_detail').show();
 
-												if ($(this).val() == 'contract') {
+												if ($(this).val() == 'contract' || $(this).val() == 'overhead') {
 													$('#site_details').show();
 													$('#plant_details').hide();
 												} else {

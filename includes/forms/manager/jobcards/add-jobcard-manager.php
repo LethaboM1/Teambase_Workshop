@@ -11,7 +11,8 @@ if (isset($_POST['add_jobcard'])) {
         $_POST['clerk_id'] > 0
         && $_POST['mechanic_id'] != '0'
         && (
-            ($_POST['plant_id'] > 0 && $_POST['jobcard_type'] != 'sundry' && strlen($_POST['site']) > 0) ||
+            ($_POST['plant_id'] > 0 && $_POST['jobcard_type'] != 'sundry' && strlen($_POST['site']) > 0)  ||
+            ($_POST['jobcard_type'] == 'overhead' && $_POST['site_id'] > 0) ||
             ($_POST['jobcard_type'] == 'sundry') ||
             ($_POST['jobcard_type'] == 'contract' && $_POST['site_id'] > 0)
         )
@@ -33,7 +34,7 @@ if (isset($_POST['add_jobcard'])) {
                 $status = "status='busy'";
             }
         } else {
-            if ($_POST['jobcard_type'] == 'contract') {
+            if ($_POST['jobcard_type'] == 'contract' || $_POST['jobcard_type'] == 'overhead') {
                 $_POST['plant_id'] = 0;
                 $reading = '';
             } else {

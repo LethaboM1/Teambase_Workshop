@@ -6,6 +6,7 @@ if (isset($_POST['request_jobcard'])) {
         validateDate($_POST['date'])
         && (
             ($_POST['plant_id'] > 0 && $_POST['jobcard_type'] != 'sundry' && strlen($_POST['site']) > 0) ||
+            ($_POST['jobcard_type'] == 'overhead' && $_POST['site_id'] > 0) ||
             ($_POST['jobcard_type'] == 'sundry')) ||
         ($_POST['jobcard_type'] == 'contract' && $_POST['site_id'] > 0)
     ) {
@@ -52,7 +53,7 @@ if (isset($_POST['request_jobcard'])) {
             $query .= "service_type='{$_POST['service_type']}',";
             $query .= "{$_POST['reading_type']}_reading={$_POST['reading']},";
         } else {
-            if ($_POST['jobcard_type'] == 'contract') {
+            if ($_POST['jobcard_type'] == 'contract' || $_POST['jobcard_type'] == 'overhead') {
                 $_POST['plant_id'] = 0;
             } else {
                 $_POST['site_id'] = 0;
