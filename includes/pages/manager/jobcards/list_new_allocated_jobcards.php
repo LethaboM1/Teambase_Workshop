@@ -193,7 +193,7 @@
                 <?php
                 }
                 ?>
-                <p class="card-subtitle"><b>Logged by:</b><?= $logged_by_['name'] ?>, <b>Mechanic:</b><?= $mechanic_['name'] ?><br><?= $jobcard['fault_description'] ?><br></p>
+                <p class="card-subtitle"><b>Logged by:</b><?= $logged_by_['name'] ?>, <b>Mechanic:</b><?= $mechanic_['name'] ?> <?= $mechanic_['last_name'] ?><br><?= $jobcard['fault_description'] ?><br></p>
             </a>
         </div>
     </section>
