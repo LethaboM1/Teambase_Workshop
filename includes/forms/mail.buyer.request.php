@@ -15,38 +15,40 @@ if (!$testserver) {
 
     if ($get_buyer) {
         if (dbr($get_buyer) > 0) {
+            if (strlen($buyer_['email']) > 0) {
 
-            $mail = new PHPMailer(true);
-            while ($buyer_ = dbf($get_buyer)) {
-                $mail->addAddress($buyer_['email'], $buyer_['name'] . ' ' . $buyer_['last_name']);
-            }
 
-            $jobcard_ = dbf(dbq("select * from jobcards where job_id={$job_id}"));
-            $plant_ = dbf(dbq("select * from plants_tbl where plant_id={$jobcard_['plant_id']}"));
-            $mechanic_ = dbf(dbq("select * from users_tbl where user_id={$mechanic_id}"));
-            $job_request_ = dbf(dbq("select * from jobcard_requisitions where request_id={$request_id}"));
+                $mail = new PHPMailer(true);
+                while ($buyer_ = dbf($get_buyer)) {
+                    $mail->addAddress($buyer_['email'], $buyer_['name'] . ' ' . $buyer_['last_name']);
+                }
 
-            //$mail->addAddress($clerk_['email'], $clerk_['name'] . ' ' . $clerk_['last_name']);     //Add a recipient                    
-            //$mail->addReplyTo($_SESSION['user']['email'], $_SESSION['name'] . ' ' . $_SESSION['user']['last_name']);
-            if (strlen($_SESSION['settings']['requisition_mail']) > 0) {
-                $mail->addCC($_SESSION['settings']['requisition_mail']);
-            }
+                $jobcard_ = dbf(dbq("select * from jobcards where job_id={$job_id}"));
+                $plant_ = dbf(dbq("select * from plants_tbl where plant_id={$jobcard_['plant_id']}"));
+                $mechanic_ = dbf(dbq("select * from users_tbl where user_id={$mechanic_id}"));
+                $job_request_ = dbf(dbq("select * from jobcard_requisitions where request_id={$request_id}"));
 
-            //Content
-            $mail->isHTML(true);                                  //Set email format to HTML
-            $mail->Subject = "#{$job_request_['request_id']} - Part requested";
+                //$mail->addAddress($clerk_['email'], $clerk_['name'] . ' ' . $clerk_['last_name']);     //Add a recipient                    
+                //$mail->addReplyTo($_SESSION['user']['email'], $_SESSION['name'] . ' ' . $_SESSION['user']['last_name']);
+                if (strlen($_SESSION['settings']['requisition_mail']) > 0) {
+                    $mail->addCC($_SESSION['settings']['requisition_mail']);
+                }
 
-            $request_file = '../../files/requisitions/' . $job_request_['request_id'] . '_request.pdf';
+                //Content
+                $mail->isHTML(true);                                  //Set email format to HTML
+                $mail->Subject = "#{$job_request_['request_id']} - Part requested";
 
-            if (!file_exists($request_file)) {
-                saveRequisition($job_request_['request_id']);
-            }
+                $request_file = '../../files/requisitions/' . $job_request_['request_id'] . '_request.pdf';
 
-            if (file_exists($request_file)) {
-                $mail->addAttachment($request_file);
-            }
+                if (!file_exists($request_file)) {
+                    saveRequisition($job_request_['request_id']);
+                }
 
-            $mail->Body    = "
+                if (file_exists($request_file)) {
+                    $mail->addAttachment($request_file);
+                }
+
+                $mail->Body    = "
                                 <b>Part Request</b><br>
                                 <p>
                                     <b>Date time.</b>&nbsp;" . $job_request_['requested_by_time'] . "<br>
@@ -60,7 +62,7 @@ if (!$testserver) {
                                 <b>{$_SESSION['user']['name']} {$_SESSION['user']['last_name']}</b><br>
                                 E-mail: {$_SESSION['user']['email']}
                                 ";
-            $mail->AltBody = "
+                $mail->AltBody = "
                                     Part Request\n\r\n\r
                                     Date time.: " . $job_request_['requested_by_time'] . "\n\r
                                     Job Number.: {$jobcard_['jobcard_number']}\n\r
@@ -74,11 +76,14 @@ if (!$testserver) {
                                     E-mail: {$_SESSION['user']['email']}
                                     ";
 
-            try {
-                $mail->send();
-                msg('Mail was send to buyer.');
-            } catch (Exception $e) {
-                error("Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
+                try {
+                    $mail->send();
+                    msg('Mail was send to buyer.');
+                } catch (Exception $e) {
+                    error("Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
+                }
+            } else {
+                error("This buyer does not have an e-mail address setup. No mail was send.");
             }
         } else {
             /* No Buyers */
