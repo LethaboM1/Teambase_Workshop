@@ -207,8 +207,9 @@
 			</form>
 		</div>
 		<!-- Modal view End -->
-	<?php } ?>
+	<?php } ?>	
 
+	<?php if ($jobcard_['jobcard_type'] == 'service') { ?>
 	<div class="col-lg-12 mb-3">	
 		<form id="service_checklist_frm" method="post">
 		<section class="card">
@@ -418,6 +419,7 @@
 		</section>
 		</form>
 	</div>
+	<?php } ?>
 
 	<div class="col-lg-12 mb-3">
 		<?php
