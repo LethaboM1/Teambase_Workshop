@@ -648,10 +648,10 @@ function inp($name, $label, $type = 'text', $value = '', $class = '', $required 
 		case "toggle-2":
 			$form = '';
 			$form .= "<div class='switch-toggle switch-3 switch-candy'>
-				<input id='{$name}_1' name='{$name}' class='{$class}' type='radio' " . ($value == $select_list['0']['value'] ? "checked='checked'" : "") . " value='{$select_list['0']['value']}' />
+				<input id='{$name}_1' name='{$name}' class='{$class}' type='radio' " . ($value == $select_list['0']['value'] ? "checked='checked'" : "") . " value='{$select_list['0']['value']}' " . $extra . " />
 				<label for='{$name}_1' onclick=''>{$select_list['0']['name']}</label>
 			
-				<input id='{$name}_2' name='{$name}' class='{$class}' type='radio' " . ($value == $select_list['1']['value'] ? "checked='checked'" : "") . " value='{$select_list['1']['value']}' />
+				<input id='{$name}_2' name='{$name}' class='{$class}' type='radio' " . ($value == $select_list['1']['value'] ? "checked='checked'" : "") . " value='{$select_list['1']['value']}' " . $extra . " />
 				<label for='{$name}_2' class='disabled' onclick=''>{$select_list['1']['name']}</label>
 			
 			</div>";

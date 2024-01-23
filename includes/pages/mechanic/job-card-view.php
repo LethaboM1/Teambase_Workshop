@@ -209,6 +209,216 @@
 		<!-- Modal view End -->
 	<?php } ?>
 
+	<div class="col-lg-12 mb-3">	
+		<form id="service_checklist_frm" method="post">
+		<section class="card">
+			<header class="card-header">
+				<div class="row">
+						<div class="col-md-9">
+							<h2 class="card-title">Service Sheet</h2>							
+						</div>
+				</div>
+			</header>
+			<div class="card-body">
+				<div class="row">			
+					<?= inp('cmd', '', 'hidden', 'save_service_checklist') ?>
+					<?= inp('job_id', '', 'hidden', $_GET['id']) ?>
+					<?= inp('service_type', '', 'hidden', $jobcard_['service_type']) ?>
+				</div>
+				<div class="row">
+					<table class="table table-responsive-md table-bordered mb-0 dark">
+						<thead>
+							<tr>
+								<th width="500">Task</th>
+								<th width="150"><?= $jobcard_['service_type'] ?></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><strong>Hours</strong></td>
+								<?php
+								switch ($jobcard_['service_type']) {
+									case "A":
+								?>
+										<td><strong>300</strong></td>
+									<?php
+										break;
+
+									case "B":
+									?>
+										<td><strong>600</strong></td>
+									<?php
+										break;
+
+									case "C":
+									?>
+										<td><strong>1200 / 2400</strong></td>
+									<?php
+										break;
+
+									case "D":
+									?>
+										<td><strong>1200 / 2400</strong></td>
+								<?php
+										break;
+								}
+								?>
+							</tr>
+							<tr>
+								<td><strong>Kilometres</strong></td>
+								<?php
+								switch ($jobcard_['service_type']) {
+									case "A":
+								?>
+										<td><strong>5000</strong></td>
+									<?php
+										break;
+
+									case "B":
+									?>
+										<td><strong>10000</strong></td>
+									<?php
+										break;
+
+									case "C":
+									?>
+										<td><strong>20000 / 40000</strong></td>
+									<?php
+										break;
+
+									case "D":
+									?>
+										<td><strong>20000 / 40000</strong></td>
+								<?php
+										break;
+								}
+								?>
+							</tr>
+							<tr>
+								<td><strong>Kilometres</strong></td>
+								<?php
+								switch ($jobcard_['service_type']) {
+									case "A":
+								?>
+										<td><strong>10000</strong></td>
+									<?php
+										break;
+
+									case "B":
+									?>
+										<td><strong>20000</strong></td>
+									<?php
+										break;
+
+									case "C":
+									?>
+										<td><strong>40000 / 80000</strong></td>
+									<?php
+										break;
+
+									case "D":
+									?>
+										<td><strong>40000 / 80000</strong></td>
+								<?php
+										break;
+								}
+								?>
+							</tr>
+							<tr>
+								<td><strong>Kilometres</strong></td>
+								<?php
+								switch ($jobcard_['service_type']) {
+									case "A":
+								?>
+										<td><strong>15000</strong></td>
+										<td></td>
+									<?php
+										break;
+
+									case "B":
+									?>
+										<td><strong>30000</strong></td>
+										<td></td>
+									<?php
+										break;
+
+									case "C":
+									?>
+										<td><strong>45000 / 60000</strong></td>
+										<td></td>
+									<?php
+										break;
+
+									case "D":
+									?>
+										<td><strong>45000 / 60000</strong></td>
+										<td></td>
+								<?php
+										break;
+								}
+								?>
+							</tr>
+							<?php
+							//echo $jobcard_['service_checklist'];
+							$jobcard_['service_checklist'] = rtrim($jobcard_['service_checklist'], "\0");
+							$save_checklist = json_decode(base64_decode($jobcard_['service_checklist']), true); //, 512, JSON_UNESCAPED_UNICODE
+
+							if ($save_checklist === null) {
+								echo "Error: " . json_last_error_msg();
+							}
+
+							$toggle_select = [
+								['name' => 'Yes', 'value' => 'Yes'],
+								['name' => 'N/A', 'value' => 'N/A'],
+							];
+
+							//echo "<pre>xxx" . print_r($save_checklist, true) . "</pre>";
+							$get_service_checklist = dbq("select * from service_checklist");
+							if ($get_service_checklist) {
+								if (dbr($get_service_checklist) > 0) {
+									while ($item = dbf($get_service_checklist)) {
+										$service_type = strtolower($jobcard_['service_type']) . '_service';
+										switch ($item[$service_type]) {
+											case "0":
+							?>
+												<tr>
+													<td><?= $item['question'] ?></td>
+													<td>0</td>
+													<td>
+														<?= inp("check_{$item['checklist_id']}", '', 'toggle-2', $save_checklist[$item['checklist_id']]['answer'], 'save', 0, $toggle_select, 'disabled="true"') ?>
+
+												</tr>
+											<?php
+												break;
+
+											case "C":
+											?>
+												<tr>
+													<td><?= $item['question'] ?></td>
+													<td>C</td>
+													<td>
+														<?= inp("check_{$item['checklist_id']}", '', 'toggle-2', $save_checklist[$item['checklist_id']]['answer'], 'save', 0, $toggle_select) ?>
+
+												</tr>
+							<?php
+												break;
+										}
+									}
+								}
+							}
+
+							?>
+						</tbody>
+					</table>
+					<!-- <?= inp('save_progress', '', 'submit', 'Save', 'btn-primary') ?> -->				
+				</div>
+			</div>
+			<footer class="card-footer text-end">
+			</footer>
+		</section>
+		</form>
+	</div>
+
 	<div class="col-lg-12 mb-3">
 		<?php
 		require_once "inc.reps.php";
