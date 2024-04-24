@@ -5,7 +5,7 @@
 				<header class="card-header">
 					<div class="row">
 						<div class="col-md-9">
-							<h2 class="card-title">Vew Jobcard</h2>
+							<h2 class="card-title">View Jobcard</h2>
 							<p class="card-subtitle">View Job Card</p>
 						</div>
 						<div class="col-md-3">
@@ -99,6 +99,31 @@
 					<?php
 					}
 					?>
+					<hr>
+
+					<h2 class="card-title">Quality Control</h2><br>
+					<div class="row">						
+						<div class="col-sm-12 col-md-4 pt-sm-4 mt-sm-3">
+							<div class="checkbox-custom checkbox-default">
+								<input type="checkbox" <?php if ($jobcard_['qc_checked'] == true) {
+															echo "checked='checked'";
+														} ?> name="qcChecked">
+								<label for="qcChecked">Quality Control Checked</label>
+							</div>
+						</div>
+						
+						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+							<label class="col-form-label" for="formGroupExampleInput">QC Checked By</label>
+							<input type="text" name="qcCheckedBy" class="form-control" value="<?= $jobcard_['qc_checked_by'] ?>" >
+						</div>
+
+						<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+							<label class="col-form-label" for="formGroupExampleInput">QC Checked On</label>
+							<input type="datetime-local" name="qcCheckedDatetime" class="form-control" value="<?= $jobcard_['qc_checked_datetime'] ?>" >
+						</div>
+					</div>
+
+
 				</div>
 				<footer class="card-footer text-end">
 

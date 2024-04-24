@@ -4,6 +4,7 @@ $color = "default";
 
 $logged_by = dbf(dbq("select concat(name,' ', last_name) as name from users_tbl where user_id={$row['logged_by']}"));
 $mechanic_ = dbf(dbq("select concat(name,' ', last_name) as name from users_tbl where user_id={$row['mechanic_id']}"));
+$qc_checked_by_ = dbf(dbq("select concat(name,' ', last_name) as name from users_tbl where user_id={$row['qc_checked_by']}"));
 $plant_ = dbf(dbq("select * from plants_tbl where plant_id={$row['plant_id']}"));
 $get_reports = dbq("select * from jobcard_reports where job_id={$row['job_id']}");
 $has_defect_report =  (dbr($get_reports) > 0) ? true : false;
@@ -89,6 +90,7 @@ $date = date_format($date, 'Y-m-d');
                                     <b>Model.</b>&nbsp;<?= $plant_['model'] ?><br>
                                     <b>Mechanic.</b>&nbsp;<?= $mechanic_['name'] ?><br>
                                     <b>Hour Spend.</b>&nbsp;<?= $worked['hours'] ?><br>
+                                    <b>QC Checked.</b>&nbsp;<?= $qc_checked_by_['name'] != '' ? $qc_checked_by_['name'].' on ':'Not Checked'?><?= $row['qc_checked_datetime'] ?><br>
                                 </div>
                                 <div class="col-md-6">
                                     <b>Plant.</b>&nbsp;<?= $plant_['reg_number'] ?><br>
@@ -97,7 +99,7 @@ $date = date_format($date, 'Y-m-d');
                                     <b>Reading (<?= strtoupper($plant_['reading_type']) ?>).</b>&nbsp;<?= $reading ?><br>
                                     <b>Allocated Hrs.</b>&nbsp;<?= $row['allocated_hours'] ?><br>
                                     <b>Progress.</b>&nbsp;<?= $progess ?>%<br>
-
+                                    
                                 </div>
                                 <div class="col-md-12">
                                     <b>Fault Description</b><br>

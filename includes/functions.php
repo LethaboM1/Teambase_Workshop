@@ -96,6 +96,15 @@ function sqlError($userMsg = 'SQL Error', $debugMsg = 'SQL error')
 	}
 }
 
+function console_log($output, $with_script_tags = true) {
+	$js_code = 'console.log(' . json_encode($output, JSON_HEX_TAG) .
+	');';
+	if ($with_script_tags) {
+	$js_code = '<script>' . $js_code . '</script>';
+	}
+	echo $js_code;
+}
+
 
 function validPass($password)
 {
@@ -797,7 +806,7 @@ function inp($name, $label, $type = 'text', $value = '', $class = '', $required 
 
 
 
-function printPDF($pdf_html, $pdf_filename = 'temp', $pdf_save = false, $pdf_open = false, $pdf_orientation = 'P', $pdf_page = 'A4', $stylesheet = '', $mail_ = false, $email_address = '')
+function printPDF($pdf_html, $pdf_filename = 'temp', $pdf_save = false, $pdf_open = false, $pdf_orientation = 'P', $pdf_page = 'A4', $stylesheet = '', $mail_ = false, $email_address = '', $finalpage_footer ='')
 {
 	global $error;
 

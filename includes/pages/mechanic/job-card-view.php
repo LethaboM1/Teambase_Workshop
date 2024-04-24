@@ -5,7 +5,7 @@
 				<header class="card-header">
 					<div class="row">
 						<div class="col-md-9">
-							<h2 class="card-title">Vew Jobcard</h2>
+							<h2 class="card-title">View Jobcard</h2>
 							<p class="card-subtitle">View Job Card</p>
 						</div>
 						<div class="col-md-3">
@@ -108,6 +108,66 @@
 					<?php
 					}
 					?>
+					<hr>
+
+					<h2 class="card-title">Quality Control</h2><br>
+					<div class="row">
+						<?php if (/* $_SESSION['user']['role'] == 'clerk'  ||*/ $_SESSION['user']['role'] == 'manager' || $_SESSION['user']['role'] == 'system') { ?>																
+																				
+							<div class="col-sm-12 col-md-4 pt-sm-4 mt-sm-3">
+								<div class="checkbox-custom checkbox-default">
+									<input type="checkbox" <?php if ($jobcard_['qc_checked'] == '1') {
+																echo "checked='checked'";
+															}															
+															?> name="qcChecked" id="qcChecked">
+									<label for="qcChecked">Quality Control Checked</label>
+								</div>
+							</div>
+							
+							<!-- <div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0"> -->
+								<!-- <label class="col-form-label" for="formGroupExampleInput">Checked By</label>
+								<input type="text" name="qcCheckedBy" id="qcCheckedBy" class="form-control" value="<?= $jobcard_['qc_checked_by'] ?>" > -->
+								<?= inp('qcCheckedBy', 'Checked By', 'select', $jobcard_['qc_checked_by'] != '0' ? $jobcard_['qc_checked_by']:$_SESSION['user']['user_id'] , '', 0, $qc_list, $jobcard_['qc_checked'] == '0' ? 'disabled':'') ?>
+							<!-- </div> -->
+
+							<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+								<label class="col-form-label" for="formGroupExampleInput">Checked On</label>
+								<input type="datetime-local" name="qcCheckedDatetime" id="qcCheckedDatetime" class="form-control" value="<?= $jobcard_['qc_checked_datetime'] ?>" <?= $jobcard_['qc_checked'] == '0' ? 'disabled':'' ?>>
+							</div>							
+													
+						<?php						
+						} elseif($jobcard_['qc_checked'] == true) {
+						?>
+							<div class="col-sm-12 col-md-4 pt-sm-4 mt-sm-3">
+								<div class="checkbox-custom checkbox-default">
+									<input type="checkbox" <?php if ($jobcard_['qc_checked'] == true) {
+																echo "checked='checked'";
+															}															
+															?> name="qcChecked" disabled>
+									<label for="qcChecked">Quality Control Checked</label>
+								</div>
+							</div>
+							
+							<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+								<label class="col-form-label" for="formGroupExampleInput">Checked By</label><br>
+								<b><?= $jobcard_['qc_checked_by'] ?></b>
+								<!-- <input type="text" name="qcCheckedBy" class="form-control" value="<?= $jobcard_['qc_checked_by'] ?>" > -->
+							</div>
+
+							<div class="col-sm-12 col-md-4 pb-sm-3 pb-md-0">
+								<label class="col-form-label" for="formGroupExampleInput">Checked On</label><br>
+								<b><?= $jobcard_['qc_checked_datetime'] ?></b>
+								<!-- <input type="datetime-local" name="qcCheckedDatetime" class="form-control" value="<?= $jobcard_['qc_checked_datetime'] ?>" > -->
+							</div>
+						<?php
+						} else {
+						?>							
+							<b><em>No Quality Control has been done on this Jobcard</em></b>
+						<?php
+						} 
+						?>
+					</div>
+
 				</div>
 				<footer class="card-footer text-end">
 
@@ -477,4 +537,82 @@ $jscript_function .= "
 						});
 					}
 					";
+
+$jscript .= "		
+
+		$('#qcChecked').click(function () {			
+			var new_date = new Date();
+			new_date.setMinutes(new_date.getMinutes() - new_date.getTimezoneOffset());
+			var checked_by = document.getElementById('qcCheckedBy').value;
+			var checked_bool = this.checked;
+
+			$.ajax({
+				method:'post',
+				url:'includes/ajax.php',
+				data: {
+					cmd:'qc_check',
+					job_id:'{$jobcard_['job_id']}',
+					qc_checked: this.checked, 
+					qc_name: checked_by,
+					qc_timestamp: new_date.toISOString().slice(0,16),
+					
+				},
+				success: function (result) {
+					let data = JSON.parse(result);										
+					var new_by = document.getElementById('qcCheckedBy');
+                	new_by.value = checked_by;
+					var new_timestamp = document.getElementById('qcCheckedDatetime');					
+                	if (checked_bool == true) {						
+						new_by.disabled = false;
+						new_timestamp.disabled = false;
+						new_timestamp.value = new_date.toISOString().slice(0,16);						
+					} else {
+						new_by.disabled = true;
+						new_timestamp.disabled = true;						
+						new_timestamp.value = '';
+					}					
+					
+				},
+				error: function () {}
+			});
+		});
+	";
+$jscript .= "
+	$('#qcCheckedBy').change(function () {				
+		$.ajax({
+			method:'post',
+			url:'includes/ajax.php',
+			data: {
+				cmd:'qc_check_by',
+				job_id:'{$jobcard_['job_id']}',				
+				qc_name: this.value,		
+				
+			},
+			success: function (result) {
+				let data = JSON.parse(result);
+			},
+			error: function () {}
+		});
+	});
+";	
+$jscript .= "
+	$('#qcCheckedDatetime').change(function () {
+		console.log('changed date');					
+		console.log(this.value);
+		$.ajax({
+			method:'post',
+			url:'includes/ajax.php',
+			data: {
+				cmd:'qc_check_datetime',
+				job_id:'{$jobcard_['job_id']}',				
+				qc_timestamp: this.value,		
+				
+			},
+			success: function (result) {
+				let data = JSON.parse(result);
+			},
+			error: function () {}
+		});
+	});
+";
 ?>

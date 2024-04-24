@@ -4,6 +4,7 @@ require_once 'vendor/autoload.php';
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Spipu\Html2Pdf\Debug\Debug;
 
 if (isset($_POST['html_code'])) {
     $html = $_POST['html_code'];
@@ -515,13 +516,15 @@ switch ($_GET['type']) {
                     $plant_ = dbf(dbq("select * from plants_tbl where plant_id={$jobcard_['plant_id']}"));
                     $mechanic_ = dbf(dbq("select name, last_name,employee_number from users_tbl where user_id={$jobcard_['mechanic_id']}"));
                     $logged_by = dbf(dbq("select name, last_name,employee_number from users_tbl where user_id={$jobcard_['logged_by']}"));
+                    $qc_checked_by = dbf(dbq("select name, last_name,employee_number from users_tbl where user_id={$jobcard_['qc_checked_by']}"));
 
                     ($jobcard_['authorized_by'] > 0) ? $authorized_by = dbf(dbq("select name, last_name,employee_number from users_tbl where user_id={$jobcard_['authorized_by']}")) : $authorized_by['name'] = 'Not Authorized';
 
                     $extras = json_decode(base64_decode($jobcard_['safety_audit']), true);
 
-                    $font = ""; //"font-family: 'Open Sans', sans-serif;";
-                    $pdf = "
+                    $font = ""; //"font-family: 'Open Sans', sans-serif;";                     
+
+                    $pdf .= "<page backtop='7mm' backbottom='7mm' backleft='0mm' backright='0mm'>
                             <table style=\"width: 760px; border-collapse: collapse; table-layout: fixed;\"> 
                                 <tr>
                                     <th style=\"width: 50%; font-weight: bold; font-size: 20px; text-align: left; border: none;\">Job Card # {$jobcard_['jobcard_number']}</th>
@@ -544,7 +547,9 @@ switch ($_GET['type']) {
                                 </tr>
                             </table>
                             <br>";
+                    
 
+                    //Safety Audit - Dynamic Page Section 2.5 of 23 if data is present
                     if (is_array($extras) && count($extras) > 0) {
 
                         $pdf .= "<table style=\"width: 760px; border-collapse: collapse; table-layout: fixed; background-color: rgb(231, 231, 231);\">
@@ -575,7 +580,7 @@ switch ($_GET['type']) {
                                 </table>
                                 <br>";
                     }
-
+                    //Fault Description - Dynamic Page Section minimum 1.33 of 23 (add additional 0.33 for each set of 150 chars of fault description text)
                     $pdf .= "<table style=\"width: 760px; border-collapse: collapse; table-layout: fixed;\">
                                 <thead>
                                     <tr>
@@ -587,10 +592,21 @@ switch ($_GET['type']) {
                                         <td style=\"width: 100%;  font-weight: normal; font-size: 13px; text-align: left; padding: 10px;\">{$jobcard_['fault_description']}</td>
                                     </tr>
                                 </tbody>
-                            </table>
-                 
-                            <br>
-                            <table style=\"border-collapse: collapse; table-layout: fixed;\">
+                            </table>                 
+                            <br>";                  
+
+                                //Footer & QC Sign-off Section - Dynamic Page Section 0.33 of 23 if page no <body total pages else 3 of 23 if on last page
+                                $pdf .= "<page_footer>
+                                <table style='width: 750px;'>
+                                    <tfoot>
+                                    <tr>
+                                        <td style='width: 100%; text-align: right; font-weight: bold; font-size: 11px;'>PL05 REV04 190524</td>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                                </page_footer>";
+                                
+                                $pdf .= "<table style=\"border-collapse: collapse; table-layout: fixed;\">                                
                                 <thead>
                                     <tr>
                                         <th style=\"width: 12%; font-weight: bold; font-size: 16px; text-align: left; padding: 10px;\">Events</th>
@@ -608,6 +624,7 @@ switch ($_GET['type']) {
                                 <tbody>";
 
                     $get_events = dbq("select * from jobcard_events where job_id={$jobcard_['job_id']} order by start_datetime");
+                    //Events Lines - Dynamic Page Section minimum 0.5 of 23 (each line is 0.5 but add 0.5 for every chars of comment text)
                     if ($get_events) {
                         if (dbr($get_events) > 0) {
                             $stripe = false;
@@ -627,23 +644,50 @@ switch ($_GET['type']) {
                         }
                     }
 
-                    $pdf .= "</tbody>
-                    <tbody></tbody>
+                    $pdf .= "</tbody>                    
                   </table>
                   <br>
-                  <br>
-                  <table style='width: 750px;'>
-                      <tfoot>
-                          <tr>
-                            <td style='width: 100%; text-align: right; font-weight: bold; font-size: 11px;'>PL05 REV04 190524</td>
-                          </tr>
-                        </tfoot>
-                  </table>  ";
+                  <br>"; 
+                  
+                  
+                  $pdf .= " </page>";
+                  if($jobcard_['qc_checked'] > 0 ){
+                    $last_page_footer .= "
+                                <page_footer>
+                                    <table style='width: 750px; border-spacing: 0;  border-collapse: collapse;'>
+                                    <tbody>
+                                        <tr>
+                                            <td style='width: 50%; text-align: left; font-weight: bold; font-size: 11px; border: 1px solid rgb(39, 39, 39); padding: 5px; '>QC Sign:</td>                                                                                                                                     
+                                            <td style='width: 50%; text-align: left; font-weight: bold; font-size: 11px; border: 1px solid rgb(39, 39, 39); padding: 5px; '>Mechanic Sign:</td>                                            
+                                        </tr>
+                                       
+                                        <tr>
+                                            <td style='width: 50%; text-align: left; font-weight: normal; font-size: 11px; border: 1px solid rgb(39, 39, 39); padding: 5px;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$qc_checked_by['name']}&nbsp;{$qc_checked_by['last_name']}</td>                                                                                    
+                                            <td style='width: 50%; text-align: left; font-weight: bold; font-size: 11px; border: 1px solid rgb(39, 39, 39); padding: 5px; '>Foreman Sign:</td>                                            
+                                        </tr>
+                                        
+                                        
+                                    </tbody>
+                                        <tfoot>
+                                        
+                                            <tr>
+                                                <td style='width: 50%; text-align: left; font-weight: normal; font-size: 11px; border: 1px solid rgb(39, 39, 39); padding-top: 5px; border-top: none;'><strong>QC Date:&nbsp;&nbsp;</strong> {$jobcard_['qc_checked_datetime']}</td>                                                   
+                                            </tr>                                        
+                                        </tfoot>
+                                    </table>
+                                </page_footer>
+                            ";
+                            $pdf = $pdf.$last_page_footer;
+                  }
+                  
+                
+                  
+                  $saved = file_put_contents('output.txt', $pdf);
+                  
 
 
-
-
-                    printPDF($pdf, "{$jobcard_['jobcard_number']}");
+                    printPDF($pdf, "{$jobcard_['jobcard_number']}", false, false, 'P', 'A4', '', false, '', $last_page_footer);
                 } else {
                     error_log("print error : {$_GET['type']} : report not found ");
                     http_response_code(404);
@@ -658,7 +702,7 @@ switch ($_GET['type']) {
             http_response_code(404);
             die();
         }
-        break;
+        break;        
 
     case "risk-assessment":
         if (isset($_GET['id'])) {

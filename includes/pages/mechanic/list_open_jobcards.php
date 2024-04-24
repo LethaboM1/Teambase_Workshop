@@ -16,6 +16,7 @@ switch ($row['priority']) {
 $logged_by = ($row['logged_by'] > 0) ? dbf(dbq("select concat(name,' ', last_name) as name from users_tbl where user_id={$row['logged_by']}")) : ['name' => 'None'];
 $mechanic_ = ($row['mechanic_id'] > 0) ? dbf(dbq("select concat(name,' ', last_name) as name from users_tbl where user_id={$row['mechanic_id']}")) : ['name' => 'None'];
 $plant_ = ($row['mechanic_id'] > 0) ? dbf(dbq("select * from plants_tbl where plant_id={$row['plant_id']}")) : ['name' => 'None'];
+$qc_checked_by_ = ($row['qc_checked_by'] > 0) ? dbf(dbq("select concat(name,' ', last_name) as name from users_tbl where user_id={$row['qc_checked_by']}")) : ['name' => 'Not Checked'];
 $site_ = get_site($row['site_id']);
 switch ($plant_['reading_type']) {
     case "km":
@@ -68,6 +69,7 @@ if ($row['allocated_hours'] > 0) {
                                             <b>Model.</b>&nbsp;<?= $plant_['model'] ?><br>
                                             <b>Mechanic.</b>&nbsp;<?= $mechanic_['name'] ?><br>
                                             <b>Hour Spend.</b>&nbsp;<?= $worked['hours'] ?><br>
+                                            <b>QC Checked.</b>&nbsp;<?= $qc_checked_by_['name'] != 'Not Checked' ? $qc_checked_by_['name'].' on ':'Not Checked'?><?= $row['qc_checked_datetime'] ?><br>
                                         </div>
                                         <div class="col-md-6">
                                             <b>Plant.</b>&nbsp;<?= $plant_['reg_number'] ?><br>

@@ -5,3 +5,7 @@ backups/
 files/
 documents/
 *.lock
+output - Copy.html
+output.html
+output.txt
+test.txt

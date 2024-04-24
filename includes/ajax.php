@@ -1486,4 +1486,65 @@ switch ($_POST['cmd']) {
             }
         }
         break;
+
+    case 'qc_check':
+        if (isset($_POST['job_id']) && isset($_POST['qc_checked']) && isset($_POST['qc_name']) && isset($_POST['qc_timestamp'])) {
+            $checked = $_POST['qc_checked']=='true' ? '1':'0';
+            $checked_by = $_POST['qc_checked']=='true' ? $_POST['qc_name']:'0';  
+            $checked_on = $_POST['qc_checked']=='true' ? $_POST['qc_timestamp']:NULL;          
+            $update_ = dbq("update jobcards set
+                                    qc_checked='{$checked}',
+                                    qc_checked_by='{$checked_by}',
+                                    qc_checked_datetime='{$checked_on}'
+                                    where job_id={$_POST['job_id']}");
+            if ($update_) {
+                $json_['status'] = 'ok';
+                // $json_['status'] = 'id:'.$_POST['job_id'].' checked:'.$_POST['qc_checked'].' by:'.$_POST['qc_name'].' on:'.$_POST['qc_timestamp'];
+            } else {
+                $json_['status'] = 'error';
+                $json_['message'] = 'SQl error: ' . dbe();
+            }
+        }
+
+        echo json_encode($json_);
+
+        break;
+
+    case 'qc_check_by':
+        if (isset($_POST['job_id']) && isset($_POST['qc_name'])) {
+            $checked_by = $_POST['qc_name'];
+            $update_ = dbq("update jobcards set                                    
+                                    qc_checked_by='{$checked_by}'
+                                    where job_id={$_POST['job_id']}");
+            if ($update_) {
+                $json_['status'] = 'ok';
+                // $json_['status'] = 'id:'.$_POST['job_id'].' by:'.$_POST['qc_name'];
+            } else {
+                $json_['status'] = 'error';
+                $json_['message'] = 'SQl error: ' . dbe();
+            }
+        }
+
+        echo json_encode($json_);
+
+        break;
+
+    case 'qc_check_datetime':
+        if (isset($_POST['job_id']) && isset($_POST['qc_timestamp'])) {
+            $checked_on = $_POST['qc_timestamp'];
+            $update_ = dbq("update jobcards set                                    
+                                    qc_checked_datetime='{$checked_on}'
+                                    where job_id={$_POST['job_id']}");
+            if ($update_) {
+                $json_['status'] = 'ok';
+                // $json_['status'] = 'id:'.$_POST['job_id'].' on:'.$_POST['qc_timestamp'];
+            } else {
+                $json_['status'] = 'error';
+                $json_['message'] = 'SQl error: ' . dbe();
+            }
+        }
+
+        echo json_encode($json_);
+
+        break;
 }

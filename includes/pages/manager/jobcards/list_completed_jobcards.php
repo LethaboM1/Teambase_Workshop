@@ -4,6 +4,8 @@ $color = "success";
 
 ($row['logged_by'] > 0) ? $logged_by_ = dbf(dbq("select concat(name,' ', last_name) as name from users_tbl where user_id={$row['logged_by']}")) : $logged_by['name'] = 'Unknown';
 ($row['mechanic_id'] > 0) ? $mechanic_ = dbf(dbq("select concat(name,' ', last_name) as name from users_tbl where user_id={$row['mechanic_id']}")) : $mechanic_['name'] = 'None';
+($row['qc_checked_by'] > 0) ? $qc_checked_by_ = dbf(dbq("select concat(name,' ', last_name) as name from users_tbl where user_id={$row['qc_checked_by']}")) : $qc_checked_by_['name'] = 'Not Checked';
+
 $plant_ = dbf(dbq("select * from plants_tbl where plant_id={$row['plant_id']}"));
 switch ($plant_['reading_type']) {
     case "km":
@@ -61,7 +63,7 @@ $progress = 100;
                                                 <b>Reading (<?= strtoupper($plant_['reading_type']) ?>).</b>&nbsp;<?= $reading ?><br>
                                                 <b>Allocated Hrs.</b>&nbsp;<?= $row['allocated_hours'] ?><br>
                                                 <b>Progress.</b>&nbsp;<?= $progress ?>%<br>
-
+                                                <b>QC Checked.</b>&nbsp;<?= $qc_checked_by_['name'] != 'Not Checked' ? $qc_checked_by_['name'].' on ':'Not Checked'?><?= $row['qc_checked_datetime'] ?><br>
                                             </div>
                                         </div>
                                         <?php
