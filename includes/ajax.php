@@ -1489,13 +1489,14 @@ switch ($_POST['cmd']) {
 
     case 'qc_check':
         if (isset($_POST['job_id']) && isset($_POST['qc_checked']) && isset($_POST['qc_name']) && isset($_POST['qc_timestamp'])) {
-            $checked = $_POST['qc_checked']=='true' ? '1':'0';
-            $checked_by = $_POST['qc_checked']=='true' ? $_POST['qc_name']:'0';  
-            $checked_on = $_POST['qc_checked']=='true' ? $_POST['qc_timestamp']:NULL;          
+            $checked = $_POST['qc_checked'] == 'true' ? 1 : 0;
+            $checked_by = $_POST['qc_checked'] == 'true' ? ($_POST['qc_name'] == 0 ? $_SESSION['user']['user_id'] : $_POST['qc_name']) : '0';
+            $checked_on = $_POST['qc_checked'] == 'true' ? str_replace('T', ' ', $_POST['qc_timestamp']) : NULL;
+
             $update_ = dbq("update jobcards set
                                     qc_checked='{$checked}',
                                     qc_checked_by='{$checked_by}',
-                                    qc_checked_datetime='{$checked_on}'
+                                    qc_checked_datetime=" . ($checked_on != null ? "'{$checked_on}'" : "NULL") . "
                                     where job_id={$_POST['job_id']}");
             if ($update_) {
                 $json_['status'] = 'ok';

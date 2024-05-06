@@ -26,7 +26,9 @@ switch ($_GET['page']) {
         while ($row = dbf($get_mechanic))  $mechanic_list[] = $row;
 
         $get_qc = dbq("select concat(name,' ',last_name) as name, user_id as value from users_tbl where depart='workshop' order by name");
+        $qc_list[] = ['name' => 'None', 'value' => 0];
         while ($row = dbf($get_qc))  $qc_list[] = $row;
+
 
         require "./includes/forms/manager/jobcards/job-card-view.php";
         break;
