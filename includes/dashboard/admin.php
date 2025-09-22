@@ -1,21 +1,20 @@
 <?php
 require_once "includes/check.php";
 
-if ($_SESSION['user']['role'] != 'manager' && $_SESSION['user']['role'] != 'system' && $_SESSION['user']['role'] != 'clerk') {
+// Restrict access
+if (!in_array($_SESSION['user']['role'], ['manager','system','clerk'])) {
     go('index.php');
 }
 
-switch ($_GET['page']) {
+switch ($_GET['page'] ?? '') {
     case 'plant-checklists':
         $page_title = 'Plant Check Lists';
         $page_name = 'manager/plants/plant-checklists';
-
         break;
 
     case 'operator-logs':
         $page_title = 'Operator Logs';
         $page_name = 'manager/operator_logs/operator-logs';
-
         break;
 
     case 'job-card-view':
@@ -29,16 +28,13 @@ switch ($_GET['page']) {
         $qc_list[] = ['name' => 'None', 'value' => 0];
         while ($row = dbf($get_qc))  $qc_list[] = $row;
 
-
         require "./includes/forms/manager/jobcards/job-card-view.php";
         break;
-
 
     case 'daily-pre-task-mini-view':
         $page_title = 'View Daily Pre-Task Mini Risk Assessment';
         $page_name = 'mechanic/daily-pre-task-mini-view';
         require "./includes/forms/mechanic/jobcards/daily-pre-task-mini-view.php";
-
         break;
 
     case 'add-job-requisition':
@@ -58,17 +54,10 @@ switch ($_GET['page']) {
         break;
 
     case 'add-user':
-
         if ($_SESSION['user']['role'] == 'clerk') {
             $page_title = 'Dashboard Overview';
-            switch ($_SESSION['user']['role']) {
-                case "clerk":
-                    $page_name = 'dash_clerk';
-                    break;
-
-                default:
-                    $page_name = 'dash_manager';
-            }
+            $page_name = 'dashboard';
+            include "./includes/forms/dashboard.php";
         } else {
             $page_title = 'Add/Manage Users';
             $page_name = 'manager/users/add-manage-users';
@@ -79,61 +68,38 @@ switch ($_GET['page']) {
     case 'add-plant':
         if ($_SESSION['user']['role'] == 'clerk') {
             $page_title = 'Dashboard Overview';
-            switch ($_SESSION['user']['role']) {
-                case "clerk":
-                    $page_name = 'dash_clerk';
-                    break;
-
-                default:
-                    $page_name = 'dash_manager';
-            }
+            $page_name = 'dashboard';
+            include "./includes/forms/dashboard.php";
         } else {
             $page_title = 'Add/Manage Plant';
             $page_name = 'manager/plants/add-manage-plant';
             require "includes/forms/manager/plants/manage-plants-form.php";
         }
-
         break;
 
     case 'add-site':
         if ($_SESSION['user']['role'] == 'clerk') {
             $page_title = 'Dashboard Overview';
-            switch ($_SESSION['user']['role']) {
-                case "clerk":
-                    $page_name = 'dash_clerk';
-                    break;
-
-                default:
-                    $page_name = 'dash_manager';
-            }
+            $page_name = 'dashboard';
+            include "./includes/forms/dashboard.php";
         } else {
             $page_title = 'Add/Manage Site';
             $page_name = 'manager/sites/add-manage-site';
             require "includes/forms/manager/sites/manage-sites-form.php";
         }
-
         break;
 
     case 'view-plant':
-
         if ($_SESSION['user']['role'] == 'clerk') {
             $page_title = 'Dashboard Overview';
-            switch ($_SESSION['user']['role']) {
-                case "clerk":
-                    $page_name = 'dash_clerk';
-                    break;
-
-                default:
-                    $page_name = 'dash_manager';
-            }
+            $page_name = 'dashboard';
+            include "./includes/forms/dashboard.php";
         } else {
             $back_page = "dashboard.php?page=add-plant";
             $page_title = 'Plant';
             $page_name = 'manager/plants/plant-view';
 
-            if (!isset($_GET['id'])) {
-                go($back_page);
-            }
+            if (!isset($_GET['id'])) go($back_page);
 
             $get_plant = dbq("select * from plants_tbl where plant_id='{$_GET['id']}'");
             if ($get_plant) {
@@ -165,7 +131,6 @@ switch ($_GET['page']) {
     case 'new-job-allocate':
         $page_title = 'New Job Cards - Allocate Job Card Number';
         $page_name = 'manager/jobcards/new-job-cards-allocated';
-
         require "./includes/forms/manager/jobcards/new-job-cards-allocated.php";
         break;
 
@@ -178,7 +143,6 @@ switch ($_GET['page']) {
     case 'list-defects':
         $page_title = 'New Defect reports';
         $page_name = 'manager/jobcards/list-defects';
-        // require "./includes/forms/manager/jobcards/new-defects.php";
         break;
 
     case 'additional-defects':
@@ -230,7 +194,6 @@ switch ($_GET['page']) {
     case "job-requisitions-completed":
         $page_title = 'Completed Job Card Requisitions';
         $page_name = 'manager/jobcards/job-requisitions-completed';
-        //include "./includes/forms/manager/jobcards/job-requisitions.php";
         break;
 
     case 'tyre-reports-new':
@@ -242,7 +205,6 @@ switch ($_GET['page']) {
     case 'tyre-reports-list':
         $page_title = 'Tyre Reports';
         $page_name = 'manager/jobcards/tyre-reports-list';
-        //require "./includes/forms/manager/jobcards/tyre-reports-list.php";
         break;
 
     case 'rep-operator-log':
@@ -253,7 +215,6 @@ switch ($_GET['page']) {
     case 'rep-jobcard-events':
         $page_title  = "Job Card Events Report";
         $page_name = 'manager/reports/rep-jobcard-events';
-
         break;
 
     case 'rep-plant-inspection':
@@ -261,17 +222,10 @@ switch ($_GET['page']) {
         $page_name = 'manager/reports/rep-plant-inspection';
         break;
 
-
-
+    // --- DEFAULT DASHBOARD FOR ALL USERS ---
     default:
         $page_title = 'Dashboard Overview';
+        $page_name  = 'dashboard';
         include "./includes/forms/dashboard.php";
-        switch ($_SESSION['user']['role']) {
-            case "clerk":
-                $page_name = 'dash_clerk';
-                break;
-
-            default:
-                $page_name = 'dash_manager';
-        }
+        break;
 }

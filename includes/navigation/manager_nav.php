@@ -44,7 +44,20 @@ $get_completed = dbq("select job_id from jobcards where status='completed'");
 					<ul class="nav nav-children">
 						<li><a class="nav-link" href="dashboard.php?page=plant-checklists">List&nbsp;<span class='badge badge-danger float-end'></span></a></li>
 					</ul>
+
+					<ul class="nav nav-children">
+						<li><a class="nav-link" href="dashboard.php?page=plant-checklists">Plant Quality Inspection Sheet&nbsp;<span class='badge badge-danger float-end'></span></a></li>
+					</ul>
+
+					<ul class="nav nav-children">
+						<li><a class="nav-link" href="dashboard.php?page=plant-checklists">Fleet List&nbsp;<span class='badge badge-danger float-end'></span></a></li>
+					</ul>
+
+					<ul class="nav nav-children">
+						<li><a class="nav-link" href="dashboard.php?page=plant-checklists">Drivers/Operator log Sheet&nbsp;<span class='badge badge-danger float-end'></span></a></li>
+					</ul>
 				</li>
+				
 				<li class="nav-parent">
 					<a class="nav-link" href="#">
 						<i class="bx bx-disc" aria-hidden="true"></i>

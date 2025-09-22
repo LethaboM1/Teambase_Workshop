@@ -220,7 +220,195 @@ switch ($_GET['type']) {
             }
         }
         break;
+    //adding the new checklist
+    case 'plant-quality-inspection':
+        if ($_GET['id'] > 0) {
+            $get_checklist = dbq("SELECT * FROM plant_quality_inspection_results WHERE list_id={$_GET['id']}");
+            if ($get_checklist && dbr($get_checklist) > 0) {
+                $check_list = dbf($get_checklist);
 
+                // Get plant info
+                $plant_ = dbf(dbq("SELECT * FROM plants_tbl WHERE plant_id={$check_list['plant_id']}"));
+
+                // Decode results JSON
+                if (strlen($check_list['results']) > 0) {
+                    $lines = (is_json($check_list['results']))
+                        ? json_decode($check_list['results'], true)
+                        : json_decode(base64_decode($check_list['results']), true);
+                } else {
+                    $lines = [];
+                }
+
+                // Build PDF
+                $pdf = "<table style='width: 750px; border-collapse: collapse;'>
+                            <tr>
+                                <th style='font-weight:bold;font-size:20px;text-align:left;'>Plant Quality Inspection Sheet</th>
+                            </tr>
+                        </table><br>
+                        <table style='width: 750px; border-collapse: collapse;'>
+                            <tr>
+                                <td style='border:1px solid #000;padding:5px;'><strong>Date:</strong> {$check_list['datetime']}</td>
+                                <td style='border:1px solid #000;padding:5px;'><strong>Plant Number:</strong> {$plant_['plant_number']}</td>
+                            </tr>
+                            <tr>
+                                <td style='border:1px solid #000;padding:5px;'><strong>Mechanic:</strong> {$check_list['mechanic']}</td>
+                                <td style='border:1px solid #000;padding:5px;'><strong>Inspector:</strong> {$check_list['inspector']}</td>
+                            </tr>
+                        </table><br>";
+
+                $pdf .= "<table style='width: 750px; border-collapse: collapse;'>
+                            <thead>
+                                <tr style='background:#555;color:#fff;'>
+                                    <th style='padding:8px;'>Item</th>
+                                    <th style='padding:8px;'>Result</th>
+                                </tr>
+                            </thead>";
+
+                foreach ($lines as $line) {
+                    $color = ($line['Result'] === 'pass') ? '#d4edda' :
+                            (($line['Result'] === 'fail') ? '#f8d7da' : '#fff3cd');
+
+                    $pdf .= "<tr style='background:{$color};'>
+                                <td style='padding:8px;'>{$line['Item']}</td>
+                                <td style='padding:8px;'>{$line['Result']}</td>
+                            </tr>";
+                }
+
+                $pdf .= "</table><br>
+                        <table style='width:750px; border-collapse:collapse;'>
+                            <tr><th style='text-align:left;padding:8px;'>Comments</th></tr>
+                            <tr><td style='padding:8px;'>{$check_list['comments']}</td></tr>
+                        </table>";
+
+                $file_name = "{$check_list['datetime']}-{$plant_['plant_number']}-quality-inspection";
+                $file_name = clean_path_($file_name);
+
+                printPDF($pdf, $file_name);
+            }
+        }
+        break;
+
+    //fleet
+        case 'fleet-checklist':
+            if ($_GET['id'] > 0) {
+                $get_checklist = dbq("SELECT * FROM fleet_checklist_results WHERE list_id={$_GET['id']}");
+                if ($get_checklist && dbr($get_checklist) > 0) {
+                    $check_list = dbf($get_checklist);
+
+                    // Get fleet details
+                    $fleet_ = dbf(dbq("SELECT * FROM fleet_tbl WHERE fleet_id={$check_list['fleet_id']}"));
+                    $operator_ = dbf(dbq("SELECT name, last_name FROM users_tbl WHERE user_id={$check_list['driver_id']}"));
+
+                    // Decode checklist JSON
+                    if (strlen($check_list['results']) > 0) {
+                        $lines = (is_json($check_list['results']))
+                            ? json_decode($check_list['results'], true)
+                            : json_decode(base64_decode($check_list['results']), true);
+                    } else {
+                        $lines = [];
+                    }
+
+                    // Build PDF
+                    $pdf = "<table style='width: 750px; border-collapse: collapse; table-layout: fixed;'>   
+                                <tr>
+                                    <th style='width: 50%; font-weight: bold; font-size: 20px; text-align: left; border: none;'>Fleet Checklist Report</th>
+                                </tr>   
+                            </table>
+                            <br>
+                            <table style='width: 750px; border-collapse: collapse; table-layout: fixed;'>
+                                <tr>
+                                    <td style='width: 50%; font-size: 13px; border: 1px solid #000; padding: 5px;'><strong>Fleet No #:</strong> {$fleet_['fleet_no']}</td>
+                                    <td style='width: 50%; font-size: 13px; border: 1px solid #000; padding: 5px;'><strong>Date:</strong> {$check_list['datetime']}</td>
+                                </tr>
+                                <tr>
+                                    <td style='width: 50%; font-size: 13px; border: 1px solid #000; padding: 5px;'><strong>Driver/Operator:</strong> {$operator_['name']} {$operator_['last_name']}</td>
+                                    <td style='width: 50%; font-size: 13px; border: 1px solid #000; padding: 5px;'><strong>Site:</strong> {$check_list['site']}</td>
+                                </tr>
+                            </table>
+                            <br>
+                            <table style='width: 750px; border-collapse: collapse; table-layout: fixed;'>
+                                <thead>
+                                    <tr style='background-color: #555; color: #fff;'>
+                                        <th style='width:645px;font-weight: bold; font-size: 13px; text-align: left; padding: 10px;'>Check Item</th>
+                                        <th style='font-weight: bold; font-size: 13px; text-align: left; padding: 10px;'>Result</th>
+                                    </tr>
+                                </thead>";
+
+                    $stripe = false;
+                    foreach ($lines as $line) {
+                        $pdf .= "<tr" . ($stripe ? " style='background-color: #f1f1f1;'" : "") . ">
+                                    <td style='font-size: 13px; text-align: left; padding: 10px;'>{$line['Item']}</td>
+                                    <td style='font-size: 13px; text-align: left; padding: 10px;'>" . ucfirst($line['Result']) . "</td>
+                                </tr>";
+                        $stripe = !$stripe;
+                    }
+
+                    $pdf .= "</table>
+                            <br>
+                            <table style='width: 750px; border-collapse: collapse;'>
+                                <thead>
+                                    <tr>
+                                        <th style='font-weight: bold; font-size: 16px; text-align: left; padding: 10px;'>Comments</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style='font-size: 13px; text-align: left; padding: 10px;'>{$check_list['comments']}</td>
+                                    </tr>
+                                </tbody>
+                            </table>";
+
+                    $file_name = "{$check_list['datetime']}-{$fleet_['fleet_no']}-{$operator_['name']} {$operator_['last_name']}";
+                    $file_name = clean_path_($file_name);
+
+                    printPDF($pdf, $file_name);
+                }
+            }
+            break;
+        //drivers/operators log sheet
+        case "driver-log-sheet":
+    if ($_GET['id'] > 0) {
+        $log_id = intval($_GET['id']);
+        $log = dbf(dbq("SELECT * FROM drivers_log_sheets WHERE id=$log_id"));
+        $days = [];
+        $get_days = dbq("SELECT * FROM drivers_log_days WHERE log_id=$log_id");
+        while ($row = dbf($get_days)) { $days[] = $row; }
+
+        $pdf = "<h2 style='text-align:center'>Driver / Operator Log Sheet</h2>";
+        $pdf .= "<p><strong>Driver:</strong> {$log['driver_name']} | <strong>Fleet No:</strong> {$log['fleet_no']} | <strong>Company No:</strong> {$log['company_no']}</p>";
+
+        $pdf .= "<h4>Vehicle Transfer Details</h4>
+        <table border='1' cellpadding='5' cellspacing='0' width='100%'>
+            <tr><td><strong>Dispatched From:</strong> {$log['dispatched_from']}</td><td><strong>Date Off Hire:</strong> {$log['date_off']}</td><td><strong>Time Off Hire:</strong> {$log['time_off']}</td></tr>
+            <tr><td><strong>Hour Meter Off:</strong> {$log['hour_off']}</td><td><strong>Ref No:</strong> {$log['ref_no']}</td><td><strong>Received By Site:</strong> {$log['received_by_site']}</td></tr>
+            <tr><td colspan='3'><strong>Supervisor:</strong> {$log['received_by_name']}</td></tr>
+        </table><br>";
+
+        $pdf .= "<h4>Daily Logs</h4>
+        <table border='1' cellpadding='5' cellspacing='0' width='100%'>
+            <tr><th>Day</th><th>Start</th><th>End</th><th>Operating Time</th><th>Fuel (L)</th><th>Reading</th><th>Remarks</th></tr>";
+        foreach ($days as $d) {
+            $pdf .= "<tr>
+                <td>{$d['day']}</td>
+                <td>{$d['start']}</td>
+                <td>{$d['end']}</td>
+                <td>{$d['operating_time']}</td>
+                <td>{$d['fuel']}</td>
+                <td>{$d['reading']}</td>
+                <td>{$d['remarks']}</td>
+            </tr>";
+        }
+        $pdf .= "</table><br>";
+
+        $pdf .= "<p><strong>Breakdown Reason:</strong> {$log['breakdown_reason']}</p>";
+        $pdf .= "<p><strong>Supervisor:</strong> {$log['supervisor']}</p>";
+        $pdf .= "<p><strong>Clerk:</strong> {$log['clerk_name']} | <strong>Date Received:</strong> {$log['date_received']} | <strong>Sign:</strong> {$log['clerk_sign']}</p>";
+
+        $file_name = "DriverLogSheet-{$log['driver_name']}-{$log['date_off']}";
+        printPDF($pdf, $file_name);
+    }
+    break;
+//////////////////////
     case "open-requisitions":
         if ($_SESSION['user']['role'] != 'manager' && $_SESSION['user']['role'] != 'buyer' && $_SESSION['user']['role'] != 'clerk') die();
         $query = "select 
